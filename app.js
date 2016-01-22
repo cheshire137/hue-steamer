@@ -24,28 +24,20 @@ if (typeof username === 'undefined') {
 }
 console.log('Connecting to bridge ' + bridgeIP + ' as user ' + username);
 
-// var api = new HueApi(hostname, username);
+var api = new HueApi(bridgeIP, username);
 
-// var displayBridge = function(result) {
-//     console.log("Bridge info:\n" +
-//                 JSON.stringify(result, null, 2));
-// };
-// api.config().then(displayBridge).done();
-
-// var displayGroup = function(result) {
-//   console.log("Group:\n" + JSON.stringify(result, null, 2));
-// };
-
-// var displayGroups = function(result) {
-//   console.log("Groups:\n" +
-//               JSON.stringify(result, null, 2));
-//   for (var i = 0; i < result.length; i++) {
-//     var group = result[i];
-//     api.getGroup(group.id).then(displayGroup).done();
-//   }
-// };
-
-// // api.groups().then(displayGroups).done();
+var displayGroup = function(group) {
+  console.log("\t# lights: " + group.lights.length);
+};
+var displayBridge = function(bridge) {
+  // console.log("Bridge info:\n" +
+  //             JSON.stringify(bridge, null, 2));
+  console.log('Bridge "' + bridge.name + '"');
+  console.log("\tTime: " + bridge.localtime);
+  console.log("\tAPI version: " + bridge.apiversion);
+  api.getGroup('0').then(displayGroup).done();
+};
+api.config().then(displayBridge).done();
 
 // var lightID = 11;
 
