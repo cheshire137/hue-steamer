@@ -1,4 +1,5 @@
 var hue = require('node-hue-api'),
+    ColorHelper = require('./colorHelper'),
     HueApi = hue.HueApi,
     lightState = hue.lightState,
     bridgeIP, username;
