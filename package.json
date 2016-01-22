@@ -1,0 +1,20 @@
+{
+  "name": "hue-steamer",
+  "version": "0.0.1",
+  "author": "Sarah Vessels <cheshire137@gmail.com>",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "dependencies": {
+    "axios": "~0.8.1",
+    "deep-extend": "~0.4.0",
+    "node-hue-api": "^2.0.1",
+    "q": "~1.4",
+    "traits": "~0.4.0",
+    "xml2js": "~0.4"
+  },
+  "devDependencies": {
+  }
+}
