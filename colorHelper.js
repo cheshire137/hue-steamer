@@ -10,34 +10,43 @@ ColorHelper.Red = new XYPoint(0.675, 0.322);
 ColorHelper.Lime = new XYPoint(0.4091, 0.518);
 ColorHelper.Blue = new XYPoint(0.167, 0.04);
 
+// Parses a valid hex color string and returns the Red RGB integer value.
 ColorHelper.hexToRed = function(hex) {
   return parseInt(hex.slice(0, 2), 16);
 };
 
+// Parses a valid hex color string and returns the Green RGB integer value.
 ColorHelper.hexToGreen = function(hex) {
   return parseInt(hex.slice(2, 4), 16);
 };
 
+// Parses a valid hex color string and returns the Blue RGB integer value.
 ColorHelper.hexToBlue = function(hex) {
   return parseInt(hex.slice(4, 6), 16);
 };
 
+// Converts a valid hex color string to an RGB array.
 ColorHelper.hexToRgb = function(hex) {
   return [this.hexToRed(hex), this.hexToGreen(hex), this.hexToBlue(hex)];
 };
 
+// Converts RGB to hex.
 ColorHelper.rgbToHex = function(r, g, b) {
   return ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
 };
 
+// Return a random Integer in the range of 0 to 255, representing an RGB color
+// value.
 ColorHelper.randomRgbValue = function() {
   return Math.floor(Math.random() * 256);
 };
 
+// Returns the cross product of two XYPoints.
 ColorHelper.crossProduct = function(p1, p2) {
   return p1.x * p2.y - p1.y * p2.x;
 };
 
+// Check if the provided XYPoint can be recreated by a Hue lamp.
 ColorHelper.checkPointInLampsReach = function(p) {
   var v1 = new XYPoint(this.Lime.x - this.Red.x, this.Lime.y - this.Red.y);
   var v2 = new XYPoint(this.Blue.x - this.Red.x, this.Blue.y - this.Red.y);
@@ -47,6 +56,8 @@ ColorHelper.checkPointInLampsReach = function(p) {
   return (s >= 0.0) && (t >= 0.0) && (s + t <= 1.0);
 };
 
+// Find the closest point on a line. This point will be reproducible by a Hue
+// lamp.
 ColorHelper.getClosestPointToLine = function(A, B, P) {
   var AP = new XYPoint(P.x - A.x, P.y - A.y);
   var AB = new XYPoint(B.x - A.x, B.y - A.y);
@@ -62,12 +73,17 @@ ColorHelper.getClosestPointToLine = function(A, B, P) {
 };
 
 ColorHelper.getClosestPointToPoint = function(xyPoint) {
+  // Color is unreproducible, find the closest point on each line in the CIE
+  // 1931 'triangle'.
   var pAB = this.getClosestPointToLine(this.Red, this.Lime, xyPoint);
   var pAC = this.getClosestPointToLine(this.Blue, this.Red, xyPoint);
   var pBC = this.getClosestPointToLine(this.Lime, this.Blue, xyPoint);
+
+  // Get the distances per point and see which point is closer to our Point.
   var dAB = this.getDistanceBetweenTwoPoints(xyPoint, pAB);
   var dAC = this.getDistanceBetweenTwoPoints(xyPoint, pAC);
   var dBC = this.getDistanceBetweenTwoPoints(xyPoint, pBC);
+
   var lowest = dAB;
   var closestPoint = pAB;
   if (dAC < lowest) {
@@ -78,15 +94,20 @@ ColorHelper.getClosestPointToPoint = function(xyPoint) {
     lowest = dBC;
     closestPoint = pBC;
   }
+
+  // Change the xy value to a value which is within the reach of the lamp.
   return new XYPoint(closestPoint.x, closestPoint.y);
 };
 
+// Returns the distance between two XYPoints.
 ColorHelper.getDistanceBetweenTwoPoints = function(one, two) {
   var dx = one.x - two.x;
   var dy = one.y - two.y;
   return Math.sqrt(dx * dx + dy * dy);
 };
 
+// Returns an XYPoint object containing the closest available CIE 1931
+// coordinates based on the RGB input values.
 ColorHelper.getXYPointFromRGB = function(red, green, blue) {
   var r, g, b;
   if (red > 0.04045) {
@@ -118,6 +139,7 @@ ColorHelper.getXYPointFromRGB = function(red, green, blue) {
     cy = Y / (X + Y + Z);
   }
 
+  // Check if the given XY value is within the color reach of our lamps.
   var xyPoint = new XYPoint(cx, cy);
   var inReachOfLamps = this.checkPointInLampsReach(xyPoint);
   if (!inReachOfLamps) {
@@ -126,6 +148,8 @@ ColorHelper.getXYPointFromRGB = function(red, green, blue) {
   return xyPoint;
 }
 
+// Returns a rgb tuplet for given x, y values.  Not actually an inverse of
+// getXYPointFromRGB.
 ColorHelper.getRGBFromXYAndBrightness = function(x, y, bri) {
   if (typeof bri === 'undefined') {
     bri = 1;
