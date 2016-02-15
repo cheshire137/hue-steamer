@@ -1,5 +1,5 @@
 var hue = require('node-hue-api'),
-    ColorHelper = require('./colorHelper'),
+    Converter = require('./converter'),
     HueApi = hue.HueApi,
     lightState = hue.lightState,
     bridgeIP, username;
@@ -34,8 +34,11 @@ var displayLight = function(light) {
   var state = light.state;
   console.log("\t" + light.name + ' model ' + light.modelid);
   if (state.on) {
-    console.log("\tx: " + state.xy[0] + ', y: ' + state.xy[1] +
-                ', brightness: ' + state.bri);
+    var x = state.xy[0];
+    var y = state.xy[1];
+    console.log("\tx: " + x + ', y: ' + y + ', brightness: ' + state.bri);
+    var hex = Converter.CIE1931ToHex(x, y, state.bri);
+    console.log("\t#" + hex);
   } else {
     console.log('\toff');
   }
@@ -60,17 +63,6 @@ var displayBridge = function(bridge) {
   api.getGroup('0').then(displayGroup).done();
 };
 api.config().then(displayBridge).done();
-
-// var lightID = 11;
-
-// var displayLightState = function(result) {
-//   console.log(result);
-// };
-// var displayStatus = function(status) {
-//     console.log("Light status:\n" +
-//                 JSON.stringify(status, null, 2));
-// };
-// api.lightStatus(lightID).then(displayStatus).done();
 
 // // var redX = 0.6417, redY = 0.304;
 // // var blueX = 0.168, blueY = 0.041;
