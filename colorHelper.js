@@ -1,6 +1,7 @@
 var XYPoint = require('./xyPoint');
 
-// Thanks to https://github.com/benknight/hue-python-rgb-converter/blob/master/rgb_cie.py
+// Thanks to
+// https://github.com/benknight/hue-python-rgb-converter/blob/master/rgb_cie.py
 var ColorHelper = function() {
 };
 
