@@ -125,4 +125,42 @@ ColorHelper.getXYPointFromRGB = function(red, green, blue) {
   return xyPoint;
 }
 
+ColorHelper.getRGBFromXYAndBrightness = function(x, y, bri) {
+  if (typeof bri === 'undefined') {
+    bri = 1;
+  }
+  var xyPoint = new XYPoint(x, y);
+  if (!this.checkPointInLampsReach(xyPoint)) {
+    xyPoint = this.getClosestPointToPoint(xyPoint);
+  }
+  var Y = bri;
+  var X = (Y / xyPoint.y) * xyPoint.x;
+  var Z = (Y / xyPoint.y) * (1 - xyPoint.x - xyPoint.y);
+  var r =  X * 1.612 - Y * 0.203 - Z * 0.302;
+  var g = -X * 0.509 + Y * 1.412 + Z * 0.066;
+  var b =  X * 0.026 - Y * 0.072 + Z * 0.962;
+  var reverseGammaCorrect = function(value) {
+    if (value <= 0.0031308) {
+      return (12.92 * value);
+    }
+    return ((1.0 + 0.055) * Math.pow(value, (1.0 / 2.4)) - 0.055);
+  };
+  r = reverseGammaCorrect(r);
+  g = reverseGammaCorrect(g);
+  b = reverseGammaCorrect(b);
+  r = Math.max(0, r);
+  g = Math.max(0, g);
+  b = Math.max(0, b);
+  var max_component = Math.max(r, g, b);
+  if (max_component > 1) {
+    r = r / max_component;
+    g = g / max_component;
+    b = b / max_component;
+  }
+  r = r * 255;
+  g = g * 255;
+  b = b * 255;
+  return [r, g, b];
+};
+
 module.exports = ColorHelper;
