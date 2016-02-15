@@ -3,13 +3,12 @@ var ColorHelper = require('./colorHelper');
 // Thanks to
 // https://github.com/benknight/hue-python-rgb-converter/blob/master/rgb_cie.py
 var Converter = function() {
-  this.color = new ColorHelper();
 };
 
 // Converts hexadecimal colors represented as a String to approximate CIE 1931
 // coordinates. May not produce accurate values.
 Converter.hexToCIE1931 = function(h) {
-  var rgb = this.color.hexToRGB(h);
+  var rgb = ColorHelper.hexToRGB(h);
   return this.rgbToCIE1931(rgb[0], rgb[1], rgb[2]);
 };
 
@@ -18,7 +17,7 @@ Converter.hexToCIE1931 = function(h) {
 // http://www.easyrgb.com/index.php?X=MATH&H=02#text2.
 // May not produce accurate values.
 Converter.rgbToCIE1931 = function(red, green, blue) {
-  var point = this.color.getXYPointFromRGB(red, green, blue);
+  var point = ColorHelper.getXYPointFromRGB(red, green, blue);
   return [point.x, point.y];
 };
 
@@ -28,9 +27,9 @@ Converter.rgbToCIE1931 = function(red, green, blue) {
 Converter.getCIEColor = function(hexColor) {
   var xy = [];
   if (typeof hexColor === 'undefined') {
-    var r = this.color.randomRGBValue();
-    var g = this.color.randomRGBValue();
-    var b = this.color.randomRGBValue();
+    var r = ColorHelper.randomRGBValue();
+    var g = ColorHelper.randomRGBValue();
+    var b = ColorHelper.randomRGBValue();
     xy = this.rgbToCIE1931(r, g, b);
   } else {
     xy = this.hexToCIE1931(hexColor);
@@ -44,8 +43,8 @@ Converter.CIE1931ToHex = function(x, y, bri) {
   if (typeof bri === 'undefined') {
     bri = 1;
   }
-  var rgb = this.color.getRGBFromXYAndBrightness(x, y, bri);
-  return this.color.rgbToHex(rgb[0], rgb[1], rgb[2]);
+  var rgb = ColorHelper.getRGBFromXYAndBrightness(x, y, bri);
+  return ColorHelper.rgbToHex(rgb[0], rgb[1], rgb[2]);
 };
 
 module.exports = Converter;
