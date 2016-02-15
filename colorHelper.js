@@ -176,15 +176,15 @@ ColorHelper.getRGBFromXYAndBrightness = function(x, y, bri) {
   r = Math.max(0, r);
   g = Math.max(0, g);
   b = Math.max(0, b);
-  var max_component = Math.max(r, g, b);
-  if (max_component > 1) {
-    r = r / max_component;
-    g = g / max_component;
-    b = b / max_component;
+  var maxComponent = Math.max(r, g, b);
+  if (maxComponent > 1) {
+    r = r / maxComponent;
+    g = g / maxComponent;
+    b = b / maxComponent;
   }
-  r = r * 255;
-  g = g * 255;
-  b = b * 255;
+  r = Math.round(r * 255);
+  g = Math.round(g * 255);
+  b = Math.round(b * 255);
   return [r, g, b];
 };
 
