@@ -37,13 +37,19 @@ Converter.getCIEColor = function(hexColor) {
   return xy;
 };
 
-// Converts CIE 1931 x and y coordinates and brightness value from 0 to 1 to a
-// CSS hex color.
-Converter.CIE1931ToHex = function(x, y, bri) {
+// Converts CIE 1931 x and y coordinates and brightness value from 0 to 1 to an
+// RGB color.
+Converter.CIE1931ToRGB = function(x, y, bri) {
   if (typeof bri === 'undefined') {
     bri = 1;
   }
-  var rgb = ColorHelper.getRGBFromXYAndBrightness(x, y, bri);
+  return ColorHelper.getRGBFromXYAndBrightness(x, y, bri);
+};
+
+// Converts CIE 1931 x and y coordinates and brightness value from 0 to 1 to a
+// CSS hex color.
+Converter.CIE1931ToHex = function(x, y, bri) {
+  var rgb = this.CIE1931ToRGB(x, y, bri);
   return ColorHelper.rgbToHex(rgb[0], rgb[1], rgb[2]);
 };
 

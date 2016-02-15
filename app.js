@@ -37,6 +37,8 @@ var displayLight = function(light) {
     var x = state.xy[0];
     var y = state.xy[1];
     console.log("\tx: " + x + ', y: ' + y + ', brightness: ' + state.bri);
+    var rgb = Converter.CIE1931ToRGB(x, y, state.bri);
+    console.log("\trgb(" + rgb[0] + ', ' + rgb[1] + ', ' + rgb[2] + ')');
     var hex = Converter.CIE1931ToHex(x, y, state.bri);
     console.log("\t#" + hex);
   } else {
