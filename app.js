@@ -27,12 +27,33 @@ console.log('Connecting to bridge ' + bridgeIP + ' as user ' + username);
 
 var api = new HueApi(bridgeIP, username);
 
+var displayError = function(err) {
+  console.error(err);
+};
+var displayLight = function(light) {
+  var state = light.state;
+  console.log("\t" + light.name + ' model ' + light.modelid);
+  if (state.on) {
+    console.log("\tx: " + state.xy[0] + ', y: ' + state.xy[1] +
+                ', brightness: ' + state.bri);
+  } else {
+    console.log('\toff');
+  }
+};
+var getLightStatus = function(lightID) {
+  api.lightStatus(lightID).
+      then(function(result) {
+        console.log("\nLight #" + lightID);
+        displayLight(result);
+      }).fail(displayError).done();
+};
 var displayGroup = function(group) {
   console.log("\t# lights: " + group.lights.length);
+  for (var i = 0; i < group.lights.length; i++) {
+    getLightStatus(group.lights[i]);
+  }
 };
 var displayBridge = function(bridge) {
-  // console.log("Bridge info:\n" +
-  //             JSON.stringify(bridge, null, 2));
   console.log('Bridge "' + bridge.name + '"');
   console.log("\tTime: " + bridge.localtime);
   console.log("\tAPI version: " + bridge.apiversion);
@@ -44,9 +65,6 @@ api.config().then(displayBridge).done();
 
 // var displayLightState = function(result) {
 //   console.log(result);
-// };
-// var displayError = function(err) {
-//   console.error(err);
 // };
 // var displayStatus = function(status) {
 //     console.log("Light status:\n" +
