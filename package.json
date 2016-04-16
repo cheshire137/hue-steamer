@@ -54,6 +54,7 @@
     "isomorphic-style-loader": "0.0.5",
     "jest-cli": "^0.8.2",
     "jscs": "^2.7.0",
+    "json-loader": "^0.5.4",
     "lodash.merge": "^3.3.2",
     "mkdirp": "^0.5.1",
     "ncp": "^2.0.0",
