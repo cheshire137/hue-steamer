@@ -10,7 +10,12 @@ the Philips Hue CIE 1931 color space, or vice versa, look at
 or another
 [JavaScript implementation](https://github.com/bjohnso5/hue-hacking/blob/master/src/colors.js).
 
-## How to Run
+## How to Run the Script
+
+    npm install
+    node app.js -b YOUR_HUE_BRIDGE_IP -u YOUR_HUE_USER
+
+## How to Run the Web App
 
     npm install
     npm start

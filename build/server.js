@@ -57,7 +57,7 @@ module.exports =
   
   'use strict';
   
-  var _this2 = this;
+  var _this = this;
   
   function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
   
@@ -83,15 +83,22 @@ module.exports =
   
   var _routes2 = _interopRequireDefault(_routes);
   
-  var _componentsHtml = __webpack_require__(52);
+  var _componentsHtml = __webpack_require__(54);
   
   var _componentsHtml2 = _interopRequireDefault(_componentsHtml);
   
-  var _assets = __webpack_require__(53);
+  var _assets = __webpack_require__(55);
   
   var _assets2 = _interopRequireDefault(_assets);
   
   var _config = __webpack_require__(14);
+  
+  var _configJson = __webpack_require__(42);
+  
+  var _configJson2 = _interopRequireDefault(_configJson);
+  
+  // import HueApi from 'node-hue-api';
+  var hue = __webpack_require__(56);
   
   var server = global.server = (0, _express2['default'])();
   
@@ -103,14 +110,61 @@ module.exports =
   //
   // Register API middleware
   // -----------------------------------------------------------------------------
-  server.use('/api/content', __webpack_require__(54));
+  server.use('/api/content', __webpack_require__(57));
+  
+  server.all('*', function (req, res, next) {
+    res.header('Access-Control-Allow-Origin', _configJson2['default'][("development")].clientUri);
+    res.header('Access-Control-Allow-Headers', 'X-Requested-With');
+    res.header('Access-Control-Allow-Headers', 'Content-Type');
+    next();
+  });
+  
+  server.get('/bridge', function callee$0$0(req, res) {
+    var ip, user, api;
+    return regeneratorRuntime.async(function callee$0$0$(context$1$0) {
+      while (1) switch (context$1$0.prev = context$1$0.next) {
+        case 0:
+          ip = req.query.ip;
+          user = req.query.user;
+  
+          if (!(typeof ip !== 'string')) {
+            context$1$0.next = 5;
+            break;
+          }
+  
+          res.send('Must provide Hue Bridge IP address');
+          return context$1$0.abrupt('return');
+  
+        case 5:
+          if (!(typeof user !== 'string')) {
+            context$1$0.next = 8;
+            break;
+          }
+  
+          res.send('Must provide Hue Bridge user');
+          return context$1$0.abrupt('return');
+  
+        case 8:
+          console.log(ip, user);
+          api = new hue.HueApi(ip, user);
+  
+          api.config().then(function (bridge) {
+            res.send(JSON.stringify(bridge));
+          }).done();
+  
+        case 11:
+        case 'end':
+          return context$1$0.stop();
+      }
+    }, null, _this);
+  });
   
   //
   // Register server-side rendering middleware
   // -----------------------------------------------------------------------------
   server.get('*', function callee$0$0(req, res, next) {
     return regeneratorRuntime.async(function callee$0$0$(context$1$0) {
-      var _this = this;
+      var _this2 = this;
   
       while (1) switch (context$1$0.prev = context$1$0.next) {
         case 0:
@@ -153,7 +207,7 @@ module.exports =
                 case 'end':
                   return context$2$0.stop();
               }
-            }, null, _this);
+            }, null, _this2);
           })());
   
         case 3:
@@ -170,7 +224,7 @@ module.exports =
         case 'end':
           return context$1$0.stop();
       }
-    }, null, _this2, [[0, 5]]);
+    }, null, _this, [[0, 5]]);
   });
   
   //
@@ -266,7 +320,7 @@ module.exports =
   
   var _componentsHomePage2 = _interopRequireDefault(_componentsHomePage);
   
-  var _componentsSettingsPage = __webpack_require__(49);
+  var _componentsSettingsPage = __webpack_require__(51);
   
   var _componentsSettingsPage2 = _interopRequireDefault(_componentsSettingsPage);
   
@@ -1721,7 +1775,11 @@ module.exports =
           _react2['default'].createElement(
             'h1',
             null,
-            'Hue Steamer'
+            _react2['default'].createElement(
+              'a',
+              { href: '/' },
+              'Hue Steamer'
+            )
           )
         );
       }
@@ -2431,25 +2489,72 @@ module.exports =
   
   var _coreLocation2 = _interopRequireDefault(_coreLocation);
   
+  var _actionsBridge = __webpack_require__(49);
+  
+  var _actionsBridge2 = _interopRequireDefault(_actionsBridge);
+  
+  var _BridgeDisplay = __webpack_require__(50);
+  
+  var _BridgeDisplay2 = _interopRequireDefault(_BridgeDisplay);
+  
   var title = 'Hue Steamer';
   
   var HomePage = (function (_Component) {
     _inherits(HomePage, _Component);
   
-    function HomePage() {
+    _createClass(HomePage, null, [{
+      key: 'contextTypes',
+      value: {
+        onSetTitle: _react.PropTypes.func.isRequired
+      },
+      enumerable: true
+    }]);
+  
+    function HomePage(props) {
       _classCallCheck(this, _HomePage);
   
-      _get(Object.getPrototypeOf(_HomePage.prototype), 'constructor', this).apply(this, arguments);
+      _get(Object.getPrototypeOf(_HomePage.prototype), 'constructor', this).call(this, props);
+      var settings = _storesLocalStorage2['default'].getJSON();
+      this.state = {
+        hueBridgeUser: settings.hueBridgeUser,
+        hueBridgeIp: settings.hueBridgeIp,
+        bridge: settings.bridge,
+        haveBridge: typeof settings.bridge === 'object'
+      };
+      console.log(settings.bridge);
     }
   
     _createClass(HomePage, [{
       key: 'componentWillMount',
       value: function componentWillMount() {
         this.context.onSetTitle(title);
-        var hueBridgeIp = _storesLocalStorage2['default'].get('hue-bridge-ip');
-        var hueBridgeUser = _storesLocalStorage2['default'].get('hue-bridge-user');
-        var haveBridgeIp = typeof hueBridgeIp !== 'undefined';
-        var haveBridgeUser = typeof hueBridgeUser !== 'undefined';
+        this.redirectIfNoBridgeSettings();
+      }
+    }, {
+      key: 'componentDidMount',
+      value: function componentDidMount() {
+        if (!this.state.haveBridge) {
+          this.getBridgeState();
+        }
+      }
+    }, {
+      key: 'onBridgeLoaded',
+      value: function onBridgeLoaded(bridge) {
+        console.log('loaded bridge', bridge);
+        this.setState({ bridge: bridge, haveBridge: true });
+        _storesLocalStorage2['default'].set('bridge', bridge);
+      }
+    }, {
+      key: 'getBridgeState',
+      value: function getBridgeState() {
+        console.log('getting bridge for', this.state.hueBridgeIp, this.state.hueBridgeUser);
+        _actionsBridge2['default'].getInfo(this.state.hueBridgeIp, this.state.hueBridgeUser).then(this.onBridgeLoaded.bind(this));
+      }
+    }, {
+      key: 'redirectIfNoBridgeSettings',
+      value: function redirectIfNoBridgeSettings() {
+        var haveBridgeIp = typeof this.state.hueBridgeIp !== 'undefined';
+        var haveBridgeUser = typeof this.state.hueBridgeUser !== 'undefined';
         if (!haveBridgeIp || !haveBridgeUser) {
           _coreLocation2['default'].push(_extends({}, (0, _historyLibParsePath2['default'])('/settings')));
         }
@@ -2460,15 +2565,13 @@ module.exports =
         return _react2['default'].createElement(
           'div',
           null,
-          'Hello'
+          this.state.haveBridge ? _react2['default'].createElement(_BridgeDisplay2['default'], { bridge: this.state.bridge }) : _react2['default'].createElement(
+            'span',
+            null,
+            'Loading...'
+          )
         );
       }
-    }], [{
-      key: 'contextTypes',
-      value: {
-        onSetTitle: _react.PropTypes.func.isRequired
-      },
-      enumerable: true
     }]);
   
     var _HomePage = HomePage;
@@ -2661,11 +2764,8 @@ module.exports =
   module.exports = {
   	"development": {
   		"localStorageKey": "hue-steamer",
+  		"serverUri": "http://localhost:5000",
   		"clientUri": "http://localhost:3000"
-  	},
-  	"production": {
-  		"localStorageKey": "hue-steamer",
-  		"clientUri": "http://hue-steamer.herokuapp.com"
   	}
   };
 
@@ -2751,6 +2851,83 @@ module.exports =
   
   var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
   
+  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  
+  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+  
+  var _coreFetch = __webpack_require__(12);
+  
+  var _coreFetch2 = _interopRequireDefault(_coreFetch);
+  
+  var _configJson = __webpack_require__(42);
+  
+  var _configJson2 = _interopRequireDefault(_configJson);
+  
+  var Bridge = (function () {
+    function Bridge() {
+      _classCallCheck(this, Bridge);
+    }
+  
+    _createClass(Bridge, null, [{
+      key: 'getInfo',
+      value: function getInfo(ip, user) {
+        return regeneratorRuntime.async(function getInfo$(context$2$0) {
+          while (1) switch (context$2$0.prev = context$2$0.next) {
+            case 0:
+              return context$2$0.abrupt('return', this.makeRequest('/bridge?ip=' + encodeURIComponent(ip) + '&user=' + encodeURIComponent(user)));
+  
+            case 1:
+            case 'end':
+              return context$2$0.stop();
+          }
+        }, null, this);
+      }
+    }, {
+      key: 'makeRequest',
+      value: function makeRequest(path) {
+        var url, response, data;
+        return regeneratorRuntime.async(function makeRequest$(context$2$0) {
+          while (1) switch (context$2$0.prev = context$2$0.next) {
+            case 0:
+              url = _configJson2['default'][("development")].serverUri + path;
+              context$2$0.next = 3;
+              return regeneratorRuntime.awrap((0, _coreFetch2['default'])(url));
+  
+            case 3:
+              response = context$2$0.sent;
+              context$2$0.next = 6;
+              return regeneratorRuntime.awrap(response.json());
+  
+            case 6:
+              data = context$2$0.sent;
+              return context$2$0.abrupt('return', data);
+  
+            case 8:
+            case 'end':
+              return context$2$0.stop();
+          }
+        }, null, this);
+      }
+    }]);
+  
+    return Bridge;
+  })();
+  
+  exports['default'] = Bridge;
+  module.exports = exports['default'];
+
+/***/ },
+/* 50 */
+/***/ function(module, exports, __webpack_require__) {
+
+  'use strict';
+  
+  Object.defineProperty(exports, '__esModule', {
+    value: true
+  });
+  
+  var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+  
   var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
   
   function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -2763,7 +2940,122 @@ module.exports =
   
   var _react2 = _interopRequireDefault(_react);
   
-  var _SettingsPageScss = __webpack_require__(50);
+  var _HomePageScss = __webpack_require__(38);
+  
+  var _HomePageScss2 = _interopRequireDefault(_HomePageScss);
+  
+  var _decoratorsWithStyles = __webpack_require__(24);
+  
+  var _decoratorsWithStyles2 = _interopRequireDefault(_decoratorsWithStyles);
+  
+  var BridgeDisplay = (function (_Component) {
+    _inherits(BridgeDisplay, _Component);
+  
+    _createClass(BridgeDisplay, null, [{
+      key: 'propTypes',
+      value: {
+        bridge: _react.PropTypes.func.isRequired
+      },
+      enumerable: true
+    }]);
+  
+    function BridgeDisplay(props, context) {
+      _classCallCheck(this, _BridgeDisplay);
+  
+      _get(Object.getPrototypeOf(_BridgeDisplay.prototype), 'constructor', this).call(this, props, context);
+      this.state = {};
+    }
+  
+    _createClass(BridgeDisplay, [{
+      key: 'getPrettyTime',
+      value: function getPrettyTime() {
+        var date = new Date(this.props.bridge.localtime);
+        var utc = new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds());
+        return utc.toLocaleString();
+      }
+    }, {
+      key: 'render',
+      value: function render() {
+        return _react2['default'].createElement(
+          'dl',
+          null,
+          _react2['default'].createElement(
+            'dt',
+            null,
+            'Name'
+          ),
+          _react2['default'].createElement(
+            'dd',
+            null,
+            this.props.bridge.name
+          ),
+          _react2['default'].createElement(
+            'dt',
+            null,
+            'IP Address'
+          ),
+          _react2['default'].createElement(
+            'dd',
+            null,
+            this.props.bridge.ipaddress
+          ),
+          _react2['default'].createElement(
+            'dt',
+            null,
+            'Model'
+          ),
+          _react2['default'].createElement(
+            'dd',
+            null,
+            this.props.bridge.modelid
+          ),
+          _react2['default'].createElement(
+            'dt',
+            null,
+            'Time'
+          ),
+          _react2['default'].createElement(
+            'dd',
+            null,
+            this.getPrettyTime()
+          )
+        );
+      }
+    }]);
+  
+    var _BridgeDisplay = BridgeDisplay;
+    BridgeDisplay = (0, _decoratorsWithStyles2['default'])(_HomePageScss2['default'])(BridgeDisplay) || BridgeDisplay;
+    return BridgeDisplay;
+  })(_react.Component);
+  
+  exports['default'] = BridgeDisplay;
+  module.exports = exports['default'];
+
+/***/ },
+/* 51 */
+/***/ function(module, exports, __webpack_require__) {
+
+  'use strict';
+  
+  Object.defineProperty(exports, '__esModule', {
+    value: true
+  });
+  
+  var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+  
+  var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+  
+  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  
+  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+  
+  function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+  
+  var _react = __webpack_require__(4);
+  
+  var _react2 = _interopRequireDefault(_react);
+  
+  var _SettingsPageScss = __webpack_require__(52);
   
   var _SettingsPageScss2 = _interopRequireDefault(_SettingsPageScss);
   
@@ -2900,11 +3192,11 @@ module.exports =
   module.exports = exports['default'];
 
 /***/ },
-/* 50 */
+/* 52 */
 /***/ function(module, exports, __webpack_require__) {
 
   
-      var content = __webpack_require__(51);
+      var content = __webpack_require__(53);
       var insertCss = __webpack_require__(20);
   
       if (typeof content === 'string') {
@@ -2932,7 +3224,7 @@ module.exports =
     
 
 /***/ },
-/* 51 */
+/* 53 */
 /***/ function(module, exports, __webpack_require__) {
 
   exports = module.exports = __webpack_require__(19)();
@@ -2948,7 +3240,7 @@ module.exports =
   };
 
 /***/ },
-/* 52 */
+/* 54 */
 /***/ function(module, exports, __webpack_require__) {
 
   /**
@@ -3053,13 +3345,19 @@ module.exports =
   module.exports = exports['default'];
 
 /***/ },
-/* 53 */
+/* 55 */
 /***/ function(module, exports) {
 
   module.exports = require("./assets");
 
 /***/ },
-/* 54 */
+/* 56 */
+/***/ function(module, exports) {
+
+  module.exports = require("node-hue-api");
+
+/***/ },
+/* 57 */
 /***/ function(module, exports, __webpack_require__) {
 
   /**
@@ -3081,7 +3379,7 @@ module.exports =
   
   function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
   
-  var _fs = __webpack_require__(55);
+  var _fs = __webpack_require__(58);
   
   var _fs2 = _interopRequireDefault(_fs);
   
@@ -3089,15 +3387,15 @@ module.exports =
   
   var _express = __webpack_require__(3);
   
-  var _bluebird = __webpack_require__(56);
+  var _bluebird = __webpack_require__(59);
   
   var _bluebird2 = _interopRequireDefault(_bluebird);
   
-  var _jade = __webpack_require__(57);
+  var _jade = __webpack_require__(60);
   
   var _jade2 = _interopRequireDefault(_jade);
   
-  var _frontMatter = __webpack_require__(58);
+  var _frontMatter = __webpack_require__(61);
   
   var _frontMatter2 = _interopRequireDefault(_frontMatter);
   
@@ -3194,25 +3492,25 @@ module.exports =
   module.exports = exports['default'];
 
 /***/ },
-/* 55 */
+/* 58 */
 /***/ function(module, exports) {
 
   module.exports = require("fs");
 
 /***/ },
-/* 56 */
+/* 59 */
 /***/ function(module, exports) {
 
   module.exports = require("bluebird");
 
 /***/ },
-/* 57 */
+/* 60 */
 /***/ function(module, exports) {
 
   module.exports = require("jade");
 
 /***/ },
-/* 58 */
+/* 61 */
 /***/ function(module, exports) {
 
   module.exports = require("front-matter");

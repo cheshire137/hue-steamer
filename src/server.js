@@ -16,6 +16,9 @@ import Router from './routes';
 import Html from './components/Html';
 import assets from './assets';
 import { port } from './config';
+import Config from './config.json';
+// import HueApi from 'node-hue-api';
+const hue = require('node-hue-api');
 
 const server = global.server = express();
 
@@ -28,6 +31,32 @@ server.use(express.static(path.join(__dirname, 'public')));
 // Register API middleware
 // -----------------------------------------------------------------------------
 server.use('/api/content', require('./api/content'));
+
+server.all('*', (req, res, next) => {
+  res.header('Access-Control-Allow-Origin',
+             Config[process.env.NODE_ENV].clientUri);
+  res.header('Access-Control-Allow-Headers', 'X-Requested-With');
+  res.header('Access-Control-Allow-Headers', 'Content-Type');
+  next();
+});
+
+server.get('/bridge', async (req, res) => {
+  const ip = req.query.ip;
+  const user = req.query.user;
+  if (typeof ip !== 'string') {
+    res.send('Must provide Hue Bridge IP address');
+    return;
+  }
+  if (typeof user !== 'string') {
+    res.send('Must provide Hue Bridge user');
+    return;
+  }
+  console.log(ip, user);
+  const api = new hue.HueApi(ip, user);
+  api.config().then((bridge) => {
+    res.send(JSON.stringify(bridge));
+  }).done();
+});
 
 //
 // Register server-side rendering middleware

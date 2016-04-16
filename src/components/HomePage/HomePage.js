@@ -4,6 +4,8 @@ import parsePath from 'history/lib/parsePath';
 import withStyles from '../../decorators/withStyles';
 import LocalStorage from '../../stores/localStorage';
 import Location from '../../core/Location';
+import Bridge from '../../actions/bridge';
+import BridgeDisplay from './BridgeDisplay';
 
 const title = 'Hue Steamer';
 
@@ -13,15 +15,47 @@ class HomePage extends Component {
     onSetTitle: PropTypes.func.isRequired,
   };
 
+  constructor(props) {
+    super(props);
+    const settings = LocalStorage.getJSON();
+    this.state = {
+      hueBridgeUser: settings.hueBridgeUser,
+      hueBridgeIp: settings.hueBridgeIp,
+      bridge: settings.bridge,
+      haveBridge: typeof settings.bridge === 'object',
+    };
+    console.log(settings.bridge);
+  }
+
   componentWillMount() {
     this.context.onSetTitle(title);
-    const hueBridgeIp = LocalStorage.get('hue-bridge-ip');
-    const hueBridgeUser = LocalStorage.get('hue-bridge-user');
-    const haveBridgeIp = typeof hueBridgeIp !== 'undefined';
-    const haveBridgeUser = typeof hueBridgeUser !== 'undefined';
+    this.redirectIfNoBridgeSettings();
+  }
+
+  componentDidMount() {
+    if (!this.state.haveBridge) {
+      this.getBridgeState();
+    }
+  }
+
+  onBridgeLoaded(bridge) {
+    console.log('loaded bridge', bridge);
+    this.setState({ bridge, haveBridge: true });
+    LocalStorage.set('bridge', bridge);
+  }
+
+  getBridgeState() {
+    console.log('getting bridge for', this.state.hueBridgeIp, this.state.hueBridgeUser);
+    Bridge.getInfo(this.state.hueBridgeIp, this.state.hueBridgeUser).
+           then(this.onBridgeLoaded.bind(this));
+  }
+
+  redirectIfNoBridgeSettings() {
+    const haveBridgeIp = typeof this.state.hueBridgeIp !== 'undefined';
+    const haveBridgeUser = typeof this.state.hueBridgeUser !== 'undefined';
     if (!haveBridgeIp || !haveBridgeUser) {
       Location.push({
-        ...(parsePath('/settings'))
+        ...(parsePath('/settings')),
       });
     }
   }
@@ -29,7 +63,11 @@ class HomePage extends Component {
   render() {
     return (
       <div>
-        Hello
+        {this.state.haveBridge ? (
+          <BridgeDisplay bridge={this.state.bridge} />
+        ) : (
+          <span>Loading...</span>
+        )}
       </div>
     );
   }

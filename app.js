@@ -1,5 +1,5 @@
 var hue = require('node-hue-api'),
-    Converter = require('./converter'),
+    // Converter = require('./converter'),
     HueApi = hue.HueApi,
     lightState = hue.lightState,
     bridgeIP, username;

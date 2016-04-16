@@ -7,7 +7,7 @@ class Header extends Component {
   render() {
     return (
       <header>
-        <h1>Hue Steamer</h1>
+        <h1><a href="/">Hue Steamer</a></h1>
       </header>
     );
   }
