@@ -15,6 +15,7 @@ import ContentPage from './components/ContentPage';
 import NotFoundPage from './components/NotFoundPage';
 import ErrorPage from './components/ErrorPage';
 import HomePage from './components/HomePage';
+import SettingsPage from './components/SettingsPage';
 
 const router = new Router(on => {
   on('*', async (state, next) => {
@@ -23,6 +24,8 @@ const router = new Router(on => {
   });
 
   on('/', async () => <HomePage />);
+
+  on('/settings', async () => <SettingsPage />);
 
   on('*', async (state) => {
     const response = await fetch(`/api/content?path=${state.path}`);
