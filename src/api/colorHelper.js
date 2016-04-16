@@ -1,8 +1,8 @@
-var XYPoint = require('./xyPoint');
+import XYPoint from 'xyPoint';
 
 // Thanks to
 // https://github.com/benknight/hue-python-rgb-converter/blob/master/rgb_cie.py
-var ColorHelper = function() {
+const ColorHelper = () => {
 };
 
 // See http://www.developers.meethue.com/documentation/color-conversions-rgb-xy
@@ -11,59 +11,59 @@ ColorHelper.Lime = new XYPoint(0.4091, 0.518);
 ColorHelper.Blue = new XYPoint(0.167, 0.04);
 
 // Parses a valid hex color string and returns the Red RGB integer value.
-ColorHelper.hexToRed = function(hex) {
+ColorHelper.hexToRed = (hex) => {
   return parseInt(hex.slice(0, 2), 16);
 };
 
 // Parses a valid hex color string and returns the Green RGB integer value.
-ColorHelper.hexToGreen = function(hex) {
+ColorHelper.hexToGreen = (hex) => {
   return parseInt(hex.slice(2, 4), 16);
 };
 
 // Parses a valid hex color string and returns the Blue RGB integer value.
-ColorHelper.hexToBlue = function(hex) {
+ColorHelper.hexToBlue = (hex) => {
   return parseInt(hex.slice(4, 6), 16);
 };
 
 // Converts a valid hex color string to an RGB array.
-ColorHelper.hexToRgb = function(hex) {
+ColorHelper.hexToRgb = (hex) => {
   return [this.hexToRed(hex), this.hexToGreen(hex), this.hexToBlue(hex)];
 };
 
 // Converts RGB to hex.
-ColorHelper.rgbToHex = function(r, g, b) {
+ColorHelper.rgbToHex = (r, g, b) => {
   return ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
 };
 
 // Return a random Integer in the range of 0 to 255, representing an RGB color
 // value.
-ColorHelper.randomRgbValue = function() {
+ColorHelper.randomRgbValue = () => {
   return Math.floor(Math.random() * 256);
 };
 
 // Returns the cross product of two XYPoints.
-ColorHelper.crossProduct = function(p1, p2) {
+ColorHelper.crossProduct = (p1, p2) => {
   return p1.x * p2.y - p1.y * p2.x;
 };
 
 // Check if the provided XYPoint can be recreated by a Hue lamp.
-ColorHelper.checkPointInLampsReach = function(p) {
-  var v1 = new XYPoint(this.Lime.x - this.Red.x, this.Lime.y - this.Red.y);
-  var v2 = new XYPoint(this.Blue.x - this.Red.x, this.Blue.y - this.Red.y);
-  var q = new XYPoint(p.x - this.Red.x, p.y - this.Red.y);
-  var s = this.crossProduct(q, v2) / this.crossProduct(v1, v2);
-  var t = this.crossProduct(v1, q) / this.crossProduct(v1, v2);
+ColorHelper.checkPointInLampsReach = (p) => {
+  const v1 = new XYPoint(this.Lime.x - this.Red.x, this.Lime.y - this.Red.y);
+  const v2 = new XYPoint(this.Blue.x - this.Red.x, this.Blue.y - this.Red.y);
+  const q = new XYPoint(p.x - this.Red.x, p.y - this.Red.y);
+  const s = this.crossProduct(q, v2) / this.crossProduct(v1, v2);
+  const t = this.crossProduct(v1, q) / this.crossProduct(v1, v2);
   return (s >= 0.0) && (t >= 0.0) && (s + t <= 1.0);
 };
 
 // Find the closest point on a line. This point will be reproducible by a Hue
 // lamp.
-ColorHelper.getClosestPointToLine = function(A, B, P) {
-  var AP = new XYPoint(P.x - A.x, P.y - A.y);
-  var AB = new XYPoint(B.x - A.x, B.y - A.y);
-  var ab2 = AB.x * AB.x + AB.y * AB.y;
-  var apAb = AP.x * AB.x + AP.y * AB.y;
-  var t = apAb / ab2;
+ColorHelper.getClosestPointToLine = (A, B, P) => {
+  const AP = new XYPoint(P.x - A.x, P.y - A.y);
+  const AB = new XYPoint(B.x - A.x, B.y - A.y);
+  const ab2 = AB.x * AB.x + AB.y * AB.y;
+  const apAb = AP.x * AB.x + AP.y * AB.y;
+  let t = apAb / ab2;
   if (t < 0.0) {
     t = 0.0;
   } else if (t > 1.0) {
@@ -72,20 +72,20 @@ ColorHelper.getClosestPointToLine = function(A, B, P) {
   return new XYPoint(A.x + AB.x * t, A.y + AB.y * t);
 };
 
-ColorHelper.getClosestPointToPoint = function(xyPoint) {
+ColorHelper.getClosestPointToPoint = (xyPoint) => {
   // Color is unreproducible, find the closest point on each line in the CIE
   // 1931 'triangle'.
-  var pAB = this.getClosestPointToLine(this.Red, this.Lime, xyPoint);
-  var pAC = this.getClosestPointToLine(this.Blue, this.Red, xyPoint);
-  var pBC = this.getClosestPointToLine(this.Lime, this.Blue, xyPoint);
+  const pAB = this.getClosestPointToLine(this.Red, this.Lime, xyPoint);
+  const pAC = this.getClosestPointToLine(this.Blue, this.Red, xyPoint);
+  const pBC = this.getClosestPointToLine(this.Lime, this.Blue, xyPoint);
 
   // Get the distances per point and see which point is closer to our Point.
-  var dAB = this.getDistanceBetweenTwoPoints(xyPoint, pAB);
-  var dAC = this.getDistanceBetweenTwoPoints(xyPoint, pAC);
-  var dBC = this.getDistanceBetweenTwoPoints(xyPoint, pBC);
+  const dAB = this.getDistanceBetweenTwoPoints(xyPoint, pAB);
+  const dAC = this.getDistanceBetweenTwoPoints(xyPoint, pAC);
+  const dBC = this.getDistanceBetweenTwoPoints(xyPoint, pBC);
 
-  var lowest = dAB;
-  var closestPoint = pAB;
+  let lowest = dAB;
+  let closestPoint = pAB;
   if (dAC < lowest) {
     lowest = dAC;
     closestPoint = pAC;
@@ -100,16 +100,18 @@ ColorHelper.getClosestPointToPoint = function(xyPoint) {
 };
 
 // Returns the distance between two XYPoints.
-ColorHelper.getDistanceBetweenTwoPoints = function(one, two) {
-  var dx = one.x - two.x;
-  var dy = one.y - two.y;
+ColorHelper.getDistanceBetweenTwoPoints = (one, two) => {
+  const dx = one.x - two.x;
+  const dy = one.y - two.y;
   return Math.sqrt(dx * dx + dy * dy);
 };
 
 // Returns an XYPoint object containing the closest available CIE 1931
 // coordinates based on the RGB input values.
-ColorHelper.getXYPointFromRGB = function(red, green, blue) {
-  var r, g, b;
+ColorHelper.getXYPointFromRGB = (red, green, blue) => {
+  let r;
+  let g;
+  let b;
   if (red > 0.04045) {
     r = Math.pow((red + 0.055) / (1.0 + 0.055), 2.4);
   } else {
@@ -126,11 +128,12 @@ ColorHelper.getXYPointFromRGB = function(red, green, blue) {
     b = (blue / 12.92);
   }
 
-  var X = r * 0.4360747 + g * 0.3850649 + b * 0.0930804;
-  var Y = r * 0.2225045 + g * 0.7168786 + b * 0.0406169;
-  var Z = r * 0.0139322 + g * 0.0971045 + b * 0.7141733;
+  const X = r * 0.4360747 + g * 0.3850649 + b * 0.0930804;
+  const Y = r * 0.2225045 + g * 0.7168786 + b * 0.0406169;
+  const Z = r * 0.0139322 + g * 0.0971045 + b * 0.7141733;
 
-  var cx, cy;
+  let cx;
+  let cy;
   if (X + Y + Z === 0) {
     cx = 0;
     cy = 0;
@@ -140,31 +143,34 @@ ColorHelper.getXYPointFromRGB = function(red, green, blue) {
   }
 
   // Check if the given XY value is within the color reach of our lamps.
-  var xyPoint = new XYPoint(cx, cy);
-  var inReachOfLamps = this.checkPointInLampsReach(xyPoint);
+  let xyPoint = new XYPoint(cx, cy);
+  const inReachOfLamps = this.checkPointInLampsReach(xyPoint);
   if (!inReachOfLamps) {
     xyPoint = this.getClosestPointToPoint(xyPoint);
   }
   return xyPoint;
-}
+};
 
 // Returns a rgb tuplet for given x, y values.  Not actually an inverse of
 // getXYPointFromRGB.
-ColorHelper.getRGBFromXYAndBrightness = function(x, y, bri) {
-  if (typeof bri === 'undefined') {
+ColorHelper.getRGBFromXYAndBrightness = (x, y, optionalBri) => {
+  let bri;
+  if (typeof optionalBri === 'undefined') {
     bri = 1;
+  } else {
+    bri = optionalBri;
   }
-  var xyPoint = new XYPoint(x, y);
+  let xyPoint = new XYPoint(x, y);
   if (!this.checkPointInLampsReach(xyPoint)) {
     xyPoint = this.getClosestPointToPoint(xyPoint);
   }
-  var Y = bri;
-  var X = (Y / xyPoint.y) * xyPoint.x;
-  var Z = (Y / xyPoint.y) * (1 - xyPoint.x - xyPoint.y);
-  var r =  X * 1.612 - Y * 0.203 - Z * 0.302;
-  var g = -X * 0.509 + Y * 1.412 + Z * 0.066;
-  var b =  X * 0.026 - Y * 0.072 + Z * 0.962;
-  var reverseGammaCorrect = function(value) {
+  const Y = bri;
+  const X = (Y / xyPoint.y) * xyPoint.x;
+  const Z = (Y / xyPoint.y) * (1 - xyPoint.x - xyPoint.y);
+  let r = X * 1.612 - Y * 0.203 - Z * 0.302;
+  let g = -X * 0.509 + Y * 1.412 + Z * 0.066;
+  let b = X * 0.026 - Y * 0.072 + Z * 0.962;
+  const reverseGammaCorrect = (value) => {
     if (value <= 0.0031308) {
       return (12.92 * value);
     }
@@ -176,7 +182,7 @@ ColorHelper.getRGBFromXYAndBrightness = function(x, y, bri) {
   r = Math.max(0, r);
   g = Math.max(0, g);
   b = Math.max(0, b);
-  var maxComponent = Math.max(r, g, b);
+  const maxComponent = Math.max(r, g, b);
   if (maxComponent > 1) {
     r = r / maxComponent;
     g = g / maxComponent;
