@@ -83,11 +83,11 @@ module.exports =
   
   var _routes2 = _interopRequireDefault(_routes);
   
-  var _componentsHtml = __webpack_require__(51);
+  var _componentsHtml = __webpack_require__(52);
   
   var _componentsHtml2 = _interopRequireDefault(_componentsHtml);
   
-  var _assets = __webpack_require__(52);
+  var _assets = __webpack_require__(53);
   
   var _assets2 = _interopRequireDefault(_assets);
   
@@ -103,7 +103,7 @@ module.exports =
   //
   // Register API middleware
   // -----------------------------------------------------------------------------
-  server.use('/api/content', __webpack_require__(53));
+  server.use('/api/content', __webpack_require__(54));
   
   //
   // Register server-side rendering middleware
@@ -266,7 +266,7 @@ module.exports =
   
   var _componentsHomePage2 = _interopRequireDefault(_componentsHomePage);
   
-  var _componentsSettingsPage = __webpack_require__(48);
+  var _componentsSettingsPage = __webpack_require__(49);
   
   var _componentsSettingsPage2 = _interopRequireDefault(_componentsSettingsPage);
   
@@ -2427,7 +2427,7 @@ module.exports =
   
   var _storesLocalStorage2 = _interopRequireDefault(_storesLocalStorage);
   
-  var _coreLocation = __webpack_require__(43);
+  var _coreLocation = __webpack_require__(44);
   
   var _coreLocation2 = _interopRequireDefault(_coreLocation);
   
@@ -2551,22 +2551,59 @@ module.exports =
   
   var _configJson2 = _interopRequireDefault(_configJson);
   
+  var _reactCookie = __webpack_require__(43);
+  
+  var _reactCookie2 = _interopRequireDefault(_reactCookie);
+  
+  var CookieAndLocalStorage = (function () {
+    function CookieAndLocalStorage() {
+      _classCallCheck(this, CookieAndLocalStorage);
+    }
+  
+    _createClass(CookieAndLocalStorage, [{
+      key: 'getItem',
+      value: function getItem(key) {
+        console.log('get', key);
+        if (typeof window !== 'undefined') {
+          if (window.localStorage) {
+            return window.localStorage.getItem(key);
+          }
+          console.error('browser does not support local storage');
+        }
+        return _reactCookie2['default'].load(key);
+      }
+    }, {
+      key: 'setItem',
+      value: function setItem(key, value) {
+        console.log('set', key, value);
+        if (typeof window !== 'undefined' && window.localStorage) {
+          window.localStorage.setItem(key, value);
+        }
+        _reactCookie2['default'].save(key, value, { path: '/' });
+      }
+    }]);
+  
+    return CookieAndLocalStorage;
+  })();
+  
   var LocalStorage = (function () {
     function LocalStorage() {
       _classCallCheck(this, LocalStorage);
     }
   
     _createClass(LocalStorage, null, [{
+      key: 'getStore',
+      value: function getStore() {
+        if (typeof this.store === 'undefined') {
+          this.store = new CookieAndLocalStorage();
+        }
+        return this.store;
+      }
+    }, {
       key: 'getJSON',
       value: function getJSON() {
-        if (typeof window === 'undefined') {
-          return {};
-        }
-        if (!window.localStorage) {
-          console.error('browser does not support local storage');
-          return {};
-        }
-        var appData = window.localStorage.getItem(_configJson2['default'][("development")].localStorageKey) || '{}';
+        var store = this.getStore();
+        var appData = store.getItem(_configJson2['default'][("development")].localStorageKey) || '{}';
         return JSON.parse(appData);
       }
     }, {
@@ -2580,18 +2617,32 @@ module.exports =
       value: function set(key, value) {
         var appData = this.getJSON();
         appData[key] = value;
-        if (typeof window !== 'undefined') {
-          window.localStorage.setItem(_configJson2['default'][("development")].localStorageKey, JSON.stringify(appData));
+        this.writeHash(appData);
+      }
+    }, {
+      key: 'setMany',
+      value: function setMany(data) {
+        var appData = this.getJSON();
+        for (var key in data) {
+          if (data.hasOwnProperty(key)) {
+            var value = data[key];
+            appData[key] = value;
+          }
         }
+        this.writeHash(appData);
+      }
+    }, {
+      key: 'writeHash',
+      value: function writeHash(appData) {
+        var store = this.getStore();
+        store.setItem(_configJson2['default'][("development")].localStorageKey, JSON.stringify(appData));
       }
     }, {
       key: 'delete',
       value: function _delete(key) {
         var appData = this.getJSON();
         delete appData[key];
-        if (typeof window !== 'undefined') {
-          window.localStorage.setItem(_configJson2['default'][("development")].localStorageKey, JSON.stringify(appData));
-        }
+        this.writeHash(appData);
       }
     }]);
   
@@ -2618,6 +2669,12 @@ module.exports =
 
 /***/ },
 /* 43 */
+/***/ function(module, exports) {
+
+  module.exports = require("react-cookie");
+
+/***/ },
+/* 44 */
 /***/ function(module, exports, __webpack_require__) {
 
   /**
@@ -2637,17 +2694,17 @@ module.exports =
   
   function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
   
-  var _fbjsLibExecutionEnvironment = __webpack_require__(44);
+  var _fbjsLibExecutionEnvironment = __webpack_require__(45);
   
-  var _historyLibCreateBrowserHistory = __webpack_require__(45);
+  var _historyLibCreateBrowserHistory = __webpack_require__(46);
   
   var _historyLibCreateBrowserHistory2 = _interopRequireDefault(_historyLibCreateBrowserHistory);
   
-  var _historyLibCreateMemoryHistory = __webpack_require__(46);
+  var _historyLibCreateMemoryHistory = __webpack_require__(47);
   
   var _historyLibCreateMemoryHistory2 = _interopRequireDefault(_historyLibCreateMemoryHistory);
   
-  var _historyLibUseQueries = __webpack_require__(47);
+  var _historyLibUseQueries = __webpack_require__(48);
   
   var _historyLibUseQueries2 = _interopRequireDefault(_historyLibUseQueries);
   
@@ -2657,31 +2714,31 @@ module.exports =
   module.exports = exports['default'];
 
 /***/ },
-/* 44 */
+/* 45 */
 /***/ function(module, exports) {
 
   module.exports = require("fbjs/lib/ExecutionEnvironment");
 
 /***/ },
-/* 45 */
+/* 46 */
 /***/ function(module, exports) {
 
   module.exports = require("history/lib/createBrowserHistory");
 
 /***/ },
-/* 46 */
+/* 47 */
 /***/ function(module, exports) {
 
   module.exports = require("history/lib/createMemoryHistory");
 
 /***/ },
-/* 47 */
+/* 48 */
 /***/ function(module, exports) {
 
   module.exports = require("history/lib/useQueries");
 
 /***/ },
-/* 48 */
+/* 49 */
 /***/ function(module, exports, __webpack_require__) {
 
   'use strict';
@@ -2704,7 +2761,7 @@ module.exports =
   
   var _react2 = _interopRequireDefault(_react);
   
-  var _SettingsPageScss = __webpack_require__(49);
+  var _SettingsPageScss = __webpack_require__(50);
   
   var _SettingsPageScss2 = _interopRequireDefault(_SettingsPageScss);
   
@@ -2712,21 +2769,58 @@ module.exports =
   
   var _decoratorsWithStyles2 = _interopRequireDefault(_decoratorsWithStyles);
   
+  var _storesLocalStorage = __webpack_require__(41);
+  
+  var _storesLocalStorage2 = _interopRequireDefault(_storesLocalStorage);
+  
   var title = 'Settings';
   
   var SettingsPage = (function (_Component) {
     _inherits(SettingsPage, _Component);
   
-    function SettingsPage() {
+    _createClass(SettingsPage, null, [{
+      key: 'contextTypes',
+      value: {
+        onSetTitle: _react.PropTypes.func.isRequired
+      },
+      enumerable: true
+    }]);
+  
+    function SettingsPage(props) {
       _classCallCheck(this, _SettingsPage);
   
-      _get(Object.getPrototypeOf(_SettingsPage.prototype), 'constructor', this).apply(this, arguments);
+      _get(Object.getPrototypeOf(_SettingsPage.prototype), 'constructor', this).call(this, props);
+      var settings = _storesLocalStorage2['default'].getJSON();
+      console.log('settings', settings);
+      this.state = {
+        hueBridgeUser: settings.hueBridgeUser,
+        hueBridgeIp: settings.hueBridgeIp
+      };
     }
   
     _createClass(SettingsPage, [{
       key: 'componentWillMount',
       value: function componentWillMount() {
         this.context.onSetTitle(title);
+      }
+    }, {
+      key: 'handleBridgeIpChange',
+      value: function handleBridgeIpChange(e) {
+        this.setState({ hueBridgeIp: e.target.value });
+      }
+    }, {
+      key: 'handleBridgeUserChange',
+      value: function handleBridgeUserChange(e) {
+        this.setState({ hueBridgeUser: e.target.value });
+      }
+    }, {
+      key: 'handleSubmit',
+      value: function handleSubmit(e) {
+        e.preventDefault();
+        _storesLocalStorage2['default'].setMany({
+          hueBridgeUser: this.state.hueBridgeUser,
+          hueBridgeIp: this.state.hueBridgeIp
+        });
       }
     }, {
       key: 'render',
@@ -2745,7 +2839,7 @@ module.exports =
           ),
           _react2['default'].createElement(
             'form',
-            null,
+            { onSubmit: this.handleSubmit.bind(this) },
             _react2['default'].createElement(
               'div',
               { className: _SettingsPageScss2['default'].field },
@@ -2754,7 +2848,11 @@ module.exports =
                 { htmlFor: 'hue_bridge_ip' },
                 'Philips Hue bridge IP address:'
               ),
-              _react2['default'].createElement('input', { type: 'text', id: 'hue_bridge_ip', placeholder: 'e.g., 192.168.1.182' })
+              _react2['default'].createElement('input', { type: 'text', id: 'hue_bridge_ip',
+                value: this.state.hueBridgeIp,
+                onChange: this.handleBridgeIpChange.bind(this),
+                placeholder: 'e.g., 192.168.1.182'
+              })
             ),
             _react2['default'].createElement(
               'div',
@@ -2764,7 +2862,11 @@ module.exports =
                 { htmlFor: 'hue_bridge_user' },
                 'Philips Hue bridge user:'
               ),
-              _react2['default'].createElement('input', { type: 'text', id: 'hue_bridge_user', placeholder: 'e.g., 165131875f4bdff60d7f3dd05d46bd48' })
+              _react2['default'].createElement('input', { type: 'text', id: 'hue_bridge_user',
+                value: this.state.hueBridgeUser,
+                onChange: this.handleBridgeUserChange.bind(this),
+                placeholder: 'e.g., 165131875f4bdff60d7f3dd05d46bd48'
+              })
             ),
             _react2['default'].createElement(
               'div',
@@ -2778,12 +2880,6 @@ module.exports =
           )
         );
       }
-    }], [{
-      key: 'contextTypes',
-      value: {
-        onSetTitle: _react.PropTypes.func.isRequired
-      },
-      enumerable: true
     }]);
   
     var _SettingsPage = SettingsPage;
@@ -2795,11 +2891,11 @@ module.exports =
   module.exports = exports['default'];
 
 /***/ },
-/* 49 */
+/* 50 */
 /***/ function(module, exports, __webpack_require__) {
 
   
-      var content = __webpack_require__(50);
+      var content = __webpack_require__(51);
       var insertCss = __webpack_require__(20);
   
       if (typeof content === 'string') {
@@ -2827,7 +2923,7 @@ module.exports =
     
 
 /***/ },
-/* 50 */
+/* 51 */
 /***/ function(module, exports, __webpack_require__) {
 
   exports = module.exports = __webpack_require__(19)();
@@ -2843,7 +2939,7 @@ module.exports =
   };
 
 /***/ },
-/* 51 */
+/* 52 */
 /***/ function(module, exports, __webpack_require__) {
 
   /**
@@ -2948,13 +3044,13 @@ module.exports =
   module.exports = exports['default'];
 
 /***/ },
-/* 52 */
+/* 53 */
 /***/ function(module, exports) {
 
   module.exports = require("./assets");
 
 /***/ },
-/* 53 */
+/* 54 */
 /***/ function(module, exports, __webpack_require__) {
 
   /**
@@ -2976,7 +3072,7 @@ module.exports =
   
   function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
   
-  var _fs = __webpack_require__(54);
+  var _fs = __webpack_require__(55);
   
   var _fs2 = _interopRequireDefault(_fs);
   
@@ -2984,15 +3080,15 @@ module.exports =
   
   var _express = __webpack_require__(3);
   
-  var _bluebird = __webpack_require__(55);
+  var _bluebird = __webpack_require__(56);
   
   var _bluebird2 = _interopRequireDefault(_bluebird);
   
-  var _jade = __webpack_require__(56);
+  var _jade = __webpack_require__(57);
   
   var _jade2 = _interopRequireDefault(_jade);
   
-  var _frontMatter = __webpack_require__(57);
+  var _frontMatter = __webpack_require__(58);
   
   var _frontMatter2 = _interopRequireDefault(_frontMatter);
   
@@ -3089,25 +3185,25 @@ module.exports =
   module.exports = exports['default'];
 
 /***/ },
-/* 54 */
+/* 55 */
 /***/ function(module, exports) {
 
   module.exports = require("fs");
 
 /***/ },
-/* 55 */
+/* 56 */
 /***/ function(module, exports) {
 
   module.exports = require("bluebird");
 
 /***/ },
-/* 56 */
+/* 57 */
 /***/ function(module, exports) {
 
   module.exports = require("jade");
 
 /***/ },
-/* 57 */
+/* 58 */
 /***/ function(module, exports) {
 
   module.exports = require("front-matter");
