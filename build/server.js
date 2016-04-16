@@ -83,11 +83,11 @@ module.exports =
   
   var _routes2 = _interopRequireDefault(_routes);
   
-  var _componentsHtml = __webpack_require__(55);
+  var _componentsHtml = __webpack_require__(51);
   
   var _componentsHtml2 = _interopRequireDefault(_componentsHtml);
   
-  var _assets = __webpack_require__(56);
+  var _assets = __webpack_require__(52);
   
   var _assets2 = _interopRequireDefault(_assets);
   
@@ -103,7 +103,7 @@ module.exports =
   //
   // Register API middleware
   // -----------------------------------------------------------------------------
-  server.use('/api/content', __webpack_require__(57));
+  server.use('/api/content', __webpack_require__(53));
   
   //
   // Register server-side rendering middleware
@@ -250,23 +250,23 @@ module.exports =
   
   var _componentsApp2 = _interopRequireDefault(_componentsApp);
   
-  var _componentsContentPage = __webpack_require__(43);
+  var _componentsContentPage = __webpack_require__(28);
   
   var _componentsContentPage2 = _interopRequireDefault(_componentsContentPage);
   
-  var _componentsNotFoundPage = __webpack_require__(46);
+  var _componentsNotFoundPage = __webpack_require__(31);
   
   var _componentsNotFoundPage2 = _interopRequireDefault(_componentsNotFoundPage);
   
-  var _componentsErrorPage = __webpack_require__(49);
+  var _componentsErrorPage = __webpack_require__(34);
   
   var _componentsErrorPage2 = _interopRequireDefault(_componentsErrorPage);
   
-  var _componentsHomePage = __webpack_require__(52);
+  var _componentsHomePage = __webpack_require__(37);
   
   var _componentsHomePage2 = _interopRequireDefault(_componentsHomePage);
   
-  var _componentsSettingsPage = __webpack_require__(62);
+  var _componentsSettingsPage = __webpack_require__(48);
   
   var _componentsSettingsPage2 = _interopRequireDefault(_componentsSettingsPage);
   
@@ -1313,7 +1313,7 @@ module.exports =
   
   var _Header2 = _interopRequireDefault(_Header);
   
-  var _Footer = __webpack_require__(40);
+  var _Footer = __webpack_require__(25);
   
   var _Footer2 = _interopRequireDefault(_Footer);
   
@@ -1354,7 +1354,11 @@ module.exports =
           'div',
           { className: _AppScss2['default'].container },
           _react2['default'].createElement(_Header2['default'], null),
-          this.props.children,
+          _react2['default'].createElement(
+            'main',
+            null,
+            this.props.children
+          ),
           _react2['default'].createElement(_Footer2['default'], null)
         ) : this.props.children;
       }
@@ -1857,22 +1861,7 @@ module.exports =
   module.exports = exports['default'];
 
 /***/ },
-/* 25 */,
-/* 26 */,
-/* 27 */,
-/* 28 */,
-/* 29 */,
-/* 30 */,
-/* 31 */,
-/* 32 */,
-/* 33 */,
-/* 34 */,
-/* 35 */,
-/* 36 */,
-/* 37 */,
-/* 38 */,
-/* 39 */,
-/* 40 */
+/* 25 */
 /***/ function(module, exports, __webpack_require__) {
 
   'use strict';
@@ -1895,7 +1884,7 @@ module.exports =
   
   var _react2 = _interopRequireDefault(_react);
   
-  var _FooterScss = __webpack_require__(41);
+  var _FooterScss = __webpack_require__(26);
   
   var _FooterScss2 = _interopRequireDefault(_FooterScss);
   
@@ -1932,11 +1921,11 @@ module.exports =
   module.exports = exports['default'];
 
 /***/ },
-/* 41 */
+/* 26 */
 /***/ function(module, exports, __webpack_require__) {
 
   
-      var content = __webpack_require__(42);
+      var content = __webpack_require__(27);
       var insertCss = __webpack_require__(20);
   
       if (typeof content === 'string') {
@@ -1964,7 +1953,7 @@ module.exports =
     
 
 /***/ },
-/* 42 */
+/* 27 */
 /***/ function(module, exports, __webpack_require__) {
 
   exports = module.exports = __webpack_require__(19)();
@@ -1978,7 +1967,7 @@ module.exports =
 
 
 /***/ },
-/* 43 */
+/* 28 */
 /***/ function(module, exports, __webpack_require__) {
 
   /**
@@ -2010,7 +1999,7 @@ module.exports =
   
   var _react2 = _interopRequireDefault(_react);
   
-  var _ContentPageScss = __webpack_require__(44);
+  var _ContentPageScss = __webpack_require__(29);
   
   var _ContentPageScss2 = _interopRequireDefault(_ContentPageScss);
   
@@ -2071,11 +2060,11 @@ module.exports =
   module.exports = exports['default'];
 
 /***/ },
-/* 44 */
+/* 29 */
 /***/ function(module, exports, __webpack_require__) {
 
   
-      var content = __webpack_require__(45);
+      var content = __webpack_require__(30);
       var insertCss = __webpack_require__(20);
   
       if (typeof content === 'string') {
@@ -2103,7 +2092,7 @@ module.exports =
     
 
 /***/ },
-/* 45 */
+/* 30 */
 /***/ function(module, exports, __webpack_require__) {
 
   exports = module.exports = __webpack_require__(19)();
@@ -2120,7 +2109,7 @@ module.exports =
   };
 
 /***/ },
-/* 46 */
+/* 31 */
 /***/ function(module, exports, __webpack_require__) {
 
   /**
@@ -2152,7 +2141,7 @@ module.exports =
   
   var _react2 = _interopRequireDefault(_react);
   
-  var _NotFoundPageScss = __webpack_require__(47);
+  var _NotFoundPageScss = __webpack_require__(32);
   
   var _NotFoundPageScss2 = _interopRequireDefault(_NotFoundPageScss);
   
@@ -2213,11 +2202,11 @@ module.exports =
   module.exports = exports['default'];
 
 /***/ },
-/* 47 */
+/* 32 */
 /***/ function(module, exports, __webpack_require__) {
 
   
-      var content = __webpack_require__(48);
+      var content = __webpack_require__(33);
       var insertCss = __webpack_require__(20);
   
       if (typeof content === 'string') {
@@ -2245,7 +2234,7 @@ module.exports =
     
 
 /***/ },
-/* 48 */
+/* 33 */
 /***/ function(module, exports, __webpack_require__) {
 
   exports = module.exports = __webpack_require__(19)();
@@ -2259,7 +2248,7 @@ module.exports =
 
 
 /***/ },
-/* 49 */
+/* 34 */
 /***/ function(module, exports, __webpack_require__) {
 
   /**
@@ -2291,7 +2280,7 @@ module.exports =
   
   var _react2 = _interopRequireDefault(_react);
   
-  var _ErrorPageScss = __webpack_require__(50);
+  var _ErrorPageScss = __webpack_require__(35);
   
   var _ErrorPageScss2 = _interopRequireDefault(_ErrorPageScss);
   
@@ -2351,11 +2340,11 @@ module.exports =
   module.exports = exports['default'];
 
 /***/ },
-/* 50 */
+/* 35 */
 /***/ function(module, exports, __webpack_require__) {
 
   
-      var content = __webpack_require__(51);
+      var content = __webpack_require__(36);
       var insertCss = __webpack_require__(20);
   
       if (typeof content === 'string') {
@@ -2383,7 +2372,7 @@ module.exports =
     
 
 /***/ },
-/* 51 */
+/* 36 */
 /***/ function(module, exports, __webpack_require__) {
 
   exports = module.exports = __webpack_require__(19)();
@@ -2397,7 +2386,7 @@ module.exports =
 
 
 /***/ },
-/* 52 */
+/* 37 */
 /***/ function(module, exports, __webpack_require__) {
 
   'use strict';
@@ -2405,6 +2394,8 @@ module.exports =
   Object.defineProperty(exports, '__esModule', {
     value: true
   });
+  
+  var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
   
   var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
   
@@ -2420,13 +2411,25 @@ module.exports =
   
   var _react2 = _interopRequireDefault(_react);
   
-  var _HomePageScss = __webpack_require__(53);
+  var _HomePageScss = __webpack_require__(38);
   
   var _HomePageScss2 = _interopRequireDefault(_HomePageScss);
+  
+  var _historyLibParsePath = __webpack_require__(40);
+  
+  var _historyLibParsePath2 = _interopRequireDefault(_historyLibParsePath);
   
   var _decoratorsWithStyles = __webpack_require__(24);
   
   var _decoratorsWithStyles2 = _interopRequireDefault(_decoratorsWithStyles);
+  
+  var _storesLocalStorage = __webpack_require__(41);
+  
+  var _storesLocalStorage2 = _interopRequireDefault(_storesLocalStorage);
+  
+  var _coreLocation = __webpack_require__(43);
+  
+  var _coreLocation2 = _interopRequireDefault(_coreLocation);
   
   var title = 'Hue Steamer';
   
@@ -2443,6 +2446,13 @@ module.exports =
       key: 'componentWillMount',
       value: function componentWillMount() {
         this.context.onSetTitle(title);
+        var hueBridgeIp = _storesLocalStorage2['default'].get('hue-bridge-ip');
+        var hueBridgeUser = _storesLocalStorage2['default'].get('hue-bridge-user');
+        var haveBridgeIp = typeof hueBridgeIp !== 'undefined';
+        var haveBridgeUser = typeof hueBridgeUser !== 'undefined';
+        if (!haveBridgeIp || !haveBridgeUser) {
+          _coreLocation2['default'].push(_extends({}, (0, _historyLibParsePath2['default'])('/settings')));
+        }
       }
     }, {
       key: 'render',
@@ -2470,11 +2480,11 @@ module.exports =
   module.exports = exports['default'];
 
 /***/ },
-/* 53 */
+/* 38 */
 /***/ function(module, exports, __webpack_require__) {
 
   
-      var content = __webpack_require__(54);
+      var content = __webpack_require__(39);
       var insertCss = __webpack_require__(20);
   
       if (typeof content === 'string') {
@@ -2502,7 +2512,7 @@ module.exports =
     
 
 /***/ },
-/* 54 */
+/* 39 */
 /***/ function(module, exports, __webpack_require__) {
 
   exports = module.exports = __webpack_require__(19)();
@@ -2516,7 +2526,324 @@ module.exports =
 
 
 /***/ },
-/* 55 */
+/* 40 */
+/***/ function(module, exports) {
+
+  module.exports = require("history/lib/parsePath");
+
+/***/ },
+/* 41 */
+/***/ function(module, exports, __webpack_require__) {
+
+  'use strict';
+  
+  Object.defineProperty(exports, '__esModule', {
+    value: true
+  });
+  
+  var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+  
+  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  
+  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+  
+  var _configJson = __webpack_require__(42);
+  
+  var _configJson2 = _interopRequireDefault(_configJson);
+  
+  var LocalStorage = (function () {
+    function LocalStorage() {
+      _classCallCheck(this, LocalStorage);
+    }
+  
+    _createClass(LocalStorage, null, [{
+      key: 'getJSON',
+      value: function getJSON() {
+        if (typeof window === 'undefined') {
+          return {};
+        }
+        if (!window.localStorage) {
+          console.error('browser does not support local storage');
+          return {};
+        }
+        var appData = window.localStorage.getItem(_configJson2['default'][("development")].localStorageKey) || '{}';
+        return JSON.parse(appData);
+      }
+    }, {
+      key: 'get',
+      value: function get(key) {
+        var appData = this.getJSON();
+        return appData[key];
+      }
+    }, {
+      key: 'set',
+      value: function set(key, value) {
+        var appData = this.getJSON();
+        appData[key] = value;
+        if (typeof window !== 'undefined') {
+          window.localStorage.setItem(_configJson2['default'][("development")].localStorageKey, JSON.stringify(appData));
+        }
+      }
+    }, {
+      key: 'delete',
+      value: function _delete(key) {
+        var appData = this.getJSON();
+        delete appData[key];
+        if (typeof window !== 'undefined') {
+          window.localStorage.setItem(_configJson2['default'][("development")].localStorageKey, JSON.stringify(appData));
+        }
+      }
+    }]);
+  
+    return LocalStorage;
+  })();
+  
+  exports['default'] = LocalStorage;
+  module.exports = exports['default'];
+
+/***/ },
+/* 42 */
+/***/ function(module, exports) {
+
+  module.exports = {
+  	"development": {
+  		"localStorageKey": "hue-steamer",
+  		"clientUri": "http://localhost:3000"
+  	},
+  	"production": {
+  		"localStorageKey": "hue-steamer",
+  		"clientUri": "http://hue-steamer.herokuapp.com"
+  	}
+  };
+
+/***/ },
+/* 43 */
+/***/ function(module, exports, __webpack_require__) {
+
+  /**
+   * React Starter Kit (https://www.reactstarterkit.com/)
+   *
+   * Copyright © 2014-2016 Kriasoft, LLC. All rights reserved.
+   *
+   * This source code is licensed under the MIT license found in the
+   * LICENSE.txt file in the root directory of this source tree.
+   */
+  
+  'use strict';
+  
+  Object.defineProperty(exports, '__esModule', {
+    value: true
+  });
+  
+  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  
+  var _fbjsLibExecutionEnvironment = __webpack_require__(44);
+  
+  var _historyLibCreateBrowserHistory = __webpack_require__(45);
+  
+  var _historyLibCreateBrowserHistory2 = _interopRequireDefault(_historyLibCreateBrowserHistory);
+  
+  var _historyLibCreateMemoryHistory = __webpack_require__(46);
+  
+  var _historyLibCreateMemoryHistory2 = _interopRequireDefault(_historyLibCreateMemoryHistory);
+  
+  var _historyLibUseQueries = __webpack_require__(47);
+  
+  var _historyLibUseQueries2 = _interopRequireDefault(_historyLibUseQueries);
+  
+  var location = (0, _historyLibUseQueries2['default'])(_fbjsLibExecutionEnvironment.canUseDOM ? _historyLibCreateBrowserHistory2['default'] : _historyLibCreateMemoryHistory2['default'])();
+  
+  exports['default'] = location;
+  module.exports = exports['default'];
+
+/***/ },
+/* 44 */
+/***/ function(module, exports) {
+
+  module.exports = require("fbjs/lib/ExecutionEnvironment");
+
+/***/ },
+/* 45 */
+/***/ function(module, exports) {
+
+  module.exports = require("history/lib/createBrowserHistory");
+
+/***/ },
+/* 46 */
+/***/ function(module, exports) {
+
+  module.exports = require("history/lib/createMemoryHistory");
+
+/***/ },
+/* 47 */
+/***/ function(module, exports) {
+
+  module.exports = require("history/lib/useQueries");
+
+/***/ },
+/* 48 */
+/***/ function(module, exports, __webpack_require__) {
+
+  'use strict';
+  
+  Object.defineProperty(exports, '__esModule', {
+    value: true
+  });
+  
+  var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+  
+  var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+  
+  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  
+  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+  
+  function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+  
+  var _react = __webpack_require__(4);
+  
+  var _react2 = _interopRequireDefault(_react);
+  
+  var _SettingsPageScss = __webpack_require__(49);
+  
+  var _SettingsPageScss2 = _interopRequireDefault(_SettingsPageScss);
+  
+  var _decoratorsWithStyles = __webpack_require__(24);
+  
+  var _decoratorsWithStyles2 = _interopRequireDefault(_decoratorsWithStyles);
+  
+  var title = 'Settings';
+  
+  var SettingsPage = (function (_Component) {
+    _inherits(SettingsPage, _Component);
+  
+    function SettingsPage() {
+      _classCallCheck(this, _SettingsPage);
+  
+      _get(Object.getPrototypeOf(_SettingsPage.prototype), 'constructor', this).apply(this, arguments);
+    }
+  
+    _createClass(SettingsPage, [{
+      key: 'componentWillMount',
+      value: function componentWillMount() {
+        this.context.onSetTitle(title);
+      }
+    }, {
+      key: 'render',
+      value: function render() {
+        return _react2['default'].createElement(
+          'div',
+          null,
+          _react2['default'].createElement(
+            'header',
+            null,
+            _react2['default'].createElement(
+              'h2',
+              null,
+              'Settings'
+            )
+          ),
+          _react2['default'].createElement(
+            'form',
+            null,
+            _react2['default'].createElement(
+              'div',
+              { className: _SettingsPageScss2['default'].field },
+              _react2['default'].createElement(
+                'label',
+                { htmlFor: 'hue_bridge_ip' },
+                'Philips Hue bridge IP address:'
+              ),
+              _react2['default'].createElement('input', { type: 'text', id: 'hue_bridge_ip', placeholder: 'e.g., 192.168.1.182' })
+            ),
+            _react2['default'].createElement(
+              'div',
+              { className: _SettingsPageScss2['default'].field },
+              _react2['default'].createElement(
+                'label',
+                { htmlFor: 'hue_bridge_user' },
+                'Philips Hue bridge user:'
+              ),
+              _react2['default'].createElement('input', { type: 'text', id: 'hue_bridge_user', placeholder: 'e.g., 165131875f4bdff60d7f3dd05d46bd48' })
+            ),
+            _react2['default'].createElement(
+              'div',
+              { className: _SettingsPageScss2['default'].field },
+              _react2['default'].createElement(
+                'button',
+                { type: 'submit' },
+                'Save'
+              )
+            )
+          )
+        );
+      }
+    }], [{
+      key: 'contextTypes',
+      value: {
+        onSetTitle: _react.PropTypes.func.isRequired
+      },
+      enumerable: true
+    }]);
+  
+    var _SettingsPage = SettingsPage;
+    SettingsPage = (0, _decoratorsWithStyles2['default'])(_SettingsPageScss2['default'])(SettingsPage) || SettingsPage;
+    return SettingsPage;
+  })(_react.Component);
+  
+  exports['default'] = SettingsPage;
+  module.exports = exports['default'];
+
+/***/ },
+/* 49 */
+/***/ function(module, exports, __webpack_require__) {
+
+  
+      var content = __webpack_require__(50);
+      var insertCss = __webpack_require__(20);
+  
+      if (typeof content === 'string') {
+        content = [[module.id, content, '']];
+      }
+  
+      module.exports = content.locals || {};
+      module.exports._getCss = function() { return content.toString(); };
+      module.exports._insertCss = insertCss.bind(null, content);
+    
+      var removeCss = function() {};
+  
+      // Hot Module Replacement
+      // https://webpack.github.io/docs/hot-module-replacement
+      if (false) {
+        module.hot.accept("!!./../../../node_modules/css-loader/index.js?sourceMap&modules&localIdentName=[name]_[local]_[hash:base64:3]!./../../../node_modules/postcss-loader/index.js!./SettingsPage.scss", function() {
+          var newContent = require("!!./../../../node_modules/css-loader/index.js?sourceMap&modules&localIdentName=[name]_[local]_[hash:base64:3]!./../../../node_modules/postcss-loader/index.js!./SettingsPage.scss");
+          if (typeof newContent === 'string') {
+            newContent = [[module.id, content, '']];
+          }
+          removeCss = insertCss(newContent, { replace: true });
+        });
+        module.hot.dispose(function() { removeCss(); });
+      }
+    
+
+/***/ },
+/* 50 */
+/***/ function(module, exports, __webpack_require__) {
+
+  exports = module.exports = __webpack_require__(19)();
+  // imports
+  
+  
+  // module
+  exports.push([module.id, "/* #222 */   /* #404040 */ /* #555 */ /* #777 */ /* #eee */  /* Extra small screen / phone */  /* Small screen / tablet */  /* Medium screen / desktop */ /* Large screen / wide desktop */\n\n.SettingsPage_field_1jr {\n  margin-bottom: 10px;\n}\n\nlabel {\n  display: block;\n  font-weight: 700;\n  margin-bottom: 5px;\n  font-size: 14px;\n}\n\ninput {\n  display: block;\n  width: 100%;\n  padding: 6px;\n  font-size: 14px;\n  line-height: 1.42857143;\n  color: #555;\n  background-color: #fff;\n  background-image: none;\n  border: 1px solid #ccc;\n  border-radius: 2px;\n  -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);\n  box-shadow: inset 0 1px 1px rgba(0,0,0,.075);\n  -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;\n  -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;\n  transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;\n  transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;\n  transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s,-webkit-box-shadow ease-in-out .15s\n}\n\ninput:focus {\n  border-color: #E16C51;\n  outline: 0;\n  -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(225,108,81,.6);\n  box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(225,108,81,.6);\n}\n\nbutton, input, select, textarea {\n  font: inherit;\n}\n\nbutton {\n  display: inline-block;\n  padding: 6px 12px;\n  margin-bottom: 0;\n  font-size: 14px;\n  font-weight: 700;\n  line-height: 1.42857143;\n  text-align: center;\n  white-space: nowrap;\n  vertical-align: middle;\n  -ms-touch-action: manipulation;\n  touch-action: manipulation;\n  cursor: pointer;\n  -webkit-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n  user-select: none;\n  background-image: none;\n  border: 1px solid #ccc;\n  color: #333;\n  background-color: #fff;\n  border-radius: 4px\n}\n\nbutton:focus, button:hover {\n  color: #333;\n  background-color: #e6e6e6;\n  border-color: #adadad;\n}\n", "", {"version":3,"sources":["/./src/components/variables.scss","/./src/components/SettingsPage/SettingsPage.scss"],"names":[],"mappings":"AACwD,UAAU,GACV,aAAa,CACb,UAAU,CACV,UAAU,CACV,UAAU,EASlC,gCAAgC,EAChC,2BAA2B,EAC3B,6BAA6B,CAC7B,iCAAiC;;ACfjE;EACE,oBAAoB;CACrB;;AAED;EACE,eAAe;EACf,iBAAiB;EACjB,mBAAmB;EACnB,gBAAgB;CACjB;;AAED;EACE,eAAe;EACf,YAAY;EACZ,aAAa;EACb,gBAAgB;EAChB,wBAAwB;EACxB,YAAY;EACZ,uBAAuB;EACvB,uBAAuB;EACvB,uBAAuB;EACvB,mBAAmB;EACnB,qDAAqD;EACrD,6CAA6C;EAC7C,sFAAsF;EACtF,yEAAyE;EACzE,8EAAsE;EAAtE,sEAAsE;EAAtE,yGAAsE;CAQvE;;AANC;EACE,sBAAsB;EACtB,WAAW;EACX,iFAAiF;EACjF,yEAAyE;CAC1E;;AAGH;EACE,cAAc;CACf;;AAED;EACE,sBAAsB;EACtB,kBAAkB;EAClB,iBAAiB;EACjB,gBAAgB;EAChB,iBAAiB;EACjB,wBAAwB;EACxB,mBAAmB;EACnB,oBAAoB;EACpB,uBAAuB;EACvB,+BAA+B;EAC/B,2BAA2B;EAC3B,gBAAgB;EAChB,0BAA0B;EAC1B,uBAAuB;EACvB,sBAAsB;EACtB,kBAAkB;EAClB,uBAAuB;EACvB,uBAAuB;EACvB,YAAY;EACZ,uBAAuB;EACvB,kBAAmB;CAOpB;;AALC;EACE,YAAY;EACZ,0BAA0B;EAC1B,sBAAsB;CACvB","file":"SettingsPage.scss","sourcesContent":["$white-base:            hsl(255, 255, 255);\r\n$gray-darker:           color(black lightness(+13.5%)); /* #222 */\r\n$gray-dark:             color(black lightness(+25%));   /* #404040 */\r\n$gray:                  color(black lightness(+33.5%)); /* #555 */\r\n$gray-light:            color(black lightness(+46.7%)); /* #777 */\r\n$gray-lighter:          color(black lightness(+93.5%)); /* #eee */\r\n\r\n$link-color: #E16C51;\r\n$link-hover-color: #97918A;\r\n\r\n$font-family-base:      'Segoe UI', 'HelveticaNeue-Light', sans-serif;\r\n\r\n$max-content-width:     1000px;\r\n\r\n$screen-xs-min:         480px;  /* Extra small screen / phone */\r\n$screen-sm-min:         768px;  /* Small screen / tablet */\r\n$screen-md-min:         992px;  /* Medium screen / desktop */\r\n$screen-lg-min:         1200px; /* Large screen / wide desktop */\r\n\r\n$animation-swift-out:   .45s cubic-bezier(0.3, 1, 0.4, 1) 0s;\r\n","@import '../variables.scss';\n\n.field {\n  margin-bottom: 10px;\n}\n\nlabel {\n  display: block;\n  font-weight: 700;\n  margin-bottom: 5px;\n  font-size: 14px;\n}\n\ninput {\n  display: block;\n  width: 100%;\n  padding: 6px;\n  font-size: 14px;\n  line-height: 1.42857143;\n  color: #555;\n  background-color: #fff;\n  background-image: none;\n  border: 1px solid #ccc;\n  border-radius: 2px;\n  -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);\n  box-shadow: inset 0 1px 1px rgba(0,0,0,.075);\n  -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;\n  -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;\n  transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;\n\n  &:focus {\n    border-color: #E16C51;\n    outline: 0;\n    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(225,108,81,.6);\n    box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(225,108,81,.6);\n  }\n}\n\nbutton, input, select, textarea {\n  font: inherit;\n}\n\nbutton {\n  display: inline-block;\n  padding: 6px 12px;\n  margin-bottom: 0;\n  font-size: 14px;\n  font-weight: 700;\n  line-height: 1.42857143;\n  text-align: center;\n  white-space: nowrap;\n  vertical-align: middle;\n  -ms-touch-action: manipulation;\n  touch-action: manipulation;\n  cursor: pointer;\n  -webkit-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n  user-select: none;\n  background-image: none;\n  border: 1px solid #ccc;\n  color: #333;\n  background-color: #fff;\n  border-radius: 4px;\n\n  &:focus, &:hover {\n    color: #333;\n    background-color: #e6e6e6;\n    border-color: #adadad;\n  }\n}\n"],"sourceRoot":"webpack://"}]);
+  
+  // exports
+  exports.locals = {
+  	"field": "SettingsPage_field_1jr"
+  };
+
+/***/ },
+/* 51 */
 /***/ function(module, exports, __webpack_require__) {
 
   /**
@@ -2621,13 +2948,13 @@ module.exports =
   module.exports = exports['default'];
 
 /***/ },
-/* 56 */
+/* 52 */
 /***/ function(module, exports) {
 
   module.exports = require("./assets");
 
 /***/ },
-/* 57 */
+/* 53 */
 /***/ function(module, exports, __webpack_require__) {
 
   /**
@@ -2649,7 +2976,7 @@ module.exports =
   
   function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
   
-  var _fs = __webpack_require__(58);
+  var _fs = __webpack_require__(54);
   
   var _fs2 = _interopRequireDefault(_fs);
   
@@ -2657,15 +2984,15 @@ module.exports =
   
   var _express = __webpack_require__(3);
   
-  var _bluebird = __webpack_require__(59);
+  var _bluebird = __webpack_require__(55);
   
   var _bluebird2 = _interopRequireDefault(_bluebird);
   
-  var _jade = __webpack_require__(60);
+  var _jade = __webpack_require__(56);
   
   var _jade2 = _interopRequireDefault(_jade);
   
-  var _frontMatter = __webpack_require__(61);
+  var _frontMatter = __webpack_require__(57);
   
   var _frontMatter2 = _interopRequireDefault(_frontMatter);
   
@@ -2762,190 +3089,28 @@ module.exports =
   module.exports = exports['default'];
 
 /***/ },
-/* 58 */
+/* 54 */
 /***/ function(module, exports) {
 
   module.exports = require("fs");
 
 /***/ },
-/* 59 */
+/* 55 */
 /***/ function(module, exports) {
 
   module.exports = require("bluebird");
 
 /***/ },
-/* 60 */
+/* 56 */
 /***/ function(module, exports) {
 
   module.exports = require("jade");
 
 /***/ },
-/* 61 */
+/* 57 */
 /***/ function(module, exports) {
 
   module.exports = require("front-matter");
-
-/***/ },
-/* 62 */
-/***/ function(module, exports, __webpack_require__) {
-
-  'use strict';
-  
-  Object.defineProperty(exports, '__esModule', {
-    value: true
-  });
-  
-  var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-  
-  var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
-  
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-  
-  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-  
-  function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-  
-  var _react = __webpack_require__(4);
-  
-  var _react2 = _interopRequireDefault(_react);
-  
-  var _SettingsPageScss = __webpack_require__(63);
-  
-  var _SettingsPageScss2 = _interopRequireDefault(_SettingsPageScss);
-  
-  var _decoratorsWithStyles = __webpack_require__(24);
-  
-  var _decoratorsWithStyles2 = _interopRequireDefault(_decoratorsWithStyles);
-  
-  var title = 'Settings';
-  
-  var SettingsPage = (function (_Component) {
-    _inherits(SettingsPage, _Component);
-  
-    function SettingsPage() {
-      _classCallCheck(this, _SettingsPage);
-  
-      _get(Object.getPrototypeOf(_SettingsPage.prototype), 'constructor', this).apply(this, arguments);
-    }
-  
-    _createClass(SettingsPage, [{
-      key: 'componentWillMount',
-      value: function componentWillMount() {
-        this.context.onSetTitle(title);
-      }
-    }, {
-      key: 'render',
-      value: function render() {
-        return _react2['default'].createElement(
-          'div',
-          null,
-          _react2['default'].createElement(
-            'header',
-            null,
-            _react2['default'].createElement(
-              'h2',
-              null,
-              'Settings'
-            )
-          ),
-          _react2['default'].createElement(
-            'form',
-            null,
-            _react2['default'].createElement(
-              'div',
-              { className: _SettingsPageScss2['default'].field },
-              _react2['default'].createElement(
-                'label',
-                { htmlFor: 'hue_bridge_ip' },
-                'Philips Hue bridge IP address:'
-              ),
-              _react2['default'].createElement('input', { type: 'text', id: 'hue_bridge_ip', placeholder: 'e.g., 192.168.1.182' })
-            ),
-            _react2['default'].createElement(
-              'div',
-              { className: _SettingsPageScss2['default'].field },
-              _react2['default'].createElement(
-                'label',
-                { htmlFor: 'hue_bridge_user' },
-                'Philips Hue bridge user:'
-              ),
-              _react2['default'].createElement('input', { type: 'text', id: 'hue_bridge_user', placeholder: 'e.g., 165131875f4bdff60d7f3dd05d46bd48' })
-            ),
-            _react2['default'].createElement(
-              'div',
-              { className: _SettingsPageScss2['default'].field },
-              _react2['default'].createElement(
-                'button',
-                { type: 'submit' },
-                'Save'
-              )
-            )
-          )
-        );
-      }
-    }], [{
-      key: 'contextTypes',
-      value: {
-        onSetTitle: _react.PropTypes.func.isRequired
-      },
-      enumerable: true
-    }]);
-  
-    var _SettingsPage = SettingsPage;
-    SettingsPage = (0, _decoratorsWithStyles2['default'])(_SettingsPageScss2['default'])(SettingsPage) || SettingsPage;
-    return SettingsPage;
-  })(_react.Component);
-  
-  exports['default'] = SettingsPage;
-  module.exports = exports['default'];
-
-/***/ },
-/* 63 */
-/***/ function(module, exports, __webpack_require__) {
-
-  
-      var content = __webpack_require__(64);
-      var insertCss = __webpack_require__(20);
-  
-      if (typeof content === 'string') {
-        content = [[module.id, content, '']];
-      }
-  
-      module.exports = content.locals || {};
-      module.exports._getCss = function() { return content.toString(); };
-      module.exports._insertCss = insertCss.bind(null, content);
-    
-      var removeCss = function() {};
-  
-      // Hot Module Replacement
-      // https://webpack.github.io/docs/hot-module-replacement
-      if (false) {
-        module.hot.accept("!!./../../../node_modules/css-loader/index.js?sourceMap&modules&localIdentName=[name]_[local]_[hash:base64:3]!./../../../node_modules/postcss-loader/index.js!./SettingsPage.scss", function() {
-          var newContent = require("!!./../../../node_modules/css-loader/index.js?sourceMap&modules&localIdentName=[name]_[local]_[hash:base64:3]!./../../../node_modules/postcss-loader/index.js!./SettingsPage.scss");
-          if (typeof newContent === 'string') {
-            newContent = [[module.id, content, '']];
-          }
-          removeCss = insertCss(newContent, { replace: true });
-        });
-        module.hot.dispose(function() { removeCss(); });
-      }
-    
-
-/***/ },
-/* 64 */
-/***/ function(module, exports, __webpack_require__) {
-
-  exports = module.exports = __webpack_require__(19)();
-  // imports
-  
-  
-  // module
-  exports.push([module.id, "/* #222 */   /* #404040 */ /* #555 */ /* #777 */ /* #eee */  /* Extra small screen / phone */  /* Small screen / tablet */  /* Medium screen / desktop */ /* Large screen / wide desktop */\n\n.SettingsPage_field_1jr {\n  margin-bottom: 10px;\n}\n\nlabel {\n  display: block;\n  font-weight: 700;\n  margin-bottom: 5px;\n  font-size: 14px;\n}\n\ninput {\n  display: block;\n  width: 100%;\n  padding: 6px;\n  font-size: 14px;\n  line-height: 1.42857143;\n  color: #555;\n  background-color: #fff;\n  background-image: none;\n  border: 1px solid #ccc;\n  border-radius: 2px;\n  -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);\n  box-shadow: inset 0 1px 1px rgba(0,0,0,.075);\n  -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;\n  -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;\n  transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;\n  transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;\n  transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s,-webkit-box-shadow ease-in-out .15s\n}\n\ninput:focus {\n  border-color: #E16C51;\n  outline: 0;\n  -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(225,108,81,.6);\n  box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(225,108,81,.6);\n}\n\nbutton, input, select, textarea {\n  font: inherit;\n}\n\nbutton {\n  display: inline-block;\n  padding: 6px 12px;\n  margin-bottom: 0;\n  font-size: 14px;\n  font-weight: 700;\n  line-height: 1.42857143;\n  text-align: center;\n  white-space: nowrap;\n  vertical-align: middle;\n  -ms-touch-action: manipulation;\n  touch-action: manipulation;\n  cursor: pointer;\n  -webkit-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n  user-select: none;\n  background-image: none;\n  border: 1px solid #ccc;\n  color: #333;\n  background-color: #fff;\n  border-radius: 4px\n}\n\nbutton:focus, button:hover {\n  color: #333;\n  background-color: #e6e6e6;\n  border-color: #adadad;\n}\n", "", {"version":3,"sources":["/./src/components/variables.scss","/./src/components/SettingsPage/SettingsPage.scss"],"names":[],"mappings":"AACwD,UAAU,GACV,aAAa,CACb,UAAU,CACV,UAAU,CACV,UAAU,EASlC,gCAAgC,EAChC,2BAA2B,EAC3B,6BAA6B,CAC7B,iCAAiC;;ACfjE;EACE,oBAAoB;CACrB;;AAED;EACE,eAAe;EACf,iBAAiB;EACjB,mBAAmB;EACnB,gBAAgB;CACjB;;AAED;EACE,eAAe;EACf,YAAY;EACZ,aAAa;EACb,gBAAgB;EAChB,wBAAwB;EACxB,YAAY;EACZ,uBAAuB;EACvB,uBAAuB;EACvB,uBAAuB;EACvB,mBAAmB;EACnB,qDAAqD;EACrD,6CAA6C;EAC7C,sFAAsF;EACtF,yEAAyE;EACzE,8EAAsE;EAAtE,sEAAsE;EAAtE,yGAAsE;CAQvE;;AANC;EACE,sBAAsB;EACtB,WAAW;EACX,iFAAiF;EACjF,yEAAyE;CAC1E;;AAGH;EACE,cAAc;CACf;;AAED;EACE,sBAAsB;EACtB,kBAAkB;EAClB,iBAAiB;EACjB,gBAAgB;EAChB,iBAAiB;EACjB,wBAAwB;EACxB,mBAAmB;EACnB,oBAAoB;EACpB,uBAAuB;EACvB,+BAA+B;EAC/B,2BAA2B;EAC3B,gBAAgB;EAChB,0BAA0B;EAC1B,uBAAuB;EACvB,sBAAsB;EACtB,kBAAkB;EAClB,uBAAuB;EACvB,uBAAuB;EACvB,YAAY;EACZ,uBAAuB;EACvB,kBAAmB;CAOpB;;AALC;EACE,YAAY;EACZ,0BAA0B;EAC1B,sBAAsB;CACvB","file":"SettingsPage.scss","sourcesContent":["$white-base:            hsl(255, 255, 255);\r\n$gray-darker:           color(black lightness(+13.5%)); /* #222 */\r\n$gray-dark:             color(black lightness(+25%));   /* #404040 */\r\n$gray:                  color(black lightness(+33.5%)); /* #555 */\r\n$gray-light:            color(black lightness(+46.7%)); /* #777 */\r\n$gray-lighter:          color(black lightness(+93.5%)); /* #eee */\r\n\r\n$link-color: #E16C51;\r\n$link-hover-color: #97918A;\r\n\r\n$font-family-base:      'Segoe UI', 'HelveticaNeue-Light', sans-serif;\r\n\r\n$max-content-width:     1000px;\r\n\r\n$screen-xs-min:         480px;  /* Extra small screen / phone */\r\n$screen-sm-min:         768px;  /* Small screen / tablet */\r\n$screen-md-min:         992px;  /* Medium screen / desktop */\r\n$screen-lg-min:         1200px; /* Large screen / wide desktop */\r\n\r\n$animation-swift-out:   .45s cubic-bezier(0.3, 1, 0.4, 1) 0s;\r\n","@import '../variables.scss';\n\n.field {\n  margin-bottom: 10px;\n}\n\nlabel {\n  display: block;\n  font-weight: 700;\n  margin-bottom: 5px;\n  font-size: 14px;\n}\n\ninput {\n  display: block;\n  width: 100%;\n  padding: 6px;\n  font-size: 14px;\n  line-height: 1.42857143;\n  color: #555;\n  background-color: #fff;\n  background-image: none;\n  border: 1px solid #ccc;\n  border-radius: 2px;\n  -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);\n  box-shadow: inset 0 1px 1px rgba(0,0,0,.075);\n  -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;\n  -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;\n  transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;\n\n  &:focus {\n    border-color: #E16C51;\n    outline: 0;\n    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(225,108,81,.6);\n    box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(225,108,81,.6);\n  }\n}\n\nbutton, input, select, textarea {\n  font: inherit;\n}\n\nbutton {\n  display: inline-block;\n  padding: 6px 12px;\n  margin-bottom: 0;\n  font-size: 14px;\n  font-weight: 700;\n  line-height: 1.42857143;\n  text-align: center;\n  white-space: nowrap;\n  vertical-align: middle;\n  -ms-touch-action: manipulation;\n  touch-action: manipulation;\n  cursor: pointer;\n  -webkit-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n  user-select: none;\n  background-image: none;\n  border: 1px solid #ccc;\n  color: #333;\n  background-color: #fff;\n  border-radius: 4px;\n\n  &:focus, &:hover {\n    color: #333;\n    background-color: #e6e6e6;\n    border-color: #adadad;\n  }\n}\n"],"sourceRoot":"webpack://"}]);
-  
-  // exports
-  exports.locals = {
-  	"field": "SettingsPage_field_1jr"
-  };
 
 /***/ }
 /******/ ]);

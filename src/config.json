@@ -1,0 +1,10 @@
+{
+  "development": {
+    "localStorageKey": "hue-steamer",
+    "clientUri": "http://localhost:3000"
+  },
+  "production": {
+    "localStorageKey": "hue-steamer",
+    "clientUri": "http://hue-steamer.herokuapp.com"
+  }
+}
