@@ -2563,7 +2563,6 @@ module.exports =
     _createClass(CookieAndLocalStorage, [{
       key: 'getItem',
       value: function getItem(key) {
-        console.log('get', key);
         if (typeof window !== 'undefined') {
           if (window.localStorage) {
             return window.localStorage.getItem(key);
@@ -2575,7 +2574,6 @@ module.exports =
     }, {
       key: 'setItem',
       value: function setItem(key, value) {
-        console.log('set', key, value);
         if (typeof window !== 'undefined' && window.localStorage) {
           window.localStorage.setItem(key, value);
         }
@@ -2626,7 +2624,11 @@ module.exports =
         for (var key in data) {
           if (data.hasOwnProperty(key)) {
             var value = data[key];
-            appData[key] = value;
+            if (typeof value === 'undefined') {
+              delete appData[key];
+            } else {
+              appData[key] = value;
+            }
           }
         }
         this.writeHash(appData);
@@ -2791,7 +2793,6 @@ module.exports =
   
       _get(Object.getPrototypeOf(_SettingsPage.prototype), 'constructor', this).call(this, props);
       var settings = _storesLocalStorage2['default'].getJSON();
-      console.log('settings', settings);
       this.state = {
         hueBridgeUser: settings.hueBridgeUser,
         hueBridgeIp: settings.hueBridgeIp
@@ -2806,12 +2807,20 @@ module.exports =
     }, {
       key: 'handleBridgeIpChange',
       value: function handleBridgeIpChange(e) {
-        this.setState({ hueBridgeIp: e.target.value });
+        var bridgeIp = e.target.value.trim();
+        if (bridgeIp === '') {
+          bridgeIp = undefined;
+        }
+        this.setState({ hueBridgeIp: bridgeIp });
       }
     }, {
       key: 'handleBridgeUserChange',
       value: function handleBridgeUserChange(e) {
-        this.setState({ hueBridgeUser: e.target.value });
+        var bridgeUser = e.target.value.trim();
+        if (bridgeUser === '') {
+          bridgeUser = undefined;
+        }
+        this.setState({ hueBridgeUser: bridgeUser });
       }
     }, {
       key: 'handleSubmit',

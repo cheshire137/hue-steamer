@@ -3,7 +3,6 @@ import cookie from 'react-cookie';
 
 class CookieAndLocalStorage {
   getItem(key) {
-    console.log('get', key);
     if (typeof window !== 'undefined') {
       if (window.localStorage) {
         return window.localStorage.getItem(key);
@@ -14,7 +13,6 @@ class CookieAndLocalStorage {
   }
 
   setItem(key, value) {
-    console.log('set', key, value);
     if (typeof window !== 'undefined' && window.localStorage) {
       window.localStorage.setItem(key, value);
     }
@@ -53,7 +51,11 @@ class LocalStorage {
     for (const key in data) {
       if (data.hasOwnProperty(key)) {
         const value = data[key];
-        appData[key] = value;
+        if (typeof value === 'undefined') {
+          delete appData[key];
+        } else {
+          appData[key] = value;
+        }
       }
     }
     this.writeHash(appData);

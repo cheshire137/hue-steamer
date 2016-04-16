@@ -14,7 +14,6 @@ class SettingsPage extends Component {
   constructor(props) {
     super(props);
     const settings = LocalStorage.getJSON();
-    console.log('settings', settings);
     this.state = {
       hueBridgeUser: settings.hueBridgeUser,
       hueBridgeIp: settings.hueBridgeIp,
@@ -26,11 +25,19 @@ class SettingsPage extends Component {
   }
 
   handleBridgeIpChange(e) {
-    this.setState({ hueBridgeIp: e.target.value });
+    let bridgeIp = e.target.value.trim();
+    if (bridgeIp === '') {
+      bridgeIp = undefined;
+    }
+    this.setState({ hueBridgeIp: bridgeIp });
   }
 
   handleBridgeUserChange(e) {
-    this.setState({ hueBridgeUser: e.target.value });
+    let bridgeUser = e.target.value.trim();
+    if (bridgeUser === '') {
+      bridgeUser = undefined;
+    }
+    this.setState({ hueBridgeUser: bridgeUser });
   }
 
   handleSubmit(e) {
