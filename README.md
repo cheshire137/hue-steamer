@@ -22,3 +22,9 @@ or another
 
     npm install
     node app.js -b YOUR_HUE_BRIDGE_IP -u YOUR_HUE_USER
+
+## Thanks
+
+- [proto.io](https://proto.io/freebies/onoff/) for the snazzy on/off toggle switches.
+- [node-hue-api](https://github.com/peter-murray/node-hue-api) for the API to interact with Philips Hue lights.
+- [hue-python-rgb-converter](https://github.com/benknight/hue-python-rgb-converter) for the basis for the color converting JavaScript to go between the Hue color space and hex.
