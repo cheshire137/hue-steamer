@@ -17,6 +17,16 @@ html {
   line-height: 1.375;
 }
 
+body, .container {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
+
+main {
+  flex: 1 0 auto;
+}
+
 .container {
   margin-left: auto;
   margin-right: auto;

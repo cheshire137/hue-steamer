@@ -6,7 +6,7 @@ import withStyles from '../../decorators/withStyles';
 class Footer extends Component {
   render() {
     return (
-      <footer>
+      <footer className={s.pageFooter}>
         &copy; 2016 Sarah Vessels
       </footer>
     );

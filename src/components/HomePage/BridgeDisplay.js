@@ -20,12 +20,17 @@ class BridgeDisplay extends Component {
   }
 
   render() {
+    const bridgeUrl = 'http://' + this.props.bridge.ipaddress;
     return (
-      <dl>
+      <dl className={s.bridgeDetails}>
         <dt>Name</dt>
         <dd>{this.props.bridge.name}</dd>
         <dt>IP Address</dt>
-        <dd>{this.props.bridge.ipaddress}</dd>
+        <dd>
+          <a href={bridgeUrl} target="_blank">
+            {this.props.bridge.ipaddress}
+          </a>
+        </dd>
         <dt>Model</dt>
         <dd>{this.props.bridge.modelid}</dd>
         <dt>Time</dt>
