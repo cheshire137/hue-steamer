@@ -54,6 +54,8 @@ server.get('/bridge', async (req, res) => {
   const api = new hue.HueApi(ip, user);
   api.config().then((bridge) => {
     res.send(JSON.stringify(bridge));
+  }).fail((err) => {
+    res.send(JSON.stringify(err));
   }).done();
 });
 
@@ -75,6 +77,28 @@ server.get('/group', async (req, res) => {
   const api = new hue.HueApi(ip, user);
   api.getGroup(groupID).then((group) => {
     res.send(JSON.stringify(group));
+  }).fail((err) => {
+    res.send(JSON.stringify(err));
+  }).done();
+});
+
+server.get('/light/:id', async (req, res) => {
+  const ip = req.query.ip;
+  const user = req.query.user;
+  const lightID = req.params.id;
+  if (typeof ip !== 'string') {
+    res.send('{"error": "Must provide Hue Bridge IP address in ip param"}');
+    return;
+  }
+  if (typeof user !== 'string') {
+    res.send('{"error": "Must provide Hue Bridge user in user param"}');
+    return;
+  }
+  const api = new hue.HueApi(ip, user);
+  api.lightStatus(lightID).then((result) => {
+    res.send(JSON.stringify(result));
+  }).fail((err) => {
+    res.send(JSON.stringify(err));
   }).done();
 });
 

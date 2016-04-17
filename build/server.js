@@ -149,6 +149,8 @@ module.exports =
   
           api.config().then(function (bridge) {
             res.send(JSON.stringify(bridge));
+          }).fail(function (err) {
+            res.send(JSON.stringify(err));
           }).done();
   
         case 10:
@@ -192,9 +194,53 @@ module.exports =
   
           api.getGroup(groupID).then(function (group) {
             res.send(JSON.stringify(group));
+          }).fail(function (err) {
+            res.send(JSON.stringify(err));
           }).done();
   
         case 12:
+        case 'end':
+          return context$1$0.stop();
+      }
+    }, null, _this);
+  });
+  
+  server.get('/light/:id', function callee$0$0(req, res) {
+    var ip, user, lightID, api;
+    return regeneratorRuntime.async(function callee$0$0$(context$1$0) {
+      while (1) switch (context$1$0.prev = context$1$0.next) {
+        case 0:
+          ip = req.query.ip;
+          user = req.query.user;
+          lightID = req.params.id;
+  
+          if (!(typeof ip !== 'string')) {
+            context$1$0.next = 6;
+            break;
+          }
+  
+          res.send('{"error": "Must provide Hue Bridge IP address in ip param"}');
+          return context$1$0.abrupt('return');
+  
+        case 6:
+          if (!(typeof user !== 'string')) {
+            context$1$0.next = 9;
+            break;
+          }
+  
+          res.send('{"error": "Must provide Hue Bridge user in user param"}');
+          return context$1$0.abrupt('return');
+  
+        case 9:
+          api = new hue.HueApi(ip, user);
+  
+          api.lightStatus(lightID).then(function (result) {
+            res.send(JSON.stringify(result));
+          }).fail(function (err) {
+            res.send(JSON.stringify(err));
+          }).done();
+  
+        case 11:
         case 'end':
           return context$1$0.stop();
       }
@@ -2598,8 +2644,8 @@ module.exports =
       _get(Object.getPrototypeOf(_HomePage.prototype), 'constructor', this).call(this, props);
       var data = _storesLocalStorage2['default'].getJSON();
       this.state = {
-        bridgeUser: data.hueBridgeUser,
-        bridgeIP: data.hueBridgeIp,
+        user: data.hueBridgeUser,
+        ip: data.hueBridgeIp,
         bridge: data.bridge,
         haveBridge: typeof data.bridge === 'object',
         allLights: data.allLights,
@@ -2638,20 +2684,20 @@ module.exports =
     }, {
       key: 'getAllLights',
       value: function getAllLights() {
-        console.log('getting all lights for', this.state.bridgeIP, this.state.bridgeUser);
-        _actionsBridge2['default'].getAllLights(this.state.bridgeIP, this.state.bridgeUser).then(this.onAllLightsLoaded.bind(this));
+        console.log('getting all lights for', this.state.ip, this.state.user);
+        _actionsBridge2['default'].getAllLights(this.state.ip, this.state.user).then(this.onAllLightsLoaded.bind(this));
       }
     }, {
       key: 'getBridgeState',
       value: function getBridgeState() {
-        console.log('getting bridge for', this.state.bridgeIP, this.state.bridgeUser);
-        _actionsBridge2['default'].getInfo(this.state.bridgeIP, this.state.bridgeUser).then(this.onBridgeLoaded.bind(this));
+        console.log('getting bridge for', this.state.ip, this.state.user);
+        _actionsBridge2['default'].getInfo(this.state.ip, this.state.user).then(this.onBridgeLoaded.bind(this));
       }
     }, {
       key: 'redirectIfNoBridgeSettings',
       value: function redirectIfNoBridgeSettings() {
-        var haveBridgeIp = typeof this.state.bridgeIP !== 'undefined';
-        var haveBridgeUser = typeof this.state.bridgeUser !== 'undefined';
+        var haveBridgeIp = typeof this.state.ip !== 'undefined';
+        var haveBridgeUser = typeof this.state.user !== 'undefined';
         if (!haveBridgeIp || !haveBridgeUser) {
           _coreLocation2['default'].push(_extends({}, (0, _historyLibParsePath2['default'])('/settings')));
         }
@@ -2670,7 +2716,10 @@ module.exports =
             'div',
             { className: _HomePageScss2['default'].bridgeAndLights },
             _react2['default'].createElement(_BridgeDisplay2['default'], _extends({}, this.state.bridge, { numLights: numLights })),
-            this.state.haveAllLights ? _react2['default'].createElement(_LightsList2['default'], this.state.allLights) : _react2['default'].createElement(
+            this.state.haveAllLights ? _react2['default'].createElement(_LightsList2['default'], { ip: this.state.ip,
+              user: this.state.user,
+              group: this.state.allLights
+            }) : _react2['default'].createElement(
               'span',
               null,
               'Loading lights...'
@@ -2733,11 +2782,20 @@ module.exports =
   
   
   // module
-  exports.push([module.id, "/* #222 */   /* #404040 */ /* #555 */ /* #777 */ /* #eee */  /* Extra small screen / phone */  /* Small screen / tablet */  /* Medium screen / desktop */ /* Large screen / wide desktop */\n\n.HomePage_bridgeDetails_2hH dt {\n\n  font-weight: 700;\n}\n\n.HomePage_bridgeDetails_2hH dd {\n\n  margin-left: 0;\n}\n\n@media (min-width: 768px) {\n  .HomePage_bridgeDetails_2hH dt {\n\n    float: left;\n\n    width: 7em;\n\n    overflow: hidden;\n\n    clear: left;\n\n    text-align: right;\n\n    text-overflow: ellipsis;\n\n    white-space: nowrap;\n  }\n  .HomePage_bridgeDetails_2hH dd {\n\n    margin-left: 8em;\n  }\n}\n", "", {"version":3,"sources":["/./src/components/variables.scss","/./src/components/HomePage/HomePage.scss"],"names":[],"mappings":"AACwD,UAAU,GACV,aAAa,CACb,UAAU,CACV,UAAU,CACV,UAAU,EASlC,gCAAgC,EAChC,2BAA2B,EAC3B,6BAA6B,CAC7B,iCAAiC;;ACd/D;;EACE,iBAAiB;CAClB;;AAED;;EACE,eAAe;CAChB;;AAGH;EAEI;;IACE,YAAY;;IACZ,WAAW;;IACX,iBAAiB;;IACjB,YAAY;;IACZ,kBAAkB;;IAClB,wBAAwB;;IACxB,oBAAoB;GACrB;EAED;;IACE,iBAAiB;GAClB;CAEJ","file":"HomePage.scss","sourcesContent":["$white-base:            hsl(255, 255, 255);\r\n$gray-darker:           color(black lightness(+13.5%)); /* #222 */\r\n$gray-dark:             color(black lightness(+25%));   /* #404040 */\r\n$gray:                  color(black lightness(+33.5%)); /* #555 */\r\n$gray-light:            color(black lightness(+46.7%)); /* #777 */\r\n$gray-lighter:          color(black lightness(+93.5%)); /* #eee */\r\n\r\n$link-color: #E16C51;\r\n$link-hover-color: #97918A;\r\n\r\n$font-family-base:      'Segoe UI', 'HelveticaNeue-Light', sans-serif;\r\n\r\n$max-content-width:     1000px;\r\n\r\n$screen-xs-min:         480px;  /* Extra small screen / phone */\r\n$screen-sm-min:         768px;  /* Small screen / tablet */\r\n$screen-md-min:         992px;  /* Medium screen / desktop */\r\n$screen-lg-min:         1200px; /* Large screen / wide desktop */\r\n\r\n$animation-swift-out:   .45s cubic-bezier(0.3, 1, 0.4, 1) 0s;\r\n","@import '../variables.scss';\n\n.bridgeDetails {\n  dt {\n    font-weight: 700;\n  }\n\n  dd {\n    margin-left: 0;\n  }\n}\n\n@media (min-width: 768px) {\n  .bridgeDetails {\n    dt {\n      float: left;\n      width: 7em;\n      overflow: hidden;\n      clear: left;\n      text-align: right;\n      text-overflow: ellipsis;\n      white-space: nowrap;\n    }\n\n    dd {\n      margin-left: 8em;\n    }\n  }\n}\n"],"sourceRoot":"webpack://"}]);
+  exports.push([module.id, "/* #222 */   /* #404040 */ /* #555 */ /* #777 */ /* #eee */  /* Extra small screen / phone */  /* Small screen / tablet */  /* Medium screen / desktop */ /* Large screen / wide desktop */\n\n.HomePage_bridgeDetails_2hH dt {\n  font-weight: 700;\n}\n\n.HomePage_bridgeDetails_2hH dd {\n  margin-left: 0;\n}\n\n@media (min-width: 768px) {\n  .HomePage_bridgeDetails_2hH dt {\n    float: left;\n    width: 7em;\n    overflow: hidden;\n    clear: left;\n    text-align: right;\n    text-overflow: ellipsis;\n    white-space: nowrap;\n  }\n  .HomePage_bridgeDetails_2hH dd {\n    margin-left: 8em;\n  }\n}\n\n.HomePage_lightList_3oL {\n  list-style: none;\n  padding-left: 0;\n}\n\n.HomePage_lightList_3oL li {\n  width: 205px;\n  display: inline-block;\n  margin: 0 5px 12px 5px;\n  padding: 6px;\n  border-radius: 2px;\n  border: 1px solid #ccc;\n}\n\n.HomePage_light_2jt span {\n  display: inline-block;\n}\n\n.HomePage_light_2jt .HomePage_on_3Yx, .HomePage_light_2jt .HomePage_off_1ci {\n  width: 6px;\n  height: 6px;\n  border-radius: 100%;\n  margin-right: 0.3em;\n  border: 1px solid rgba(0,0,0,0.3);\n  vertical-align: middle;\n}\n\n.HomePage_light_2jt .HomePage_on_3Yx {\n  background-color: #FFF7C2;\n}\n\n.HomePage_light_2jt .HomePage_off_1ci {\n  background-color: #373634;\n}\n\n.HomePage_light_2jt .HomePage_name_nWG {}\n\n.HomePage_light_2jt .HomePage_metadata_pqP {\n  font-size: 13px;\n  color: #797979;\n}\n\n.HomePage_light_2jt .HomePage_type_1AJ {\n  display: block;\n}\n\n.HomePage_light_2jt .HomePage_manufacturer_3WL {\n  padding: 0 0.3em 0 0;\n}\n\n.HomePage_light_2jt .HomePage_model_3Ue {}\n", "", {"version":3,"sources":["/./src/components/variables.scss","/./src/components/HomePage/HomePage.scss"],"names":[],"mappings":"AACwD,UAAU,GACV,aAAa,CACb,UAAU,CACV,UAAU,CACV,UAAU,EASlC,gCAAgC,EAChC,2BAA2B,EAC3B,6BAA6B,CAC7B,iCAAiC;;ACd/D;EACE,iBAAiB;CAClB;;AAED;EACE,eAAe;CAChB;;AAGH;EAEI;IACE,YAAY;IACZ,WAAW;IACX,iBAAiB;IACjB,YAAY;IACZ,kBAAkB;IAClB,wBAAwB;IACxB,oBAAoB;GACrB;EAED;IACE,iBAAiB;GAClB;CAEJ;;AAED;EACE,iBAAiB;EACjB,gBAAgB;CAUjB;;AARC;EACE,aAAa;EACb,sBAAsB;EACtB,uBAAuB;EACvB,aAAa;EACb,mBAAmB;EACnB,uBAAuB;CACxB;;AAID;EACE,sBAAsB;CACvB;;AAED;EACE,WAAW;EACX,YAAY;EACZ,oBAAoB;EACpB,oBAAoB;EACpB,kCAAkC;EAClC,uBAAuB;CACxB;;AAED;EACE,0BAA0B;CAC3B;;AAED;EACE,0BAA0B;CAC3B;;AAED,yCAEC;;AAED;EACE,gBAAgB;EAChB,eAAe;CAChB;;AAED;EACE,eAAe;CAChB;;AAED;EACE,qBAAqB;CACtB;;AAED,0CAEC","file":"HomePage.scss","sourcesContent":["$white-base:            hsl(255, 255, 255);\r\n$gray-darker:           color(black lightness(+13.5%)); /* #222 */\r\n$gray-dark:             color(black lightness(+25%));   /* #404040 */\r\n$gray:                  color(black lightness(+33.5%)); /* #555 */\r\n$gray-light:            color(black lightness(+46.7%)); /* #777 */\r\n$gray-lighter:          color(black lightness(+93.5%)); /* #eee */\r\n\r\n$link-color: #E16C51;\r\n$link-hover-color: #97918A;\r\n\r\n$font-family-base:      'Segoe UI', 'HelveticaNeue-Light', sans-serif;\r\n\r\n$max-content-width:     1000px;\r\n\r\n$screen-xs-min:         480px;  /* Extra small screen / phone */\r\n$screen-sm-min:         768px;  /* Small screen / tablet */\r\n$screen-md-min:         992px;  /* Medium screen / desktop */\r\n$screen-lg-min:         1200px; /* Large screen / wide desktop */\r\n\r\n$animation-swift-out:   .45s cubic-bezier(0.3, 1, 0.4, 1) 0s;\r\n","@import '../variables.scss';\n\n.bridgeDetails {\n  dt {\n    font-weight: 700;\n  }\n\n  dd {\n    margin-left: 0;\n  }\n}\n\n@media (min-width: 768px) {\n  .bridgeDetails {\n    dt {\n      float: left;\n      width: 7em;\n      overflow: hidden;\n      clear: left;\n      text-align: right;\n      text-overflow: ellipsis;\n      white-space: nowrap;\n    }\n\n    dd {\n      margin-left: 8em;\n    }\n  }\n}\n\n.lightList {\n  list-style: none;\n  padding-left: 0;\n\n  li {\n    width: 205px;\n    display: inline-block;\n    margin: 0 5px 12px 5px;\n    padding: 6px;\n    border-radius: 2px;\n    border: 1px solid #ccc;\n  }\n}\n\n.light {\n  span {\n    display: inline-block;\n  }\n\n  .on, .off {\n    width: 6px;\n    height: 6px;\n    border-radius: 100%;\n    margin-right: 0.3em;\n    border: 1px solid rgba(0,0,0,0.3);\n    vertical-align: middle;\n  }\n\n  .on {\n    background-color: #FFF7C2;\n  }\n\n  .off {\n    background-color: #373634;\n  }\n\n  .name {\n\n  }\n\n  .metadata {\n    font-size: 13px;\n    color: #797979;\n  }\n\n  .type {\n    display: block;\n  }\n\n  .manufacturer {\n    padding: 0 0.3em 0 0;\n  }\n\n  .model {\n\n  }\n}\n"],"sourceRoot":"webpack://"}]);
   
   // exports
   exports.locals = {
-  	"bridgeDetails": "HomePage_bridgeDetails_2hH"
+  	"bridgeDetails": "HomePage_bridgeDetails_2hH",
+  	"lightList": "HomePage_lightList_3oL",
+  	"light": "HomePage_light_2jt",
+  	"on": "HomePage_on_3Yx",
+  	"off": "HomePage_off_1ci",
+  	"name": "HomePage_name_nWG",
+  	"metadata": "HomePage_metadata_pqP",
+  	"type": "HomePage_type_1AJ",
+  	"manufacturer": "HomePage_manufacturer_3WL",
+  	"model": "HomePage_model_3Ue"
   };
 
 /***/ },
@@ -3009,6 +3067,20 @@ module.exports =
               return context$2$0.abrupt('return', this.makeRequest(path));
   
             case 3:
+            case 'end':
+              return context$2$0.stop();
+          }
+        }, null, this);
+      }
+    }, {
+      key: 'getLight',
+      value: function getLight(ip, user, id) {
+        return regeneratorRuntime.async(function getLight$(context$2$0) {
+          while (1) switch (context$2$0.prev = context$2$0.next) {
+            case 0:
+              return context$2$0.abrupt('return', this.makeRequest('/light/' + id + '?ip=' + encodeURIComponent(ip) + '&user=' + encodeURIComponent(user)));
+  
+            case 1:
             case 'end':
               return context$2$0.stop();
           }
@@ -3830,13 +3902,19 @@ module.exports =
   
   var _HomePageScss2 = _interopRequireDefault(_HomePageScss);
   
+  var _Light = __webpack_require__(64);
+  
+  var _Light2 = _interopRequireDefault(_Light);
+  
   var LightsList = (function (_Component) {
     _inherits(LightsList, _Component);
   
     _createClass(LightsList, null, [{
       key: 'propTypes',
       value: {
-        lights: _react.PropTypes.array.isRequired
+        group: _react.PropTypes.object.isRequired,
+        user: _react.PropTypes.string.isRequired,
+        ip: _react.PropTypes.string.isRequired
       },
       enumerable: true
     }]);
@@ -3846,13 +3924,26 @@ module.exports =
   
       _get(Object.getPrototypeOf(LightsList.prototype), 'constructor', this).call(this, props, context);
       this.state = {};
-      console.log('group props', props);
     }
   
     _createClass(LightsList, [{
       key: 'render',
       value: function render() {
-        return _react2['default'].createElement('div', null);
+        var _this = this;
+  
+        return _react2['default'].createElement(
+          'div',
+          null,
+          _react2['default'].createElement(
+            'ul',
+            { className: _HomePageScss2['default'].lightList },
+            this.props.group.lights.map(function (id) {
+              return _react2['default'].createElement(_Light2['default'], { key: id,
+                user: _this.props.user, ip: _this.props.ip, id: id
+              });
+            })
+          )
+        );
       }
     }]);
   
@@ -3860,6 +3951,120 @@ module.exports =
   })(_react.Component);
   
   exports['default'] = LightsList;
+  module.exports = exports['default'];
+
+/***/ },
+/* 64 */
+/***/ function(module, exports, __webpack_require__) {
+
+  'use strict';
+  
+  Object.defineProperty(exports, '__esModule', {
+    value: true
+  });
+  
+  var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+  
+  var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+  
+  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  
+  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+  
+  function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+  
+  var _react = __webpack_require__(4);
+  
+  var _react2 = _interopRequireDefault(_react);
+  
+  var _HomePageScss = __webpack_require__(38);
+  
+  var _HomePageScss2 = _interopRequireDefault(_HomePageScss);
+  
+  var _actionsBridge = __webpack_require__(49);
+  
+  var _actionsBridge2 = _interopRequireDefault(_actionsBridge);
+  
+  var Light = (function (_Component) {
+    _inherits(Light, _Component);
+  
+    _createClass(Light, null, [{
+      key: 'propTypes',
+      value: {
+        id: _react.PropTypes.string.isRequired,
+        user: _react.PropTypes.string.isRequired,
+        ip: _react.PropTypes.string.isRequired
+      },
+      enumerable: true
+    }]);
+  
+    function Light(props, context) {
+      _classCallCheck(this, Light);
+  
+      _get(Object.getPrototypeOf(Light.prototype), 'constructor', this).call(this, props, context);
+      this.state = { lights: [], loaded: false };
+    }
+  
+    _createClass(Light, [{
+      key: 'componentDidMount',
+      value: function componentDidMount() {
+        _actionsBridge2['default'].getLight(this.props.ip, this.props.user, this.props.id).then(this.onLightLoaded.bind(this));
+      }
+    }, {
+      key: 'onLightLoaded',
+      value: function onLightLoaded(light) {
+        console.log('light', this.props.id, light);
+        this.setState({ light: light, loaded: true });
+      }
+    }, {
+      key: 'render',
+      value: function render() {
+        return _react2['default'].createElement(
+          'li',
+          { className: _HomePageScss2['default'].light },
+          this.state.loaded ? _react2['default'].createElement(
+            'div',
+            null,
+            this.state.light.state.on ? _react2['default'].createElement('span', { className: _HomePageScss2['default'].on }) : _react2['default'].createElement('span', { className: _HomePageScss2['default'].off }),
+            _react2['default'].createElement(
+              'span',
+              { className: _HomePageScss2['default'].name },
+              this.state.light.name
+            ),
+            _react2['default'].createElement(
+              'div',
+              { className: _HomePageScss2['default'].metadata },
+              _react2['default'].createElement(
+                'span',
+                { className: _HomePageScss2['default'].type },
+                this.state.light.type
+              ),
+              _react2['default'].createElement(
+                'span',
+                { className: _HomePageScss2['default'].manufacturer },
+                this.state.light.manufacturername
+              ),
+              _react2['default'].createElement(
+                'span',
+                { className: _HomePageScss2['default'].model },
+                this.state.light.modelid
+              )
+            )
+          ) : _react2['default'].createElement(
+            'span',
+            null,
+            'Loading light ',
+            this.props.id,
+            '...'
+          )
+        );
+      }
+    }]);
+  
+    return Light;
+  })(_react.Component);
+  
+  exports['default'] = Light;
   module.exports = exports['default'];
 
 /***/ }

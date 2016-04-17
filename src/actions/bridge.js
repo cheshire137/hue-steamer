@@ -16,6 +16,11 @@ class Bridge {
     return this.makeRequest(path);
   }
 
+  static async getLight(ip, user, id) {
+    return this.makeRequest('/light/' + id + '?ip=' + encodeURIComponent(ip) +
+                            '&user=' + encodeURIComponent(user));
+  }
+
   static async getAllLights(ip, user) {
     return this.getGroup(ip, user, '0');
   }

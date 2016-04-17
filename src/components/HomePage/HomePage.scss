@@ -27,3 +27,61 @@
     }
   }
 }
+
+.lightList {
+  list-style: none;
+  padding-left: 0;
+
+  li {
+    width: 205px;
+    display: inline-block;
+    margin: 0 5px 12px 5px;
+    padding: 6px;
+    border-radius: 2px;
+    border: 1px solid #ccc;
+  }
+}
+
+.light {
+  span {
+    display: inline-block;
+  }
+
+  .on, .off {
+    width: 6px;
+    height: 6px;
+    border-radius: 100%;
+    margin-right: 0.3em;
+    border: 1px solid rgba(0,0,0,0.3);
+    vertical-align: middle;
+  }
+
+  .on {
+    background-color: #FFF7C2;
+  }
+
+  .off {
+    background-color: #373634;
+  }
+
+  .name {
+
+  }
+
+  .metadata {
+    font-size: 13px;
+    color: #797979;
+  }
+
+  .type {
+    display: block;
+  }
+
+  .manufacturer {
+    padding: 0 0.3em 0 0;
+  }
+
+  .model {
+
+  }
+}

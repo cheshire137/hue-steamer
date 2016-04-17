@@ -20,8 +20,8 @@ class HomePage extends Component {
     super(props);
     const data = LocalStorage.getJSON();
     this.state = {
-      bridgeUser: data.hueBridgeUser,
-      bridgeIP: data.hueBridgeIp,
+      user: data.hueBridgeUser,
+      ip: data.hueBridgeIp,
       bridge: data.bridge,
       haveBridge: typeof data.bridge === 'object',
       allLights: data.allLights,
@@ -54,20 +54,20 @@ class HomePage extends Component {
   }
 
   getAllLights() {
-    console.log('getting all lights for', this.state.bridgeIP, this.state.bridgeUser);
-    Bridge.getAllLights(this.state.bridgeIP, this.state.bridgeUser).
+    console.log('getting all lights for', this.state.ip, this.state.user);
+    Bridge.getAllLights(this.state.ip, this.state.user).
            then(this.onAllLightsLoaded.bind(this));
   }
 
   getBridgeState() {
-    console.log('getting bridge for', this.state.bridgeIP, this.state.bridgeUser);
-    Bridge.getInfo(this.state.bridgeIP, this.state.bridgeUser).
+    console.log('getting bridge for', this.state.ip, this.state.user);
+    Bridge.getInfo(this.state.ip, this.state.user).
            then(this.onBridgeLoaded.bind(this));
   }
 
   redirectIfNoBridgeSettings() {
-    const haveBridgeIp = typeof this.state.bridgeIP !== 'undefined';
-    const haveBridgeUser = typeof this.state.bridgeUser !== 'undefined';
+    const haveBridgeIp = typeof this.state.ip !== 'undefined';
+    const haveBridgeUser = typeof this.state.user !== 'undefined';
     if (!haveBridgeIp || !haveBridgeUser) {
       Location.push({
         ...(parsePath('/settings')),
@@ -86,7 +86,10 @@ class HomePage extends Component {
           <div className={s.bridgeAndLights}>
             <BridgeDisplay {...this.state.bridge} numLights={numLights} />
             {this.state.haveAllLights ? (
-              <LightsList {...this.state.allLights} />
+              <LightsList ip={this.state.ip}
+                user={this.state.user}
+                group={this.state.allLights}
+              />
             ) : (
               <span>Loading lights...</span>
             )}
