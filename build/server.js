@@ -158,6 +158,49 @@ module.exports =
     }, null, _this);
   });
   
+  server.get('/group', function callee$0$0(req, res) {
+    var ip, user, groupID, api;
+    return regeneratorRuntime.async(function callee$0$0$(context$1$0) {
+      while (1) switch (context$1$0.prev = context$1$0.next) {
+        case 0:
+          ip = req.query.ip;
+          user = req.query.user;
+          groupID = req.query.id;
+  
+          if (!(typeof ip !== 'string')) {
+            context$1$0.next = 6;
+            break;
+          }
+  
+          res.send('{"error": "Must provide Hue Bridge IP address in ip param"}');
+          return context$1$0.abrupt('return');
+  
+        case 6:
+          if (!(typeof user !== 'string')) {
+            context$1$0.next = 9;
+            break;
+          }
+  
+          res.send('{"error": "Must provide Hue Bridge user in user param"}');
+          return context$1$0.abrupt('return');
+  
+        case 9:
+          if (typeof groupID === 'undefined') {
+            groupID = '0';
+          }
+          api = new hue.HueApi(ip, user);
+  
+          api.getGroup(groupID).then(function (group) {
+            res.send(JSON.stringify(group));
+          }).done();
+  
+        case 12:
+        case 'end':
+          return context$1$0.stop();
+      }
+    }, null, _this);
+  });
+  
   //
   // Register server-side rendering middleware
   // -----------------------------------------------------------------------------
@@ -2532,6 +2575,10 @@ module.exports =
   
   var _BridgeDisplay2 = _interopRequireDefault(_BridgeDisplay);
   
+  var _LightsList = __webpack_require__(63);
+  
+  var _LightsList2 = _interopRequireDefault(_LightsList);
+  
   var title = 'Hue Steamer';
   
   var HomePage = (function (_Component) {
@@ -2549,14 +2596,15 @@ module.exports =
       _classCallCheck(this, _HomePage);
   
       _get(Object.getPrototypeOf(_HomePage.prototype), 'constructor', this).call(this, props);
-      var settings = _storesLocalStorage2['default'].getJSON();
+      var data = _storesLocalStorage2['default'].getJSON();
       this.state = {
-        hueBridgeUser: settings.hueBridgeUser,
-        hueBridgeIp: settings.hueBridgeIp,
-        bridge: settings.bridge,
-        haveBridge: typeof settings.bridge === 'object'
+        bridgeUser: data.hueBridgeUser,
+        bridgeIP: data.hueBridgeIp,
+        bridge: data.bridge,
+        haveBridge: typeof data.bridge === 'object',
+        allLights: data.allLights,
+        haveAllLights: typeof data.allLights === 'object'
       };
-      console.log(settings.bridge);
     }
   
     _createClass(HomePage, [{
@@ -2571,25 +2619,39 @@ module.exports =
         if (!this.state.haveBridge) {
           this.getBridgeState();
         }
+        if (!this.state.haveAllLights) {
+          this.getAllLights();
+        }
+      }
+    }, {
+      key: 'onAllLightsLoaded',
+      value: function onAllLightsLoaded(group) {
+        this.setState({ allLights: group, haveAllLights: true });
+        _storesLocalStorage2['default'].set('allLights', group);
       }
     }, {
       key: 'onBridgeLoaded',
       value: function onBridgeLoaded(bridge) {
-        console.log('loaded bridge', bridge);
         this.setState({ bridge: bridge, haveBridge: true });
         _storesLocalStorage2['default'].set('bridge', bridge);
       }
     }, {
+      key: 'getAllLights',
+      value: function getAllLights() {
+        console.log('getting all lights for', this.state.bridgeIP, this.state.bridgeUser);
+        _actionsBridge2['default'].getAllLights(this.state.bridgeIP, this.state.bridgeUser).then(this.onAllLightsLoaded.bind(this));
+      }
+    }, {
       key: 'getBridgeState',
       value: function getBridgeState() {
-        console.log('getting bridge for', this.state.hueBridgeIp, this.state.hueBridgeUser);
-        _actionsBridge2['default'].getInfo(this.state.hueBridgeIp, this.state.hueBridgeUser).then(this.onBridgeLoaded.bind(this));
+        console.log('getting bridge for', this.state.bridgeIP, this.state.bridgeUser);
+        _actionsBridge2['default'].getInfo(this.state.bridgeIP, this.state.bridgeUser).then(this.onBridgeLoaded.bind(this));
       }
     }, {
       key: 'redirectIfNoBridgeSettings',
       value: function redirectIfNoBridgeSettings() {
-        var haveBridgeIp = typeof this.state.hueBridgeIp !== 'undefined';
-        var haveBridgeUser = typeof this.state.hueBridgeUser !== 'undefined';
+        var haveBridgeIp = typeof this.state.bridgeIP !== 'undefined';
+        var haveBridgeUser = typeof this.state.bridgeUser !== 'undefined';
         if (!haveBridgeIp || !haveBridgeUser) {
           _coreLocation2['default'].push(_extends({}, (0, _historyLibParsePath2['default'])('/settings')));
         }
@@ -2597,13 +2659,26 @@ module.exports =
     }, {
       key: 'render',
       value: function render() {
+        var numLights = NaN;
+        if (this.state.haveAllLights) {
+          numLights = this.state.allLights.lights.length;
+        }
         return _react2['default'].createElement(
           'div',
           null,
-          this.state.haveBridge ? _react2['default'].createElement(_BridgeDisplay2['default'], { bridge: this.state.bridge }) : _react2['default'].createElement(
+          this.state.haveBridge ? _react2['default'].createElement(
+            'div',
+            { className: _HomePageScss2['default'].bridgeAndLights },
+            _react2['default'].createElement(_BridgeDisplay2['default'], _extends({}, this.state.bridge, { numLights: numLights })),
+            this.state.haveAllLights ? _react2['default'].createElement(_LightsList2['default'], this.state.allLights) : _react2['default'].createElement(
+              'span',
+              null,
+              'Loading lights...'
+            )
+          ) : _react2['default'].createElement(
             'span',
             null,
-            'Loading...'
+            'Loading bridge info...'
           )
         );
       }
@@ -2920,6 +2995,40 @@ module.exports =
         }, null, this);
       }
     }, {
+      key: 'getGroup',
+      value: function getGroup(ip, user, id) {
+        var path;
+        return regeneratorRuntime.async(function getGroup$(context$2$0) {
+          while (1) switch (context$2$0.prev = context$2$0.next) {
+            case 0:
+              path = '/group?ip=' + encodeURIComponent(ip) + '&user=' + encodeURIComponent(user);
+  
+              if (typeof id !== 'undefined') {
+                path += '&id=' + encodeURIComponent(id);
+              }
+              return context$2$0.abrupt('return', this.makeRequest(path));
+  
+            case 3:
+            case 'end':
+              return context$2$0.stop();
+          }
+        }, null, this);
+      }
+    }, {
+      key: 'getAllLights',
+      value: function getAllLights(ip, user) {
+        return regeneratorRuntime.async(function getAllLights$(context$2$0) {
+          while (1) switch (context$2$0.prev = context$2$0.next) {
+            case 0:
+              return context$2$0.abrupt('return', this.getGroup(ip, user, '0'));
+  
+            case 1:
+            case 'end':
+              return context$2$0.stop();
+          }
+        }, null, this);
+      }
+    }, {
       key: 'makeRequest',
       value: function makeRequest(path) {
         var url, response, data;
@@ -2981,39 +3090,39 @@ module.exports =
   
   var _HomePageScss2 = _interopRequireDefault(_HomePageScss);
   
-  var _decoratorsWithStyles = __webpack_require__(24);
-  
-  var _decoratorsWithStyles2 = _interopRequireDefault(_decoratorsWithStyles);
-  
   var BridgeDisplay = (function (_Component) {
     _inherits(BridgeDisplay, _Component);
   
     _createClass(BridgeDisplay, null, [{
       key: 'propTypes',
       value: {
-        bridge: _react.PropTypes.func.isRequired
+        localtime: _react.PropTypes.string.isRequired,
+        ipaddress: _react.PropTypes.string.isRequired,
+        name: _react.PropTypes.string.isRequired,
+        modelid: _react.PropTypes.string.isRequired,
+        numLights: _react.PropTypes.number
       },
       enumerable: true
     }]);
   
     function BridgeDisplay(props, context) {
-      _classCallCheck(this, _BridgeDisplay);
+      _classCallCheck(this, BridgeDisplay);
   
-      _get(Object.getPrototypeOf(_BridgeDisplay.prototype), 'constructor', this).call(this, props, context);
+      _get(Object.getPrototypeOf(BridgeDisplay.prototype), 'constructor', this).call(this, props, context);
       this.state = {};
     }
   
     _createClass(BridgeDisplay, [{
       key: 'getPrettyTime',
       value: function getPrettyTime() {
-        var date = new Date(this.props.bridge.localtime);
+        var date = new Date(this.props.localtime);
         var utc = new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds());
         return utc.toLocaleString();
       }
     }, {
       key: 'render',
       value: function render() {
-        var bridgeUrl = 'http://' + this.props.bridge.ipaddress;
+        var bridgeUrl = 'http://' + this.props.ipaddress;
         return _react2['default'].createElement(
           'dl',
           { className: _HomePageScss2['default'].bridgeDetails },
@@ -3025,7 +3134,7 @@ module.exports =
           _react2['default'].createElement(
             'dd',
             null,
-            this.props.bridge.name
+            this.props.name
           ),
           _react2['default'].createElement(
             'dt',
@@ -3038,7 +3147,7 @@ module.exports =
             _react2['default'].createElement(
               'a',
               { href: bridgeUrl, target: '_blank' },
-              this.props.bridge.ipaddress
+              this.props.ipaddress
             )
           ),
           _react2['default'].createElement(
@@ -3049,7 +3158,7 @@ module.exports =
           _react2['default'].createElement(
             'dd',
             null,
-            this.props.bridge.modelid
+            this.props.modelid
           ),
           _react2['default'].createElement(
             'dt',
@@ -3060,13 +3169,21 @@ module.exports =
             'dd',
             null,
             this.getPrettyTime()
+          ),
+          _react2['default'].createElement(
+            'dt',
+            null,
+            '# Lights'
+          ),
+          _react2['default'].createElement(
+            'dd',
+            null,
+            this.props.numLights
           )
         );
       }
     }]);
   
-    var _BridgeDisplay = BridgeDisplay;
-    BridgeDisplay = (0, _decoratorsWithStyles2['default'])(_HomePageScss2['default'])(BridgeDisplay) || BridgeDisplay;
     return BridgeDisplay;
   })(_react.Component);
   
@@ -3683,6 +3800,66 @@ module.exports =
   })(_react.Component);
   
   exports['default'] = Link;
+  module.exports = exports['default'];
+
+/***/ },
+/* 63 */
+/***/ function(module, exports, __webpack_require__) {
+
+  'use strict';
+  
+  Object.defineProperty(exports, '__esModule', {
+    value: true
+  });
+  
+  var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+  
+  var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+  
+  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  
+  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+  
+  function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+  
+  var _react = __webpack_require__(4);
+  
+  var _react2 = _interopRequireDefault(_react);
+  
+  var _HomePageScss = __webpack_require__(38);
+  
+  var _HomePageScss2 = _interopRequireDefault(_HomePageScss);
+  
+  var LightsList = (function (_Component) {
+    _inherits(LightsList, _Component);
+  
+    _createClass(LightsList, null, [{
+      key: 'propTypes',
+      value: {
+        lights: _react.PropTypes.array.isRequired
+      },
+      enumerable: true
+    }]);
+  
+    function LightsList(props, context) {
+      _classCallCheck(this, LightsList);
+  
+      _get(Object.getPrototypeOf(LightsList.prototype), 'constructor', this).call(this, props, context);
+      this.state = {};
+      console.log('group props', props);
+    }
+  
+    _createClass(LightsList, [{
+      key: 'render',
+      value: function render() {
+        return _react2['default'].createElement('div', null);
+      }
+    }]);
+  
+    return LightsList;
+  })(_react.Component);
+  
+  exports['default'] = LightsList;
   module.exports = exports['default'];
 
 /***/ }

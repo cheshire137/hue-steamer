@@ -57,6 +57,27 @@ server.get('/bridge', async (req, res) => {
   }).done();
 });
 
+server.get('/group', async (req, res) => {
+  const ip = req.query.ip;
+  const user = req.query.user;
+  let groupID = req.query.id;
+  if (typeof ip !== 'string') {
+    res.send('{"error": "Must provide Hue Bridge IP address in ip param"}');
+    return;
+  }
+  if (typeof user !== 'string') {
+    res.send('{"error": "Must provide Hue Bridge user in user param"}');
+    return;
+  }
+  if (typeof groupID === 'undefined') {
+    groupID = '0';
+  }
+  const api = new hue.HueApi(ip, user);
+  api.getGroup(groupID).then((group) => {
+    res.send(JSON.stringify(group));
+  }).done();
+});
+
 //
 // Register server-side rendering middleware
 // -----------------------------------------------------------------------------

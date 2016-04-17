@@ -6,6 +6,7 @@ import LocalStorage from '../../stores/localStorage';
 import Location from '../../core/Location';
 import Bridge from '../../actions/bridge';
 import BridgeDisplay from './BridgeDisplay';
+import LightsList from './LightsList';
 
 const title = 'Hue Steamer';
 
@@ -17,14 +18,15 @@ class HomePage extends Component {
 
   constructor(props) {
     super(props);
-    const settings = LocalStorage.getJSON();
+    const data = LocalStorage.getJSON();
     this.state = {
-      hueBridgeUser: settings.hueBridgeUser,
-      hueBridgeIp: settings.hueBridgeIp,
-      bridge: settings.bridge,
-      haveBridge: typeof settings.bridge === 'object',
+      bridgeUser: data.hueBridgeUser,
+      bridgeIP: data.hueBridgeIp,
+      bridge: data.bridge,
+      haveBridge: typeof data.bridge === 'object',
+      allLights: data.allLights,
+      haveAllLights: typeof data.allLights === 'object',
     };
-    console.log(settings.bridge);
   }
 
   componentWillMount() {
@@ -36,23 +38,36 @@ class HomePage extends Component {
     if (!this.state.haveBridge) {
       this.getBridgeState();
     }
+    if (!this.state.haveAllLights) {
+      this.getAllLights();
+    }
+  }
+
+  onAllLightsLoaded(group) {
+    this.setState({ allLights: group, haveAllLights: true });
+    LocalStorage.set('allLights', group);
   }
 
   onBridgeLoaded(bridge) {
-    console.log('loaded bridge', bridge);
     this.setState({ bridge, haveBridge: true });
     LocalStorage.set('bridge', bridge);
   }
 
+  getAllLights() {
+    console.log('getting all lights for', this.state.bridgeIP, this.state.bridgeUser);
+    Bridge.getAllLights(this.state.bridgeIP, this.state.bridgeUser).
+           then(this.onAllLightsLoaded.bind(this));
+  }
+
   getBridgeState() {
-    console.log('getting bridge for', this.state.hueBridgeIp, this.state.hueBridgeUser);
-    Bridge.getInfo(this.state.hueBridgeIp, this.state.hueBridgeUser).
+    console.log('getting bridge for', this.state.bridgeIP, this.state.bridgeUser);
+    Bridge.getInfo(this.state.bridgeIP, this.state.bridgeUser).
            then(this.onBridgeLoaded.bind(this));
   }
 
   redirectIfNoBridgeSettings() {
-    const haveBridgeIp = typeof this.state.hueBridgeIp !== 'undefined';
-    const haveBridgeUser = typeof this.state.hueBridgeUser !== 'undefined';
+    const haveBridgeIp = typeof this.state.bridgeIP !== 'undefined';
+    const haveBridgeUser = typeof this.state.bridgeUser !== 'undefined';
     if (!haveBridgeIp || !haveBridgeUser) {
       Location.push({
         ...(parsePath('/settings')),
@@ -61,12 +76,23 @@ class HomePage extends Component {
   }
 
   render() {
+    let numLights = NaN;
+    if (this.state.haveAllLights) {
+      numLights = this.state.allLights.lights.length;
+    }
     return (
       <div>
         {this.state.haveBridge ? (
-          <BridgeDisplay bridge={this.state.bridge} />
+          <div className={s.bridgeAndLights}>
+            <BridgeDisplay {...this.state.bridge} numLights={numLights} />
+            {this.state.haveAllLights ? (
+              <LightsList {...this.state.allLights} />
+            ) : (
+              <span>Loading lights...</span>
+            )}
+          </div>
         ) : (
-          <span>Loading...</span>
+          <span>Loading bridge info...</span>
         )}
       </div>
     );

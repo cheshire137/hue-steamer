@@ -1,11 +1,13 @@
 import React, { Component, PropTypes } from 'react';
 import s from './HomePage.scss';
-import withStyles from '../../decorators/withStyles';
 
-@withStyles(s)
 class BridgeDisplay extends Component {
   static propTypes = {
-    bridge: PropTypes.func.isRequired,
+    localtime: PropTypes.string.isRequired,
+    ipaddress: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    modelid: PropTypes.string.isRequired,
+    numLights: PropTypes.number,
   };
 
   constructor(props, context) {
@@ -14,27 +16,31 @@ class BridgeDisplay extends Component {
   }
 
   getPrettyTime() {
-    const date = new Date(this.props.bridge.localtime);
-    const utc = new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds());
+    const date = new Date(this.props.localtime);
+    const utc = new Date(date.getUTCFullYear(), date.getUTCMonth(),
+                         date.getUTCDate(), date.getUTCHours(),
+                         date.getUTCMinutes(), date.getUTCSeconds());
     return utc.toLocaleString();
   }
 
   render() {
-    const bridgeUrl = 'http://' + this.props.bridge.ipaddress;
+    const bridgeUrl = 'http://' + this.props.ipaddress;
     return (
       <dl className={s.bridgeDetails}>
         <dt>Name</dt>
-        <dd>{this.props.bridge.name}</dd>
+        <dd>{this.props.name}</dd>
         <dt>IP Address</dt>
         <dd>
           <a href={bridgeUrl} target="_blank">
-            {this.props.bridge.ipaddress}
+            {this.props.ipaddress}
           </a>
         </dd>
         <dt>Model</dt>
-        <dd>{this.props.bridge.modelid}</dd>
+        <dd>{this.props.modelid}</dd>
         <dt>Time</dt>
         <dd>{this.getPrettyTime()}</dd>
+        <dt># Lights</dt>
+        <dd>{this.props.numLights}</dd>
       </dl>
     );
   }
