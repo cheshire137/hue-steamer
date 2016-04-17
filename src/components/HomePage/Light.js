@@ -25,16 +25,26 @@ class Light extends Component {
   }
 
   render() {
+    const checkboxID = 'light-' + this.props.id + '-onoff';
     return (
       <li className={s.light}>
         {this.state.loaded ? (
           <div>
-            {this.state.light.state.on ? (
-              <span className={s.on}></span>
-            ) : (
-              <span className={s.off}></span>
-            )}
-            <span className={s.name}>{this.state.light.name}</span>
+            <header className={s.lightHeader}>
+              <div className={s.lightNameArea}>
+                <span className={s.name}>{this.state.light.name}</span>
+              </div>
+              <div className={s.onoffswitch}>
+                <input type="checkbox" name="onoffswitch"
+                  className={s.onoffswitchCheckbox} id={checkboxID}
+                  checked={this.state.light.state.on}
+                />
+                <label className={s.onoffswitchLabel} htmlFor={checkboxID}>
+                  <span className={s.onoffswitchInner}></span>
+                  <span className={s.onoffswitchSwitch}></span>
+                </label>
+              </div>
+            </header>
             <div className={s.metadata}>
               <span className={s.type}>{this.state.light.type}</span>
               <span className={s.manufacturer}>
