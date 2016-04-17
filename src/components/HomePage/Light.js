@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import s from './HomePage.scss';
 import Bridge from '../../actions/bridge';
+import Converter from '../../api/converter';
 
 class Light extends Component {
   static propTypes = {
@@ -20,6 +21,10 @@ class Light extends Component {
   }
 
   onLightLoaded(light) {
+    if (light.hasOwnProperty('errno')) {
+      console.error('failed to load light ' + this.props.id, light);
+      return;
+    }
     this.setState({ light, loaded: true });
   }
 
@@ -42,8 +47,25 @@ class Light extends Component {
     }
   }
 
+  getLightHex() {
+    const lightState = this.state.light.state;
+    if (lightState.on) {
+      const xy = lightState.xy;
+      if (typeof xy === 'object') {
+        return '#' + Converter.cie1931ToHex(xy[0], xy[1], lightState.bri);
+      }
+    }
+  }
+
   render() {
     const checkboxID = 'light-' + this.props.id + '-toggle';
+    const colorStyle = {};
+    if (typeof this.state.light === 'object') {
+      const backgroundColor = this.getLightHex();
+      if (typeof backgroundColor !== 'undefined') {
+        colorStyle.backgroundColor = backgroundColor;
+      }
+    }
     return (
       <li className={s.light}>
         {this.state.loaded ? (
@@ -66,13 +88,17 @@ class Light extends Component {
                 </label>
               </div>
             </header>
-            <div className={s.metadata}>
-              <span className={s.type}>{this.state.light.type}</span>
-              <span className={s.manufacturer}>
-                {this.state.light.manufacturername}
-              </span>
-              <span className={s.model}>{this.state.light.modelid}</span>
-            </div>
+            <footer className={s.lightFooter}>
+              <div className={s.metadata}>
+                <span className={s.type}>{this.state.light.type}</span>
+                <span className={s.manufacturer}>
+                  {this.state.light.manufacturername}
+                </span>
+                <span className={s.model}>{this.state.light.modelid}</span>
+              </div>
+              <div className={s.colorBlock} style={colorStyle}>
+              </div>
+            </footer>
           </div>
         ) : (
           <span>Loading light {this.props.id}...</span>

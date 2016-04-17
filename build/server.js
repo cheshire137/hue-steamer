@@ -3007,16 +3007,18 @@ module.exports =
   
   
   // module
-  exports.push([module.id, "/* #222 */   /* #404040 */ /* #555 */ /* #777 */ /* #eee */  /* Extra small screen / phone */  /* Small screen / tablet */  /* Medium screen / desktop */ /* Large screen / wide desktop */\n\n.HomePage_lightList_3oL {\n  list-style: none;\n  padding-left: 0;\n}\n\n.HomePage_lightList_3oL li {\n  width: 205px;\n  display: inline-block;\n  margin: 0 5px 12px 5px;\n  padding: 6px;\n  border-radius: 2px;\n  border: 1px solid #ccc;\n}\n\n.HomePage_light_2jt .HomePage_lightHeader_1wr {\n  display: table;\n  width: 100%;\n}\n\n.HomePage_light_2jt .HomePage_lightNameArea_my7 {\n  display: table-cell;\n  vertical-align: middle;\n}\n\n.HomePage_light_2jt .HomePage_name_nWG {\n  white-space: nowrap;\n  text-overflow: ellipsis;\n  overflow: hidden;\n  width: 151px;\n  display: block;\n}\n\n.HomePage_light_2jt .HomePage_metadata_pqP {\n  font-size: 13px;\n  color: #797979;\n}\n\n.HomePage_light_2jt .HomePage_type_1AJ {\n  display: block;\n}\n\n.HomePage_light_2jt .HomePage_manufacturer_3WL {\n  padding: 0 0.3em 0 0;\n}\n\n.HomePage_light_2jt .HomePage_model_3Ue {}\n\n.HomePage_onoffswitch_3hQ {\n  position: relative;\n  display: table-cell;\n  vertical-align: middle;\n  width: 54px;\n  -webkit-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n}\n\n.HomePage_onoffswitch_3hQ .HomePage_onoffswitchCheckbox_3tD {\n  display: none\n}\n\n.HomePage_onoffswitch_3hQ .HomePage_onoffswitchCheckbox_3tD:checked + .HomePage_onoffswitchLabel_W_H .HomePage_onoffswitchInner_1zJ {\n  margin-left: 0;\n}\n\n.HomePage_onoffswitch_3hQ .HomePage_onoffswitchCheckbox_3tD:checked + .HomePage_onoffswitchLabel_W_H .HomePage_onoffswitchSwitch_1Vt {\n  right: 0;\n}\n\n.HomePage_onoffswitch_3hQ .HomePage_onoffswitchLabel_W_H {\n  display: block;\n  overflow: hidden;\n  cursor: pointer;\n  border: 2px solid #CCCCCC;\n  border-radius: 18px;\n}\n\n.HomePage_onoffswitch_3hQ .HomePage_onoffswitchInner_1zJ {\n  display: block;\n  width: 200%;\n  margin-left: -100%;\n  -webkit-transition: margin 0.3s ease-in 0s;\n  -o-transition: margin 0.3s ease-in 0s;\n  transition: margin 0.3s ease-in 0s\n}\n\n.HomePage_onoffswitch_3hQ .HomePage_onoffswitchInner_1zJ:before, .HomePage_onoffswitch_3hQ .HomePage_onoffswitchInner_1zJ:after {\n  display: block;\n  float: left;\n  width: 50%;\n  height: 18px;\n  padding: 0;\n  line-height: 18px;\n  font-size: 12px;\n  color: white;\n  font-weight: 700;\n  -webkit-box-sizing: border-box;\n          box-sizing: border-box;\n}\n\n.HomePage_onoffswitch_3hQ .HomePage_onoffswitchInner_1zJ:before {\n  content: \"on\";\n  padding-left: 10px;\n  background-color: #FFF7C2;\n  color: #474029;\n}\n\n.HomePage_onoffswitch_3hQ .HomePage_onoffswitchInner_1zJ:after {\n  content: \"off\";\n  padding-right: 10px;\n  background-color: #373634;\n  color: #D6D6D6;\n  text-align: right;\n}\n\n.HomePage_onoffswitch_3hQ .HomePage_onoffswitchSwitch_1Vt {\n  display: block;\n  width: 18px;\n  margin: 0px;\n  background: #FFFFFF;\n  position: absolute;\n  top: 0;\n  bottom: 0;\n  right: 32px;\n  border: 2px solid #CCCCCC;\n  border-radius: 18px;\n  -webkit-transition: all 0.3s ease-in 0s;\n  -o-transition: all 0.3s ease-in 0s;\n  transition: all 0.3s ease-in 0s;\n}\n", "", {"version":3,"sources":["/./src/components/variables.scss","/./src/components/HomePage/HomePage.scss"],"names":[],"mappings":"AACwD,UAAU,GACV,aAAa,CACb,UAAU,CACV,UAAU,CACV,UAAU,EASlC,gCAAgC,EAChC,2BAA2B,EAC3B,6BAA6B,CAC7B,iCAAiC;;ACfjE;EACE,iBAAiB;EACjB,gBAAgB;CAUjB;;AARC;EACE,aAAa;EACb,sBAAsB;EACtB,uBAAuB;EACvB,aAAa;EACb,mBAAmB;EACnB,uBAAuB;CACxB;;AAID;EACE,eAAe;EACf,YAAY;CACb;;AAED;EACE,oBAAoB;EACpB,uBAAuB;CACxB;;AAED;EACE,oBAAoB;EACpB,wBAAwB;EACxB,iBAAiB;EACjB,aAAa;EACb,eAAe;CAChB;;AAED;EACE,gBAAgB;EAChB,eAAe;CAChB;;AAED;EACE,eAAe;CAChB;;AAED;EACE,qBAAqB;CACtB;;AAED,0CAEC;;AAGH;EACE,mBAAmB;EACnB,oBAAoB;EACpB,uBAAuB;EACvB,YAAY;EACZ,0BAA0B;EAC1B,uBAAuB;EACvB,sBAAsB;CAqEvB;;AAnEC;EACE,aAAc;CAaf;;AATK;EACE,eAAe;CAChB;;AAED;EACE,SAAS;CACV;;AAKP;EACE,eAAe;EACf,iBAAiB;EACjB,gBAAgB;EAChB,0BAA0B;EAC1B,oBAAoB;CACrB;;AAED;EACE,eAAe;EACf,YAAY;EACZ,mBAAmB;EACnB,2CAAmC;EAAnC,sCAAmC;EAAnC,kCAAmC;CA6BpC;;AA3BC;EACE,eAAe;EACf,YAAY;EACZ,WAAW;EACX,aAAa;EACb,WAAW;EACX,kBAAkB;EAClB,gBAAgB;EAChB,aAAa;EACb,iBAAiB;EACjB,+BAAuB;UAAvB,uBAAuB;CACxB;;AAED;EACE,cAAc;EACd,mBAAmB;EACnB,0BAA0B;EAC1B,eAAe;CAChB;;AAED;EACE,eAAe;EACf,oBAAoB;EACpB,0BAA0B;EAC1B,eAAe;EACf,kBAAkB;CACnB;;AAGH;EACI,eAAe;EAAC,YAAY;EAAC,YAAY;EACzC,oBAAoB;EACpB,mBAAmB;EAAC,OAAO;EAAC,UAAU;EACtC,YAAY;EACZ,0BAA0B;EAAC,oBAAoB;EAC/C,wCAAgC;EAAhC,mCAAgC;EAAhC,gCAAgC;CACnC","file":"HomePage.scss","sourcesContent":["$white-base:            hsl(255, 255, 255);\r\n$gray-darker:           color(black lightness(+13.5%)); /* #222 */\r\n$gray-dark:             color(black lightness(+25%));   /* #404040 */\r\n$gray:                  color(black lightness(+33.5%)); /* #555 */\r\n$gray-light:            color(black lightness(+46.7%)); /* #777 */\r\n$gray-lighter:          color(black lightness(+93.5%)); /* #eee */\r\n\r\n$link-color: #E16C51;\r\n$link-hover-color: #97918A;\r\n\r\n$font-family-base:      'Segoe UI', 'HelveticaNeue-Light', sans-serif;\r\n\r\n$max-content-width:     1000px;\r\n\r\n$screen-xs-min:         480px;  /* Extra small screen / phone */\r\n$screen-sm-min:         768px;  /* Small screen / tablet */\r\n$screen-md-min:         992px;  /* Medium screen / desktop */\r\n$screen-lg-min:         1200px; /* Large screen / wide desktop */\r\n\r\n$animation-swift-out:   .45s cubic-bezier(0.3, 1, 0.4, 1) 0s;\r\n","@import '../variables.scss';\n\n.lightList {\n  list-style: none;\n  padding-left: 0;\n\n  li {\n    width: 205px;\n    display: inline-block;\n    margin: 0 5px 12px 5px;\n    padding: 6px;\n    border-radius: 2px;\n    border: 1px solid #ccc;\n  }\n}\n\n.light {\n  .lightHeader {\n    display: table;\n    width: 100%;\n  }\n\n  .lightNameArea {\n    display: table-cell;\n    vertical-align: middle;\n  }\n\n  .name {\n    white-space: nowrap;\n    text-overflow: ellipsis;\n    overflow: hidden;\n    width: 151px;\n    display: block;\n  }\n\n  .metadata {\n    font-size: 13px;\n    color: #797979;\n  }\n\n  .type {\n    display: block;\n  }\n\n  .manufacturer {\n    padding: 0 0.3em 0 0;\n  }\n\n  .model {\n\n  }\n}\n\n.onoffswitch {\n  position: relative;\n  display: table-cell;\n  vertical-align: middle;\n  width: 54px;\n  -webkit-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n\n  .onoffswitchCheckbox {\n    display: none;\n\n    &:checked {\n      + .onoffswitchLabel {\n        .onoffswitchInner {\n          margin-left: 0;\n        }\n\n        .onoffswitchSwitch {\n          right: 0;\n        }\n      }\n    }\n  }\n\n  .onoffswitchLabel {\n    display: block;\n    overflow: hidden;\n    cursor: pointer;\n    border: 2px solid #CCCCCC;\n    border-radius: 18px;\n  }\n\n  .onoffswitchInner {\n    display: block;\n    width: 200%;\n    margin-left: -100%;\n    transition: margin 0.3s ease-in 0s;\n\n    &:before, &:after {\n      display: block;\n      float: left;\n      width: 50%;\n      height: 18px;\n      padding: 0;\n      line-height: 18px;\n      font-size: 12px;\n      color: white;\n      font-weight: 700;\n      box-sizing: border-box;\n    }\n\n    &:before {\n      content: \"on\";\n      padding-left: 10px;\n      background-color: #FFF7C2;\n      color: #474029;\n    }\n\n    &:after {\n      content: \"off\";\n      padding-right: 10px;\n      background-color: #373634;\n      color: #D6D6D6;\n      text-align: right;\n    }\n  }\n\n  .onoffswitchSwitch {\n      display: block; width: 18px; margin: 0px;\n      background: #FFFFFF;\n      position: absolute; top: 0; bottom: 0;\n      right: 32px;\n      border: 2px solid #CCCCCC; border-radius: 18px;\n      transition: all 0.3s ease-in 0s;\n  }\n}\n"],"sourceRoot":"webpack://"}]);
+  exports.push([module.id, "/* #222 */   /* #404040 */ /* #555 */ /* #777 */ /* #eee */  /* Extra small screen / phone */  /* Small screen / tablet */  /* Medium screen / desktop */ /* Large screen / wide desktop */\n\n.HomePage_lightList_3oL {\n  list-style: none;\n  padding-left: 0;\n}\n\n.HomePage_lightList_3oL li {\n  width: 205px;\n  display: inline-block;\n  margin: 0 5px 12px 5px;\n  padding: 6px;\n  border-radius: 2px;\n  border: 1px solid #ccc;\n}\n\n.HomePage_light_2jt .HomePage_lightHeader_1wr, .HomePage_light_2jt .HomePage_lightFooter_2nX {\n  display: table;\n  width: 100%;\n}\n\n.HomePage_light_2jt .HomePage_lightFooter_2nX {\n  margin-top: 5px;\n}\n\n.HomePage_light_2jt .HomePage_lightNameArea_my7, .HomePage_light_2jt .HomePage_metadata_pqP, .HomePage_light_2jt .HomePage_colorBlock_3k8 {\n  display: table-cell;\n  vertical-align: middle;\n}\n\n.HomePage_light_2jt .HomePage_name_nWG {\n  white-space: nowrap;\n  text-overflow: ellipsis;\n  overflow: hidden;\n  width: 151px;\n  display: block;\n}\n\n.HomePage_light_2jt .HomePage_metadata_pqP {\n  font-size: 13px;\n  color: #797979;\n}\n\n.HomePage_light_2jt .HomePage_colorBlock_3k8 {\n  width: 54px;\n  border-radius: 4px;\n}\n\n.HomePage_light_2jt .HomePage_type_1AJ {\n  display: block;\n}\n\n.HomePage_light_2jt .HomePage_manufacturer_3WL {\n  padding: 0 0.3em 0 0;\n}\n\n.HomePage_light_2jt .HomePage_model_3Ue {}\n\n.HomePage_onoffswitch_3hQ {\n  position: relative;\n  display: table-cell;\n  vertical-align: middle;\n  width: 54px;\n  -webkit-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n}\n\n.HomePage_onoffswitch_3hQ .HomePage_onoffswitchCheckbox_3tD {\n  display: none\n}\n\n.HomePage_onoffswitch_3hQ .HomePage_onoffswitchCheckbox_3tD:checked + .HomePage_onoffswitchLabel_W_H .HomePage_onoffswitchInner_1zJ {\n  margin-left: 0;\n}\n\n.HomePage_onoffswitch_3hQ .HomePage_onoffswitchCheckbox_3tD:checked + .HomePage_onoffswitchLabel_W_H .HomePage_onoffswitchSwitch_1Vt {\n  right: 0;\n}\n\n.HomePage_onoffswitch_3hQ .HomePage_onoffswitchLabel_W_H {\n  display: block;\n  overflow: hidden;\n  cursor: pointer;\n  border: 2px solid #CCCCCC;\n  border-radius: 18px;\n}\n\n.HomePage_onoffswitch_3hQ .HomePage_onoffswitchInner_1zJ {\n  display: block;\n  width: 200%;\n  margin-left: -100%;\n  -webkit-transition: margin 0.3s ease-in 0s;\n  -o-transition: margin 0.3s ease-in 0s;\n  transition: margin 0.3s ease-in 0s\n}\n\n.HomePage_onoffswitch_3hQ .HomePage_onoffswitchInner_1zJ:before, .HomePage_onoffswitch_3hQ .HomePage_onoffswitchInner_1zJ:after {\n  display: block;\n  float: left;\n  width: 50%;\n  height: 18px;\n  padding: 0;\n  line-height: 18px;\n  font-size: 12px;\n  color: white;\n  font-weight: 700;\n  -webkit-box-sizing: border-box;\n          box-sizing: border-box;\n}\n\n.HomePage_onoffswitch_3hQ .HomePage_onoffswitchInner_1zJ:before {\n  content: \"on\";\n  padding-left: 10px;\n  background-color: #FFF7C2;\n  color: #474029;\n}\n\n.HomePage_onoffswitch_3hQ .HomePage_onoffswitchInner_1zJ:after {\n  content: \"off\";\n  padding-right: 10px;\n  background-color: #373634;\n  color: #D6D6D6;\n  text-align: right;\n}\n\n.HomePage_onoffswitch_3hQ .HomePage_onoffswitchSwitch_1Vt {\n  display: block;\n  width: 18px;\n  margin: 0px;\n  background: #FFFFFF;\n  position: absolute;\n  top: 0;\n  bottom: 0;\n  right: 32px;\n  border: 2px solid #CCCCCC;\n  border-radius: 18px;\n  -webkit-transition: all 0.3s ease-in 0s;\n  -o-transition: all 0.3s ease-in 0s;\n  transition: all 0.3s ease-in 0s;\n}\n", "", {"version":3,"sources":["/./src/components/variables.scss","/./src/components/HomePage/HomePage.scss"],"names":[],"mappings":"AACwD,UAAU,GACV,aAAa,CACb,UAAU,CACV,UAAU,CACV,UAAU,EASlC,gCAAgC,EAChC,2BAA2B,EAC3B,6BAA6B,CAC7B,iCAAiC;;ACfjE;EACE,iBAAiB;EACjB,gBAAgB;CAUjB;;AARC;EACE,aAAa;EACb,sBAAsB;EACtB,uBAAuB;EACvB,aAAa;EACb,mBAAmB;EACnB,uBAAuB;CACxB;;AAID;EAEE,eAAe;EACf,YAAY;CACb;;AAED;EACE,gBAAgB;CACjB;;AAED;EAGE,oBAAoB;EACpB,uBAAuB;CACxB;;AAED;EACE,oBAAoB;EACpB,wBAAwB;EACxB,iBAAiB;EACjB,aAAa;EACb,eAAe;CAChB;;AAED;EACE,gBAAgB;EAChB,eAAe;CAChB;;AAED;EACE,YAAY;EACZ,mBAAmB;CACpB;;AAED;EACE,eAAe;CAChB;;AAED;EACE,qBAAqB;CACtB;;AAED,0CAEC;;AAGH;EACE,mBAAmB;EACnB,oBAAoB;EACpB,uBAAuB;EACvB,YAAY;EACZ,0BAA0B;EAC1B,uBAAuB;EACvB,sBAAsB;CAqEvB;;AAnEC;EACE,aAAc;CAaf;;AATK;EACE,eAAe;CAChB;;AAED;EACE,SAAS;CACV;;AAKP;EACE,eAAe;EACf,iBAAiB;EACjB,gBAAgB;EAChB,0BAA0B;EAC1B,oBAAoB;CACrB;;AAED;EACE,eAAe;EACf,YAAY;EACZ,mBAAmB;EACnB,2CAAmC;EAAnC,sCAAmC;EAAnC,kCAAmC;CA6BpC;;AA3BC;EACE,eAAe;EACf,YAAY;EACZ,WAAW;EACX,aAAa;EACb,WAAW;EACX,kBAAkB;EAClB,gBAAgB;EAChB,aAAa;EACb,iBAAiB;EACjB,+BAAuB;UAAvB,uBAAuB;CACxB;;AAED;EACE,cAAc;EACd,mBAAmB;EACnB,0BAA0B;EAC1B,eAAe;CAChB;;AAED;EACE,eAAe;EACf,oBAAoB;EACpB,0BAA0B;EAC1B,eAAe;EACf,kBAAkB;CACnB;;AAGH;EACI,eAAe;EAAC,YAAY;EAAC,YAAY;EACzC,oBAAoB;EACpB,mBAAmB;EAAC,OAAO;EAAC,UAAU;EACtC,YAAY;EACZ,0BAA0B;EAAC,oBAAoB;EAC/C,wCAAgC;EAAhC,mCAAgC;EAAhC,gCAAgC;CACnC","file":"HomePage.scss","sourcesContent":["$white-base:            hsl(255, 255, 255);\r\n$gray-darker:           color(black lightness(+13.5%)); /* #222 */\r\n$gray-dark:             color(black lightness(+25%));   /* #404040 */\r\n$gray:                  color(black lightness(+33.5%)); /* #555 */\r\n$gray-light:            color(black lightness(+46.7%)); /* #777 */\r\n$gray-lighter:          color(black lightness(+93.5%)); /* #eee */\r\n\r\n$link-color: #E16C51;\r\n$link-hover-color: #97918A;\r\n\r\n$font-family-base:      'Segoe UI', 'HelveticaNeue-Light', sans-serif;\r\n\r\n$max-content-width:     1000px;\r\n\r\n$screen-xs-min:         480px;  /* Extra small screen / phone */\r\n$screen-sm-min:         768px;  /* Small screen / tablet */\r\n$screen-md-min:         992px;  /* Medium screen / desktop */\r\n$screen-lg-min:         1200px; /* Large screen / wide desktop */\r\n\r\n$animation-swift-out:   .45s cubic-bezier(0.3, 1, 0.4, 1) 0s;\r\n","@import '../variables.scss';\n\n.lightList {\n  list-style: none;\n  padding-left: 0;\n\n  li {\n    width: 205px;\n    display: inline-block;\n    margin: 0 5px 12px 5px;\n    padding: 6px;\n    border-radius: 2px;\n    border: 1px solid #ccc;\n  }\n}\n\n.light {\n  .lightHeader,\n  .lightFooter {\n    display: table;\n    width: 100%;\n  }\n\n  .lightFooter {\n    margin-top: 5px;\n  }\n\n  .lightNameArea,\n  .metadata,\n  .colorBlock {\n    display: table-cell;\n    vertical-align: middle;\n  }\n\n  .name {\n    white-space: nowrap;\n    text-overflow: ellipsis;\n    overflow: hidden;\n    width: 151px;\n    display: block;\n  }\n\n  .metadata {\n    font-size: 13px;\n    color: #797979;\n  }\n\n  .colorBlock {\n    width: 54px;\n    border-radius: 4px;\n  }\n\n  .type {\n    display: block;\n  }\n\n  .manufacturer {\n    padding: 0 0.3em 0 0;\n  }\n\n  .model {\n\n  }\n}\n\n.onoffswitch {\n  position: relative;\n  display: table-cell;\n  vertical-align: middle;\n  width: 54px;\n  -webkit-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n\n  .onoffswitchCheckbox {\n    display: none;\n\n    &:checked {\n      + .onoffswitchLabel {\n        .onoffswitchInner {\n          margin-left: 0;\n        }\n\n        .onoffswitchSwitch {\n          right: 0;\n        }\n      }\n    }\n  }\n\n  .onoffswitchLabel {\n    display: block;\n    overflow: hidden;\n    cursor: pointer;\n    border: 2px solid #CCCCCC;\n    border-radius: 18px;\n  }\n\n  .onoffswitchInner {\n    display: block;\n    width: 200%;\n    margin-left: -100%;\n    transition: margin 0.3s ease-in 0s;\n\n    &:before, &:after {\n      display: block;\n      float: left;\n      width: 50%;\n      height: 18px;\n      padding: 0;\n      line-height: 18px;\n      font-size: 12px;\n      color: white;\n      font-weight: 700;\n      box-sizing: border-box;\n    }\n\n    &:before {\n      content: \"on\";\n      padding-left: 10px;\n      background-color: #FFF7C2;\n      color: #474029;\n    }\n\n    &:after {\n      content: \"off\";\n      padding-right: 10px;\n      background-color: #373634;\n      color: #D6D6D6;\n      text-align: right;\n    }\n  }\n\n  .onoffswitchSwitch {\n      display: block; width: 18px; margin: 0px;\n      background: #FFFFFF;\n      position: absolute; top: 0; bottom: 0;\n      right: 32px;\n      border: 2px solid #CCCCCC; border-radius: 18px;\n      transition: all 0.3s ease-in 0s;\n  }\n}\n"],"sourceRoot":"webpack://"}]);
   
   // exports
   exports.locals = {
   	"lightList": "HomePage_lightList_3oL",
   	"light": "HomePage_light_2jt",
   	"lightHeader": "HomePage_lightHeader_1wr",
+  	"lightFooter": "HomePage_lightFooter_2nX",
   	"lightNameArea": "HomePage_lightNameArea_my7",
-  	"name": "HomePage_name_nWG",
   	"metadata": "HomePage_metadata_pqP",
+  	"colorBlock": "HomePage_colorBlock_3k8",
+  	"name": "HomePage_name_nWG",
   	"type": "HomePage_type_1AJ",
   	"manufacturer": "HomePage_manufacturer_3WL",
   	"model": "HomePage_model_3Ue",
@@ -3437,6 +3439,10 @@ module.exports =
   
   var _actionsBridge2 = _interopRequireDefault(_actionsBridge);
   
+  var _apiConverter = __webpack_require__(65);
+  
+  var _apiConverter2 = _interopRequireDefault(_apiConverter);
+  
   var Light = (function (_Component) {
     _inherits(Light, _Component);
   
@@ -3465,6 +3471,10 @@ module.exports =
     }, {
       key: 'onLightLoaded',
       value: function onLightLoaded(light) {
+        if (light.hasOwnProperty('errno')) {
+          console.error('failed to load light ' + this.props.id, light);
+          return;
+        }
         this.setState({ light: light, loaded: true });
       }
     }, {
@@ -3487,9 +3497,27 @@ module.exports =
         }
       }
     }, {
+      key: 'getLightHex',
+      value: function getLightHex() {
+        var lightState = this.state.light.state;
+        if (lightState.on) {
+          var xy = lightState.xy;
+          if (typeof xy === 'object') {
+            return '#' + _apiConverter2['default'].cie1931ToHex(xy[0], xy[1], lightState.bri);
+          }
+        }
+      }
+    }, {
       key: 'render',
       value: function render() {
         var checkboxID = 'light-' + this.props.id + '-toggle';
+        var colorStyle = {};
+        if (typeof this.state.light === 'object') {
+          var backgroundColor = this.getLightHex();
+          if (typeof backgroundColor !== 'undefined') {
+            colorStyle.backgroundColor = backgroundColor;
+          }
+        }
         return _react2['default'].createElement(
           'li',
           { className: _HomePageScss2['default'].light },
@@ -3525,23 +3553,28 @@ module.exports =
               )
             ),
             _react2['default'].createElement(
-              'div',
-              { className: _HomePageScss2['default'].metadata },
+              'footer',
+              { className: _HomePageScss2['default'].lightFooter },
               _react2['default'].createElement(
-                'span',
-                { className: _HomePageScss2['default'].type },
-                this.state.light.type
+                'div',
+                { className: _HomePageScss2['default'].metadata },
+                _react2['default'].createElement(
+                  'span',
+                  { className: _HomePageScss2['default'].type },
+                  this.state.light.type
+                ),
+                _react2['default'].createElement(
+                  'span',
+                  { className: _HomePageScss2['default'].manufacturer },
+                  this.state.light.manufacturername
+                ),
+                _react2['default'].createElement(
+                  'span',
+                  { className: _HomePageScss2['default'].model },
+                  this.state.light.modelid
+                )
               ),
-              _react2['default'].createElement(
-                'span',
-                { className: _HomePageScss2['default'].manufacturer },
-                this.state.light.manufacturername
-              ),
-              _react2['default'].createElement(
-                'span',
-                { className: _HomePageScss2['default'].model },
-                this.state.light.modelid
-              )
+              _react2['default'].createElement('div', { className: _HomePageScss2['default'].colorBlock, style: colorStyle })
             )
           ) : _react2['default'].createElement(
             'span',
@@ -4218,6 +4251,400 @@ module.exports =
 /***/ function(module, exports) {
 
   module.exports = require("front-matter");
+
+/***/ },
+/* 65 */
+/***/ function(module, exports, __webpack_require__) {
+
+  'use strict';
+  
+  Object.defineProperty(exports, '__esModule', {
+    value: true
+  });
+  
+  var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+  
+  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  
+  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+  
+  var _colorHelper = __webpack_require__(67);
+  
+  var _colorHelper2 = _interopRequireDefault(_colorHelper);
+  
+  // Thanks to
+  // https://github.com/benknight/hue-python-rgb-converter/blob/master/rgb_cie.py
+  
+  var Converter = (function () {
+    function Converter() {
+      _classCallCheck(this, Converter);
+    }
+  
+    _createClass(Converter, null, [{
+      key: 'hexToCIE1931',
+  
+      // Converts hexadecimal colors represented as a String to approximate CIE 1931
+      // coordinates. May not produce accurate values.
+      value: function hexToCIE1931(h) {
+        var rgb = _colorHelper2['default'].hexToRGB(h);
+        return this.rgbToCIE1931(rgb[0], rgb[1], rgb[2]);
+      }
+  
+      // Converts red, green and blue integer values to approximate CIE 1931 x and y
+      // coordinates. Algorithm from:
+      // http://www.easyrgb.com/index.php?X=MATH&H=02#text2.
+      // May not produce accurate values.
+    }, {
+      key: 'rgbToCIE1931',
+      value: function rgbToCIE1931(red, green, blue) {
+        var point = _colorHelper2['default'].getXYPointFromRGB(red, green, blue);
+        return [point.x, point.y];
+      }
+  
+      // Returns the approximate CIE 1931 x, y coordinates represented by the
+      // supplied hexColor parameter, or of a random color if the parameter is not
+      // passed. Let people set a lamp's color to any random color.
+    }, {
+      key: 'getCIEColor',
+      value: function getCIEColor(hexColor) {
+        var xy = [];
+        if (typeof hexColor === 'undefined') {
+          var r = _colorHelper2['default'].randomRGBValue();
+          var g = _colorHelper2['default'].randomRGBValue();
+          var b = _colorHelper2['default'].randomRGBValue();
+          xy = this.rgbToCIE1931(r, g, b);
+        } else {
+          xy = this.hexToCIE1931(hexColor);
+        }
+        return xy;
+      }
+  
+      // Converts CIE 1931 x and y coordinates and brightness value from 0 to 1 to an
+      // RGB color.
+    }, {
+      key: 'cie1931ToRGB',
+      value: function cie1931ToRGB(x, y, optionalBri) {
+        var bri = undefined;
+        if (typeof optionalBri === 'undefined') {
+          bri = 1;
+        } else {
+          bri = optionalBri;
+        }
+        return _colorHelper2['default'].getRGBFromXYAndBrightness(x, y, bri);
+      }
+  
+      // Converts CIE 1931 x and y coordinates and brightness value from 0 to 1 to a
+      // CSS hex color.
+    }, {
+      key: 'cie1931ToHex',
+      value: function cie1931ToHex(x, y, bri) {
+        var rgb = this.cie1931ToRGB(x, y, bri);
+        return _colorHelper2['default'].rgbToHex(rgb[0], rgb[1], rgb[2]);
+      }
+    }]);
+  
+    return Converter;
+  })();
+  
+  exports['default'] = Converter;
+  module.exports = exports['default'];
+
+/***/ },
+/* 66 */,
+/* 67 */
+/***/ function(module, exports, __webpack_require__) {
+
+  'use strict';
+  
+  Object.defineProperty(exports, '__esModule', {
+    value: true
+  });
+  
+  var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+  
+  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  
+  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+  
+  var _xyPoint = __webpack_require__(69);
+  
+  var _xyPoint2 = _interopRequireDefault(_xyPoint);
+  
+  // Thanks to
+  // https://github.com/benknight/hue-python-rgb-converter/blob/master/rgb_cie.py
+  
+  var ColorHelper = (function () {
+    function ColorHelper() {
+      _classCallCheck(this, ColorHelper);
+    }
+  
+    _createClass(ColorHelper, null, [{
+      key: 'red',
+  
+      // See http://www.developers.meethue.com/documentation/color-conversions-rgb-xy
+      value: function red() {
+        return new _xyPoint2['default'](0.675, 0.322);
+      }
+  
+      // See http://www.developers.meethue.com/documentation/color-conversions-rgb-xy
+    }, {
+      key: 'lime',
+      value: function lime() {
+        return new _xyPoint2['default'](0.4091, 0.518);
+      }
+  
+      // See http://www.developers.meethue.com/documentation/color-conversions-rgb-xy
+    }, {
+      key: 'blue',
+      value: function blue() {
+        return new _xyPoint2['default'](0.167, 0.04);
+      }
+  
+      // Parses a valid hex color string and returns the Red RGB integer value.
+    }, {
+      key: 'hexToRed',
+      value: function hexToRed(hex) {
+        return parseInt(hex.slice(0, 2), 16);
+      }
+  
+      // Parses a valid hex color string and returns the Green RGB integer value.
+    }, {
+      key: 'hexToGreen',
+      value: function hexToGreen(hex) {
+        return parseInt(hex.slice(2, 4), 16);
+      }
+  
+      // Parses a valid hex color string and returns the Blue RGB integer value.
+    }, {
+      key: 'hexToBlue',
+      value: function hexToBlue(hex) {
+        return parseInt(hex.slice(4, 6), 16);
+      }
+  
+      // Converts a valid hex color string to an RGB array.
+    }, {
+      key: 'hexToRgb',
+      value: function hexToRgb(hex) {
+        return [this.hexToRed(hex), this.hexToGreen(hex), this.hexToBlue(hex)];
+      }
+  
+      // Converts RGB to hex.
+    }, {
+      key: 'rgbToHex',
+      value: function rgbToHex(r, g, b) {
+        return ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+      }
+  
+      // Return a random Integer in the range of 0 to 255, representing an RGB color
+      // value.
+    }, {
+      key: 'randomRgbValue',
+      value: function randomRgbValue() {
+        return Math.floor(Math.random() * 256);
+      }
+  
+      // Returns the cross product of two XYPoints.
+    }, {
+      key: 'crossProduct',
+      value: function crossProduct(p1, p2) {
+        return p1.x * p2.y - p1.y * p2.x;
+      }
+  
+      // Check if the provided XYPoint can be recreated by a Hue lamp.
+    }, {
+      key: 'checkPointInLampsReach',
+      value: function checkPointInLampsReach(p) {
+        var lime = this.lime();
+        var red = this.red();
+        var blue = this.blue();
+        var v1 = new _xyPoint2['default'](lime.x - red.x, lime.y - red.y);
+        var v2 = new _xyPoint2['default'](blue.x - red.x, blue.y - red.y);
+        var q = new _xyPoint2['default'](p.x - red.x, p.y - red.y);
+        var s = this.crossProduct(q, v2) / this.crossProduct(v1, v2);
+        var t = this.crossProduct(v1, q) / this.crossProduct(v1, v2);
+        return s >= 0.0 && t >= 0.0 && s + t <= 1.0;
+      }
+  
+      // Find the closest point on a line. This point will be reproducible by a Hue
+      // lamp.
+    }, {
+      key: 'getClosestPointToLine',
+      value: function getClosestPointToLine(A, B, P) {
+        var AP = new _xyPoint2['default'](P.x - A.x, P.y - A.y);
+        var AB = new _xyPoint2['default'](B.x - A.x, B.y - A.y);
+        var ab2 = AB.x * AB.x + AB.y * AB.y;
+        var apAb = AP.x * AB.x + AP.y * AB.y;
+        var t = apAb / ab2;
+        if (t < 0.0) {
+          t = 0.0;
+        } else if (t > 1.0) {
+          t = 1.0;
+        }
+        return new _xyPoint2['default'](A.x + AB.x * t, A.y + AB.y * t);
+      }
+    }, {
+      key: 'getClosestPointToPoint',
+      value: function getClosestPointToPoint(xyPoint) {
+        var lime = this.lime();
+        var red = this.red();
+        var blue = this.blue();
+  
+        // Color is unreproducible, find the closest point on each line in the CIE
+        // 1931 'triangle'.
+        var pAB = this.getClosestPointToLine(red, lime, xyPoint);
+        var pAC = this.getClosestPointToLine(blue, red, xyPoint);
+        var pBC = this.getClosestPointToLine(lime, blue, xyPoint);
+  
+        // Get the distances per point and see which point is closer to our Point.
+        var dAB = this.getDistanceBetweenTwoPoints(xyPoint, pAB);
+        var dAC = this.getDistanceBetweenTwoPoints(xyPoint, pAC);
+        var dBC = this.getDistanceBetweenTwoPoints(xyPoint, pBC);
+  
+        var lowest = dAB;
+        var closestPoint = pAB;
+        if (dAC < lowest) {
+          lowest = dAC;
+          closestPoint = pAC;
+        }
+        if (dBC < lowest) {
+          lowest = dBC;
+          closestPoint = pBC;
+        }
+  
+        // Change the xy value to a value which is within the reach of the lamp.
+        return new _xyPoint2['default'](closestPoint.x, closestPoint.y);
+      }
+  
+      // Returns the distance between two XYPoints.
+    }, {
+      key: 'getDistanceBetweenTwoPoints',
+      value: function getDistanceBetweenTwoPoints(one, two) {
+        var dx = one.x - two.x;
+        var dy = one.y - two.y;
+        return Math.sqrt(dx * dx + dy * dy);
+      }
+  
+      // Returns an XYPoint object containing the closest available CIE 1931
+      // coordinates based on the RGB input values.
+    }, {
+      key: 'getXYPointFromRGB',
+      value: function getXYPointFromRGB(red, green, blue) {
+        var r = undefined;
+        var g = undefined;
+        var b = undefined;
+        if (red > 0.04045) {
+          r = Math.pow((red + 0.055) / (1.0 + 0.055), 2.4);
+        } else {
+          r = red / 12.92;
+        }
+        if (green > 0.04045) {
+          g = Math.pow((green + 0.055) / (1.0 + 0.055), 2.4);
+        } else {
+          g = green / 12.92;
+        }
+        if (blue > 0.04045) {
+          b = Math.pow((blue + 0.055) / (1.0 + 0.055), 2.4);
+        } else {
+          b = blue / 12.92;
+        }
+  
+        var X = r * 0.4360747 + g * 0.3850649 + b * 0.0930804;
+        var Y = r * 0.2225045 + g * 0.7168786 + b * 0.0406169;
+        var Z = r * 0.0139322 + g * 0.0971045 + b * 0.7141733;
+  
+        var cx = undefined;
+        var cy = undefined;
+        if (X + Y + Z === 0) {
+          cx = 0;
+          cy = 0;
+        } else {
+          cx = X / (X + Y + Z);
+          cy = Y / (X + Y + Z);
+        }
+  
+        // Check if the given XY value is within the color reach of our lamps.
+        var xyPoint = new _xyPoint2['default'](cx, cy);
+        var inReachOfLamps = this.checkPointInLampsReach(xyPoint);
+        if (!inReachOfLamps) {
+          xyPoint = this.getClosestPointToPoint(xyPoint);
+        }
+        return xyPoint;
+      }
+  
+      // Returns a rgb tuplet for given x, y values.  Not actually an inverse of
+      // getXYPointFromRGB.
+    }, {
+      key: 'getRGBFromXYAndBrightness',
+      value: function getRGBFromXYAndBrightness(x, y, optionalBri) {
+        var bri = undefined;
+        if (typeof optionalBri === 'undefined') {
+          bri = 1;
+        } else {
+          bri = optionalBri;
+        }
+        var xyPoint = new _xyPoint2['default'](x, y);
+        if (!this.checkPointInLampsReach(xyPoint)) {
+          xyPoint = this.getClosestPointToPoint(xyPoint);
+        }
+        var Y = bri;
+        var X = Y / xyPoint.y * xyPoint.x;
+        var Z = Y / xyPoint.y * (1 - xyPoint.x - xyPoint.y);
+        var r = X * 1.612 - Y * 0.203 - Z * 0.302;
+        var g = -X * 0.509 + Y * 1.412 + Z * 0.066;
+        var b = X * 0.026 - Y * 0.072 + Z * 0.962;
+        var reverseGammaCorrect = function reverseGammaCorrect(value) {
+          if (value <= 0.0031308) {
+            return 12.92 * value;
+          }
+          return (1.0 + 0.055) * Math.pow(value, 1.0 / 2.4) - 0.055;
+        };
+        r = reverseGammaCorrect(r);
+        g = reverseGammaCorrect(g);
+        b = reverseGammaCorrect(b);
+        r = Math.max(0, r);
+        g = Math.max(0, g);
+        b = Math.max(0, b);
+        var maxComponent = Math.max(r, g, b);
+        if (maxComponent > 1) {
+          r = r / maxComponent;
+          g = g / maxComponent;
+          b = b / maxComponent;
+        }
+        r = Math.round(r * 255);
+        g = Math.round(g * 255);
+        b = Math.round(b * 255);
+        return [r, g, b];
+      }
+    }]);
+  
+    return ColorHelper;
+  })();
+  
+  exports['default'] = ColorHelper;
+  module.exports = exports['default'];
+
+/***/ },
+/* 68 */,
+/* 69 */
+/***/ function(module, exports) {
+
+  "use strict";
+  
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  
+  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+  
+  var XYPoint = function XYPoint(x, y) {
+    _classCallCheck(this, XYPoint);
+  
+    this.x = x;
+    this.y = y;
+  };
+  
+  exports["default"] = XYPoint;
+  module.exports = exports["default"];
 
 /***/ }
 /******/ ]);

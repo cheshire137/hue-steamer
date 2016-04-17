@@ -15,12 +15,19 @@
 }
 
 .light {
-  .lightHeader {
+  .lightHeader,
+  .lightFooter {
     display: table;
     width: 100%;
   }
 
-  .lightNameArea {
+  .lightFooter {
+    margin-top: 5px;
+  }
+
+  .lightNameArea,
+  .metadata,
+  .colorBlock {
     display: table-cell;
     vertical-align: middle;
   }
@@ -36,6 +43,11 @@
   .metadata {
     font-size: 13px;
     color: #797979;
+  }
+
+  .colorBlock {
+    width: 54px;
+    border-radius: 4px;
   }
 
   .type {
