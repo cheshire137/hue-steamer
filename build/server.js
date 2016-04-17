@@ -247,6 +247,94 @@ module.exports =
     }, null, _this);
   });
   
+  server.post('/light/:id/on', function callee$0$0(req, res) {
+    var ip, user, lightID, api, lightState, state;
+    return regeneratorRuntime.async(function callee$0$0$(context$1$0) {
+      while (1) switch (context$1$0.prev = context$1$0.next) {
+        case 0:
+          ip = req.query.ip;
+          user = req.query.user;
+          lightID = req.params.id;
+  
+          if (!(typeof ip !== 'string')) {
+            context$1$0.next = 6;
+            break;
+          }
+  
+          res.send('{"error": "Must provide Hue Bridge IP address in ip param"}');
+          return context$1$0.abrupt('return');
+  
+        case 6:
+          if (!(typeof user !== 'string')) {
+            context$1$0.next = 9;
+            break;
+          }
+  
+          res.send('{"error": "Must provide Hue Bridge user in user param"}');
+          return context$1$0.abrupt('return');
+  
+        case 9:
+          api = new hue.HueApi(ip, user);
+          lightState = hue.lightState;
+          state = lightState.create();
+  
+          api.setLightState(lightID, state.on()).then(function (result) {
+            res.send(JSON.stringify(result));
+          }).fail(function (err) {
+            res.send(JSON.stringify(err));
+          }).done();
+  
+        case 13:
+        case 'end':
+          return context$1$0.stop();
+      }
+    }, null, _this);
+  });
+  
+  server.post('/light/:id/off', function callee$0$0(req, res) {
+    var ip, user, lightID, api, lightState, state;
+    return regeneratorRuntime.async(function callee$0$0$(context$1$0) {
+      while (1) switch (context$1$0.prev = context$1$0.next) {
+        case 0:
+          ip = req.query.ip;
+          user = req.query.user;
+          lightID = req.params.id;
+  
+          if (!(typeof ip !== 'string')) {
+            context$1$0.next = 6;
+            break;
+          }
+  
+          res.send('{"error": "Must provide Hue Bridge IP address in ip param"}');
+          return context$1$0.abrupt('return');
+  
+        case 6:
+          if (!(typeof user !== 'string')) {
+            context$1$0.next = 9;
+            break;
+          }
+  
+          res.send('{"error": "Must provide Hue Bridge user in user param"}');
+          return context$1$0.abrupt('return');
+  
+        case 9:
+          api = new hue.HueApi(ip, user);
+          lightState = hue.lightState;
+          state = lightState.create();
+  
+          api.setLightState(lightID, state.off()).then(function (result) {
+            res.send(JSON.stringify(result));
+          }).fail(function (err) {
+            res.send(JSON.stringify(err));
+          }).done();
+  
+        case 13:
+        case 'end':
+          return context$1$0.stop();
+      }
+    }, null, _this);
+  });
+  
   //
   // Register server-side rendering middleware
   // -----------------------------------------------------------------------------
@@ -3106,26 +3194,59 @@ module.exports =
         }, null, this);
       }
     }, {
+      key: 'turnOnLight',
+      value: function turnOnLight(ip, user, id) {
+        var opts;
+        return regeneratorRuntime.async(function turnOnLight$(context$2$0) {
+          while (1) switch (context$2$0.prev = context$2$0.next) {
+            case 0:
+              opts = { method: 'POST' };
+              return context$2$0.abrupt('return', this.makeRequest('/light/' + id + '/on?ip=' + encodeURIComponent(ip) + '&user=' + encodeURIComponent(user), opts));
+  
+            case 2:
+            case 'end':
+              return context$2$0.stop();
+          }
+        }, null, this);
+      }
+    }, {
+      key: 'turnOffLight',
+      value: function turnOffLight(ip, user, id) {
+        var opts;
+        return regeneratorRuntime.async(function turnOffLight$(context$2$0) {
+          while (1) switch (context$2$0.prev = context$2$0.next) {
+            case 0:
+              opts = { method: 'POST' };
+              return context$2$0.abrupt('return', this.makeRequest('/light/' + id + '/off?ip=' + encodeURIComponent(ip) + '&user=' + encodeURIComponent(user), opts));
+  
+            case 2:
+            case 'end':
+              return context$2$0.stop();
+          }
+        }, null, this);
+      }
+    }, {
       key: 'makeRequest',
-      value: function makeRequest(path) {
-        var url, response, data;
+      value: function makeRequest(path, optionalOptions) {
+        var options, url, response, data;
         return regeneratorRuntime.async(function makeRequest$(context$2$0) {
           while (1) switch (context$2$0.prev = context$2$0.next) {
             case 0:
+              options = optionalOptions || {};
               url = _configJson2['default'][("development")].serverUri + path;
-              context$2$0.next = 3;
-              return regeneratorRuntime.awrap((0, _coreFetch2['default'])(url));
+              context$2$0.next = 4;
+              return regeneratorRuntime.awrap((0, _coreFetch2['default'])(url, options));
   
-            case 3:
+            case 4:
               response = context$2$0.sent;
-              context$2$0.next = 6;
+              context$2$0.next = 7;
               return regeneratorRuntime.awrap(response.json());
   
-            case 6:
+            case 7:
               data = context$2$0.sent;
               return context$2$0.abrupt('return', data);
   
-            case 8:
+            case 9:
             case 'end':
               return context$2$0.stop();
           }
@@ -4018,13 +4139,31 @@ module.exports =
     }, {
       key: 'onLightLoaded',
       value: function onLightLoaded(light) {
-        console.log('light', this.props.id, light);
         this.setState({ light: light, loaded: true });
+      }
+    }, {
+      key: 'onLightToggle',
+      value: function onLightToggle() {
+        var light = this.state.light;
+        if (light.state.on) {
+          _actionsBridge2['default'].turnOffLight(this.props.ip, this.props.user, this.props.id).then(this.onLightToggleComplete.bind(this));
+        } else {
+          _actionsBridge2['default'].turnOnLight(this.props.ip, this.props.user, this.props.id).then(this.onLightToggleComplete.bind(this));
+        }
+      }
+    }, {
+      key: 'onLightToggleComplete',
+      value: function onLightToggleComplete(result) {
+        if (result) {
+          var light = this.state.light;
+          light.state.on = !light.state.on;
+          this.setState({ light: light });
+        }
       }
     }, {
       key: 'render',
       value: function render() {
-        var checkboxID = 'light-' + this.props.id + '-onoff';
+        var checkboxID = 'light-' + this.props.id + '-toggle';
         return _react2['default'].createElement(
           'li',
           { className: _HomePageScss2['default'].light },
@@ -4039,7 +4178,7 @@ module.exports =
                 { className: _HomePageScss2['default'].lightNameArea },
                 _react2['default'].createElement(
                   'span',
-                  { className: _HomePageScss2['default'].name },
+                  { className: _HomePageScss2['default'].name, title: this.state.light.name },
                   this.state.light.name
                 )
               ),
@@ -4048,7 +4187,8 @@ module.exports =
                 { className: _HomePageScss2['default'].onoffswitch },
                 _react2['default'].createElement('input', { type: 'checkbox', name: 'onoffswitch',
                   className: _HomePageScss2['default'].onoffswitchCheckbox, id: checkboxID,
-                  checked: this.state.light.state.on
+                  checked: this.state.light.state.on,
+                  onChange: this.onLightToggle.bind(this)
                 }),
                 _react2['default'].createElement(
                   'label',

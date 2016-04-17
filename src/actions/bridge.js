@@ -25,9 +25,24 @@ class Bridge {
     return this.getGroup(ip, user, '0');
   }
 
-  static async makeRequest(path) {
+  static async turnOnLight(ip, user, id) {
+    const opts = { method: 'POST' };
+    return this.makeRequest('/light/' + id + '/on?ip=' +
+                            encodeURIComponent(ip) + '&user=' +
+                            encodeURIComponent(user), opts);
+  }
+
+  static async turnOffLight(ip, user, id) {
+    const opts = { method: 'POST' };
+    return this.makeRequest('/light/' + id + '/off?ip=' +
+                            encodeURIComponent(ip) + '&user=' +
+                            encodeURIComponent(user), opts);
+  }
+
+  static async makeRequest(path, optionalOptions) {
+    const options = optionalOptions || {};
     const url = Config[process.env.NODE_ENV].serverUri + path;
-    const response = await fetch(url);
+    const response = await fetch(url, options);
     const data = await response.json();
     return data;
   }

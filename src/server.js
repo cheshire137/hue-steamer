@@ -102,6 +102,50 @@ server.get('/light/:id', async (req, res) => {
   }).done();
 });
 
+server.post('/light/:id/on', async (req, res) => {
+  const ip = req.query.ip;
+  const user = req.query.user;
+  const lightID = req.params.id;
+  if (typeof ip !== 'string') {
+    res.send('{"error": "Must provide Hue Bridge IP address in ip param"}');
+    return;
+  }
+  if (typeof user !== 'string') {
+    res.send('{"error": "Must provide Hue Bridge user in user param"}');
+    return;
+  }
+  const api = new hue.HueApi(ip, user);
+  const lightState = hue.lightState;
+  const state = lightState.create();
+  api.setLightState(lightID, state.on()).then((result) => {
+    res.send(JSON.stringify(result));
+  }).fail((err) => {
+    res.send(JSON.stringify(err));
+  }).done();
+});
+
+server.post('/light/:id/off', async (req, res) => {
+  const ip = req.query.ip;
+  const user = req.query.user;
+  const lightID = req.params.id;
+  if (typeof ip !== 'string') {
+    res.send('{"error": "Must provide Hue Bridge IP address in ip param"}');
+    return;
+  }
+  if (typeof user !== 'string') {
+    res.send('{"error": "Must provide Hue Bridge user in user param"}');
+    return;
+  }
+  const api = new hue.HueApi(ip, user);
+  const lightState = hue.lightState;
+  const state = lightState.create();
+  api.setLightState(lightID, state.off()).then((result) => {
+    res.send(JSON.stringify(result));
+  }).fail((err) => {
+    res.send(JSON.stringify(err));
+  }).done();
+});
+
 //
 // Register server-side rendering middleware
 // -----------------------------------------------------------------------------
