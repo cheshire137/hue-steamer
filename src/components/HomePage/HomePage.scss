@@ -1,33 +1,5 @@
 @import '../variables.scss';
 
-.bridgeDetails {
-  dt {
-    font-weight: 700;
-  }
-
-  dd {
-    margin-left: 0;
-  }
-}
-
-@media (min-width: 768px) {
-  .bridgeDetails {
-    dt {
-      float: left;
-      width: 7em;
-      overflow: hidden;
-      clear: left;
-      text-align: right;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-
-    dd {
-      margin-left: 8em;
-    }
-  }
-}
-
 .lightList {
   list-style: none;
   padding-left: 0;

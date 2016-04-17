@@ -2,6 +2,8 @@ import React, { Component, PropTypes } from 'react';
 import s from './SettingsPage.scss';
 import withStyles from '../../decorators/withStyles';
 import LocalStorage from '../../stores/localStorage';
+import Bridge from '../../actions/bridge';
+import BridgeDisplay from './BridgeDisplay';
 
 const title = 'Settings';
 
@@ -13,10 +15,14 @@ class SettingsPage extends Component {
 
   constructor(props) {
     super(props);
-    const settings = LocalStorage.getJSON();
+    const data = LocalStorage.getJSON();
     this.state = {
-      hueBridgeUser: settings.hueBridgeUser,
-      hueBridgeIp: settings.hueBridgeIp,
+      user: data.user,
+      ip: data.ip,
+      bridge: data.bridge,
+      haveBridge: typeof data.bridge === 'object',
+      lightIDs: data.lightIDs,
+      numLights: data.lightIDs ? data.lightIDs.length : undefined,
     };
   }
 
@@ -24,28 +30,58 @@ class SettingsPage extends Component {
     this.context.onSetTitle(title);
   }
 
-  handleBridgeIpChange(e) {
-    let bridgeIp = e.target.value.trim();
-    if (bridgeIp === '') {
-      bridgeIp = undefined;
+  onAllLightsLoaded(group) {
+    if (group.hasOwnProperty('errno')) {
+      console.error('failed to load group of all lights', group);
+      return;
     }
-    this.setState({ hueBridgeIp: bridgeIp });
+    this.setState({
+      allLights: group,
+      numLights: group.lights.length,
+    });
+    LocalStorage.set('lightIDs', group.lights);
   }
 
-  handleBridgeUserChange(e) {
-    let bridgeUser = e.target.value.trim();
-    if (bridgeUser === '') {
-      bridgeUser = undefined;
+  onBridgeLoaded(bridge) {
+    if (bridge.hasOwnProperty('errno')) {
+      console.error('failed to load bridge info', bridge);
+      return;
     }
-    this.setState({ hueBridgeUser: bridgeUser });
+    this.setState({ bridge, haveBridge: true });
+    LocalStorage.set('bridge', bridge);
+    Bridge.getAllLights(this.state.ip, this.state.user).
+           then(this.onAllLightsLoaded.bind(this));
+  }
+
+  handleIPChange(e) {
+    let ip = e.target.value.trim();
+    if (ip === '') {
+      ip = undefined;
+    }
+    this.setState({ ip, haveBridge: false });
+  }
+
+  handleUserChange(e) {
+    let user = e.target.value.trim();
+    if (user === '') {
+      user = undefined;
+    }
+    this.setState({ user, haveBridge: false });
   }
 
   handleSubmit(e) {
     e.preventDefault();
     LocalStorage.setMany({
-      hueBridgeUser: this.state.hueBridgeUser,
-      hueBridgeIp: this.state.hueBridgeIp,
+      user: this.state.user,
+      ip: this.state.ip,
+      bridge: undefined,
+      lightIDs: undefined,
     });
+    if (typeof this.state.ip === 'string' &&
+        typeof this.state.user === 'string') {
+      Bridge.getInfo(this.state.ip, this.state.user).
+             then(this.onBridgeLoaded.bind(this));
+    }
   }
 
   render() {
@@ -58,16 +94,16 @@ class SettingsPage extends Component {
           <div className={s.field}>
             <label htmlFor="hue_bridge_ip">Philips Hue bridge IP address:</label>
             <input type="text" id="hue_bridge_ip"
-              value={this.state.hueBridgeIp}
-              onChange={this.handleBridgeIpChange.bind(this)}
+              value={this.state.ip}
+              onChange={this.handleIPChange.bind(this)}
               placeholder="e.g., 192.168.1.182"
             />
           </div>
           <div className={s.field}>
             <label htmlFor="hue_bridge_user">Philips Hue bridge user:</label>
             <input type="text" id="hue_bridge_user"
-              value={this.state.hueBridgeUser}
-              onChange={this.handleBridgeUserChange.bind(this)}
+              value={this.state.user}
+              onChange={this.handleUserChange.bind(this)}
               placeholder="e.g., 165131875f4bdff60d7f3dd05d46bd48"
             />
           </div>
@@ -77,6 +113,11 @@ class SettingsPage extends Component {
             </button>
           </div>
         </form>
+        {this.state.haveBridge ? (
+          <BridgeDisplay {...this.state.bridge}
+            numLights={this.state.numLights}
+          />
+        ) : ''}
       </div>
     );
   }

@@ -4,8 +4,6 @@ import parsePath from 'history/lib/parsePath';
 import withStyles from '../../decorators/withStyles';
 import LocalStorage from '../../stores/localStorage';
 import Location from '../../core/Location';
-import Bridge from '../../actions/bridge';
-import BridgeDisplay from './BridgeDisplay';
 import LightsList from './LightsList';
 
 const title = 'Hue Steamer';
@@ -20,49 +18,15 @@ class HomePage extends Component {
     super(props);
     const data = LocalStorage.getJSON();
     this.state = {
-      user: data.hueBridgeUser,
-      ip: data.hueBridgeIp,
-      bridge: data.bridge,
-      haveBridge: typeof data.bridge === 'object',
-      allLights: data.allLights,
-      haveAllLights: typeof data.allLights === 'object',
+      user: data.user,
+      ip: data.ip,
+      lightIDs: data.lightIDs,
     };
   }
 
   componentWillMount() {
     this.context.onSetTitle(title);
     this.redirectIfNoBridgeSettings();
-  }
-
-  componentDidMount() {
-    if (!this.state.haveBridge) {
-      this.getBridgeState();
-    }
-    if (!this.state.haveAllLights) {
-      this.getAllLights();
-    }
-  }
-
-  onAllLightsLoaded(group) {
-    this.setState({ allLights: group, haveAllLights: true });
-    LocalStorage.set('allLights', group);
-  }
-
-  onBridgeLoaded(bridge) {
-    this.setState({ bridge, haveBridge: true });
-    LocalStorage.set('bridge', bridge);
-  }
-
-  getAllLights() {
-    console.log('getting all lights for', this.state.ip, this.state.user);
-    Bridge.getAllLights(this.state.ip, this.state.user).
-           then(this.onAllLightsLoaded.bind(this));
-  }
-
-  getBridgeState() {
-    console.log('getting bridge for', this.state.ip, this.state.user);
-    Bridge.getInfo(this.state.ip, this.state.user).
-           then(this.onBridgeLoaded.bind(this));
   }
 
   redirectIfNoBridgeSettings() {
@@ -76,27 +40,15 @@ class HomePage extends Component {
   }
 
   render() {
-    let numLights = NaN;
-    if (this.state.haveAllLights) {
-      numLights = this.state.allLights.lights.length;
-    }
+    const haveLights = typeof this.state.lightIDs === 'object';
     return (
       <div>
-        {this.state.haveBridge ? (
-          <div className={s.bridgeAndLights}>
-            <BridgeDisplay {...this.state.bridge} numLights={numLights} />
-            {this.state.haveAllLights ? (
-              <LightsList ip={this.state.ip}
-                user={this.state.user}
-                group={this.state.allLights}
-              />
-            ) : (
-              <span>Loading lights...</span>
-            )}
-          </div>
-        ) : (
-          <span>Loading bridge info...</span>
-        )}
+        {haveLights ? (
+          <LightsList ip={this.state.ip}
+            user={this.state.user}
+            ids={this.state.lightIDs}
+          />
+        ) : 'Loading...'}
       </div>
     );
   }

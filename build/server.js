@@ -83,22 +83,22 @@ module.exports =
   
   var _routes2 = _interopRequireDefault(_routes);
   
-  var _componentsHtml = __webpack_require__(54);
+  var _componentsHtml = __webpack_require__(57);
   
   var _componentsHtml2 = _interopRequireDefault(_componentsHtml);
   
-  var _assets = __webpack_require__(55);
+  var _assets = __webpack_require__(58);
   
   var _assets2 = _interopRequireDefault(_assets);
   
   var _config = __webpack_require__(14);
   
-  var _configJson = __webpack_require__(42);
+  var _configJson = __webpack_require__(48);
   
   var _configJson2 = _interopRequireDefault(_configJson);
   
   // import HueApi from 'node-hue-api';
-  var hue = __webpack_require__(56);
+  var hue = __webpack_require__(59);
   
   var server = global.server = (0, _express2['default'])();
   
@@ -110,7 +110,7 @@ module.exports =
   //
   // Register API middleware
   // -----------------------------------------------------------------------------
-  server.use('/api/content', __webpack_require__(57));
+  server.use('/api/content', __webpack_require__(60));
   
   server.all('*', function (req, res, next) {
     res.header('Access-Control-Allow-Origin', _configJson2['default'][("development")].clientUri);
@@ -480,23 +480,23 @@ module.exports =
   
   var _componentsApp2 = _interopRequireDefault(_componentsApp);
   
-  var _componentsContentPage = __webpack_require__(28);
+  var _componentsContentPage = __webpack_require__(35);
   
   var _componentsContentPage2 = _interopRequireDefault(_componentsContentPage);
   
-  var _componentsNotFoundPage = __webpack_require__(31);
+  var _componentsNotFoundPage = __webpack_require__(38);
   
   var _componentsNotFoundPage2 = _interopRequireDefault(_componentsNotFoundPage);
   
-  var _componentsErrorPage = __webpack_require__(34);
+  var _componentsErrorPage = __webpack_require__(41);
   
   var _componentsErrorPage2 = _interopRequireDefault(_componentsErrorPage);
   
-  var _componentsHomePage = __webpack_require__(37);
+  var _componentsHomePage = __webpack_require__(44);
   
   var _componentsHomePage2 = _interopRequireDefault(_componentsHomePage);
   
-  var _componentsSettingsPage = __webpack_require__(51);
+  var _componentsSettingsPage = __webpack_require__(53);
   
   var _componentsSettingsPage2 = _interopRequireDefault(_componentsSettingsPage);
   
@@ -1543,7 +1543,7 @@ module.exports =
   
   var _Header2 = _interopRequireDefault(_Header);
   
-  var _Footer = __webpack_require__(25);
+  var _Footer = __webpack_require__(32);
   
   var _Footer2 = _interopRequireDefault(_Footer);
   
@@ -1933,7 +1933,7 @@ module.exports =
   
   var _decoratorsWithStyles2 = _interopRequireDefault(_decoratorsWithStyles);
   
-  var _Link = __webpack_require__(62);
+  var _Link = __webpack_require__(25);
   
   var _Link2 = _interopRequireDefault(_Link);
   
@@ -2132,6 +2132,204 @@ module.exports =
 /* 25 */
 /***/ function(module, exports, __webpack_require__) {
 
+  /**
+   * React Starter Kit (https://www.reactstarterkit.com/)
+   *
+   * Copyright © 2014-2016 Kriasoft, LLC. All rights reserved.
+   *
+   * This source code is licensed under the MIT license found in the
+   * LICENSE.txt file in the root directory of this source tree.
+   */
+  
+  'use strict';
+  
+  Object.defineProperty(exports, '__esModule', {
+    value: true
+  });
+  
+  var _this = this;
+  
+  var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+  
+  var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+  
+  var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+  
+  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  
+  function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
+  
+  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+  
+  function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+  
+  var _react = __webpack_require__(4);
+  
+  var _react2 = _interopRequireDefault(_react);
+  
+  var _historyLibParsePath = __webpack_require__(26);
+  
+  var _historyLibParsePath2 = _interopRequireDefault(_historyLibParsePath);
+  
+  var _coreLocation = __webpack_require__(27);
+  
+  var _coreLocation2 = _interopRequireDefault(_coreLocation);
+  
+  function isLeftClickEvent(event) {
+    return event.button === 0;
+  }
+  
+  function isModifiedEvent(event) {
+    return !!(event.metaKey || event.altKey || event.ctrlKey || event.shiftKey);
+  }
+  
+  var Link = (function (_Component) {
+    _inherits(Link, _Component);
+  
+    function Link() {
+      _classCallCheck(this, Link);
+  
+      _get(Object.getPrototypeOf(Link.prototype), 'constructor', this).apply(this, arguments);
+    }
+  
+    _createClass(Link, [{
+      key: 'render',
+      value: function render() {
+        var _props = this.props;
+        var to = _props.to;
+        var query = _props.query;
+  
+        var props = _objectWithoutProperties(_props, ['to', 'query']);
+  
+        return _react2['default'].createElement('a', _extends({ href: _coreLocation2['default'].createHref(to, query), onClick: Link.handleClick.bind(this) }, props));
+      }
+    }], [{
+      key: 'propTypes',
+      value: {
+        to: _react.PropTypes.string.isRequired,
+        query: _react.PropTypes.object,
+        state: _react.PropTypes.object,
+        onClick: _react.PropTypes.func
+      },
+      enumerable: true
+    }, {
+      key: 'handleClick',
+      value: function value(event) {
+        var allowTransition = true;
+        var clickResult = undefined;
+  
+        if (_this.props && _this.props.onClick) {
+          clickResult = _this.props.onClick(event);
+        }
+  
+        if (isModifiedEvent(event) || !isLeftClickEvent(event)) {
+          return;
+        }
+  
+        if (clickResult === false || event.defaultPrevented === true) {
+          allowTransition = false;
+        }
+  
+        event.preventDefault();
+  
+        if (allowTransition) {
+          var link = event.currentTarget;
+          if (_this.props && _this.props.to) {
+            _coreLocation2['default'].push(_extends({}, (0, _historyLibParsePath2['default'])(_this.props.to), {
+              state: _this.props && _this.props.state || null
+            }));
+          } else {
+            _coreLocation2['default'].push({
+              pathname: link.pathname,
+              search: link.search,
+              state: _this.props && _this.props.state || null
+            });
+          }
+        }
+      },
+      enumerable: true
+    }]);
+  
+    return Link;
+  })(_react.Component);
+  
+  exports['default'] = Link;
+  module.exports = exports['default'];
+
+/***/ },
+/* 26 */
+/***/ function(module, exports) {
+
+  module.exports = require("history/lib/parsePath");
+
+/***/ },
+/* 27 */
+/***/ function(module, exports, __webpack_require__) {
+
+  /**
+   * React Starter Kit (https://www.reactstarterkit.com/)
+   *
+   * Copyright © 2014-2016 Kriasoft, LLC. All rights reserved.
+   *
+   * This source code is licensed under the MIT license found in the
+   * LICENSE.txt file in the root directory of this source tree.
+   */
+  
+  'use strict';
+  
+  Object.defineProperty(exports, '__esModule', {
+    value: true
+  });
+  
+  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  
+  var _fbjsLibExecutionEnvironment = __webpack_require__(28);
+  
+  var _historyLibCreateBrowserHistory = __webpack_require__(29);
+  
+  var _historyLibCreateBrowserHistory2 = _interopRequireDefault(_historyLibCreateBrowserHistory);
+  
+  var _historyLibCreateMemoryHistory = __webpack_require__(30);
+  
+  var _historyLibCreateMemoryHistory2 = _interopRequireDefault(_historyLibCreateMemoryHistory);
+  
+  var _historyLibUseQueries = __webpack_require__(31);
+  
+  var _historyLibUseQueries2 = _interopRequireDefault(_historyLibUseQueries);
+  
+  var location = (0, _historyLibUseQueries2['default'])(_fbjsLibExecutionEnvironment.canUseDOM ? _historyLibCreateBrowserHistory2['default'] : _historyLibCreateMemoryHistory2['default'])();
+  
+  exports['default'] = location;
+  module.exports = exports['default'];
+
+/***/ },
+/* 28 */
+/***/ function(module, exports) {
+
+  module.exports = require("fbjs/lib/ExecutionEnvironment");
+
+/***/ },
+/* 29 */
+/***/ function(module, exports) {
+
+  module.exports = require("history/lib/createBrowserHistory");
+
+/***/ },
+/* 30 */
+/***/ function(module, exports) {
+
+  module.exports = require("history/lib/createMemoryHistory");
+
+/***/ },
+/* 31 */
+/***/ function(module, exports) {
+
+  module.exports = require("history/lib/useQueries");
+
+/***/ },
+/* 32 */
+/***/ function(module, exports, __webpack_require__) {
+
   'use strict';
   
   Object.defineProperty(exports, '__esModule', {
@@ -2152,7 +2350,7 @@ module.exports =
   
   var _react2 = _interopRequireDefault(_react);
   
-  var _FooterScss = __webpack_require__(26);
+  var _FooterScss = __webpack_require__(33);
   
   var _FooterScss2 = _interopRequireDefault(_FooterScss);
   
@@ -2189,11 +2387,11 @@ module.exports =
   module.exports = exports['default'];
 
 /***/ },
-/* 26 */
+/* 33 */
 /***/ function(module, exports, __webpack_require__) {
 
   
-      var content = __webpack_require__(27);
+      var content = __webpack_require__(34);
       var insertCss = __webpack_require__(20);
   
       if (typeof content === 'string') {
@@ -2221,7 +2419,7 @@ module.exports =
     
 
 /***/ },
-/* 27 */
+/* 34 */
 /***/ function(module, exports, __webpack_require__) {
 
   exports = module.exports = __webpack_require__(19)();
@@ -2237,7 +2435,7 @@ module.exports =
   };
 
 /***/ },
-/* 28 */
+/* 35 */
 /***/ function(module, exports, __webpack_require__) {
 
   /**
@@ -2269,7 +2467,7 @@ module.exports =
   
   var _react2 = _interopRequireDefault(_react);
   
-  var _ContentPageScss = __webpack_require__(29);
+  var _ContentPageScss = __webpack_require__(36);
   
   var _ContentPageScss2 = _interopRequireDefault(_ContentPageScss);
   
@@ -2330,11 +2528,11 @@ module.exports =
   module.exports = exports['default'];
 
 /***/ },
-/* 29 */
+/* 36 */
 /***/ function(module, exports, __webpack_require__) {
 
   
-      var content = __webpack_require__(30);
+      var content = __webpack_require__(37);
       var insertCss = __webpack_require__(20);
   
       if (typeof content === 'string') {
@@ -2362,7 +2560,7 @@ module.exports =
     
 
 /***/ },
-/* 30 */
+/* 37 */
 /***/ function(module, exports, __webpack_require__) {
 
   exports = module.exports = __webpack_require__(19)();
@@ -2379,7 +2577,7 @@ module.exports =
   };
 
 /***/ },
-/* 31 */
+/* 38 */
 /***/ function(module, exports, __webpack_require__) {
 
   /**
@@ -2411,7 +2609,7 @@ module.exports =
   
   var _react2 = _interopRequireDefault(_react);
   
-  var _NotFoundPageScss = __webpack_require__(32);
+  var _NotFoundPageScss = __webpack_require__(39);
   
   var _NotFoundPageScss2 = _interopRequireDefault(_NotFoundPageScss);
   
@@ -2472,11 +2670,11 @@ module.exports =
   module.exports = exports['default'];
 
 /***/ },
-/* 32 */
+/* 39 */
 /***/ function(module, exports, __webpack_require__) {
 
   
-      var content = __webpack_require__(33);
+      var content = __webpack_require__(40);
       var insertCss = __webpack_require__(20);
   
       if (typeof content === 'string') {
@@ -2504,7 +2702,7 @@ module.exports =
     
 
 /***/ },
-/* 33 */
+/* 40 */
 /***/ function(module, exports, __webpack_require__) {
 
   exports = module.exports = __webpack_require__(19)();
@@ -2518,7 +2716,7 @@ module.exports =
 
 
 /***/ },
-/* 34 */
+/* 41 */
 /***/ function(module, exports, __webpack_require__) {
 
   /**
@@ -2550,7 +2748,7 @@ module.exports =
   
   var _react2 = _interopRequireDefault(_react);
   
-  var _ErrorPageScss = __webpack_require__(35);
+  var _ErrorPageScss = __webpack_require__(42);
   
   var _ErrorPageScss2 = _interopRequireDefault(_ErrorPageScss);
   
@@ -2610,11 +2808,11 @@ module.exports =
   module.exports = exports['default'];
 
 /***/ },
-/* 35 */
+/* 42 */
 /***/ function(module, exports, __webpack_require__) {
 
   
-      var content = __webpack_require__(36);
+      var content = __webpack_require__(43);
       var insertCss = __webpack_require__(20);
   
       if (typeof content === 'string') {
@@ -2642,7 +2840,7 @@ module.exports =
     
 
 /***/ },
-/* 36 */
+/* 43 */
 /***/ function(module, exports, __webpack_require__) {
 
   exports = module.exports = __webpack_require__(19)();
@@ -2656,7 +2854,7 @@ module.exports =
 
 
 /***/ },
-/* 37 */
+/* 44 */
 /***/ function(module, exports, __webpack_require__) {
 
   'use strict';
@@ -2681,11 +2879,11 @@ module.exports =
   
   var _react2 = _interopRequireDefault(_react);
   
-  var _HomePageScss = __webpack_require__(38);
+  var _HomePageScss = __webpack_require__(45);
   
   var _HomePageScss2 = _interopRequireDefault(_HomePageScss);
   
-  var _historyLibParsePath = __webpack_require__(40);
+  var _historyLibParsePath = __webpack_require__(26);
   
   var _historyLibParsePath2 = _interopRequireDefault(_historyLibParsePath);
   
@@ -2693,23 +2891,15 @@ module.exports =
   
   var _decoratorsWithStyles2 = _interopRequireDefault(_decoratorsWithStyles);
   
-  var _storesLocalStorage = __webpack_require__(41);
+  var _storesLocalStorage = __webpack_require__(47);
   
   var _storesLocalStorage2 = _interopRequireDefault(_storesLocalStorage);
   
-  var _coreLocation = __webpack_require__(44);
+  var _coreLocation = __webpack_require__(27);
   
   var _coreLocation2 = _interopRequireDefault(_coreLocation);
   
-  var _actionsBridge = __webpack_require__(49);
-  
-  var _actionsBridge2 = _interopRequireDefault(_actionsBridge);
-  
-  var _BridgeDisplay = __webpack_require__(50);
-  
-  var _BridgeDisplay2 = _interopRequireDefault(_BridgeDisplay);
-  
-  var _LightsList = __webpack_require__(63);
+  var _LightsList = __webpack_require__(51);
   
   var _LightsList2 = _interopRequireDefault(_LightsList);
   
@@ -2732,12 +2922,9 @@ module.exports =
       _get(Object.getPrototypeOf(_HomePage.prototype), 'constructor', this).call(this, props);
       var data = _storesLocalStorage2['default'].getJSON();
       this.state = {
-        user: data.hueBridgeUser,
-        ip: data.hueBridgeIp,
-        bridge: data.bridge,
-        haveBridge: typeof data.bridge === 'object',
-        allLights: data.allLights,
-        haveAllLights: typeof data.allLights === 'object'
+        user: data.user,
+        ip: data.ip,
+        lightIDs: data.lightIDs
       };
     }
   
@@ -2746,40 +2933,6 @@ module.exports =
       value: function componentWillMount() {
         this.context.onSetTitle(title);
         this.redirectIfNoBridgeSettings();
-      }
-    }, {
-      key: 'componentDidMount',
-      value: function componentDidMount() {
-        if (!this.state.haveBridge) {
-          this.getBridgeState();
-        }
-        if (!this.state.haveAllLights) {
-          this.getAllLights();
-        }
-      }
-    }, {
-      key: 'onAllLightsLoaded',
-      value: function onAllLightsLoaded(group) {
-        this.setState({ allLights: group, haveAllLights: true });
-        _storesLocalStorage2['default'].set('allLights', group);
-      }
-    }, {
-      key: 'onBridgeLoaded',
-      value: function onBridgeLoaded(bridge) {
-        this.setState({ bridge: bridge, haveBridge: true });
-        _storesLocalStorage2['default'].set('bridge', bridge);
-      }
-    }, {
-      key: 'getAllLights',
-      value: function getAllLights() {
-        console.log('getting all lights for', this.state.ip, this.state.user);
-        _actionsBridge2['default'].getAllLights(this.state.ip, this.state.user).then(this.onAllLightsLoaded.bind(this));
-      }
-    }, {
-      key: 'getBridgeState',
-      value: function getBridgeState() {
-        console.log('getting bridge for', this.state.ip, this.state.user);
-        _actionsBridge2['default'].getInfo(this.state.ip, this.state.user).then(this.onBridgeLoaded.bind(this));
       }
     }, {
       key: 'redirectIfNoBridgeSettings',
@@ -2793,30 +2946,14 @@ module.exports =
     }, {
       key: 'render',
       value: function render() {
-        var numLights = NaN;
-        if (this.state.haveAllLights) {
-          numLights = this.state.allLights.lights.length;
-        }
+        var haveLights = typeof this.state.lightIDs === 'object';
         return _react2['default'].createElement(
           'div',
           null,
-          this.state.haveBridge ? _react2['default'].createElement(
-            'div',
-            { className: _HomePageScss2['default'].bridgeAndLights },
-            _react2['default'].createElement(_BridgeDisplay2['default'], _extends({}, this.state.bridge, { numLights: numLights })),
-            this.state.haveAllLights ? _react2['default'].createElement(_LightsList2['default'], { ip: this.state.ip,
-              user: this.state.user,
-              group: this.state.allLights
-            }) : _react2['default'].createElement(
-              'span',
-              null,
-              'Loading lights...'
-            )
-          ) : _react2['default'].createElement(
-            'span',
-            null,
-            'Loading bridge info...'
-          )
+          haveLights ? _react2['default'].createElement(_LightsList2['default'], { ip: this.state.ip,
+            user: this.state.user,
+            ids: this.state.lightIDs
+          }) : 'Loading...'
         );
       }
     }]);
@@ -2830,11 +2967,11 @@ module.exports =
   module.exports = exports['default'];
 
 /***/ },
-/* 38 */
+/* 45 */
 /***/ function(module, exports, __webpack_require__) {
 
   
-      var content = __webpack_require__(39);
+      var content = __webpack_require__(46);
       var insertCss = __webpack_require__(20);
   
       if (typeof content === 'string') {
@@ -2862,7 +2999,7 @@ module.exports =
     
 
 /***/ },
-/* 39 */
+/* 46 */
 /***/ function(module, exports, __webpack_require__) {
 
   exports = module.exports = __webpack_require__(19)();
@@ -2870,11 +3007,10 @@ module.exports =
   
   
   // module
-  exports.push([module.id, "/* #222 */   /* #404040 */ /* #555 */ /* #777 */ /* #eee */  /* Extra small screen / phone */  /* Small screen / tablet */  /* Medium screen / desktop */ /* Large screen / wide desktop */\n\n.HomePage_bridgeDetails_2hH dt {\n  font-weight: 700;\n}\n\n.HomePage_bridgeDetails_2hH dd {\n  margin-left: 0;\n}\n\n@media (min-width: 768px) {\n  .HomePage_bridgeDetails_2hH dt {\n    float: left;\n    width: 7em;\n    overflow: hidden;\n    clear: left;\n    text-align: right;\n    text-overflow: ellipsis;\n    white-space: nowrap;\n  }\n  .HomePage_bridgeDetails_2hH dd {\n    margin-left: 8em;\n  }\n}\n\n.HomePage_lightList_3oL {\n  list-style: none;\n  padding-left: 0;\n}\n\n.HomePage_lightList_3oL li {\n  width: 205px;\n  display: inline-block;\n  margin: 0 5px 12px 5px;\n  padding: 6px;\n  border-radius: 2px;\n  border: 1px solid #ccc;\n}\n\n.HomePage_light_2jt .HomePage_lightHeader_1wr {\n  display: table;\n  width: 100%;\n}\n\n.HomePage_light_2jt .HomePage_lightNameArea_my7 {\n  display: table-cell;\n  vertical-align: middle;\n}\n\n.HomePage_light_2jt .HomePage_name_nWG {\n  white-space: nowrap;\n  text-overflow: ellipsis;\n  overflow: hidden;\n  width: 151px;\n  display: block;\n}\n\n.HomePage_light_2jt .HomePage_metadata_pqP {\n  font-size: 13px;\n  color: #797979;\n}\n\n.HomePage_light_2jt .HomePage_type_1AJ {\n  display: block;\n}\n\n.HomePage_light_2jt .HomePage_manufacturer_3WL {\n  padding: 0 0.3em 0 0;\n}\n\n.HomePage_light_2jt .HomePage_model_3Ue {}\n\n.HomePage_onoffswitch_3hQ {\n  position: relative;\n  display: table-cell;\n  vertical-align: middle;\n  width: 54px;\n  -webkit-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n}\n\n.HomePage_onoffswitch_3hQ .HomePage_onoffswitchCheckbox_3tD {\n  display: none\n}\n\n.HomePage_onoffswitch_3hQ .HomePage_onoffswitchCheckbox_3tD:checked + .HomePage_onoffswitchLabel_W_H .HomePage_onoffswitchInner_1zJ {\n  margin-left: 0;\n}\n\n.HomePage_onoffswitch_3hQ .HomePage_onoffswitchCheckbox_3tD:checked + .HomePage_onoffswitchLabel_W_H .HomePage_onoffswitchSwitch_1Vt {\n  right: 0;\n}\n\n.HomePage_onoffswitch_3hQ .HomePage_onoffswitchLabel_W_H {\n  display: block;\n  overflow: hidden;\n  cursor: pointer;\n  border: 2px solid #CCCCCC;\n  border-radius: 18px;\n}\n\n.HomePage_onoffswitch_3hQ .HomePage_onoffswitchInner_1zJ {\n  display: block;\n  width: 200%;\n  margin-left: -100%;\n  -webkit-transition: margin 0.3s ease-in 0s;\n  -o-transition: margin 0.3s ease-in 0s;\n  transition: margin 0.3s ease-in 0s\n}\n\n.HomePage_onoffswitch_3hQ .HomePage_onoffswitchInner_1zJ:before, .HomePage_onoffswitch_3hQ .HomePage_onoffswitchInner_1zJ:after {\n  display: block;\n  float: left;\n  width: 50%;\n  height: 18px;\n  padding: 0;\n  line-height: 18px;\n  font-size: 12px;\n  color: white;\n  font-weight: 700;\n  -webkit-box-sizing: border-box;\n          box-sizing: border-box;\n}\n\n.HomePage_onoffswitch_3hQ .HomePage_onoffswitchInner_1zJ:before {\n  content: \"on\";\n  padding-left: 10px;\n  background-color: #FFF7C2;\n  color: #474029;\n}\n\n.HomePage_onoffswitch_3hQ .HomePage_onoffswitchInner_1zJ:after {\n  content: \"off\";\n  padding-right: 10px;\n  background-color: #373634;\n  color: #D6D6D6;\n  text-align: right;\n}\n\n.HomePage_onoffswitch_3hQ .HomePage_onoffswitchSwitch_1Vt {\n  display: block;\n  width: 18px;\n  margin: 0px;\n  background: #FFFFFF;\n  position: absolute;\n  top: 0;\n  bottom: 0;\n  right: 32px;\n  border: 2px solid #CCCCCC;\n  border-radius: 18px;\n  -webkit-transition: all 0.3s ease-in 0s;\n  -o-transition: all 0.3s ease-in 0s;\n  transition: all 0.3s ease-in 0s;\n}\n", "", {"version":3,"sources":["/./src/components/variables.scss","/./src/components/HomePage/HomePage.scss"],"names":[],"mappings":"AACwD,UAAU,GACV,aAAa,CACb,UAAU,CACV,UAAU,CACV,UAAU,EASlC,gCAAgC,EAChC,2BAA2B,EAC3B,6BAA6B,CAC7B,iCAAiC;;ACd/D;EACE,iBAAiB;CAClB;;AAED;EACE,eAAe;CAChB;;AAGH;EAEI;IACE,YAAY;IACZ,WAAW;IACX,iBAAiB;IACjB,YAAY;IACZ,kBAAkB;IAClB,wBAAwB;IACxB,oBAAoB;GACrB;EAED;IACE,iBAAiB;GAClB;CAEJ;;AAED;EACE,iBAAiB;EACjB,gBAAgB;CAUjB;;AARC;EACE,aAAa;EACb,sBAAsB;EACtB,uBAAuB;EACvB,aAAa;EACb,mBAAmB;EACnB,uBAAuB;CACxB;;AAID;EACE,eAAe;EACf,YAAY;CACb;;AAED;EACE,oBAAoB;EACpB,uBAAuB;CACxB;;AAED;EACE,oBAAoB;EACpB,wBAAwB;EACxB,iBAAiB;EACjB,aAAa;EACb,eAAe;CAChB;;AAED;EACE,gBAAgB;EAChB,eAAe;CAChB;;AAED;EACE,eAAe;CAChB;;AAED;EACE,qBAAqB;CACtB;;AAED,0CAEC;;AAGH;EACE,mBAAmB;EACnB,oBAAoB;EACpB,uBAAuB;EACvB,YAAY;EACZ,0BAA0B;EAC1B,uBAAuB;EACvB,sBAAsB;CAqEvB;;AAnEC;EACE,aAAc;CAaf;;AATK;EACE,eAAe;CAChB;;AAED;EACE,SAAS;CACV;;AAKP;EACE,eAAe;EACf,iBAAiB;EACjB,gBAAgB;EAChB,0BAA0B;EAC1B,oBAAoB;CACrB;;AAED;EACE,eAAe;EACf,YAAY;EACZ,mBAAmB;EACnB,2CAAmC;EAAnC,sCAAmC;EAAnC,kCAAmC;CA6BpC;;AA3BC;EACE,eAAe;EACf,YAAY;EACZ,WAAW;EACX,aAAa;EACb,WAAW;EACX,kBAAkB;EAClB,gBAAgB;EAChB,aAAa;EACb,iBAAiB;EACjB,+BAAuB;UAAvB,uBAAuB;CACxB;;AAED;EACE,cAAc;EACd,mBAAmB;EACnB,0BAA0B;EAC1B,eAAe;CAChB;;AAED;EACE,eAAe;EACf,oBAAoB;EACpB,0BAA0B;EAC1B,eAAe;EACf,kBAAkB;CACnB;;AAGH;EACI,eAAe;EAAC,YAAY;EAAC,YAAY;EACzC,oBAAoB;EACpB,mBAAmB;EAAC,OAAO;EAAC,UAAU;EACtC,YAAY;EACZ,0BAA0B;EAAC,oBAAoB;EAC/C,wCAAgC;EAAhC,mCAAgC;EAAhC,gCAAgC;CACnC","file":"HomePage.scss","sourcesContent":["$white-base:            hsl(255, 255, 255);\r\n$gray-darker:           color(black lightness(+13.5%)); /* #222 */\r\n$gray-dark:             color(black lightness(+25%));   /* #404040 */\r\n$gray:                  color(black lightness(+33.5%)); /* #555 */\r\n$gray-light:            color(black lightness(+46.7%)); /* #777 */\r\n$gray-lighter:          color(black lightness(+93.5%)); /* #eee */\r\n\r\n$link-color: #E16C51;\r\n$link-hover-color: #97918A;\r\n\r\n$font-family-base:      'Segoe UI', 'HelveticaNeue-Light', sans-serif;\r\n\r\n$max-content-width:     1000px;\r\n\r\n$screen-xs-min:         480px;  /* Extra small screen / phone */\r\n$screen-sm-min:         768px;  /* Small screen / tablet */\r\n$screen-md-min:         992px;  /* Medium screen / desktop */\r\n$screen-lg-min:         1200px; /* Large screen / wide desktop */\r\n\r\n$animation-swift-out:   .45s cubic-bezier(0.3, 1, 0.4, 1) 0s;\r\n","@import '../variables.scss';\n\n.bridgeDetails {\n  dt {\n    font-weight: 700;\n  }\n\n  dd {\n    margin-left: 0;\n  }\n}\n\n@media (min-width: 768px) {\n  .bridgeDetails {\n    dt {\n      float: left;\n      width: 7em;\n      overflow: hidden;\n      clear: left;\n      text-align: right;\n      text-overflow: ellipsis;\n      white-space: nowrap;\n    }\n\n    dd {\n      margin-left: 8em;\n    }\n  }\n}\n\n.lightList {\n  list-style: none;\n  padding-left: 0;\n\n  li {\n    width: 205px;\n    display: inline-block;\n    margin: 0 5px 12px 5px;\n    padding: 6px;\n    border-radius: 2px;\n    border: 1px solid #ccc;\n  }\n}\n\n.light {\n  .lightHeader {\n    display: table;\n    width: 100%;\n  }\n\n  .lightNameArea {\n    display: table-cell;\n    vertical-align: middle;\n  }\n\n  .name {\n    white-space: nowrap;\n    text-overflow: ellipsis;\n    overflow: hidden;\n    width: 151px;\n    display: block;\n  }\n\n  .metadata {\n    font-size: 13px;\n    color: #797979;\n  }\n\n  .type {\n    display: block;\n  }\n\n  .manufacturer {\n    padding: 0 0.3em 0 0;\n  }\n\n  .model {\n\n  }\n}\n\n.onoffswitch {\n  position: relative;\n  display: table-cell;\n  vertical-align: middle;\n  width: 54px;\n  -webkit-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n\n  .onoffswitchCheckbox {\n    display: none;\n\n    &:checked {\n      + .onoffswitchLabel {\n        .onoffswitchInner {\n          margin-left: 0;\n        }\n\n        .onoffswitchSwitch {\n          right: 0;\n        }\n      }\n    }\n  }\n\n  .onoffswitchLabel {\n    display: block;\n    overflow: hidden;\n    cursor: pointer;\n    border: 2px solid #CCCCCC;\n    border-radius: 18px;\n  }\n\n  .onoffswitchInner {\n    display: block;\n    width: 200%;\n    margin-left: -100%;\n    transition: margin 0.3s ease-in 0s;\n\n    &:before, &:after {\n      display: block;\n      float: left;\n      width: 50%;\n      height: 18px;\n      padding: 0;\n      line-height: 18px;\n      font-size: 12px;\n      color: white;\n      font-weight: 700;\n      box-sizing: border-box;\n    }\n\n    &:before {\n      content: \"on\";\n      padding-left: 10px;\n      background-color: #FFF7C2;\n      color: #474029;\n    }\n\n    &:after {\n      content: \"off\";\n      padding-right: 10px;\n      background-color: #373634;\n      color: #D6D6D6;\n      text-align: right;\n    }\n  }\n\n  .onoffswitchSwitch {\n      display: block; width: 18px; margin: 0px;\n      background: #FFFFFF;\n      position: absolute; top: 0; bottom: 0;\n      right: 32px;\n      border: 2px solid #CCCCCC; border-radius: 18px;\n      transition: all 0.3s ease-in 0s;\n  }\n}\n"],"sourceRoot":"webpack://"}]);
+  exports.push([module.id, "/* #222 */   /* #404040 */ /* #555 */ /* #777 */ /* #eee */  /* Extra small screen / phone */  /* Small screen / tablet */  /* Medium screen / desktop */ /* Large screen / wide desktop */\n\n.HomePage_lightList_3oL {\n  list-style: none;\n  padding-left: 0;\n}\n\n.HomePage_lightList_3oL li {\n  width: 205px;\n  display: inline-block;\n  margin: 0 5px 12px 5px;\n  padding: 6px;\n  border-radius: 2px;\n  border: 1px solid #ccc;\n}\n\n.HomePage_light_2jt .HomePage_lightHeader_1wr {\n  display: table;\n  width: 100%;\n}\n\n.HomePage_light_2jt .HomePage_lightNameArea_my7 {\n  display: table-cell;\n  vertical-align: middle;\n}\n\n.HomePage_light_2jt .HomePage_name_nWG {\n  white-space: nowrap;\n  text-overflow: ellipsis;\n  overflow: hidden;\n  width: 151px;\n  display: block;\n}\n\n.HomePage_light_2jt .HomePage_metadata_pqP {\n  font-size: 13px;\n  color: #797979;\n}\n\n.HomePage_light_2jt .HomePage_type_1AJ {\n  display: block;\n}\n\n.HomePage_light_2jt .HomePage_manufacturer_3WL {\n  padding: 0 0.3em 0 0;\n}\n\n.HomePage_light_2jt .HomePage_model_3Ue {}\n\n.HomePage_onoffswitch_3hQ {\n  position: relative;\n  display: table-cell;\n  vertical-align: middle;\n  width: 54px;\n  -webkit-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n}\n\n.HomePage_onoffswitch_3hQ .HomePage_onoffswitchCheckbox_3tD {\n  display: none\n}\n\n.HomePage_onoffswitch_3hQ .HomePage_onoffswitchCheckbox_3tD:checked + .HomePage_onoffswitchLabel_W_H .HomePage_onoffswitchInner_1zJ {\n  margin-left: 0;\n}\n\n.HomePage_onoffswitch_3hQ .HomePage_onoffswitchCheckbox_3tD:checked + .HomePage_onoffswitchLabel_W_H .HomePage_onoffswitchSwitch_1Vt {\n  right: 0;\n}\n\n.HomePage_onoffswitch_3hQ .HomePage_onoffswitchLabel_W_H {\n  display: block;\n  overflow: hidden;\n  cursor: pointer;\n  border: 2px solid #CCCCCC;\n  border-radius: 18px;\n}\n\n.HomePage_onoffswitch_3hQ .HomePage_onoffswitchInner_1zJ {\n  display: block;\n  width: 200%;\n  margin-left: -100%;\n  -webkit-transition: margin 0.3s ease-in 0s;\n  -o-transition: margin 0.3s ease-in 0s;\n  transition: margin 0.3s ease-in 0s\n}\n\n.HomePage_onoffswitch_3hQ .HomePage_onoffswitchInner_1zJ:before, .HomePage_onoffswitch_3hQ .HomePage_onoffswitchInner_1zJ:after {\n  display: block;\n  float: left;\n  width: 50%;\n  height: 18px;\n  padding: 0;\n  line-height: 18px;\n  font-size: 12px;\n  color: white;\n  font-weight: 700;\n  -webkit-box-sizing: border-box;\n          box-sizing: border-box;\n}\n\n.HomePage_onoffswitch_3hQ .HomePage_onoffswitchInner_1zJ:before {\n  content: \"on\";\n  padding-left: 10px;\n  background-color: #FFF7C2;\n  color: #474029;\n}\n\n.HomePage_onoffswitch_3hQ .HomePage_onoffswitchInner_1zJ:after {\n  content: \"off\";\n  padding-right: 10px;\n  background-color: #373634;\n  color: #D6D6D6;\n  text-align: right;\n}\n\n.HomePage_onoffswitch_3hQ .HomePage_onoffswitchSwitch_1Vt {\n  display: block;\n  width: 18px;\n  margin: 0px;\n  background: #FFFFFF;\n  position: absolute;\n  top: 0;\n  bottom: 0;\n  right: 32px;\n  border: 2px solid #CCCCCC;\n  border-radius: 18px;\n  -webkit-transition: all 0.3s ease-in 0s;\n  -o-transition: all 0.3s ease-in 0s;\n  transition: all 0.3s ease-in 0s;\n}\n", "", {"version":3,"sources":["/./src/components/variables.scss","/./src/components/HomePage/HomePage.scss"],"names":[],"mappings":"AACwD,UAAU,GACV,aAAa,CACb,UAAU,CACV,UAAU,CACV,UAAU,EASlC,gCAAgC,EAChC,2BAA2B,EAC3B,6BAA6B,CAC7B,iCAAiC;;ACfjE;EACE,iBAAiB;EACjB,gBAAgB;CAUjB;;AARC;EACE,aAAa;EACb,sBAAsB;EACtB,uBAAuB;EACvB,aAAa;EACb,mBAAmB;EACnB,uBAAuB;CACxB;;AAID;EACE,eAAe;EACf,YAAY;CACb;;AAED;EACE,oBAAoB;EACpB,uBAAuB;CACxB;;AAED;EACE,oBAAoB;EACpB,wBAAwB;EACxB,iBAAiB;EACjB,aAAa;EACb,eAAe;CAChB;;AAED;EACE,gBAAgB;EAChB,eAAe;CAChB;;AAED;EACE,eAAe;CAChB;;AAED;EACE,qBAAqB;CACtB;;AAED,0CAEC;;AAGH;EACE,mBAAmB;EACnB,oBAAoB;EACpB,uBAAuB;EACvB,YAAY;EACZ,0BAA0B;EAC1B,uBAAuB;EACvB,sBAAsB;CAqEvB;;AAnEC;EACE,aAAc;CAaf;;AATK;EACE,eAAe;CAChB;;AAED;EACE,SAAS;CACV;;AAKP;EACE,eAAe;EACf,iBAAiB;EACjB,gBAAgB;EAChB,0BAA0B;EAC1B,oBAAoB;CACrB;;AAED;EACE,eAAe;EACf,YAAY;EACZ,mBAAmB;EACnB,2CAAmC;EAAnC,sCAAmC;EAAnC,kCAAmC;CA6BpC;;AA3BC;EACE,eAAe;EACf,YAAY;EACZ,WAAW;EACX,aAAa;EACb,WAAW;EACX,kBAAkB;EAClB,gBAAgB;EAChB,aAAa;EACb,iBAAiB;EACjB,+BAAuB;UAAvB,uBAAuB;CACxB;;AAED;EACE,cAAc;EACd,mBAAmB;EACnB,0BAA0B;EAC1B,eAAe;CAChB;;AAED;EACE,eAAe;EACf,oBAAoB;EACpB,0BAA0B;EAC1B,eAAe;EACf,kBAAkB;CACnB;;AAGH;EACI,eAAe;EAAC,YAAY;EAAC,YAAY;EACzC,oBAAoB;EACpB,mBAAmB;EAAC,OAAO;EAAC,UAAU;EACtC,YAAY;EACZ,0BAA0B;EAAC,oBAAoB;EAC/C,wCAAgC;EAAhC,mCAAgC;EAAhC,gCAAgC;CACnC","file":"HomePage.scss","sourcesContent":["$white-base:            hsl(255, 255, 255);\r\n$gray-darker:           color(black lightness(+13.5%)); /* #222 */\r\n$gray-dark:             color(black lightness(+25%));   /* #404040 */\r\n$gray:                  color(black lightness(+33.5%)); /* #555 */\r\n$gray-light:            color(black lightness(+46.7%)); /* #777 */\r\n$gray-lighter:          color(black lightness(+93.5%)); /* #eee */\r\n\r\n$link-color: #E16C51;\r\n$link-hover-color: #97918A;\r\n\r\n$font-family-base:      'Segoe UI', 'HelveticaNeue-Light', sans-serif;\r\n\r\n$max-content-width:     1000px;\r\n\r\n$screen-xs-min:         480px;  /* Extra small screen / phone */\r\n$screen-sm-min:         768px;  /* Small screen / tablet */\r\n$screen-md-min:         992px;  /* Medium screen / desktop */\r\n$screen-lg-min:         1200px; /* Large screen / wide desktop */\r\n\r\n$animation-swift-out:   .45s cubic-bezier(0.3, 1, 0.4, 1) 0s;\r\n","@import '../variables.scss';\n\n.lightList {\n  list-style: none;\n  padding-left: 0;\n\n  li {\n    width: 205px;\n    display: inline-block;\n    margin: 0 5px 12px 5px;\n    padding: 6px;\n    border-radius: 2px;\n    border: 1px solid #ccc;\n  }\n}\n\n.light {\n  .lightHeader {\n    display: table;\n    width: 100%;\n  }\n\n  .lightNameArea {\n    display: table-cell;\n    vertical-align: middle;\n  }\n\n  .name {\n    white-space: nowrap;\n    text-overflow: ellipsis;\n    overflow: hidden;\n    width: 151px;\n    display: block;\n  }\n\n  .metadata {\n    font-size: 13px;\n    color: #797979;\n  }\n\n  .type {\n    display: block;\n  }\n\n  .manufacturer {\n    padding: 0 0.3em 0 0;\n  }\n\n  .model {\n\n  }\n}\n\n.onoffswitch {\n  position: relative;\n  display: table-cell;\n  vertical-align: middle;\n  width: 54px;\n  -webkit-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n\n  .onoffswitchCheckbox {\n    display: none;\n\n    &:checked {\n      + .onoffswitchLabel {\n        .onoffswitchInner {\n          margin-left: 0;\n        }\n\n        .onoffswitchSwitch {\n          right: 0;\n        }\n      }\n    }\n  }\n\n  .onoffswitchLabel {\n    display: block;\n    overflow: hidden;\n    cursor: pointer;\n    border: 2px solid #CCCCCC;\n    border-radius: 18px;\n  }\n\n  .onoffswitchInner {\n    display: block;\n    width: 200%;\n    margin-left: -100%;\n    transition: margin 0.3s ease-in 0s;\n\n    &:before, &:after {\n      display: block;\n      float: left;\n      width: 50%;\n      height: 18px;\n      padding: 0;\n      line-height: 18px;\n      font-size: 12px;\n      color: white;\n      font-weight: 700;\n      box-sizing: border-box;\n    }\n\n    &:before {\n      content: \"on\";\n      padding-left: 10px;\n      background-color: #FFF7C2;\n      color: #474029;\n    }\n\n    &:after {\n      content: \"off\";\n      padding-right: 10px;\n      background-color: #373634;\n      color: #D6D6D6;\n      text-align: right;\n    }\n  }\n\n  .onoffswitchSwitch {\n      display: block; width: 18px; margin: 0px;\n      background: #FFFFFF;\n      position: absolute; top: 0; bottom: 0;\n      right: 32px;\n      border: 2px solid #CCCCCC; border-radius: 18px;\n      transition: all 0.3s ease-in 0s;\n  }\n}\n"],"sourceRoot":"webpack://"}]);
   
   // exports
   exports.locals = {
-  	"bridgeDetails": "HomePage_bridgeDetails_2hH",
   	"lightList": "HomePage_lightList_3oL",
   	"light": "HomePage_light_2jt",
   	"lightHeader": "HomePage_lightHeader_1wr",
@@ -2892,13 +3028,7 @@ module.exports =
   };
 
 /***/ },
-/* 40 */
-/***/ function(module, exports) {
-
-  module.exports = require("history/lib/parsePath");
-
-/***/ },
-/* 41 */
+/* 47 */
 /***/ function(module, exports, __webpack_require__) {
 
   'use strict';
@@ -2913,11 +3043,11 @@ module.exports =
   
   function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
   
-  var _configJson = __webpack_require__(42);
+  var _configJson = __webpack_require__(48);
   
   var _configJson2 = _interopRequireDefault(_configJson);
   
-  var _reactCookie = __webpack_require__(43);
+  var _reactCookie = __webpack_require__(49);
   
   var _reactCookie2 = _interopRequireDefault(_reactCookie);
   
@@ -3021,7 +3151,7 @@ module.exports =
   module.exports = exports['default'];
 
 /***/ },
-/* 42 */
+/* 48 */
 /***/ function(module, exports) {
 
   module.exports = {
@@ -3033,77 +3163,13 @@ module.exports =
   };
 
 /***/ },
-/* 43 */
+/* 49 */
 /***/ function(module, exports) {
 
   module.exports = require("react-cookie");
 
 /***/ },
-/* 44 */
-/***/ function(module, exports, __webpack_require__) {
-
-  /**
-   * React Starter Kit (https://www.reactstarterkit.com/)
-   *
-   * Copyright © 2014-2016 Kriasoft, LLC. All rights reserved.
-   *
-   * This source code is licensed under the MIT license found in the
-   * LICENSE.txt file in the root directory of this source tree.
-   */
-  
-  'use strict';
-  
-  Object.defineProperty(exports, '__esModule', {
-    value: true
-  });
-  
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-  
-  var _fbjsLibExecutionEnvironment = __webpack_require__(45);
-  
-  var _historyLibCreateBrowserHistory = __webpack_require__(46);
-  
-  var _historyLibCreateBrowserHistory2 = _interopRequireDefault(_historyLibCreateBrowserHistory);
-  
-  var _historyLibCreateMemoryHistory = __webpack_require__(47);
-  
-  var _historyLibCreateMemoryHistory2 = _interopRequireDefault(_historyLibCreateMemoryHistory);
-  
-  var _historyLibUseQueries = __webpack_require__(48);
-  
-  var _historyLibUseQueries2 = _interopRequireDefault(_historyLibUseQueries);
-  
-  var location = (0, _historyLibUseQueries2['default'])(_fbjsLibExecutionEnvironment.canUseDOM ? _historyLibCreateBrowserHistory2['default'] : _historyLibCreateMemoryHistory2['default'])();
-  
-  exports['default'] = location;
-  module.exports = exports['default'];
-
-/***/ },
-/* 45 */
-/***/ function(module, exports) {
-
-  module.exports = require("fbjs/lib/ExecutionEnvironment");
-
-/***/ },
-/* 46 */
-/***/ function(module, exports) {
-
-  module.exports = require("history/lib/createBrowserHistory");
-
-/***/ },
-/* 47 */
-/***/ function(module, exports) {
-
-  module.exports = require("history/lib/createMemoryHistory");
-
-/***/ },
-/* 48 */
-/***/ function(module, exports) {
-
-  module.exports = require("history/lib/useQueries");
-
-/***/ },
-/* 49 */
+/* 50 */
 /***/ function(module, exports, __webpack_require__) {
 
   'use strict';
@@ -3122,7 +3188,7 @@ module.exports =
   
   var _coreFetch2 = _interopRequireDefault(_coreFetch);
   
-  var _configJson = __webpack_require__(42);
+  var _configJson = __webpack_require__(48);
   
   var _configJson2 = _interopRequireDefault(_configJson);
   
@@ -3261,134 +3327,6 @@ module.exports =
   module.exports = exports['default'];
 
 /***/ },
-/* 50 */
-/***/ function(module, exports, __webpack_require__) {
-
-  'use strict';
-  
-  Object.defineProperty(exports, '__esModule', {
-    value: true
-  });
-  
-  var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-  
-  var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
-  
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-  
-  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-  
-  function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-  
-  var _react = __webpack_require__(4);
-  
-  var _react2 = _interopRequireDefault(_react);
-  
-  var _HomePageScss = __webpack_require__(38);
-  
-  var _HomePageScss2 = _interopRequireDefault(_HomePageScss);
-  
-  var BridgeDisplay = (function (_Component) {
-    _inherits(BridgeDisplay, _Component);
-  
-    _createClass(BridgeDisplay, null, [{
-      key: 'propTypes',
-      value: {
-        localtime: _react.PropTypes.string.isRequired,
-        ipaddress: _react.PropTypes.string.isRequired,
-        name: _react.PropTypes.string.isRequired,
-        modelid: _react.PropTypes.string.isRequired,
-        numLights: _react.PropTypes.number
-      },
-      enumerable: true
-    }]);
-  
-    function BridgeDisplay(props, context) {
-      _classCallCheck(this, BridgeDisplay);
-  
-      _get(Object.getPrototypeOf(BridgeDisplay.prototype), 'constructor', this).call(this, props, context);
-      this.state = {};
-    }
-  
-    _createClass(BridgeDisplay, [{
-      key: 'getPrettyTime',
-      value: function getPrettyTime() {
-        var date = new Date(this.props.localtime);
-        var utc = new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds());
-        return utc.toLocaleString();
-      }
-    }, {
-      key: 'render',
-      value: function render() {
-        var bridgeUrl = 'http://' + this.props.ipaddress;
-        return _react2['default'].createElement(
-          'dl',
-          { className: _HomePageScss2['default'].bridgeDetails },
-          _react2['default'].createElement(
-            'dt',
-            null,
-            'Name'
-          ),
-          _react2['default'].createElement(
-            'dd',
-            null,
-            this.props.name
-          ),
-          _react2['default'].createElement(
-            'dt',
-            null,
-            'IP Address'
-          ),
-          _react2['default'].createElement(
-            'dd',
-            null,
-            _react2['default'].createElement(
-              'a',
-              { href: bridgeUrl, target: '_blank' },
-              this.props.ipaddress
-            )
-          ),
-          _react2['default'].createElement(
-            'dt',
-            null,
-            'Model'
-          ),
-          _react2['default'].createElement(
-            'dd',
-            null,
-            this.props.modelid
-          ),
-          _react2['default'].createElement(
-            'dt',
-            null,
-            'Time'
-          ),
-          _react2['default'].createElement(
-            'dd',
-            null,
-            this.getPrettyTime()
-          ),
-          _react2['default'].createElement(
-            'dt',
-            null,
-            '# Lights'
-          ),
-          _react2['default'].createElement(
-            'dd',
-            null,
-            this.props.numLights
-          )
-        );
-      }
-    }]);
-  
-    return BridgeDisplay;
-  })(_react.Component);
-  
-  exports['default'] = BridgeDisplay;
-  module.exports = exports['default'];
-
-/***/ },
 /* 51 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -3412,623 +3350,11 @@ module.exports =
   
   var _react2 = _interopRequireDefault(_react);
   
-  var _SettingsPageScss = __webpack_require__(52);
-  
-  var _SettingsPageScss2 = _interopRequireDefault(_SettingsPageScss);
-  
-  var _decoratorsWithStyles = __webpack_require__(24);
-  
-  var _decoratorsWithStyles2 = _interopRequireDefault(_decoratorsWithStyles);
-  
-  var _storesLocalStorage = __webpack_require__(41);
-  
-  var _storesLocalStorage2 = _interopRequireDefault(_storesLocalStorage);
-  
-  var title = 'Settings';
-  
-  var SettingsPage = (function (_Component) {
-    _inherits(SettingsPage, _Component);
-  
-    _createClass(SettingsPage, null, [{
-      key: 'contextTypes',
-      value: {
-        onSetTitle: _react.PropTypes.func.isRequired
-      },
-      enumerable: true
-    }]);
-  
-    function SettingsPage(props) {
-      _classCallCheck(this, _SettingsPage);
-  
-      _get(Object.getPrototypeOf(_SettingsPage.prototype), 'constructor', this).call(this, props);
-      var settings = _storesLocalStorage2['default'].getJSON();
-      this.state = {
-        hueBridgeUser: settings.hueBridgeUser,
-        hueBridgeIp: settings.hueBridgeIp
-      };
-    }
-  
-    _createClass(SettingsPage, [{
-      key: 'componentWillMount',
-      value: function componentWillMount() {
-        this.context.onSetTitle(title);
-      }
-    }, {
-      key: 'handleBridgeIpChange',
-      value: function handleBridgeIpChange(e) {
-        var bridgeIp = e.target.value.trim();
-        if (bridgeIp === '') {
-          bridgeIp = undefined;
-        }
-        this.setState({ hueBridgeIp: bridgeIp });
-      }
-    }, {
-      key: 'handleBridgeUserChange',
-      value: function handleBridgeUserChange(e) {
-        var bridgeUser = e.target.value.trim();
-        if (bridgeUser === '') {
-          bridgeUser = undefined;
-        }
-        this.setState({ hueBridgeUser: bridgeUser });
-      }
-    }, {
-      key: 'handleSubmit',
-      value: function handleSubmit(e) {
-        e.preventDefault();
-        _storesLocalStorage2['default'].setMany({
-          hueBridgeUser: this.state.hueBridgeUser,
-          hueBridgeIp: this.state.hueBridgeIp
-        });
-      }
-    }, {
-      key: 'render',
-      value: function render() {
-        return _react2['default'].createElement(
-          'div',
-          null,
-          _react2['default'].createElement(
-            'header',
-            null,
-            _react2['default'].createElement(
-              'h2',
-              null,
-              'Settings'
-            )
-          ),
-          _react2['default'].createElement(
-            'form',
-            { onSubmit: this.handleSubmit.bind(this) },
-            _react2['default'].createElement(
-              'div',
-              { className: _SettingsPageScss2['default'].field },
-              _react2['default'].createElement(
-                'label',
-                { htmlFor: 'hue_bridge_ip' },
-                'Philips Hue bridge IP address:'
-              ),
-              _react2['default'].createElement('input', { type: 'text', id: 'hue_bridge_ip',
-                value: this.state.hueBridgeIp,
-                onChange: this.handleBridgeIpChange.bind(this),
-                placeholder: 'e.g., 192.168.1.182'
-              })
-            ),
-            _react2['default'].createElement(
-              'div',
-              { className: _SettingsPageScss2['default'].field },
-              _react2['default'].createElement(
-                'label',
-                { htmlFor: 'hue_bridge_user' },
-                'Philips Hue bridge user:'
-              ),
-              _react2['default'].createElement('input', { type: 'text', id: 'hue_bridge_user',
-                value: this.state.hueBridgeUser,
-                onChange: this.handleBridgeUserChange.bind(this),
-                placeholder: 'e.g., 165131875f4bdff60d7f3dd05d46bd48'
-              })
-            ),
-            _react2['default'].createElement(
-              'div',
-              { className: _SettingsPageScss2['default'].field },
-              _react2['default'].createElement(
-                'button',
-                { type: 'submit' },
-                'Save'
-              )
-            )
-          )
-        );
-      }
-    }]);
-  
-    var _SettingsPage = SettingsPage;
-    SettingsPage = (0, _decoratorsWithStyles2['default'])(_SettingsPageScss2['default'])(SettingsPage) || SettingsPage;
-    return SettingsPage;
-  })(_react.Component);
-  
-  exports['default'] = SettingsPage;
-  module.exports = exports['default'];
-
-/***/ },
-/* 52 */
-/***/ function(module, exports, __webpack_require__) {
-
-  
-      var content = __webpack_require__(53);
-      var insertCss = __webpack_require__(20);
-  
-      if (typeof content === 'string') {
-        content = [[module.id, content, '']];
-      }
-  
-      module.exports = content.locals || {};
-      module.exports._getCss = function() { return content.toString(); };
-      module.exports._insertCss = insertCss.bind(null, content);
-    
-      var removeCss = function() {};
-  
-      // Hot Module Replacement
-      // https://webpack.github.io/docs/hot-module-replacement
-      if (false) {
-        module.hot.accept("!!./../../../node_modules/css-loader/index.js?sourceMap&modules&localIdentName=[name]_[local]_[hash:base64:3]!./../../../node_modules/postcss-loader/index.js!./SettingsPage.scss", function() {
-          var newContent = require("!!./../../../node_modules/css-loader/index.js?sourceMap&modules&localIdentName=[name]_[local]_[hash:base64:3]!./../../../node_modules/postcss-loader/index.js!./SettingsPage.scss");
-          if (typeof newContent === 'string') {
-            newContent = [[module.id, content, '']];
-          }
-          removeCss = insertCss(newContent, { replace: true });
-        });
-        module.hot.dispose(function() { removeCss(); });
-      }
-    
-
-/***/ },
-/* 53 */
-/***/ function(module, exports, __webpack_require__) {
-
-  exports = module.exports = __webpack_require__(19)();
-  // imports
-  
-  
-  // module
-  exports.push([module.id, "/* #222 */   /* #404040 */ /* #555 */ /* #777 */ /* #eee */  /* Extra small screen / phone */  /* Small screen / tablet */  /* Medium screen / desktop */ /* Large screen / wide desktop */\n\n.SettingsPage_field_1jr {\n  margin-bottom: 10px;\n}\n\nlabel {\n  display: block;\n  font-weight: 700;\n  margin-bottom: 5px;\n  font-size: 14px;\n}\n\ninput {\n  display: block;\n  width: 100%;\n  padding: 6px;\n  font-size: 14px;\n  line-height: 1.42857143;\n  color: #555;\n  background-color: #fff;\n  background-image: none;\n  border: 1px solid #ccc;\n  border-radius: 2px;\n  -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);\n  box-shadow: inset 0 1px 1px rgba(0,0,0,.075);\n  -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;\n  -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;\n  transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;\n  transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;\n  transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s,-webkit-box-shadow ease-in-out .15s\n}\n\ninput:focus {\n  border-color: #E16C51;\n  outline: 0;\n  -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(225,108,81,.6);\n  box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(225,108,81,.6);\n}\n\nbutton, input, select, textarea {\n  font: inherit;\n}\n\nbutton {\n  display: inline-block;\n  padding: 6px 12px;\n  margin-bottom: 0;\n  font-size: 14px;\n  font-weight: 700;\n  line-height: 1.42857143;\n  text-align: center;\n  white-space: nowrap;\n  vertical-align: middle;\n  -ms-touch-action: manipulation;\n  touch-action: manipulation;\n  cursor: pointer;\n  -webkit-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n  user-select: none;\n  background-image: none;\n  border: 1px solid #ccc;\n  color: #333;\n  background-color: #fff;\n  border-radius: 4px\n}\n\nbutton:focus, button:hover {\n  color: #333;\n  background-color: #e6e6e6;\n  border-color: #adadad;\n}\n", "", {"version":3,"sources":["/./src/components/variables.scss","/./src/components/SettingsPage/SettingsPage.scss"],"names":[],"mappings":"AACwD,UAAU,GACV,aAAa,CACb,UAAU,CACV,UAAU,CACV,UAAU,EASlC,gCAAgC,EAChC,2BAA2B,EAC3B,6BAA6B,CAC7B,iCAAiC;;ACfjE;EACE,oBAAoB;CACrB;;AAED;EACE,eAAe;EACf,iBAAiB;EACjB,mBAAmB;EACnB,gBAAgB;CACjB;;AAED;EACE,eAAe;EACf,YAAY;EACZ,aAAa;EACb,gBAAgB;EAChB,wBAAwB;EACxB,YAAY;EACZ,uBAAuB;EACvB,uBAAuB;EACvB,uBAAuB;EACvB,mBAAmB;EACnB,qDAAqD;EACrD,6CAA6C;EAC7C,sFAAsF;EACtF,yEAAyE;EACzE,8EAAsE;EAAtE,sEAAsE;EAAtE,yGAAsE;CAQvE;;AANC;EACE,sBAAsB;EACtB,WAAW;EACX,iFAAiF;EACjF,yEAAyE;CAC1E;;AAGH;EACE,cAAc;CACf;;AAED;EACE,sBAAsB;EACtB,kBAAkB;EAClB,iBAAiB;EACjB,gBAAgB;EAChB,iBAAiB;EACjB,wBAAwB;EACxB,mBAAmB;EACnB,oBAAoB;EACpB,uBAAuB;EACvB,+BAA+B;EAC/B,2BAA2B;EAC3B,gBAAgB;EAChB,0BAA0B;EAC1B,uBAAuB;EACvB,sBAAsB;EACtB,kBAAkB;EAClB,uBAAuB;EACvB,uBAAuB;EACvB,YAAY;EACZ,uBAAuB;EACvB,kBAAmB;CAOpB;;AALC;EACE,YAAY;EACZ,0BAA0B;EAC1B,sBAAsB;CACvB","file":"SettingsPage.scss","sourcesContent":["$white-base:            hsl(255, 255, 255);\r\n$gray-darker:           color(black lightness(+13.5%)); /* #222 */\r\n$gray-dark:             color(black lightness(+25%));   /* #404040 */\r\n$gray:                  color(black lightness(+33.5%)); /* #555 */\r\n$gray-light:            color(black lightness(+46.7%)); /* #777 */\r\n$gray-lighter:          color(black lightness(+93.5%)); /* #eee */\r\n\r\n$link-color: #E16C51;\r\n$link-hover-color: #97918A;\r\n\r\n$font-family-base:      'Segoe UI', 'HelveticaNeue-Light', sans-serif;\r\n\r\n$max-content-width:     1000px;\r\n\r\n$screen-xs-min:         480px;  /* Extra small screen / phone */\r\n$screen-sm-min:         768px;  /* Small screen / tablet */\r\n$screen-md-min:         992px;  /* Medium screen / desktop */\r\n$screen-lg-min:         1200px; /* Large screen / wide desktop */\r\n\r\n$animation-swift-out:   .45s cubic-bezier(0.3, 1, 0.4, 1) 0s;\r\n","@import '../variables.scss';\n\n.field {\n  margin-bottom: 10px;\n}\n\nlabel {\n  display: block;\n  font-weight: 700;\n  margin-bottom: 5px;\n  font-size: 14px;\n}\n\ninput {\n  display: block;\n  width: 100%;\n  padding: 6px;\n  font-size: 14px;\n  line-height: 1.42857143;\n  color: #555;\n  background-color: #fff;\n  background-image: none;\n  border: 1px solid #ccc;\n  border-radius: 2px;\n  -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);\n  box-shadow: inset 0 1px 1px rgba(0,0,0,.075);\n  -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;\n  -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;\n  transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;\n\n  &:focus {\n    border-color: #E16C51;\n    outline: 0;\n    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(225,108,81,.6);\n    box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(225,108,81,.6);\n  }\n}\n\nbutton, input, select, textarea {\n  font: inherit;\n}\n\nbutton {\n  display: inline-block;\n  padding: 6px 12px;\n  margin-bottom: 0;\n  font-size: 14px;\n  font-weight: 700;\n  line-height: 1.42857143;\n  text-align: center;\n  white-space: nowrap;\n  vertical-align: middle;\n  -ms-touch-action: manipulation;\n  touch-action: manipulation;\n  cursor: pointer;\n  -webkit-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n  user-select: none;\n  background-image: none;\n  border: 1px solid #ccc;\n  color: #333;\n  background-color: #fff;\n  border-radius: 4px;\n\n  &:focus, &:hover {\n    color: #333;\n    background-color: #e6e6e6;\n    border-color: #adadad;\n  }\n}\n"],"sourceRoot":"webpack://"}]);
-  
-  // exports
-  exports.locals = {
-  	"field": "SettingsPage_field_1jr"
-  };
-
-/***/ },
-/* 54 */
-/***/ function(module, exports, __webpack_require__) {
-
-  /**
-   * React Starter Kit (https://www.reactstarterkit.com/)
-   *
-   * Copyright © 2014-2016 Kriasoft, LLC. All rights reserved.
-   *
-   * This source code is licensed under the MIT license found in the
-   * LICENSE.txt file in the root directory of this source tree.
-   */
-  
-  'use strict';
-  
-  Object.defineProperty(exports, '__esModule', {
-    value: true
-  });
-  
-  var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-  
-  var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
-  
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-  
-  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-  
-  function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-  
-  var _react = __webpack_require__(4);
-  
-  var _react2 = _interopRequireDefault(_react);
-  
-  var _config = __webpack_require__(14);
-  
-  var Html = (function (_Component) {
-    _inherits(Html, _Component);
-  
-    function Html() {
-      _classCallCheck(this, Html);
-  
-      _get(Object.getPrototypeOf(Html.prototype), 'constructor', this).apply(this, arguments);
-    }
-  
-    _createClass(Html, [{
-      key: 'trackingCode',
-      value: function trackingCode() {
-        return { __html: '(function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=' + 'function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;' + 'e=o.createElement(i);r=o.getElementsByTagName(i)[0];' + 'e.src=\'https://www.google-analytics.com/analytics.js\';' + 'r.parentNode.insertBefore(e,r)}(window,document,\'script\',\'ga\'));' + ('ga(\'create\',\'' + _config.googleAnalyticsId + '\',\'auto\');ga(\'send\',\'pageview\');')
-        };
-      }
-    }, {
-      key: 'render',
-      value: function render() {
-        return _react2['default'].createElement(
-          'html',
-          { className: 'no-js', lang: '' },
-          _react2['default'].createElement(
-            'head',
-            null,
-            _react2['default'].createElement('meta', { charSet: 'utf-8' }),
-            _react2['default'].createElement('meta', { httpEquiv: 'X-UA-Compatible', content: 'IE=edge' }),
-            _react2['default'].createElement(
-              'title',
-              null,
-              this.props.title
-            ),
-            _react2['default'].createElement('meta', { name: 'description', content: this.props.description }),
-            _react2['default'].createElement('meta', { name: 'viewport', content: 'width=device-width, initial-scale=1' }),
-            _react2['default'].createElement('link', { rel: 'apple-touch-icon', href: 'apple-touch-icon.png' }),
-            _react2['default'].createElement('style', { id: 'css', dangerouslySetInnerHTML: { __html: this.props.css } })
-          ),
-          _react2['default'].createElement(
-            'body',
-            null,
-            _react2['default'].createElement('div', { id: 'app', dangerouslySetInnerHTML: { __html: this.props.body } }),
-            _react2['default'].createElement('script', { src: this.props.entry }),
-            _react2['default'].createElement('script', { dangerouslySetInnerHTML: this.trackingCode() })
-          )
-        );
-      }
-    }], [{
-      key: 'propTypes',
-      value: {
-        title: _react.PropTypes.string,
-        description: _react.PropTypes.string,
-        css: _react.PropTypes.string,
-        body: _react.PropTypes.string.isRequired,
-        entry: _react.PropTypes.string.isRequired
-      },
-      enumerable: true
-    }, {
-      key: 'defaultProps',
-      value: {
-        title: '',
-        description: ''
-      },
-      enumerable: true
-    }]);
-  
-    return Html;
-  })(_react.Component);
-  
-  exports['default'] = Html;
-  module.exports = exports['default'];
-
-/***/ },
-/* 55 */
-/***/ function(module, exports) {
-
-  module.exports = require("./assets");
-
-/***/ },
-/* 56 */
-/***/ function(module, exports) {
-
-  module.exports = require("node-hue-api");
-
-/***/ },
-/* 57 */
-/***/ function(module, exports, __webpack_require__) {
-
-  /**
-   * React Starter Kit (https://www.reactstarterkit.com/)
-   *
-   * Copyright © 2014-2016 Kriasoft, LLC. All rights reserved.
-   *
-   * This source code is licensed under the MIT license found in the
-   * LICENSE.txt file in the root directory of this source tree.
-   */
-  
-  'use strict';
-  
-  Object.defineProperty(exports, '__esModule', {
-    value: true
-  });
-  
-  var _this = this;
-  
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-  
-  var _fs = __webpack_require__(58);
-  
-  var _fs2 = _interopRequireDefault(_fs);
-  
-  var _path = __webpack_require__(2);
-  
-  var _express = __webpack_require__(3);
-  
-  var _bluebird = __webpack_require__(59);
-  
-  var _bluebird2 = _interopRequireDefault(_bluebird);
-  
-  var _jade = __webpack_require__(60);
-  
-  var _jade2 = _interopRequireDefault(_jade);
-  
-  var _frontMatter = __webpack_require__(61);
-  
-  var _frontMatter2 = _interopRequireDefault(_frontMatter);
-  
-  // A folder with Jade/Markdown/HTML content pages
-  var CONTENT_DIR = (0, _path.join)(__dirname, './content');
-  
-  // Extract 'front matter' metadata and generate HTML
-  var parseJade = function parseJade(path, jadeContent) {
-    var fmContent = (0, _frontMatter2['default'])(jadeContent);
-    var htmlContent = _jade2['default'].render(fmContent.body);
-    return Object.assign({ path: path, content: htmlContent }, fmContent.attributes);
-  };
-  
-  var readFile = _bluebird2['default'].promisify(_fs2['default'].readFile);
-  var fileExists = function fileExists(filename) {
-    return new _bluebird2['default'](function (resolve) {
-      _fs2['default'].exists(filename, resolve);
-    });
-  };
-  
-  var router = new _express.Router();
-  
-  router.get('/', function callee$0$0(req, res, next) {
-    var path, fileName, source, content;
-    return regeneratorRuntime.async(function callee$0$0$(context$1$0) {
-      while (1) switch (context$1$0.prev = context$1$0.next) {
-        case 0:
-          context$1$0.prev = 0;
-          path = req.query.path;
-  
-          if (!(!path || path === 'undefined')) {
-            context$1$0.next = 5;
-            break;
-          }
-  
-          res.status(400).send({ error: 'The \'path\' query parameter cannot be empty.' });
-          return context$1$0.abrupt('return');
-  
-        case 5:
-          fileName = (0, _path.join)(CONTENT_DIR, (path === '/' ? '/index' : path) + '.jade');
-          context$1$0.next = 8;
-          return regeneratorRuntime.awrap(fileExists(fileName));
-  
-        case 8:
-          if (context$1$0.sent) {
-            context$1$0.next = 10;
-            break;
-          }
-  
-          fileName = (0, _path.join)(CONTENT_DIR, path + '/index.jade');
-  
-        case 10:
-          context$1$0.next = 12;
-          return regeneratorRuntime.awrap(fileExists(fileName));
-  
-        case 12:
-          if (context$1$0.sent) {
-            context$1$0.next = 16;
-            break;
-          }
-  
-          res.status(404).send({ error: 'The page \'' + path + '\' is not found.' });
-          context$1$0.next = 21;
-          break;
-  
-        case 16:
-          context$1$0.next = 18;
-          return regeneratorRuntime.awrap(readFile(fileName, { encoding: 'utf8' }));
-  
-        case 18:
-          source = context$1$0.sent;
-          content = parseJade(path, source);
-  
-          res.status(200).send(content);
-  
-        case 21:
-          context$1$0.next = 26;
-          break;
-  
-        case 23:
-          context$1$0.prev = 23;
-          context$1$0.t0 = context$1$0['catch'](0);
-  
-          next(context$1$0.t0);
-  
-        case 26:
-        case 'end':
-          return context$1$0.stop();
-      }
-    }, null, _this, [[0, 23]]);
-  });
-  
-  exports['default'] = router;
-  module.exports = exports['default'];
-
-/***/ },
-/* 58 */
-/***/ function(module, exports) {
-
-  module.exports = require("fs");
-
-/***/ },
-/* 59 */
-/***/ function(module, exports) {
-
-  module.exports = require("bluebird");
-
-/***/ },
-/* 60 */
-/***/ function(module, exports) {
-
-  module.exports = require("jade");
-
-/***/ },
-/* 61 */
-/***/ function(module, exports) {
-
-  module.exports = require("front-matter");
-
-/***/ },
-/* 62 */
-/***/ function(module, exports, __webpack_require__) {
-
-  /**
-   * React Starter Kit (https://www.reactstarterkit.com/)
-   *
-   * Copyright © 2014-2016 Kriasoft, LLC. All rights reserved.
-   *
-   * This source code is licensed under the MIT license found in the
-   * LICENSE.txt file in the root directory of this source tree.
-   */
-  
-  'use strict';
-  
-  Object.defineProperty(exports, '__esModule', {
-    value: true
-  });
-  
-  var _this = this;
-  
-  var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-  
-  var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-  
-  var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
-  
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-  
-  function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
-  
-  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-  
-  function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-  
-  var _react = __webpack_require__(4);
-  
-  var _react2 = _interopRequireDefault(_react);
-  
-  var _historyLibParsePath = __webpack_require__(40);
-  
-  var _historyLibParsePath2 = _interopRequireDefault(_historyLibParsePath);
-  
-  var _coreLocation = __webpack_require__(44);
-  
-  var _coreLocation2 = _interopRequireDefault(_coreLocation);
-  
-  function isLeftClickEvent(event) {
-    return event.button === 0;
-  }
-  
-  function isModifiedEvent(event) {
-    return !!(event.metaKey || event.altKey || event.ctrlKey || event.shiftKey);
-  }
-  
-  var Link = (function (_Component) {
-    _inherits(Link, _Component);
-  
-    function Link() {
-      _classCallCheck(this, Link);
-  
-      _get(Object.getPrototypeOf(Link.prototype), 'constructor', this).apply(this, arguments);
-    }
-  
-    _createClass(Link, [{
-      key: 'render',
-      value: function render() {
-        var _props = this.props;
-        var to = _props.to;
-        var query = _props.query;
-  
-        var props = _objectWithoutProperties(_props, ['to', 'query']);
-  
-        return _react2['default'].createElement('a', _extends({ href: _coreLocation2['default'].createHref(to, query), onClick: Link.handleClick.bind(this) }, props));
-      }
-    }], [{
-      key: 'propTypes',
-      value: {
-        to: _react.PropTypes.string.isRequired,
-        query: _react.PropTypes.object,
-        state: _react.PropTypes.object,
-        onClick: _react.PropTypes.func
-      },
-      enumerable: true
-    }, {
-      key: 'handleClick',
-      value: function value(event) {
-        var allowTransition = true;
-        var clickResult = undefined;
-  
-        if (_this.props && _this.props.onClick) {
-          clickResult = _this.props.onClick(event);
-        }
-  
-        if (isModifiedEvent(event) || !isLeftClickEvent(event)) {
-          return;
-        }
-  
-        if (clickResult === false || event.defaultPrevented === true) {
-          allowTransition = false;
-        }
-  
-        event.preventDefault();
-  
-        if (allowTransition) {
-          var link = event.currentTarget;
-          if (_this.props && _this.props.to) {
-            _coreLocation2['default'].push(_extends({}, (0, _historyLibParsePath2['default'])(_this.props.to), {
-              state: _this.props && _this.props.state || null
-            }));
-          } else {
-            _coreLocation2['default'].push({
-              pathname: link.pathname,
-              search: link.search,
-              state: _this.props && _this.props.state || null
-            });
-          }
-        }
-      },
-      enumerable: true
-    }]);
-  
-    return Link;
-  })(_react.Component);
-  
-  exports['default'] = Link;
-  module.exports = exports['default'];
-
-/***/ },
-/* 63 */
-/***/ function(module, exports, __webpack_require__) {
-
-  'use strict';
-  
-  Object.defineProperty(exports, '__esModule', {
-    value: true
-  });
-  
-  var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-  
-  var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
-  
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-  
-  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-  
-  function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-  
-  var _react = __webpack_require__(4);
-  
-  var _react2 = _interopRequireDefault(_react);
-  
-  var _HomePageScss = __webpack_require__(38);
+  var _HomePageScss = __webpack_require__(45);
   
   var _HomePageScss2 = _interopRequireDefault(_HomePageScss);
   
-  var _Light = __webpack_require__(64);
+  var _Light = __webpack_require__(52);
   
   var _Light2 = _interopRequireDefault(_Light);
   
@@ -4038,7 +3364,7 @@ module.exports =
     _createClass(LightsList, null, [{
       key: 'propTypes',
       value: {
-        group: _react.PropTypes.object.isRequired,
+        ids: _react.PropTypes.array.isRequired,
         user: _react.PropTypes.string.isRequired,
         ip: _react.PropTypes.string.isRequired
       },
@@ -4063,7 +3389,7 @@ module.exports =
           _react2['default'].createElement(
             'ul',
             { className: _HomePageScss2['default'].lightList },
-            this.props.group.lights.map(function (id) {
+            this.props.ids.map(function (id) {
               return _react2['default'].createElement(_Light2['default'], { key: id,
                 user: _this.props.user, ip: _this.props.ip, id: id
               });
@@ -4080,7 +3406,7 @@ module.exports =
   module.exports = exports['default'];
 
 /***/ },
-/* 64 */
+/* 52 */
 /***/ function(module, exports, __webpack_require__) {
 
   'use strict';
@@ -4103,11 +3429,11 @@ module.exports =
   
   var _react2 = _interopRequireDefault(_react);
   
-  var _HomePageScss = __webpack_require__(38);
+  var _HomePageScss = __webpack_require__(45);
   
   var _HomePageScss2 = _interopRequireDefault(_HomePageScss);
   
-  var _actionsBridge = __webpack_require__(49);
+  var _actionsBridge = __webpack_require__(50);
   
   var _actionsBridge2 = _interopRequireDefault(_actionsBridge);
   
@@ -4233,6 +3559,665 @@ module.exports =
   
   exports['default'] = Light;
   module.exports = exports['default'];
+
+/***/ },
+/* 53 */
+/***/ function(module, exports, __webpack_require__) {
+
+  'use strict';
+  
+  Object.defineProperty(exports, '__esModule', {
+    value: true
+  });
+  
+  var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+  
+  var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+  
+  var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+  
+  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  
+  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+  
+  function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+  
+  var _react = __webpack_require__(4);
+  
+  var _react2 = _interopRequireDefault(_react);
+  
+  var _SettingsPageScss = __webpack_require__(54);
+  
+  var _SettingsPageScss2 = _interopRequireDefault(_SettingsPageScss);
+  
+  var _decoratorsWithStyles = __webpack_require__(24);
+  
+  var _decoratorsWithStyles2 = _interopRequireDefault(_decoratorsWithStyles);
+  
+  var _storesLocalStorage = __webpack_require__(47);
+  
+  var _storesLocalStorage2 = _interopRequireDefault(_storesLocalStorage);
+  
+  var _actionsBridge = __webpack_require__(50);
+  
+  var _actionsBridge2 = _interopRequireDefault(_actionsBridge);
+  
+  var _BridgeDisplay = __webpack_require__(56);
+  
+  var _BridgeDisplay2 = _interopRequireDefault(_BridgeDisplay);
+  
+  var title = 'Settings';
+  
+  var SettingsPage = (function (_Component) {
+    _inherits(SettingsPage, _Component);
+  
+    _createClass(SettingsPage, null, [{
+      key: 'contextTypes',
+      value: {
+        onSetTitle: _react.PropTypes.func.isRequired
+      },
+      enumerable: true
+    }]);
+  
+    function SettingsPage(props) {
+      _classCallCheck(this, _SettingsPage);
+  
+      _get(Object.getPrototypeOf(_SettingsPage.prototype), 'constructor', this).call(this, props);
+      var data = _storesLocalStorage2['default'].getJSON();
+      this.state = {
+        user: data.user,
+        ip: data.ip,
+        bridge: data.bridge,
+        haveBridge: typeof data.bridge === 'object',
+        lightIDs: data.lightIDs,
+        numLights: data.lightIDs ? data.lightIDs.length : undefined
+      };
+    }
+  
+    _createClass(SettingsPage, [{
+      key: 'componentWillMount',
+      value: function componentWillMount() {
+        this.context.onSetTitle(title);
+      }
+    }, {
+      key: 'onAllLightsLoaded',
+      value: function onAllLightsLoaded(group) {
+        if (group.hasOwnProperty('errno')) {
+          console.error('failed to load group of all lights', group);
+          return;
+        }
+        this.setState({
+          allLights: group,
+          numLights: group.lights.length
+        });
+        _storesLocalStorage2['default'].set('lightIDs', group.lights);
+      }
+    }, {
+      key: 'onBridgeLoaded',
+      value: function onBridgeLoaded(bridge) {
+        if (bridge.hasOwnProperty('errno')) {
+          console.error('failed to load bridge info', bridge);
+          return;
+        }
+        this.setState({ bridge: bridge, haveBridge: true });
+        _storesLocalStorage2['default'].set('bridge', bridge);
+        _actionsBridge2['default'].getAllLights(this.state.ip, this.state.user).then(this.onAllLightsLoaded.bind(this));
+      }
+    }, {
+      key: 'handleIPChange',
+      value: function handleIPChange(e) {
+        var ip = e.target.value.trim();
+        if (ip === '') {
+          ip = undefined;
+        }
+        this.setState({ ip: ip, haveBridge: false });
+      }
+    }, {
+      key: 'handleUserChange',
+      value: function handleUserChange(e) {
+        var user = e.target.value.trim();
+        if (user === '') {
+          user = undefined;
+        }
+        this.setState({ user: user, haveBridge: false });
+      }
+    }, {
+      key: 'handleSubmit',
+      value: function handleSubmit(e) {
+        e.preventDefault();
+        _storesLocalStorage2['default'].setMany({
+          user: this.state.user,
+          ip: this.state.ip,
+          bridge: undefined,
+          lightIDs: undefined
+        });
+        if (typeof this.state.ip === 'string' && typeof this.state.user === 'string') {
+          _actionsBridge2['default'].getInfo(this.state.ip, this.state.user).then(this.onBridgeLoaded.bind(this));
+        }
+      }
+    }, {
+      key: 'render',
+      value: function render() {
+        return _react2['default'].createElement(
+          'div',
+          null,
+          _react2['default'].createElement(
+            'header',
+            null,
+            _react2['default'].createElement(
+              'h2',
+              null,
+              'Settings'
+            )
+          ),
+          _react2['default'].createElement(
+            'form',
+            { onSubmit: this.handleSubmit.bind(this) },
+            _react2['default'].createElement(
+              'div',
+              { className: _SettingsPageScss2['default'].field },
+              _react2['default'].createElement(
+                'label',
+                { htmlFor: 'hue_bridge_ip' },
+                'Philips Hue bridge IP address:'
+              ),
+              _react2['default'].createElement('input', { type: 'text', id: 'hue_bridge_ip',
+                value: this.state.ip,
+                onChange: this.handleIPChange.bind(this),
+                placeholder: 'e.g., 192.168.1.182'
+              })
+            ),
+            _react2['default'].createElement(
+              'div',
+              { className: _SettingsPageScss2['default'].field },
+              _react2['default'].createElement(
+                'label',
+                { htmlFor: 'hue_bridge_user' },
+                'Philips Hue bridge user:'
+              ),
+              _react2['default'].createElement('input', { type: 'text', id: 'hue_bridge_user',
+                value: this.state.user,
+                onChange: this.handleUserChange.bind(this),
+                placeholder: 'e.g., 165131875f4bdff60d7f3dd05d46bd48'
+              })
+            ),
+            _react2['default'].createElement(
+              'div',
+              { className: _SettingsPageScss2['default'].field },
+              _react2['default'].createElement(
+                'button',
+                { type: 'submit' },
+                'Save'
+              )
+            )
+          ),
+          this.state.haveBridge ? _react2['default'].createElement(_BridgeDisplay2['default'], _extends({}, this.state.bridge, {
+            numLights: this.state.numLights
+          })) : ''
+        );
+      }
+    }]);
+  
+    var _SettingsPage = SettingsPage;
+    SettingsPage = (0, _decoratorsWithStyles2['default'])(_SettingsPageScss2['default'])(SettingsPage) || SettingsPage;
+    return SettingsPage;
+  })(_react.Component);
+  
+  exports['default'] = SettingsPage;
+  module.exports = exports['default'];
+
+/***/ },
+/* 54 */
+/***/ function(module, exports, __webpack_require__) {
+
+  
+      var content = __webpack_require__(55);
+      var insertCss = __webpack_require__(20);
+  
+      if (typeof content === 'string') {
+        content = [[module.id, content, '']];
+      }
+  
+      module.exports = content.locals || {};
+      module.exports._getCss = function() { return content.toString(); };
+      module.exports._insertCss = insertCss.bind(null, content);
+    
+      var removeCss = function() {};
+  
+      // Hot Module Replacement
+      // https://webpack.github.io/docs/hot-module-replacement
+      if (false) {
+        module.hot.accept("!!./../../../node_modules/css-loader/index.js?sourceMap&modules&localIdentName=[name]_[local]_[hash:base64:3]!./../../../node_modules/postcss-loader/index.js!./SettingsPage.scss", function() {
+          var newContent = require("!!./../../../node_modules/css-loader/index.js?sourceMap&modules&localIdentName=[name]_[local]_[hash:base64:3]!./../../../node_modules/postcss-loader/index.js!./SettingsPage.scss");
+          if (typeof newContent === 'string') {
+            newContent = [[module.id, content, '']];
+          }
+          removeCss = insertCss(newContent, { replace: true });
+        });
+        module.hot.dispose(function() { removeCss(); });
+      }
+    
+
+/***/ },
+/* 55 */
+/***/ function(module, exports, __webpack_require__) {
+
+  exports = module.exports = __webpack_require__(19)();
+  // imports
+  
+  
+  // module
+  exports.push([module.id, "/* #222 */   /* #404040 */ /* #555 */ /* #777 */ /* #eee */  /* Extra small screen / phone */  /* Small screen / tablet */  /* Medium screen / desktop */ /* Large screen / wide desktop */\n\n.SettingsPage_field_1jr {\n  margin-bottom: 10px;\n}\n\nlabel {\n  display: block;\n  font-weight: 700;\n  margin-bottom: 5px;\n  font-size: 14px;\n}\n\ninput {\n  display: block;\n  width: 100%;\n  padding: 6px;\n  font-size: 14px;\n  line-height: 1.42857143;\n  color: #555;\n  background-color: #fff;\n  background-image: none;\n  border: 1px solid #ccc;\n  border-radius: 2px;\n  -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);\n  box-shadow: inset 0 1px 1px rgba(0,0,0,.075);\n  -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;\n  -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;\n  transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;\n  transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;\n  transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s,-webkit-box-shadow ease-in-out .15s\n}\n\ninput:focus {\n  border-color: #E16C51;\n  outline: 0;\n  -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(225,108,81,.6);\n  box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(225,108,81,.6);\n}\n\nbutton, input, select, textarea {\n  font: inherit;\n}\n\nbutton {\n  display: inline-block;\n  padding: 6px 12px;\n  margin-bottom: 0;\n  font-size: 14px;\n  font-weight: 700;\n  line-height: 1.42857143;\n  text-align: center;\n  white-space: nowrap;\n  vertical-align: middle;\n  -ms-touch-action: manipulation;\n  touch-action: manipulation;\n  cursor: pointer;\n  -webkit-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n  user-select: none;\n  background-image: none;\n  border: 1px solid #ccc;\n  color: #333;\n  background-color: #fff;\n  border-radius: 4px\n}\n\nbutton:focus, button:hover {\n  color: #333;\n  background-color: #e6e6e6;\n  border-color: #adadad;\n}\n\n.SettingsPage_bridgeDetails_2cH dt {\n  font-weight: 700;\n}\n\n.SettingsPage_bridgeDetails_2cH dd {\n  margin-left: 0;\n}\n\n@media (min-width: 768px) {\n  .SettingsPage_bridgeDetails_2cH dt {\n    float: left;\n    width: 7em;\n    overflow: hidden;\n    clear: left;\n    text-align: right;\n    text-overflow: ellipsis;\n    white-space: nowrap;\n  }\n  .SettingsPage_bridgeDetails_2cH dd {\n    margin-left: 8em;\n  }\n}\n", "", {"version":3,"sources":["/./src/components/variables.scss","/./src/components/SettingsPage/SettingsPage.scss"],"names":[],"mappings":"AACwD,UAAU,GACV,aAAa,CACb,UAAU,CACV,UAAU,CACV,UAAU,EASlC,gCAAgC,EAChC,2BAA2B,EAC3B,6BAA6B,CAC7B,iCAAiC;;ACfjE;EACE,oBAAoB;CACrB;;AAED;EACE,eAAe;EACf,iBAAiB;EACjB,mBAAmB;EACnB,gBAAgB;CACjB;;AAED;EACE,eAAe;EACf,YAAY;EACZ,aAAa;EACb,gBAAgB;EAChB,wBAAwB;EACxB,YAAY;EACZ,uBAAuB;EACvB,uBAAuB;EACvB,uBAAuB;EACvB,mBAAmB;EACnB,qDAAqD;EACrD,6CAA6C;EAC7C,sFAAsF;EACtF,yEAAyE;EACzE,8EAAsE;EAAtE,sEAAsE;EAAtE,yGAAsE;CAQvE;;AANC;EACE,sBAAsB;EACtB,WAAW;EACX,iFAAiF;EACjF,yEAAyE;CAC1E;;AAGH;EACE,cAAc;CACf;;AAED;EACE,sBAAsB;EACtB,kBAAkB;EAClB,iBAAiB;EACjB,gBAAgB;EAChB,iBAAiB;EACjB,wBAAwB;EACxB,mBAAmB;EACnB,oBAAoB;EACpB,uBAAuB;EACvB,+BAA+B;EAC/B,2BAA2B;EAC3B,gBAAgB;EAChB,0BAA0B;EAC1B,uBAAuB;EACvB,sBAAsB;EACtB,kBAAkB;EAClB,uBAAuB;EACvB,uBAAuB;EACvB,YAAY;EACZ,uBAAuB;EACvB,kBAAmB;CAOpB;;AALC;EACE,YAAY;EACZ,0BAA0B;EAC1B,sBAAsB;CACvB;;AAID;EACE,iBAAiB;CAClB;;AAED;EACE,eAAe;CAChB;;AAGH;EAEI;IACE,YAAY;IACZ,WAAW;IACX,iBAAiB;IACjB,YAAY;IACZ,kBAAkB;IAClB,wBAAwB;IACxB,oBAAoB;GACrB;EAED;IACE,iBAAiB;GAClB;CAEJ","file":"SettingsPage.scss","sourcesContent":["$white-base:            hsl(255, 255, 255);\r\n$gray-darker:           color(black lightness(+13.5%)); /* #222 */\r\n$gray-dark:             color(black lightness(+25%));   /* #404040 */\r\n$gray:                  color(black lightness(+33.5%)); /* #555 */\r\n$gray-light:            color(black lightness(+46.7%)); /* #777 */\r\n$gray-lighter:          color(black lightness(+93.5%)); /* #eee */\r\n\r\n$link-color: #E16C51;\r\n$link-hover-color: #97918A;\r\n\r\n$font-family-base:      'Segoe UI', 'HelveticaNeue-Light', sans-serif;\r\n\r\n$max-content-width:     1000px;\r\n\r\n$screen-xs-min:         480px;  /* Extra small screen / phone */\r\n$screen-sm-min:         768px;  /* Small screen / tablet */\r\n$screen-md-min:         992px;  /* Medium screen / desktop */\r\n$screen-lg-min:         1200px; /* Large screen / wide desktop */\r\n\r\n$animation-swift-out:   .45s cubic-bezier(0.3, 1, 0.4, 1) 0s;\r\n","@import '../variables.scss';\n\n.field {\n  margin-bottom: 10px;\n}\n\nlabel {\n  display: block;\n  font-weight: 700;\n  margin-bottom: 5px;\n  font-size: 14px;\n}\n\ninput {\n  display: block;\n  width: 100%;\n  padding: 6px;\n  font-size: 14px;\n  line-height: 1.42857143;\n  color: #555;\n  background-color: #fff;\n  background-image: none;\n  border: 1px solid #ccc;\n  border-radius: 2px;\n  -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);\n  box-shadow: inset 0 1px 1px rgba(0,0,0,.075);\n  -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;\n  -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;\n  transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;\n\n  &:focus {\n    border-color: #E16C51;\n    outline: 0;\n    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(225,108,81,.6);\n    box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(225,108,81,.6);\n  }\n}\n\nbutton, input, select, textarea {\n  font: inherit;\n}\n\nbutton {\n  display: inline-block;\n  padding: 6px 12px;\n  margin-bottom: 0;\n  font-size: 14px;\n  font-weight: 700;\n  line-height: 1.42857143;\n  text-align: center;\n  white-space: nowrap;\n  vertical-align: middle;\n  -ms-touch-action: manipulation;\n  touch-action: manipulation;\n  cursor: pointer;\n  -webkit-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n  user-select: none;\n  background-image: none;\n  border: 1px solid #ccc;\n  color: #333;\n  background-color: #fff;\n  border-radius: 4px;\n\n  &:focus, &:hover {\n    color: #333;\n    background-color: #e6e6e6;\n    border-color: #adadad;\n  }\n}\n\n.bridgeDetails {\n  dt {\n    font-weight: 700;\n  }\n\n  dd {\n    margin-left: 0;\n  }\n}\n\n@media (min-width: 768px) {\n  .bridgeDetails {\n    dt {\n      float: left;\n      width: 7em;\n      overflow: hidden;\n      clear: left;\n      text-align: right;\n      text-overflow: ellipsis;\n      white-space: nowrap;\n    }\n\n    dd {\n      margin-left: 8em;\n    }\n  }\n}\n"],"sourceRoot":"webpack://"}]);
+  
+  // exports
+  exports.locals = {
+  	"field": "SettingsPage_field_1jr",
+  	"bridgeDetails": "SettingsPage_bridgeDetails_2cH"
+  };
+
+/***/ },
+/* 56 */
+/***/ function(module, exports, __webpack_require__) {
+
+  'use strict';
+  
+  Object.defineProperty(exports, '__esModule', {
+    value: true
+  });
+  
+  var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+  
+  var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+  
+  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  
+  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+  
+  function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+  
+  var _react = __webpack_require__(4);
+  
+  var _react2 = _interopRequireDefault(_react);
+  
+  var _SettingsPageScss = __webpack_require__(54);
+  
+  var _SettingsPageScss2 = _interopRequireDefault(_SettingsPageScss);
+  
+  var BridgeDisplay = (function (_Component) {
+    _inherits(BridgeDisplay, _Component);
+  
+    _createClass(BridgeDisplay, null, [{
+      key: 'propTypes',
+      value: {
+        localtime: _react.PropTypes.string.isRequired,
+        ipaddress: _react.PropTypes.string.isRequired,
+        name: _react.PropTypes.string.isRequired,
+        modelid: _react.PropTypes.string.isRequired,
+        numLights: _react.PropTypes.number
+      },
+      enumerable: true
+    }]);
+  
+    function BridgeDisplay(props, context) {
+      _classCallCheck(this, BridgeDisplay);
+  
+      _get(Object.getPrototypeOf(BridgeDisplay.prototype), 'constructor', this).call(this, props, context);
+      this.state = {};
+    }
+  
+    _createClass(BridgeDisplay, [{
+      key: 'getPrettyTime',
+      value: function getPrettyTime() {
+        var date = new Date(this.props.localtime);
+        var utc = new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds());
+        return utc.toLocaleString();
+      }
+    }, {
+      key: 'render',
+      value: function render() {
+        var bridgeUrl = 'http://' + this.props.ipaddress;
+        return _react2['default'].createElement(
+          'dl',
+          { className: _SettingsPageScss2['default'].bridgeDetails },
+          _react2['default'].createElement(
+            'dt',
+            null,
+            'Name'
+          ),
+          _react2['default'].createElement(
+            'dd',
+            null,
+            this.props.name
+          ),
+          _react2['default'].createElement(
+            'dt',
+            null,
+            'IP Address'
+          ),
+          _react2['default'].createElement(
+            'dd',
+            null,
+            _react2['default'].createElement(
+              'a',
+              { href: bridgeUrl, target: '_blank' },
+              this.props.ipaddress
+            )
+          ),
+          _react2['default'].createElement(
+            'dt',
+            null,
+            'Model'
+          ),
+          _react2['default'].createElement(
+            'dd',
+            null,
+            this.props.modelid
+          ),
+          _react2['default'].createElement(
+            'dt',
+            null,
+            'Time'
+          ),
+          _react2['default'].createElement(
+            'dd',
+            null,
+            this.getPrettyTime()
+          ),
+          _react2['default'].createElement(
+            'dt',
+            null,
+            '# Lights'
+          ),
+          _react2['default'].createElement(
+            'dd',
+            null,
+            typeof this.props.numLights === 'number' ? this.props.numLights : '--'
+          )
+        );
+      }
+    }]);
+  
+    return BridgeDisplay;
+  })(_react.Component);
+  
+  exports['default'] = BridgeDisplay;
+  module.exports = exports['default'];
+
+/***/ },
+/* 57 */
+/***/ function(module, exports, __webpack_require__) {
+
+  /**
+   * React Starter Kit (https://www.reactstarterkit.com/)
+   *
+   * Copyright © 2014-2016 Kriasoft, LLC. All rights reserved.
+   *
+   * This source code is licensed under the MIT license found in the
+   * LICENSE.txt file in the root directory of this source tree.
+   */
+  
+  'use strict';
+  
+  Object.defineProperty(exports, '__esModule', {
+    value: true
+  });
+  
+  var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+  
+  var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+  
+  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  
+  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+  
+  function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+  
+  var _react = __webpack_require__(4);
+  
+  var _react2 = _interopRequireDefault(_react);
+  
+  var _config = __webpack_require__(14);
+  
+  var Html = (function (_Component) {
+    _inherits(Html, _Component);
+  
+    function Html() {
+      _classCallCheck(this, Html);
+  
+      _get(Object.getPrototypeOf(Html.prototype), 'constructor', this).apply(this, arguments);
+    }
+  
+    _createClass(Html, [{
+      key: 'trackingCode',
+      value: function trackingCode() {
+        return { __html: '(function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=' + 'function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;' + 'e=o.createElement(i);r=o.getElementsByTagName(i)[0];' + 'e.src=\'https://www.google-analytics.com/analytics.js\';' + 'r.parentNode.insertBefore(e,r)}(window,document,\'script\',\'ga\'));' + ('ga(\'create\',\'' + _config.googleAnalyticsId + '\',\'auto\');ga(\'send\',\'pageview\');')
+        };
+      }
+    }, {
+      key: 'render',
+      value: function render() {
+        return _react2['default'].createElement(
+          'html',
+          { className: 'no-js', lang: '' },
+          _react2['default'].createElement(
+            'head',
+            null,
+            _react2['default'].createElement('meta', { charSet: 'utf-8' }),
+            _react2['default'].createElement('meta', { httpEquiv: 'X-UA-Compatible', content: 'IE=edge' }),
+            _react2['default'].createElement(
+              'title',
+              null,
+              this.props.title
+            ),
+            _react2['default'].createElement('meta', { name: 'description', content: this.props.description }),
+            _react2['default'].createElement('meta', { name: 'viewport', content: 'width=device-width, initial-scale=1' }),
+            _react2['default'].createElement('link', { rel: 'apple-touch-icon', href: 'apple-touch-icon.png' }),
+            _react2['default'].createElement('style', { id: 'css', dangerouslySetInnerHTML: { __html: this.props.css } })
+          ),
+          _react2['default'].createElement(
+            'body',
+            null,
+            _react2['default'].createElement('div', { id: 'app', dangerouslySetInnerHTML: { __html: this.props.body } }),
+            _react2['default'].createElement('script', { src: this.props.entry }),
+            _react2['default'].createElement('script', { dangerouslySetInnerHTML: this.trackingCode() })
+          )
+        );
+      }
+    }], [{
+      key: 'propTypes',
+      value: {
+        title: _react.PropTypes.string,
+        description: _react.PropTypes.string,
+        css: _react.PropTypes.string,
+        body: _react.PropTypes.string.isRequired,
+        entry: _react.PropTypes.string.isRequired
+      },
+      enumerable: true
+    }, {
+      key: 'defaultProps',
+      value: {
+        title: '',
+        description: ''
+      },
+      enumerable: true
+    }]);
+  
+    return Html;
+  })(_react.Component);
+  
+  exports['default'] = Html;
+  module.exports = exports['default'];
+
+/***/ },
+/* 58 */
+/***/ function(module, exports) {
+
+  module.exports = require("./assets");
+
+/***/ },
+/* 59 */
+/***/ function(module, exports) {
+
+  module.exports = require("node-hue-api");
+
+/***/ },
+/* 60 */
+/***/ function(module, exports, __webpack_require__) {
+
+  /**
+   * React Starter Kit (https://www.reactstarterkit.com/)
+   *
+   * Copyright © 2014-2016 Kriasoft, LLC. All rights reserved.
+   *
+   * This source code is licensed under the MIT license found in the
+   * LICENSE.txt file in the root directory of this source tree.
+   */
+  
+  'use strict';
+  
+  Object.defineProperty(exports, '__esModule', {
+    value: true
+  });
+  
+  var _this = this;
+  
+  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  
+  var _fs = __webpack_require__(61);
+  
+  var _fs2 = _interopRequireDefault(_fs);
+  
+  var _path = __webpack_require__(2);
+  
+  var _express = __webpack_require__(3);
+  
+  var _bluebird = __webpack_require__(62);
+  
+  var _bluebird2 = _interopRequireDefault(_bluebird);
+  
+  var _jade = __webpack_require__(63);
+  
+  var _jade2 = _interopRequireDefault(_jade);
+  
+  var _frontMatter = __webpack_require__(64);
+  
+  var _frontMatter2 = _interopRequireDefault(_frontMatter);
+  
+  // A folder with Jade/Markdown/HTML content pages
+  var CONTENT_DIR = (0, _path.join)(__dirname, './content');
+  
+  // Extract 'front matter' metadata and generate HTML
+  var parseJade = function parseJade(path, jadeContent) {
+    var fmContent = (0, _frontMatter2['default'])(jadeContent);
+    var htmlContent = _jade2['default'].render(fmContent.body);
+    return Object.assign({ path: path, content: htmlContent }, fmContent.attributes);
+  };
+  
+  var readFile = _bluebird2['default'].promisify(_fs2['default'].readFile);
+  var fileExists = function fileExists(filename) {
+    return new _bluebird2['default'](function (resolve) {
+      _fs2['default'].exists(filename, resolve);
+    });
+  };
+  
+  var router = new _express.Router();
+  
+  router.get('/', function callee$0$0(req, res, next) {
+    var path, fileName, source, content;
+    return regeneratorRuntime.async(function callee$0$0$(context$1$0) {
+      while (1) switch (context$1$0.prev = context$1$0.next) {
+        case 0:
+          context$1$0.prev = 0;
+          path = req.query.path;
+  
+          if (!(!path || path === 'undefined')) {
+            context$1$0.next = 5;
+            break;
+          }
+  
+          res.status(400).send({ error: 'The \'path\' query parameter cannot be empty.' });
+          return context$1$0.abrupt('return');
+  
+        case 5:
+          fileName = (0, _path.join)(CONTENT_DIR, (path === '/' ? '/index' : path) + '.jade');
+          context$1$0.next = 8;
+          return regeneratorRuntime.awrap(fileExists(fileName));
+  
+        case 8:
+          if (context$1$0.sent) {
+            context$1$0.next = 10;
+            break;
+          }
+  
+          fileName = (0, _path.join)(CONTENT_DIR, path + '/index.jade');
+  
+        case 10:
+          context$1$0.next = 12;
+          return regeneratorRuntime.awrap(fileExists(fileName));
+  
+        case 12:
+          if (context$1$0.sent) {
+            context$1$0.next = 16;
+            break;
+          }
+  
+          res.status(404).send({ error: 'The page \'' + path + '\' is not found.' });
+          context$1$0.next = 21;
+          break;
+  
+        case 16:
+          context$1$0.next = 18;
+          return regeneratorRuntime.awrap(readFile(fileName, { encoding: 'utf8' }));
+  
+        case 18:
+          source = context$1$0.sent;
+          content = parseJade(path, source);
+  
+          res.status(200).send(content);
+  
+        case 21:
+          context$1$0.next = 26;
+          break;
+  
+        case 23:
+          context$1$0.prev = 23;
+          context$1$0.t0 = context$1$0['catch'](0);
+  
+          next(context$1$0.t0);
+  
+        case 26:
+        case 'end':
+          return context$1$0.stop();
+      }
+    }, null, _this, [[0, 23]]);
+  });
+  
+  exports['default'] = router;
+  module.exports = exports['default'];
+
+/***/ },
+/* 61 */
+/***/ function(module, exports) {
+
+  module.exports = require("fs");
+
+/***/ },
+/* 62 */
+/***/ function(module, exports) {
+
+  module.exports = require("bluebird");
+
+/***/ },
+/* 63 */
+/***/ function(module, exports) {
+
+  module.exports = require("jade");
+
+/***/ },
+/* 64 */
+/***/ function(module, exports) {
+
+  module.exports = require("front-matter");
 
 /***/ }
 /******/ ]);

@@ -4,7 +4,7 @@ import Light from './Light';
 
 class LightsList extends Component {
   static propTypes = {
-    group: PropTypes.object.isRequired,
+    ids: PropTypes.array.isRequired,
     user: PropTypes.string.isRequired,
     ip: PropTypes.string.isRequired,
   };
@@ -18,7 +18,7 @@ class LightsList extends Component {
     return (
       <div>
         <ul className={s.lightList}>
-          {this.props.group.lights.map((id) => {
+          {this.props.ids.map((id) => {
             return (
               <Light key={id}
                 user={this.props.user} ip={this.props.ip} id={id}

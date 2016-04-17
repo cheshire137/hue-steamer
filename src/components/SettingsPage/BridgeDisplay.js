@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import s from './HomePage.scss';
+import s from './SettingsPage.scss';
 
 class BridgeDisplay extends Component {
   static propTypes = {
@@ -40,7 +40,9 @@ class BridgeDisplay extends Component {
         <dt>Time</dt>
         <dd>{this.getPrettyTime()}</dd>
         <dt># Lights</dt>
-        <dd>{this.props.numLights}</dd>
+        <dd>
+          {typeof this.props.numLights === 'number' ? this.props.numLights : '--'}
+        </dd>
       </dl>
     );
   }
