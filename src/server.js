@@ -44,14 +44,13 @@ server.get('/bridge', async (req, res) => {
   const ip = req.query.ip;
   const user = req.query.user;
   if (typeof ip !== 'string') {
-    res.send('Must provide Hue Bridge IP address');
+    res.send('{"error": "Must provide Hue Bridge IP address in ip param"}');
     return;
   }
   if (typeof user !== 'string') {
-    res.send('Must provide Hue Bridge user');
+    res.send('{"error": "Must provide Hue Bridge user in user param"}');
     return;
   }
-  console.log(ip, user);
   const api = new hue.HueApi(ip, user);
   api.config().then((bridge) => {
     res.send(JSON.stringify(bridge));

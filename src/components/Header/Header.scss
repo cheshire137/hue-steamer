@@ -1,1 +1,38 @@
 @import '../variables.scss';
+
+.pageHeader {
+  display: table;
+  width: 100%;
+}
+
+.pageTitle {
+  display: table-cell;
+  vertical-align: middle;
+
+  a {
+    text-decoration: none;
+  }
+}
+
+.mainNav {
+  text-align: right;
+  display: table-cell;
+  vertical-align: middle;
+
+  ul {
+    list-style: none;
+    padding-left: 0;
+
+    li {
+      display: inline-block;
+
+      + li {
+        margin-left: 1em;
+      }
+
+      a {
+        text-decoration: none;
+      }
+    }
+  }
+}
