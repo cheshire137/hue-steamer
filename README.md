@@ -1,7 +1,8 @@
 # Hue Steamer
 
-This will eventually be a web app you can run locally to do things with your
-Philips Hue lights.
+This is a web application you run locally to manipulate your Philips Hue lights.
+
+![Screenshot](https://raw.githubusercontent.com/cheshire137/hue-steamer/master/screenshot1.png)
 
 If you just want a JavaScript library for converting hex and RGB color codes to
 the Philips Hue CIE 1931 color space, or vice versa, look at
@@ -10,14 +11,14 @@ the Philips Hue CIE 1931 color space, or vice versa, look at
 or another
 [JavaScript implementation](https://github.com/bjohnso5/hue-hacking/blob/master/src/colors.js).
 
-## How to Run the Script
-
-    npm install
-    node app.js -b YOUR_HUE_BRIDGE_IP -u YOUR_HUE_USER
-
 ## How to Run the Web App
 
     npm install
     npm start
 
 [localhost:3000](http://localhost:3000/) should open in your browser.
+
+## How to Run the Script (Deprecated)
+
+    npm install
+    node app.js -b YOUR_HUE_BRIDGE_IP -u YOUR_HUE_USER
