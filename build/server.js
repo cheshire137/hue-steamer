@@ -125,6 +125,27 @@ module.exports =
     next();
   });
   
+  server.get('/bridgeConnection/:id', function callee$0$0(req, res) {
+    var id, row;
+    return regeneratorRuntime.async(function callee$0$0$(context$1$0) {
+      while (1) switch (context$1$0.prev = context$1$0.next) {
+        case 0:
+          id = req.params.id;
+          context$1$0.next = 3;
+          return regeneratorRuntime.awrap(_sqlite2['default'].get('SELECT * FROM bridge_connections WHERE id = ?', id));
+  
+        case 3:
+          row = context$1$0.sent;
+  
+          res.send(JSON.stringify(row));
+  
+        case 5:
+        case 'end':
+          return context$1$0.stop();
+      }
+    }, null, _this);
+  });
+  
   server.post('/bridgeConnection', function callee$0$0(req, res) {
     var ip, user, row;
     return regeneratorRuntime.async(function callee$0$0$(context$1$0) {
@@ -3555,11 +3576,24 @@ module.exports =
         return regeneratorRuntime.async(function saveConnection$(context$2$0) {
           while (1) switch (context$2$0.prev = context$2$0.next) {
             case 0:
-              console.log('saving connection', ip, user);
               opts = { method: 'POST' };
               return context$2$0.abrupt('return', this.makeRequest('/bridgeConnection?ip=' + encodeURIComponent(ip) + '&user=' + encodeURIComponent(user), opts));
   
-            case 3:
+            case 2:
+            case 'end':
+              return context$2$0.stop();
+          }
+        }, null, this);
+      }
+    }, {
+      key: 'getConnection',
+      value: function getConnection(id) {
+        return regeneratorRuntime.async(function getConnection$(context$2$0) {
+          while (1) switch (context$2$0.prev = context$2$0.next) {
+            case 0:
+              return context$2$0.abrupt('return', this.makeRequest('/bridgeConnection/' + id));
+  
+            case 1:
             case 'end':
               return context$2$0.stop();
           }
@@ -4137,10 +4171,8 @@ module.exports =
       _get(Object.getPrototypeOf(_SettingsPage.prototype), 'constructor', this).call(this, props);
       var data = _storesLocalStorage2['default'].getJSON();
       this.state = {
-        bridge: data.bridge,
-        haveBridge: typeof data.bridge === 'object',
-        lightIDs: data.lightIDs,
-        numLights: data.lightIDs ? data.lightIDs.length : undefined
+        numLights: data.lightIDs ? data.lightIDs.length : undefined,
+        bridgeConnectionID: data.bridgeConnectionID
       };
     }
   
@@ -4150,16 +4182,20 @@ module.exports =
         this.context.onSetTitle(title);
       }
     }, {
+      key: 'componentDidMount',
+      value: function componentDidMount() {
+        if (typeof this.state.bridgeConnectionID !== 'undefined') {
+          _actionsBridge2['default'].getConnection(this.state.bridgeConnectionID).then(this.onBridgeConnectionLoaded.bind(this));
+        }
+      }
+    }, {
       key: 'onAllLightsLoaded',
       value: function onAllLightsLoaded(group) {
         if (group.hasOwnProperty('errno')) {
           console.error('failed to load group of all lights', group);
           return;
         }
-        this.setState({
-          allLights: group,
-          numLights: group.lights.length
-        });
+        this.setState({ numLights: group.lights.length });
         _storesLocalStorage2['default'].set('lightIDs', group.lights);
       }
     }, {
@@ -4170,8 +4206,19 @@ module.exports =
           return;
         }
         this.setState({ bridge: bridge, haveBridge: true });
-        _storesLocalStorage2['default'].set('bridge', bridge);
         _actionsBridge2['default'].getAllLights(this.state.ip, this.state.user).then(this.onAllLightsLoaded.bind(this));
+      }
+    }, {
+      key: 'onBridgeConnectionLoaded',
+      value: function onBridgeConnectionLoaded(connection) {
+        this.setState({ user: connection.user, ip: connection.ip });
+        _actionsBridge2['default'].getInfo(connection.ip, connection.user).then(this.onBridgeLoaded.bind(this));
+      }
+    }, {
+      key: 'onBridgeConnectionSaved',
+      value: function onBridgeConnectionSaved(connection) {
+        _storesLocalStorage2['default'].set('bridgeConnectionID', connection.id);
+        this.onBridgeConnectionLoaded(connection);
       }
     }, {
       key: 'handleUserChange',
@@ -4181,11 +4228,6 @@ module.exports =
           user = undefined;
         }
         this.setState({ user: user, haveBridge: false });
-      }
-    }, {
-      key: 'onBridgeConnectionSaved',
-      value: function onBridgeConnectionSaved(bridgeConnection) {
-        console.log('saved bridge connection', bridgeConnection);
       }
     }, {
       key: 'handleIPChange',
@@ -4201,12 +4243,10 @@ module.exports =
       value: function handleSubmit(e) {
         e.preventDefault();
         _storesLocalStorage2['default'].setMany({
-          bridge: undefined,
           lightIDs: undefined
         });
         if (typeof this.state.ip === 'string' && typeof this.state.user === 'string') {
           _actionsBridge2['default'].saveConnection(this.state.ip, this.state.user).then(this.onBridgeConnectionSaved.bind(this));
-          _actionsBridge2['default'].getInfo(this.state.ip, this.state.user).then(this.onBridgeLoaded.bind(this));
         }
       }
     }, {

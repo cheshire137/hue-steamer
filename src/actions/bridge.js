@@ -8,10 +8,13 @@ class Bridge {
   }
 
   static async saveConnection(ip, user) {
-    console.log('saving connection', ip, user);
     const opts = { method: 'POST' };
     return this.makeRequest('/bridgeConnection?ip=' + encodeURIComponent(ip) +
                             '&user=' + encodeURIComponent(user), opts);
+  }
+
+  static async getConnection(id) {
+    return this.makeRequest('/bridgeConnection/' + id);
   }
 
   static async getGroup(ip, user, id) {

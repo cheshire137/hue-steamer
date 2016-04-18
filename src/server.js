@@ -41,6 +41,12 @@ server.all('*', (req, res, next) => {
   next();
 });
 
+server.get('/bridgeConnection/:id', async (req, res) => {
+  const id = req.params.id;
+  const row = await db.get('SELECT * FROM bridge_connections WHERE id = ?', id);
+  res.send(JSON.stringify(row));
+});
+
 server.post('/bridgeConnection', async (req, res) => {
   const ip = req.query.ip;
   const user = req.query.user;
