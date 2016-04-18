@@ -101,48 +101,64 @@ module.exports =
   
   var _sqlite2 = _interopRequireDefault(_sqlite);
   
-  var _bluebird = __webpack_require__(63);
-  
-  var _bluebird2 = _interopRequireDefault(_bluebird);
-  
-  var hue = __webpack_require__(64);
+  var hue = __webpack_require__(63);
   var server = global.server = (0, _express2['default'])();
+  
+  function getBridge(id) {
+    return regeneratorRuntime.async(function getBridge$(context$1$0) {
+      while (1) switch (context$1$0.prev = context$1$0.next) {
+        case 0:
+          if (!(typeof id === 'undefined')) {
+            context$1$0.next = 4;
+            break;
+          }
+  
+          context$1$0.next = 3;
+          return regeneratorRuntime.awrap(_sqlite2['default'].get('SELECT user, ip FROM bridges ' + 'ORDER BY id DESC LIMIT 1'));
+  
+        case 3:
+          return context$1$0.abrupt('return', context$1$0.sent);
+  
+        case 4:
+          context$1$0.next = 6;
+          return regeneratorRuntime.awrap(_sqlite2['default'].get('SELECT user, ip FROM bridges WHERE id = ?', id));
+  
+        case 6:
+          return context$1$0.abrupt('return', context$1$0.sent);
+  
+        case 7:
+        case 'end':
+          return context$1$0.stop();
+      }
+    }, null, this);
+  }
   
   function getHueApi(id) {
     var connection;
     return regeneratorRuntime.async(function getHueApi$(context$1$0) {
       while (1) switch (context$1$0.prev = context$1$0.next) {
         case 0:
-          connection = undefined;
+          context$1$0.next = 2;
+          return regeneratorRuntime.awrap(getBridge(id));
   
-          if (!(typeof id === 'undefined')) {
-            context$1$0.next = 7;
-            break;
-          }
-  
-          context$1$0.next = 4;
-          return regeneratorRuntime.awrap(_sqlite2['default'].get('SELECT user, ip FROM bridge_connections ' + 'ORDER BY id DESC LIMIT 1'));
-  
-        case 4:
+        case 2:
           connection = context$1$0.sent;
-          context$1$0.next = 10;
-          break;
-  
-        case 7:
-          context$1$0.next = 9;
-          return regeneratorRuntime.awrap(_sqlite2['default'].get('SELECT user, ip FROM bridge_connections ' + 'WHERE id = ?', id));
-  
-        case 9:
-          connection = context$1$0.sent;
-  
-        case 10:
           return context$1$0.abrupt('return', new hue.HueApi(connection.ip, connection.user));
   
-        case 11:
+        case 4:
         case 'end':
           return context$1$0.stop();
       }
     }, null, this);
+  }
+  
+  function sendBridgeDetails(connection, res) {
+    var api = new hue.HueApi(connection.ip, connection.user);
+    api.config().then(function (bridge) {
+      res.send(JSON.stringify({ connection: connection, bridge: bridge }));
+    }).fail(function (err) {
+      res.status(400).send(JSON.stringify({ error: err, connection: connection }));
+    }).done();
   }
   
   //
@@ -153,7 +169,7 @@ module.exports =
   //
   // Register API middleware
   // -----------------------------------------------------------------------------
-  server.use('/api/content', __webpack_require__(65));
+  server.use('/api/content', __webpack_require__(64));
   
   server.all('*', function (req, res, next) {
     res.header('Access-Control-Allow-Origin', _configJson2['default'][("development")].clientUri);
@@ -162,29 +178,48 @@ module.exports =
     next();
   });
   
-  server.get('/bridgeConnection/:id', function callee$0$0(req, res) {
-    var id, row;
+  server.get('/bridge', function callee$0$0(req, res) {
+    var connection;
     return regeneratorRuntime.async(function callee$0$0$(context$1$0) {
       while (1) switch (context$1$0.prev = context$1$0.next) {
         case 0:
-          id = req.params.id;
-          context$1$0.next = 3;
-          return regeneratorRuntime.awrap(_sqlite2['default'].get('SELECT * FROM bridge_connections WHERE id = ?', id));
+          context$1$0.next = 2;
+          return regeneratorRuntime.awrap(getBridge());
   
-        case 3:
-          row = context$1$0.sent;
+        case 2:
+          connection = context$1$0.sent;
   
-          res.send(JSON.stringify(row));
+          sendBridgeDetails(connection, res);
   
-        case 5:
+        case 4:
         case 'end':
           return context$1$0.stop();
       }
     }, null, _this);
   });
   
-  server.post('/bridgeConnection', function callee$0$0(req, res) {
-    var ip, user, row;
+  server.get('/bridges/:id', function callee$0$0(req, res) {
+    var connection;
+    return regeneratorRuntime.async(function callee$0$0$(context$1$0) {
+      while (1) switch (context$1$0.prev = context$1$0.next) {
+        case 0:
+          context$1$0.next = 2;
+          return regeneratorRuntime.awrap(getBridge(req.params.id));
+  
+        case 2:
+          connection = context$1$0.sent;
+  
+          sendBridgeDetails(connection, res);
+  
+        case 4:
+        case 'end':
+          return context$1$0.stop();
+      }
+    }, null, _this);
+  });
+  
+  server.post('/bridges', function callee$0$0(req, res) {
+    var ip, user, connection;
     return regeneratorRuntime.async(function callee$0$0$(context$1$0) {
       while (1) switch (context$1$0.prev = context$1$0.next) {
         case 0:
@@ -196,7 +231,7 @@ module.exports =
             break;
           }
   
-          res.send('{"error": "Must provide Hue Bridge IP address in ip param"}');
+          res.status(400).send('{"error": "Must provide Hue Bridge IP address in ip param"}');
           return context$1$0.abrupt('return');
   
         case 5:
@@ -205,33 +240,33 @@ module.exports =
             break;
           }
   
-          res.send('{"error": "Must provide Hue Bridge user in user param"}');
+          res.status(400).send('{"error": "Must provide Hue Bridge user in user param"}');
           return context$1$0.abrupt('return');
   
         case 8:
           context$1$0.next = 10;
-          return regeneratorRuntime.awrap(_sqlite2['default'].get('SELECT * FROM bridge_connections ' + 'WHERE ip = ? AND user = ?', ip, user));
+          return regeneratorRuntime.awrap(_sqlite2['default'].get('SELECT * FROM bridges ' + 'WHERE ip = ? AND user = ?', ip, user));
   
         case 10:
-          row = context$1$0.sent;
+          connection = context$1$0.sent;
   
-          if (!(typeof row !== 'object')) {
+          if (!(typeof connection !== 'object')) {
             context$1$0.next = 17;
             break;
           }
   
           context$1$0.next = 14;
-          return regeneratorRuntime.awrap(_sqlite2['default'].run('INSERT INTO bridge_connections (user, ip) VALUES (?, ?)', user, ip));
+          return regeneratorRuntime.awrap(_sqlite2['default'].run('INSERT INTO bridges (user, ip) VALUES (?, ?)', user, ip));
   
         case 14:
           context$1$0.next = 16;
-          return regeneratorRuntime.awrap(_sqlite2['default'].get('SELECT * FROM bridge_connections ORDER BY id DESC ' + 'LIMIT 1'));
+          return regeneratorRuntime.awrap(getBridge());
   
         case 16:
-          row = context$1$0.sent;
+          connection = context$1$0.sent;
   
         case 17:
-          res.send(JSON.stringify(row));
+          sendBridgeDetails(connection, res);
   
         case 18:
         case 'end':
@@ -240,21 +275,21 @@ module.exports =
     }, null, _this);
   });
   
-  server.get('/bridge/:id', function callee$0$0(req, res) {
+  server.get('/group/:id', function callee$0$0(req, res) {
     var api;
     return regeneratorRuntime.async(function callee$0$0$(context$1$0) {
       while (1) switch (context$1$0.prev = context$1$0.next) {
         case 0:
           context$1$0.next = 2;
-          return regeneratorRuntime.awrap(getHueApi(req.params.id));
+          return regeneratorRuntime.awrap(getHueApi(req.query.connectionID));
   
         case 2:
           api = context$1$0.sent;
   
-          api.config().then(function (bridge) {
-            res.send(JSON.stringify(bridge));
+          api.getGroup(req.params.id).then(function (group) {
+            res.send(JSON.stringify(group));
           }).fail(function (err) {
-            res.send(JSON.stringify(err));
+            res.status(400).send(JSON.stringify(err));
           }).done();
   
         case 4:
@@ -264,50 +299,24 @@ module.exports =
     }, null, _this);
   });
   
-  server.get('/group/:id', function callee$0$0(req, res) {
-    var groupID, api;
-    return regeneratorRuntime.async(function callee$0$0$(context$1$0) {
-      while (1) switch (context$1$0.prev = context$1$0.next) {
-        case 0:
-          groupID = req.params.id;
-          context$1$0.next = 3;
-          return regeneratorRuntime.awrap(getHueApi(req.query.connectionID));
-  
-        case 3:
-          api = context$1$0.sent;
-  
-          api.getGroup(groupID).then(function (group) {
-            res.send(JSON.stringify(group));
-          }).fail(function (err) {
-            res.send(JSON.stringify(err));
-          }).done();
-  
-        case 5:
-        case 'end':
-          return context$1$0.stop();
-      }
-    }, null, _this);
-  });
-  
   server.get('/light/:id', function callee$0$0(req, res) {
-    var lightID, api;
+    var api;
     return regeneratorRuntime.async(function callee$0$0$(context$1$0) {
       while (1) switch (context$1$0.prev = context$1$0.next) {
         case 0:
-          lightID = req.params.id;
-          context$1$0.next = 3;
+          context$1$0.next = 2;
           return regeneratorRuntime.awrap(getHueApi(req.query.connectionID));
   
-        case 3:
+        case 2:
           api = context$1$0.sent;
   
-          api.lightStatus(lightID).then(function (result) {
+          api.lightStatus(req.params.id).then(function (result) {
             res.send(JSON.stringify(result));
           }).fail(function (err) {
-            res.send(JSON.stringify(err));
+            res.status(400).send(JSON.stringify(err));
           }).done();
   
-        case 5:
+        case 4:
         case 'end':
           return context$1$0.stop();
       }
@@ -315,26 +324,25 @@ module.exports =
   });
   
   server.post('/light/:id/on', function callee$0$0(req, res) {
-    var lightID, api, lightState, state;
+    var api, lightState, state;
     return regeneratorRuntime.async(function callee$0$0$(context$1$0) {
       while (1) switch (context$1$0.prev = context$1$0.next) {
         case 0:
-          lightID = req.params.id;
-          context$1$0.next = 3;
+          context$1$0.next = 2;
           return regeneratorRuntime.awrap(getHueApi(req.query.connectionID));
   
-        case 3:
+        case 2:
           api = context$1$0.sent;
           lightState = hue.lightState;
           state = lightState.create();
   
-          api.setLightState(lightID, state.on()).then(function (result) {
+          api.setLightState(req.params.id, state.on()).then(function (result) {
             res.send(JSON.stringify(result));
           }).fail(function (err) {
-            res.send(JSON.stringify(err));
+            res.status(400).send(JSON.stringify(err));
           }).done();
   
-        case 7:
+        case 6:
         case 'end':
           return context$1$0.stop();
       }
@@ -342,26 +350,25 @@ module.exports =
   });
   
   server.post('/light/:id/off', function callee$0$0(req, res) {
-    var lightID, api, lightState, state;
+    var api, lightState, state;
     return regeneratorRuntime.async(function callee$0$0$(context$1$0) {
       while (1) switch (context$1$0.prev = context$1$0.next) {
         case 0:
-          lightID = req.params.id;
-          context$1$0.next = 3;
+          context$1$0.next = 2;
           return regeneratorRuntime.awrap(getHueApi(req.query.connectionID));
   
-        case 3:
+        case 2:
           api = context$1$0.sent;
           lightState = hue.lightState;
           state = lightState.create();
   
-          api.setLightState(lightID, state.off()).then(function (result) {
+          api.setLightState(req.params.id, state.off()).then(function (result) {
             res.send(JSON.stringify(result));
           }).fail(function (err) {
-            res.send(JSON.stringify(err));
+            res.status(400).send(JSON.stringify(err));
           }).done();
   
-        case 7:
+        case 6:
         case 'end':
           return context$1$0.stop();
       }
@@ -441,13 +448,13 @@ module.exports =
   // -----------------------------------------------------------------------------
   var dbName = _configJson2['default'][("development")].database || ':memory:';
   console.log('Working with database ' + dbName);
-  _sqlite2['default'].open(dbName, { verbose: true, Promise: _bluebird2['default'] })['catch'](function (err) {
-    return console.error(err);
-  })['finally'](function () {
+  _sqlite2['default'].open(dbName, { verbose: true }).then(function () {
     server.listen(_config.port, function () {
       /* eslint-disable no-console */
       console.log('The server is running at http://localhost:' + _config.port + '/');
     });
+  })['catch'](function (err) {
+    return console.error(err);
   });
 
 /***/ },
@@ -2986,9 +2993,7 @@ module.exports =
         return _react2['default'].createElement(
           'div',
           null,
-          haveLights ? _react2['default'].createElement(_LightsList2['default'], { bridgeConnectionID: this.state.bridgeConnectionID,
-            ids: this.state.lightIDs
-          }) : 'Loading...'
+          haveLights ? _react2['default'].createElement(_LightsList2['default'], { ids: this.state.lightIDs }) : 'Loading...'
         );
       }
     }]);
@@ -3244,8 +3249,7 @@ module.exports =
     _createClass(LightsList, null, [{
       key: 'propTypes',
       value: {
-        ids: _react.PropTypes.array.isRequired,
-        bridgeConnectionID: _react.PropTypes.number.isRequired
+        ids: _react.PropTypes.array.isRequired
       },
       enumerable: true
     }]);
@@ -3260,8 +3264,6 @@ module.exports =
     _createClass(LightsList, [{
       key: 'render',
       value: function render() {
-        var _this = this;
-  
         return _react2['default'].createElement(
           'div',
           null,
@@ -3269,10 +3271,7 @@ module.exports =
             'ul',
             { className: _HomePageScss2['default'].lightList },
             this.props.ids.map(function (id) {
-              return _react2['default'].createElement(_Light2['default'], { key: id,
-                bridgeConnectionID: _this.props.bridgeConnectionID,
-                id: id
-              });
+              return _react2['default'].createElement(_Light2['default'], { key: id, id: id });
             })
           )
         );
@@ -3327,8 +3326,7 @@ module.exports =
     _createClass(Light, null, [{
       key: 'propTypes',
       value: {
-        id: _react.PropTypes.string.isRequired,
-        bridgeConnectionID: _react.PropTypes.number.isRequired
+        id: _react.PropTypes.string.isRequired
       },
       enumerable: true
     }]);
@@ -3343,7 +3341,7 @@ module.exports =
     _createClass(Light, [{
       key: 'componentDidMount',
       value: function componentDidMount() {
-        _actionsBridge2['default'].getLight(this.props.bridgeConnectionID, this.props.id).then(this.onLightLoaded.bind(this));
+        _actionsBridge2['default'].getLight(this.props.id).then(this.onLightLoaded.bind(this));
       }
     }, {
       key: 'onLightLoaded',
@@ -3359,9 +3357,9 @@ module.exports =
       value: function onLightToggle() {
         var light = this.state.light;
         if (light.state.on) {
-          _actionsBridge2['default'].turnOffLight(this.props.bridgeConnectionID, this.props.id).then(this.onLightToggleComplete.bind(this));
+          _actionsBridge2['default'].turnOffLight(this.props.id).then(this.onLightToggleComplete.bind(this));
         } else {
-          _actionsBridge2['default'].turnOnLight(this.props.bridgeConnectionID, this.props.id).then(this.onLightToggleComplete.bind(this));
+          _actionsBridge2['default'].turnOnLight(this.props.id).then(this.onLightToggleComplete.bind(this));
         }
       }
     }, {
@@ -3500,44 +3498,38 @@ module.exports =
     }
   
     _createClass(Bridge, null, [{
-      key: 'getInfo',
-      value: function getInfo(id) {
-        return regeneratorRuntime.async(function getInfo$(context$2$0) {
+      key: 'get',
+      value: function get(id) {
+        return regeneratorRuntime.async(function get$(context$2$0) {
           while (1) switch (context$2$0.prev = context$2$0.next) {
             case 0:
-              return context$2$0.abrupt('return', this.makeRequest('/bridge/' + id));
+              if (!(typeof id === 'undefined')) {
+                context$2$0.next = 2;
+                break;
+              }
   
-            case 1:
+              return context$2$0.abrupt('return', this.makeRequest('/bridge'));
+  
+            case 2:
+              return context$2$0.abrupt('return', this.makeRequest('/bridges/' + id));
+  
+            case 3:
             case 'end':
               return context$2$0.stop();
           }
         }, null, this);
       }
     }, {
-      key: 'saveConnection',
-      value: function saveConnection(ip, user) {
+      key: 'save',
+      value: function save(ip, user) {
         var opts;
-        return regeneratorRuntime.async(function saveConnection$(context$2$0) {
+        return regeneratorRuntime.async(function save$(context$2$0) {
           while (1) switch (context$2$0.prev = context$2$0.next) {
             case 0:
               opts = { method: 'POST' };
-              return context$2$0.abrupt('return', this.makeRequest('/bridgeConnection?ip=' + encodeURIComponent(ip) + '&user=' + encodeURIComponent(user), opts));
+              return context$2$0.abrupt('return', this.makeRequest('/bridges?ip=' + encodeURIComponent(ip) + '&user=' + encodeURIComponent(user), opts));
   
             case 2:
-            case 'end':
-              return context$2$0.stop();
-          }
-        }, null, this);
-      }
-    }, {
-      key: 'getConnection',
-      value: function getConnection(id) {
-        return regeneratorRuntime.async(function getConnection$(context$2$0) {
-          while (1) switch (context$2$0.prev = context$2$0.next) {
-            case 0:
-              return context$2$0.abrupt('return', this.makeRequest('/bridgeConnection/' + id));
-  
-            case 1:
             case 'end':
               return context$2$0.stop();
           }
@@ -3545,15 +3537,13 @@ module.exports =
       }
     }, {
       key: 'getGroup',
-      value: function getGroup(connectionID, optionalGroupID) {
-        var groupID;
+      value: function getGroup(groupID) {
         return regeneratorRuntime.async(function getGroup$(context$2$0) {
           while (1) switch (context$2$0.prev = context$2$0.next) {
             case 0:
-              groupID = optionalGroupID || '0';
-              return context$2$0.abrupt('return', this.makeRequest('/group/' + groupID + '?connectionID=' + connectionID));
+              return context$2$0.abrupt('return', this.makeRequest('/group/' + (groupID || '0')));
   
-            case 2:
+            case 1:
             case 'end':
               return context$2$0.stop();
           }
@@ -3561,11 +3551,11 @@ module.exports =
       }
     }, {
       key: 'getLight',
-      value: function getLight(connectionID, lightID) {
+      value: function getLight(lightID) {
         return regeneratorRuntime.async(function getLight$(context$2$0) {
           while (1) switch (context$2$0.prev = context$2$0.next) {
             case 0:
-              return context$2$0.abrupt('return', this.makeRequest('/light/' + lightID + '?connectionID=' + connectionID));
+              return context$2$0.abrupt('return', this.makeRequest('/light/' + lightID));
   
             case 1:
             case 'end':
@@ -3575,11 +3565,11 @@ module.exports =
       }
     }, {
       key: 'getAllLights',
-      value: function getAllLights(connectionID) {
+      value: function getAllLights() {
         return regeneratorRuntime.async(function getAllLights$(context$2$0) {
           while (1) switch (context$2$0.prev = context$2$0.next) {
             case 0:
-              return context$2$0.abrupt('return', this.getGroup(connectionID, '0'));
+              return context$2$0.abrupt('return', this.getGroup('0'));
   
             case 1:
             case 'end':
@@ -3589,13 +3579,13 @@ module.exports =
       }
     }, {
       key: 'turnOnLight',
-      value: function turnOnLight(connectionID, lightID) {
+      value: function turnOnLight(lightID) {
         var opts;
         return regeneratorRuntime.async(function turnOnLight$(context$2$0) {
           while (1) switch (context$2$0.prev = context$2$0.next) {
             case 0:
               opts = { method: 'POST' };
-              return context$2$0.abrupt('return', this.makeRequest('/light/' + lightID + '/on' + '?connectionID=' + connectionID, opts));
+              return context$2$0.abrupt('return', this.makeRequest('/light/' + lightID + '/on', opts));
   
             case 2:
             case 'end':
@@ -3605,13 +3595,13 @@ module.exports =
       }
     }, {
       key: 'turnOffLight',
-      value: function turnOffLight(connectionID, lightID) {
+      value: function turnOffLight(lightID) {
         var opts;
         return regeneratorRuntime.async(function turnOffLight$(context$2$0) {
           while (1) switch (context$2$0.prev = context$2$0.next) {
             case 0:
               opts = { method: 'POST' };
-              return context$2$0.abrupt('return', this.makeRequest('/light/' + lightID + '/off' + '?connectionID=' + connectionID, opts));
+              return context$2$0.abrupt('return', this.makeRequest('/light/' + lightID + '/off', opts));
   
             case 2:
             case 'end':
@@ -3633,14 +3623,23 @@ module.exports =
   
             case 4:
               response = context$2$0.sent;
-              context$2$0.next = 7;
+  
+              if (!response.ok) {
+                context$2$0.next = 10;
+                break;
+              }
+  
+              context$2$0.next = 8;
               return regeneratorRuntime.awrap(response.json());
   
-            case 7:
+            case 8:
               data = context$2$0.sent;
               return context$2$0.abrupt('return', data);
   
-            case 9:
+            case 10:
+              throw new Error(response.statusText);
+  
+            case 11:
             case 'end':
               return context$2$0.stop();
           }
@@ -4125,8 +4124,7 @@ module.exports =
       key: 'componentDidMount',
       value: function componentDidMount() {
         if (typeof this.state.bridgeConnectionID !== 'undefined') {
-          _actionsBridge2['default'].getConnection(this.state.bridgeConnectionID).then(this.onBridgeConnectionLoaded.bind(this));
-          _actionsBridge2['default'].getInfo(this.state.bridgeConnectionID).then(this.onBridgeLoaded.bind(this));
+          _actionsBridge2['default'].get(this.state.bridgeConnectionID).then(this.onBridgeLoaded.bind(this));
         }
       }
     }, {
@@ -4141,30 +4139,32 @@ module.exports =
       }
     }, {
       key: 'onBridgeLoaded',
-      value: function onBridgeLoaded(bridge) {
-        console.log('bridge', bridge);
-        if (bridge.hasOwnProperty('errno')) {
-          console.error('failed to load bridge info', bridge);
+      value: function onBridgeLoaded(bridgeAndConnection) {
+        if (bridgeAndConnection.hasOwnProperty('error')) {
+          console.error('failed to load bridge info', bridgeAndConnection.error);
           return;
         }
-        this.setState({ bridge: bridge, haveBridge: true });
-      }
-    }, {
-      key: 'onBridgeConnectionLoaded',
-      value: function onBridgeConnectionLoaded(connection) {
-        this.setState({ user: connection.user, ip: connection.ip });
-      }
-    }, {
-      key: 'onBridgeConnectionSaved',
-      value: function onBridgeConnectionSaved(connection) {
-        _storesLocalStorage2['default'].set('bridgeConnectionID', connection.id);
+        var connection = bridgeAndConnection.connection;
         this.setState({
-          bridgeConnectionID: connection.id,
           user: connection.user,
-          ip: connection.ip
+          ip: connection.ip,
+          bridge: bridgeAndConnection.bridge,
+          haveBridge: true,
+          bridgeConnectionID: connection.id
         });
-        _actionsBridge2['default'].getInfo(connection.id).then(this.onBridgeLoaded.bind(this));
+      }
+    }, {
+      key: 'onBridgeSaved',
+      value: function onBridgeSaved(bridgeAndConnection) {
+        this.onBridgeLoaded(bridgeAndConnection);
+        var connection = bridgeAndConnection.connection;
+        _storesLocalStorage2['default'].set('bridgeConnectionID', connection.id);
         _actionsBridge2['default'].getAllLights(connection.id).then(this.onAllLightsLoaded.bind(this));
+      }
+    }, {
+      key: 'onBridgeSaveError',
+      value: function onBridgeSaveError(response) {
+        console.error('failed to save bridge info', response);
       }
     }, {
       key: 'handleUserChange',
@@ -4193,7 +4193,7 @@ module.exports =
           bridgeConnectionID: undefined
         });
         if (typeof this.state.ip === 'string' && typeof this.state.user === 'string') {
-          _actionsBridge2['default'].saveConnection(this.state.ip, this.state.user).then(this.onBridgeConnectionSaved.bind(this));
+          _actionsBridge2['default'].save(this.state.ip, this.state.user).then(this.onBridgeSaved.bind(this))['catch'](this.onBridgeSaveError.bind(this));
         }
       }
     }, {
@@ -4565,16 +4565,10 @@ module.exports =
 /* 63 */
 /***/ function(module, exports) {
 
-  module.exports = require("bluebird");
-
-/***/ },
-/* 64 */
-/***/ function(module, exports) {
-
   module.exports = require("node-hue-api");
 
 /***/ },
-/* 65 */
+/* 64 */
 /***/ function(module, exports, __webpack_require__) {
 
   /**
@@ -4596,7 +4590,7 @@ module.exports =
   
   function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
   
-  var _fs = __webpack_require__(66);
+  var _fs = __webpack_require__(65);
   
   var _fs2 = _interopRequireDefault(_fs);
   
@@ -4604,7 +4598,7 @@ module.exports =
   
   var _express = __webpack_require__(3);
   
-  var _bluebird = __webpack_require__(63);
+  var _bluebird = __webpack_require__(66);
   
   var _bluebird2 = _interopRequireDefault(_bluebird);
   
@@ -4709,10 +4703,16 @@ module.exports =
   module.exports = exports['default'];
 
 /***/ },
-/* 66 */
+/* 65 */
 /***/ function(module, exports) {
 
   module.exports = require("fs");
+
+/***/ },
+/* 66 */
+/***/ function(module, exports) {
+
+  module.exports = require("bluebird");
 
 /***/ },
 /* 67 */

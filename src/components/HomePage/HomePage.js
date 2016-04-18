@@ -41,9 +41,7 @@ class HomePage extends Component {
     return (
       <div>
         {haveLights ? (
-          <LightsList bridgeConnectionID={this.state.bridgeConnectionID}
-            ids={this.state.lightIDs}
-          />
+          <LightsList ids={this.state.lightIDs} />
         ) : 'Loading...'}
       </div>
     );

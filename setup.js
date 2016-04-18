@@ -3,9 +3,9 @@ var dbName = 'hue-steamer-' + process.env.NODE_ENV + '.sqlite';
 var db = new sqlite3.Database(dbName);
 
 console.log('Working in database ' + dbName);
-console.log('Creating bridge_connections...');
+console.log('Creating bridges...');
 db.serialize(function() {
-  db.run('CREATE TABLE IF NOT EXISTS bridge_connections ' +
+  db.run('CREATE TABLE IF NOT EXISTS bridges ' +
          '(id INTEGER, user TEXT, ip TEXT, PRIMARY KEY(id ASC))');
 });
 

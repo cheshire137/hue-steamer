@@ -28,9 +28,7 @@ class SettingsPage extends Component {
 
   componentDidMount() {
     if (typeof this.state.bridgeConnectionID !== 'undefined') {
-      Bridge.getConnection(this.state.bridgeConnectionID).
-             then(this.onBridgeConnectionLoaded.bind(this));
-      Bridge.getInfo(this.state.bridgeConnectionID).
+      Bridge.get(this.state.bridgeConnectionID).
              then(this.onBridgeLoaded.bind(this));
     }
   }
@@ -44,29 +42,31 @@ class SettingsPage extends Component {
     LocalStorage.set('lightIDs', group.lights);
   }
 
-  onBridgeLoaded(bridge) {
-    console.log('bridge', bridge);
-    if (bridge.hasOwnProperty('errno')) {
-      console.error('failed to load bridge info', bridge);
+  onBridgeLoaded(bridgeAndConnection) {
+    if (bridgeAndConnection.hasOwnProperty('error')) {
+      console.error('failed to load bridge info', bridgeAndConnection.error);
       return;
     }
-    this.setState({ bridge, haveBridge: true });
-  }
-
-  onBridgeConnectionLoaded(connection) {
-    this.setState({ user: connection.user, ip: connection.ip });
-  }
-
-  onBridgeConnectionSaved(connection) {
-    LocalStorage.set('bridgeConnectionID', connection.id);
+    const connection = bridgeAndConnection.connection;
     this.setState({
-      bridgeConnectionID: connection.id,
       user: connection.user,
       ip: connection.ip,
+      bridge: bridgeAndConnection.bridge,
+      haveBridge: true,
+      bridgeConnectionID: connection.id,
     });
-    Bridge.getInfo(connection.id).then(this.onBridgeLoaded.bind(this));
+  }
+
+  onBridgeSaved(bridgeAndConnection) {
+    this.onBridgeLoaded(bridgeAndConnection);
+    const connection = bridgeAndConnection.connection;
+    LocalStorage.set('bridgeConnectionID', connection.id);
     Bridge.getAllLights(connection.id).
            then(this.onAllLightsLoaded.bind(this));
+  }
+
+  onBridgeSaveError(response) {
+    console.error('failed to save bridge info', response);
   }
 
   handleUserChange(e) {
@@ -93,8 +93,9 @@ class SettingsPage extends Component {
     });
     if (typeof this.state.ip === 'string' &&
         typeof this.state.user === 'string') {
-      Bridge.saveConnection(this.state.ip, this.state.user).
-             then(this.onBridgeConnectionSaved.bind(this));
+      Bridge.save(this.state.ip, this.state.user).
+             then(this.onBridgeSaved.bind(this)).
+             catch(this.onBridgeSaveError.bind(this));
     }
   }
 
