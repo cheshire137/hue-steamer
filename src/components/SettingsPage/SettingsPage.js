@@ -51,8 +51,6 @@ class SettingsPage extends Component {
       return;
     }
     this.setState({ bridge, haveBridge: true });
-    Bridge.getAllLights(this.state.ip, this.state.user).
-           then(this.onAllLightsLoaded.bind(this));
   }
 
   onBridgeConnectionLoaded(connection) {
@@ -61,9 +59,14 @@ class SettingsPage extends Component {
 
   onBridgeConnectionSaved(connection) {
     LocalStorage.set('bridgeConnectionID', connection.id);
-    this.setState({ bridgeConnectionID: connection.id });
-    this.onBridgeConnectionLoaded(connection);
+    this.setState({
+      bridgeConnectionID: connection.id,
+      user: connection.user,
+      ip: connection.ip,
+    });
     Bridge.getInfo(connection.id).then(this.onBridgeLoaded.bind(this));
+    Bridge.getAllLights(connection.id).
+           then(this.onAllLightsLoaded.bind(this));
   }
 
   handleUserChange(e) {
@@ -86,6 +89,7 @@ class SettingsPage extends Component {
     e.preventDefault();
     LocalStorage.setMany({
       lightIDs: undefined,
+      bridgeConnectionID: undefined,
     });
     if (typeof this.state.ip === 'string' &&
         typeof this.state.user === 'string') {

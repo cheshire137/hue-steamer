@@ -18,8 +18,7 @@ class HomePage extends Component {
     super(props);
     const data = LocalStorage.getJSON();
     this.state = {
-      user: data.user,
-      ip: data.ip,
+      bridgeConnectionID: data.bridgeConnectionID,
       lightIDs: data.lightIDs,
     };
   }
@@ -30,9 +29,7 @@ class HomePage extends Component {
   }
 
   redirectIfNoBridgeSettings() {
-    const haveBridgeIp = typeof this.state.ip !== 'undefined';
-    const haveBridgeUser = typeof this.state.user !== 'undefined';
-    if (!haveBridgeIp || !haveBridgeUser) {
+    if (typeof this.state.bridgeConnectionID === 'undefined') {
       Location.push({
         ...(parsePath('/settings')),
       });
@@ -44,8 +41,7 @@ class HomePage extends Component {
     return (
       <div>
         {haveLights ? (
-          <LightsList ip={this.state.ip}
-            user={this.state.user}
+          <LightsList bridgeConnectionID={this.state.bridgeConnectionID}
             ids={this.state.lightIDs}
           />
         ) : 'Loading...'}

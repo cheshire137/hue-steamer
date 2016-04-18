@@ -84,22 +84,13 @@ server.get('/bridge/:id', async (req, res) => {
   }).done();
 });
 
-server.get('/group', async (req, res) => {
-  const ip = req.query.ip;
-  const user = req.query.user;
-  let groupID = req.query.id;
-  if (typeof ip !== 'string') {
-    res.send('{"error": "Must provide Hue Bridge IP address in ip param"}');
+server.get('/group/:id', async (req, res) => {
+  const groupID = req.params.id;
+  if (typeof req.query.connectionID === 'undefined') {
+    res.send('{"error": "Pass bridge connection ID in connectionID param"}');
     return;
   }
-  if (typeof user !== 'string') {
-    res.send('{"error": "Must provide Hue Bridge user in user param"}');
-    return;
-  }
-  if (typeof groupID === 'undefined') {
-    groupID = '0';
-  }
-  const api = new hue.HueApi(ip, user);
+  const api = await getHueApi(req.query.connectionID);
   api.getGroup(groupID).then((group) => {
     res.send(JSON.stringify(group));
   }).fail((err) => {
@@ -108,18 +99,12 @@ server.get('/group', async (req, res) => {
 });
 
 server.get('/light/:id', async (req, res) => {
-  const ip = req.query.ip;
-  const user = req.query.user;
   const lightID = req.params.id;
-  if (typeof ip !== 'string') {
-    res.send('{"error": "Must provide Hue Bridge IP address in ip param"}');
+  if (typeof req.query.connectionID === 'undefined') {
+    res.send('{"error": "Pass bridge connection ID in connectionID param"}');
     return;
   }
-  if (typeof user !== 'string') {
-    res.send('{"error": "Must provide Hue Bridge user in user param"}');
-    return;
-  }
-  const api = new hue.HueApi(ip, user);
+  const api = await getHueApi(req.query.connectionID);
   api.lightStatus(lightID).then((result) => {
     res.send(JSON.stringify(result));
   }).fail((err) => {
@@ -128,18 +113,12 @@ server.get('/light/:id', async (req, res) => {
 });
 
 server.post('/light/:id/on', async (req, res) => {
-  const ip = req.query.ip;
-  const user = req.query.user;
   const lightID = req.params.id;
-  if (typeof ip !== 'string') {
-    res.send('{"error": "Must provide Hue Bridge IP address in ip param"}');
+  if (typeof req.query.connectionID === 'undefined') {
+    res.send('{"error": "Pass bridge connection ID in connectionID param"}');
     return;
   }
-  if (typeof user !== 'string') {
-    res.send('{"error": "Must provide Hue Bridge user in user param"}');
-    return;
-  }
-  const api = new hue.HueApi(ip, user);
+  const api = await getHueApi(req.query.connectionID);
   const lightState = hue.lightState;
   const state = lightState.create();
   api.setLightState(lightID, state.on()).then((result) => {
@@ -150,18 +129,12 @@ server.post('/light/:id/on', async (req, res) => {
 });
 
 server.post('/light/:id/off', async (req, res) => {
-  const ip = req.query.ip;
-  const user = req.query.user;
   const lightID = req.params.id;
-  if (typeof ip !== 'string') {
-    res.send('{"error": "Must provide Hue Bridge IP address in ip param"}');
+  if (typeof req.query.connectionID === 'undefined') {
+    res.send('{"error": "Pass bridge connection ID in connectionID param"}');
     return;
   }
-  if (typeof user !== 'string') {
-    res.send('{"error": "Must provide Hue Bridge user in user param"}');
-    return;
-  }
-  const api = new hue.HueApi(ip, user);
+  const api = await getHueApi(req.query.connectionID);
   const lightState = hue.lightState;
   const state = lightState.create();
   api.setLightState(lightID, state.off()).then((result) => {

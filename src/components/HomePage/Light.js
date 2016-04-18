@@ -6,8 +6,7 @@ import Converter from '../../api/converter';
 class Light extends Component {
   static propTypes = {
     id: PropTypes.string.isRequired,
-    user: PropTypes.string.isRequired,
-    ip: PropTypes.string.isRequired,
+    bridgeConnectionID: PropTypes.number.isRequired,
   };
 
   constructor(props, context) {
@@ -16,7 +15,7 @@ class Light extends Component {
   }
 
   componentDidMount() {
-    Bridge.getLight(this.props.ip, this.props.user, this.props.id).
+    Bridge.getLight(this.props.bridgeConnectionID, this.props.id).
            then(this.onLightLoaded.bind(this));
   }
 
@@ -31,10 +30,10 @@ class Light extends Component {
   onLightToggle() {
     const light = this.state.light;
     if (light.state.on) {
-      Bridge.turnOffLight(this.props.ip, this.props.user, this.props.id).
+      Bridge.turnOffLight(this.props.bridgeConnectionID, this.props.id).
              then(this.onLightToggleComplete.bind(this));
     } else {
-      Bridge.turnOnLight(this.props.ip, this.props.user, this.props.id).
+      Bridge.turnOnLight(this.props.bridgeConnectionID, this.props.id).
              then(this.onLightToggleComplete.bind(this));
     }
   }

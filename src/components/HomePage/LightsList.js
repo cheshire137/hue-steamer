@@ -5,8 +5,7 @@ import Light from './Light';
 class LightsList extends Component {
   static propTypes = {
     ids: PropTypes.array.isRequired,
-    user: PropTypes.string.isRequired,
-    ip: PropTypes.string.isRequired,
+    bridgeConnectionID: PropTypes.number.isRequired,
   };
 
   constructor(props, context) {
@@ -21,7 +20,8 @@ class LightsList extends Component {
           {this.props.ids.map((id) => {
             return (
               <Light key={id}
-                user={this.props.user} ip={this.props.ip} id={id}
+                bridgeConnectionID={this.props.bridgeConnectionID}
+                id={id}
               />
             );
           })}

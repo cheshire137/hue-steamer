@@ -246,37 +246,27 @@ module.exports =
     }, null, _this);
   });
   
-  server.get('/group', function callee$0$0(req, res) {
-    var ip, user, groupID, api;
+  server.get('/group/:id', function callee$0$0(req, res) {
+    var groupID, api;
     return regeneratorRuntime.async(function callee$0$0$(context$1$0) {
       while (1) switch (context$1$0.prev = context$1$0.next) {
         case 0:
-          ip = req.query.ip;
-          user = req.query.user;
-          groupID = req.query.id;
+          groupID = req.params.id;
   
-          if (!(typeof ip !== 'string')) {
-            context$1$0.next = 6;
+          if (!(typeof req.query.connectionID === 'undefined')) {
+            context$1$0.next = 4;
             break;
           }
   
-          res.send('{"error": "Must provide Hue Bridge IP address in ip param"}');
+          res.send('{"error": "Pass bridge connection ID in connectionID param"}');
           return context$1$0.abrupt('return');
+  
+        case 4:
+          context$1$0.next = 6;
+          return regeneratorRuntime.awrap(getHueApi(req.query.connectionID));
   
         case 6:
-          if (!(typeof user !== 'string')) {
-            context$1$0.next = 9;
-            break;
-          }
-  
-          res.send('{"error": "Must provide Hue Bridge user in user param"}');
-          return context$1$0.abrupt('return');
-  
-        case 9:
-          if (typeof groupID === 'undefined') {
-            groupID = '0';
-          }
-          api = new hue.HueApi(ip, user);
+          api = context$1$0.sent;
   
           api.getGroup(groupID).then(function (group) {
             res.send(JSON.stringify(group));
@@ -284,7 +274,7 @@ module.exports =
             res.send(JSON.stringify(err));
           }).done();
   
-        case 12:
+        case 8:
         case 'end':
           return context$1$0.stop();
       }
@@ -292,33 +282,26 @@ module.exports =
   });
   
   server.get('/light/:id', function callee$0$0(req, res) {
-    var ip, user, lightID, api;
+    var lightID, api;
     return regeneratorRuntime.async(function callee$0$0$(context$1$0) {
       while (1) switch (context$1$0.prev = context$1$0.next) {
         case 0:
-          ip = req.query.ip;
-          user = req.query.user;
           lightID = req.params.id;
   
-          if (!(typeof ip !== 'string')) {
-            context$1$0.next = 6;
+          if (!(typeof req.query.connectionID === 'undefined')) {
+            context$1$0.next = 4;
             break;
           }
   
-          res.send('{"error": "Must provide Hue Bridge IP address in ip param"}');
+          res.send('{"error": "Pass bridge connection ID in connectionID param"}');
           return context$1$0.abrupt('return');
+  
+        case 4:
+          context$1$0.next = 6;
+          return regeneratorRuntime.awrap(getHueApi(req.query.connectionID));
   
         case 6:
-          if (!(typeof user !== 'string')) {
-            context$1$0.next = 9;
-            break;
-          }
-  
-          res.send('{"error": "Must provide Hue Bridge user in user param"}');
-          return context$1$0.abrupt('return');
-  
-        case 9:
-          api = new hue.HueApi(ip, user);
+          api = context$1$0.sent;
   
           api.lightStatus(lightID).then(function (result) {
             res.send(JSON.stringify(result));
@@ -326,7 +309,7 @@ module.exports =
             res.send(JSON.stringify(err));
           }).done();
   
-        case 11:
+        case 8:
         case 'end':
           return context$1$0.stop();
       }
@@ -334,33 +317,26 @@ module.exports =
   });
   
   server.post('/light/:id/on', function callee$0$0(req, res) {
-    var ip, user, lightID, api, lightState, state;
+    var lightID, api, lightState, state;
     return regeneratorRuntime.async(function callee$0$0$(context$1$0) {
       while (1) switch (context$1$0.prev = context$1$0.next) {
         case 0:
-          ip = req.query.ip;
-          user = req.query.user;
           lightID = req.params.id;
   
-          if (!(typeof ip !== 'string')) {
-            context$1$0.next = 6;
+          if (!(typeof req.query.connectionID === 'undefined')) {
+            context$1$0.next = 4;
             break;
           }
   
-          res.send('{"error": "Must provide Hue Bridge IP address in ip param"}');
+          res.send('{"error": "Pass bridge connection ID in connectionID param"}');
           return context$1$0.abrupt('return');
+  
+        case 4:
+          context$1$0.next = 6;
+          return regeneratorRuntime.awrap(getHueApi(req.query.connectionID));
   
         case 6:
-          if (!(typeof user !== 'string')) {
-            context$1$0.next = 9;
-            break;
-          }
-  
-          res.send('{"error": "Must provide Hue Bridge user in user param"}');
-          return context$1$0.abrupt('return');
-  
-        case 9:
-          api = new hue.HueApi(ip, user);
+          api = context$1$0.sent;
           lightState = hue.lightState;
           state = lightState.create();
   
@@ -370,7 +346,7 @@ module.exports =
             res.send(JSON.stringify(err));
           }).done();
   
-        case 13:
+        case 10:
         case 'end':
           return context$1$0.stop();
       }
@@ -378,33 +354,26 @@ module.exports =
   });
   
   server.post('/light/:id/off', function callee$0$0(req, res) {
-    var ip, user, lightID, api, lightState, state;
+    var lightID, api, lightState, state;
     return regeneratorRuntime.async(function callee$0$0$(context$1$0) {
       while (1) switch (context$1$0.prev = context$1$0.next) {
         case 0:
-          ip = req.query.ip;
-          user = req.query.user;
           lightID = req.params.id;
   
-          if (!(typeof ip !== 'string')) {
-            context$1$0.next = 6;
+          if (!(typeof req.query.connectionID === 'undefined')) {
+            context$1$0.next = 4;
             break;
           }
   
-          res.send('{"error": "Must provide Hue Bridge IP address in ip param"}');
+          res.send('{"error": "Pass bridge connection ID in connectionID param"}');
           return context$1$0.abrupt('return');
+  
+        case 4:
+          context$1$0.next = 6;
+          return regeneratorRuntime.awrap(getHueApi(req.query.connectionID));
   
         case 6:
-          if (!(typeof user !== 'string')) {
-            context$1$0.next = 9;
-            break;
-          }
-  
-          res.send('{"error": "Must provide Hue Bridge user in user param"}');
-          return context$1$0.abrupt('return');
-  
-        case 9:
-          api = new hue.HueApi(ip, user);
+          api = context$1$0.sent;
           lightState = hue.lightState;
           state = lightState.create();
   
@@ -414,7 +383,7 @@ module.exports =
             res.send(JSON.stringify(err));
           }).done();
   
-        case 13:
+        case 10:
         case 'end':
           return context$1$0.stop();
       }
@@ -3014,8 +2983,7 @@ module.exports =
       _get(Object.getPrototypeOf(_HomePage.prototype), 'constructor', this).call(this, props);
       var data = _storesLocalStorage2['default'].getJSON();
       this.state = {
-        user: data.user,
-        ip: data.ip,
+        bridgeConnectionID: data.bridgeConnectionID,
         lightIDs: data.lightIDs
       };
     }
@@ -3029,9 +2997,7 @@ module.exports =
     }, {
       key: 'redirectIfNoBridgeSettings',
       value: function redirectIfNoBridgeSettings() {
-        var haveBridgeIp = typeof this.state.ip !== 'undefined';
-        var haveBridgeUser = typeof this.state.user !== 'undefined';
-        if (!haveBridgeIp || !haveBridgeUser) {
+        if (typeof this.state.bridgeConnectionID === 'undefined') {
           _coreLocation2['default'].push(_extends({}, (0, _historyLibParsePath2['default'])('/settings')));
         }
       }
@@ -3042,8 +3008,7 @@ module.exports =
         return _react2['default'].createElement(
           'div',
           null,
-          haveLights ? _react2['default'].createElement(_LightsList2['default'], { ip: this.state.ip,
-            user: this.state.user,
+          haveLights ? _react2['default'].createElement(_LightsList2['default'], { bridgeConnectionID: this.state.bridgeConnectionID,
             ids: this.state.lightIDs
           }) : 'Loading...'
         );
@@ -3302,8 +3267,7 @@ module.exports =
       key: 'propTypes',
       value: {
         ids: _react.PropTypes.array.isRequired,
-        user: _react.PropTypes.string.isRequired,
-        ip: _react.PropTypes.string.isRequired
+        bridgeConnectionID: _react.PropTypes.number.isRequired
       },
       enumerable: true
     }]);
@@ -3328,7 +3292,8 @@ module.exports =
             { className: _HomePageScss2['default'].lightList },
             this.props.ids.map(function (id) {
               return _react2['default'].createElement(_Light2['default'], { key: id,
-                user: _this.props.user, ip: _this.props.ip, id: id
+                bridgeConnectionID: _this.props.bridgeConnectionID,
+                id: id
               });
             })
           )
@@ -3385,8 +3350,7 @@ module.exports =
       key: 'propTypes',
       value: {
         id: _react.PropTypes.string.isRequired,
-        user: _react.PropTypes.string.isRequired,
-        ip: _react.PropTypes.string.isRequired
+        bridgeConnectionID: _react.PropTypes.number.isRequired
       },
       enumerable: true
     }]);
@@ -3401,7 +3365,7 @@ module.exports =
     _createClass(Light, [{
       key: 'componentDidMount',
       value: function componentDidMount() {
-        _actionsBridge2['default'].getLight(this.props.ip, this.props.user, this.props.id).then(this.onLightLoaded.bind(this));
+        _actionsBridge2['default'].getLight(this.props.bridgeConnectionID, this.props.id).then(this.onLightLoaded.bind(this));
       }
     }, {
       key: 'onLightLoaded',
@@ -3417,9 +3381,9 @@ module.exports =
       value: function onLightToggle() {
         var light = this.state.light;
         if (light.state.on) {
-          _actionsBridge2['default'].turnOffLight(this.props.ip, this.props.user, this.props.id).then(this.onLightToggleComplete.bind(this));
+          _actionsBridge2['default'].turnOffLight(this.props.bridgeConnectionID, this.props.id).then(this.onLightToggleComplete.bind(this));
         } else {
-          _actionsBridge2['default'].turnOnLight(this.props.ip, this.props.user, this.props.id).then(this.onLightToggleComplete.bind(this));
+          _actionsBridge2['default'].turnOnLight(this.props.bridgeConnectionID, this.props.id).then(this.onLightToggleComplete.bind(this));
         }
       }
     }, {
@@ -3603,19 +3567,15 @@ module.exports =
       }
     }, {
       key: 'getGroup',
-      value: function getGroup(ip, user, id) {
-        var path;
+      value: function getGroup(connectionID, optionalGroupID) {
+        var groupID;
         return regeneratorRuntime.async(function getGroup$(context$2$0) {
           while (1) switch (context$2$0.prev = context$2$0.next) {
             case 0:
-              path = '/group?ip=' + encodeURIComponent(ip) + '&user=' + encodeURIComponent(user);
+              groupID = optionalGroupID || '0';
+              return context$2$0.abrupt('return', this.makeRequest('/group/' + groupID + '?connectionID=' + connectionID));
   
-              if (typeof id !== 'undefined') {
-                path += '&id=' + encodeURIComponent(id);
-              }
-              return context$2$0.abrupt('return', this.makeRequest(path));
-  
-            case 3:
+            case 2:
             case 'end':
               return context$2$0.stop();
           }
@@ -3623,11 +3583,11 @@ module.exports =
       }
     }, {
       key: 'getLight',
-      value: function getLight(ip, user, id) {
+      value: function getLight(connectionID, lightID) {
         return regeneratorRuntime.async(function getLight$(context$2$0) {
           while (1) switch (context$2$0.prev = context$2$0.next) {
             case 0:
-              return context$2$0.abrupt('return', this.makeRequest('/light/' + id + '?ip=' + encodeURIComponent(ip) + '&user=' + encodeURIComponent(user)));
+              return context$2$0.abrupt('return', this.makeRequest('/light/' + lightID + '?connectionID=' + connectionID));
   
             case 1:
             case 'end':
@@ -3637,11 +3597,11 @@ module.exports =
       }
     }, {
       key: 'getAllLights',
-      value: function getAllLights(ip, user) {
+      value: function getAllLights(connectionID) {
         return regeneratorRuntime.async(function getAllLights$(context$2$0) {
           while (1) switch (context$2$0.prev = context$2$0.next) {
             case 0:
-              return context$2$0.abrupt('return', this.getGroup(ip, user, '0'));
+              return context$2$0.abrupt('return', this.getGroup(connectionID, '0'));
   
             case 1:
             case 'end':
@@ -3651,13 +3611,13 @@ module.exports =
       }
     }, {
       key: 'turnOnLight',
-      value: function turnOnLight(ip, user, id) {
+      value: function turnOnLight(connectionID, lightID) {
         var opts;
         return regeneratorRuntime.async(function turnOnLight$(context$2$0) {
           while (1) switch (context$2$0.prev = context$2$0.next) {
             case 0:
               opts = { method: 'POST' };
-              return context$2$0.abrupt('return', this.makeRequest('/light/' + id + '/on?ip=' + encodeURIComponent(ip) + '&user=' + encodeURIComponent(user), opts));
+              return context$2$0.abrupt('return', this.makeRequest('/light/' + lightID + '/on' + '?connectionID=' + connectionID, opts));
   
             case 2:
             case 'end':
@@ -3667,13 +3627,13 @@ module.exports =
       }
     }, {
       key: 'turnOffLight',
-      value: function turnOffLight(ip, user, id) {
+      value: function turnOffLight(connectionID, lightID) {
         var opts;
         return regeneratorRuntime.async(function turnOffLight$(context$2$0) {
           while (1) switch (context$2$0.prev = context$2$0.next) {
             case 0:
               opts = { method: 'POST' };
-              return context$2$0.abrupt('return', this.makeRequest('/light/' + id + '/off?ip=' + encodeURIComponent(ip) + '&user=' + encodeURIComponent(user), opts));
+              return context$2$0.abrupt('return', this.makeRequest('/light/' + lightID + '/off' + '?connectionID=' + connectionID, opts));
   
             case 2:
             case 'end':
@@ -4210,7 +4170,6 @@ module.exports =
           return;
         }
         this.setState({ bridge: bridge, haveBridge: true });
-        _actionsBridge2['default'].getAllLights(this.state.ip, this.state.user).then(this.onAllLightsLoaded.bind(this));
       }
     }, {
       key: 'onBridgeConnectionLoaded',
@@ -4221,9 +4180,13 @@ module.exports =
       key: 'onBridgeConnectionSaved',
       value: function onBridgeConnectionSaved(connection) {
         _storesLocalStorage2['default'].set('bridgeConnectionID', connection.id);
-        this.setState({ bridgeConnectionID: connection.id });
-        this.onBridgeConnectionLoaded(connection);
+        this.setState({
+          bridgeConnectionID: connection.id,
+          user: connection.user,
+          ip: connection.ip
+        });
         _actionsBridge2['default'].getInfo(connection.id).then(this.onBridgeLoaded.bind(this));
+        _actionsBridge2['default'].getAllLights(connection.id).then(this.onAllLightsLoaded.bind(this));
       }
     }, {
       key: 'handleUserChange',
@@ -4248,7 +4211,8 @@ module.exports =
       value: function handleSubmit(e) {
         e.preventDefault();
         _storesLocalStorage2['default'].setMany({
-          lightIDs: undefined
+          lightIDs: undefined,
+          bridgeConnectionID: undefined
         });
         if (typeof this.state.ip === 'string' && typeof this.state.user === 'string') {
           _actionsBridge2['default'].saveConnection(this.state.ip, this.state.user).then(this.onBridgeConnectionSaved.bind(this));

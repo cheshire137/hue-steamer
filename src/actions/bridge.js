@@ -16,36 +16,31 @@ class Bridge {
     return this.makeRequest('/bridgeConnection/' + id);
   }
 
-  static async getGroup(ip, user, id) {
-    let path = '/group?ip=' + encodeURIComponent(ip) +
-               '&user=' + encodeURIComponent(user);
-    if (typeof id !== 'undefined') {
-      path += '&id=' + encodeURIComponent(id);
-    }
-    return this.makeRequest(path);
+  static async getGroup(connectionID, optionalGroupID) {
+    const groupID = optionalGroupID || '0';
+    return this.makeRequest('/group/' + groupID +
+                            '?connectionID=' + connectionID);
   }
 
-  static async getLight(ip, user, id) {
-    return this.makeRequest('/light/' + id + '?ip=' + encodeURIComponent(ip) +
-                            '&user=' + encodeURIComponent(user));
+  static async getLight(connectionID, lightID) {
+    return this.makeRequest('/light/' + lightID +
+                            '?connectionID=' + connectionID);
   }
 
-  static async getAllLights(ip, user) {
-    return this.getGroup(ip, user, '0');
+  static async getAllLights(connectionID) {
+    return this.getGroup(connectionID, '0');
   }
 
-  static async turnOnLight(ip, user, id) {
+  static async turnOnLight(connectionID, lightID) {
     const opts = { method: 'POST' };
-    return this.makeRequest('/light/' + id + '/on?ip=' +
-                            encodeURIComponent(ip) + '&user=' +
-                            encodeURIComponent(user), opts);
+    return this.makeRequest('/light/' + lightID + '/on' +
+                            '?connectionID=' + connectionID, opts);
   }
 
-  static async turnOffLight(ip, user, id) {
+  static async turnOffLight(connectionID, lightID) {
     const opts = { method: 'POST' };
-    return this.makeRequest('/light/' + id + '/off?ip=' +
-                            encodeURIComponent(ip) + '&user=' +
-                            encodeURIComponent(user), opts);
+    return this.makeRequest('/light/' + lightID + '/off' +
+                            '?connectionID=' + connectionID, opts);
   }
 
   static async makeRequest(path, optionalOptions) {
