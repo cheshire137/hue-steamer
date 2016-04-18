@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import s from './HomePage.scss';
 import Bridge from '../../actions/bridge';
 import Converter from '../../api/converter';
+import ColorPicker from 'react-color';
 
 class Light extends Component {
   static propTypes = {
@@ -10,7 +11,11 @@ class Light extends Component {
 
   constructor(props, context) {
     super(props, context);
-    this.state = { lights: [], loaded: false };
+    this.state = {
+      lights: [],
+      loaded: false,
+      showColorPicker: false,
+    };
   }
 
   componentDidMount() {
@@ -54,9 +59,16 @@ class Light extends Component {
     }
   }
 
+  toggleColorPicker() {
+    this.setState({ showColorPicker: !this.state.showColorPicker });
+  }
+
   render() {
     const checkboxID = 'light-' + this.props.id + '-toggle';
     const colorStyle = {};
+    const colorPickerStyle = {
+      display: this.state.showColorPicker ? 'block' : 'none',
+    };
     if (typeof this.state.light === 'object') {
       const backgroundColor = this.getLightHex();
       if (typeof backgroundColor !== 'undefined') {
@@ -93,8 +105,16 @@ class Light extends Component {
                 </span>
                 <span className={s.model}>{this.state.light.modelid}</span>
               </div>
-              <div className={s.colorBlock} style={colorStyle}>
-              </div>
+              {colorStyle.backgroundColor ? (
+                <div className={s.colorBlockAndPicker}>
+                  <button type="button" onClick={this.toggleColorPicker.bind(this)}
+                    className={s.colorBlock} style={colorStyle}
+                  ></button>
+                  <div style={colorPickerStyle} className={s.colorPickerWrapper}>
+                    <ColorPicker type="chrome" color={colorStyle.backgroundColor} />
+                  </div>
+                </div>
+              ) : ''}
             </footer>
           </div>
         ) : (
