@@ -108,6 +108,25 @@ module.exports =
   var hue = __webpack_require__(64);
   var server = global.server = (0, _express2['default'])();
   
+  function getHueApi(id) {
+    var connection;
+    return regeneratorRuntime.async(function getHueApi$(context$1$0) {
+      while (1) switch (context$1$0.prev = context$1$0.next) {
+        case 0:
+          context$1$0.next = 2;
+          return regeneratorRuntime.awrap(_sqlite2['default'].get('SELECT user, ip FROM bridge_connections ' + 'WHERE id = ?', id));
+  
+        case 2:
+          connection = context$1$0.sent;
+          return context$1$0.abrupt('return', new hue.HueApi(connection.ip, connection.user));
+  
+        case 4:
+        case 'end':
+          return context$1$0.stop();
+      }
+    }, null, this);
+  }
+  
   //
   // Register Node.js middleware
   // -----------------------------------------------------------------------------
@@ -203,33 +222,16 @@ module.exports =
     }, null, _this);
   });
   
-  server.get('/bridge', function callee$0$0(req, res) {
-    var ip, user, api;
+  server.get('/bridge/:id', function callee$0$0(req, res) {
+    var api;
     return regeneratorRuntime.async(function callee$0$0$(context$1$0) {
       while (1) switch (context$1$0.prev = context$1$0.next) {
         case 0:
-          ip = req.query.ip;
-          user = req.query.user;
+          context$1$0.next = 2;
+          return regeneratorRuntime.awrap(getHueApi(req.params.id));
   
-          if (!(typeof ip !== 'string')) {
-            context$1$0.next = 5;
-            break;
-          }
-  
-          res.send('{"error": "Must provide Hue Bridge IP address in ip param"}');
-          return context$1$0.abrupt('return');
-  
-        case 5:
-          if (!(typeof user !== 'string')) {
-            context$1$0.next = 8;
-            break;
-          }
-  
-          res.send('{"error": "Must provide Hue Bridge user in user param"}');
-          return context$1$0.abrupt('return');
-  
-        case 8:
-          api = new hue.HueApi(ip, user);
+        case 2:
+          api = context$1$0.sent;
   
           api.config().then(function (bridge) {
             res.send(JSON.stringify(bridge));
@@ -237,7 +239,7 @@ module.exports =
             res.send(JSON.stringify(err));
           }).done();
   
-        case 10:
+        case 4:
         case 'end':
           return context$1$0.stop();
       }
@@ -3557,11 +3559,11 @@ module.exports =
   
     _createClass(Bridge, null, [{
       key: 'getInfo',
-      value: function getInfo(ip, user) {
+      value: function getInfo(id) {
         return regeneratorRuntime.async(function getInfo$(context$2$0) {
           while (1) switch (context$2$0.prev = context$2$0.next) {
             case 0:
-              return context$2$0.abrupt('return', this.makeRequest('/bridge?ip=' + encodeURIComponent(ip) + '&user=' + encodeURIComponent(user)));
+              return context$2$0.abrupt('return', this.makeRequest('/bridge/' + id));
   
             case 1:
             case 'end':
@@ -4186,6 +4188,7 @@ module.exports =
       value: function componentDidMount() {
         if (typeof this.state.bridgeConnectionID !== 'undefined') {
           _actionsBridge2['default'].getConnection(this.state.bridgeConnectionID).then(this.onBridgeConnectionLoaded.bind(this));
+          _actionsBridge2['default'].getInfo(this.state.bridgeConnectionID).then(this.onBridgeLoaded.bind(this));
         }
       }
     }, {
@@ -4201,6 +4204,7 @@ module.exports =
     }, {
       key: 'onBridgeLoaded',
       value: function onBridgeLoaded(bridge) {
+        console.log('bridge', bridge);
         if (bridge.hasOwnProperty('errno')) {
           console.error('failed to load bridge info', bridge);
           return;
@@ -4212,13 +4216,14 @@ module.exports =
       key: 'onBridgeConnectionLoaded',
       value: function onBridgeConnectionLoaded(connection) {
         this.setState({ user: connection.user, ip: connection.ip });
-        _actionsBridge2['default'].getInfo(connection.ip, connection.user).then(this.onBridgeLoaded.bind(this));
       }
     }, {
       key: 'onBridgeConnectionSaved',
       value: function onBridgeConnectionSaved(connection) {
         _storesLocalStorage2['default'].set('bridgeConnectionID', connection.id);
+        this.setState({ bridgeConnectionID: connection.id });
         this.onBridgeConnectionLoaded(connection);
+        _actionsBridge2['default'].getInfo(connection.id).then(this.onBridgeLoaded.bind(this));
       }
     }, {
       key: 'handleUserChange',

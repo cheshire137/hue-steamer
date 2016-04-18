@@ -30,6 +30,8 @@ class SettingsPage extends Component {
     if (typeof this.state.bridgeConnectionID !== 'undefined') {
       Bridge.getConnection(this.state.bridgeConnectionID).
              then(this.onBridgeConnectionLoaded.bind(this));
+      Bridge.getInfo(this.state.bridgeConnectionID).
+             then(this.onBridgeLoaded.bind(this));
     }
   }
 
@@ -43,6 +45,7 @@ class SettingsPage extends Component {
   }
 
   onBridgeLoaded(bridge) {
+    console.log('bridge', bridge);
     if (bridge.hasOwnProperty('errno')) {
       console.error('failed to load bridge info', bridge);
       return;
@@ -54,13 +57,13 @@ class SettingsPage extends Component {
 
   onBridgeConnectionLoaded(connection) {
     this.setState({ user: connection.user, ip: connection.ip });
-    Bridge.getInfo(connection.ip, connection.user).
-           then(this.onBridgeLoaded.bind(this));
   }
 
   onBridgeConnectionSaved(connection) {
     LocalStorage.set('bridgeConnectionID', connection.id);
+    this.setState({ bridgeConnectionID: connection.id });
     this.onBridgeConnectionLoaded(connection);
+    Bridge.getInfo(connection.id).then(this.onBridgeLoaded.bind(this));
   }
 
   handleUserChange(e) {

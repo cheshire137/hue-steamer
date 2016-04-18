@@ -23,6 +23,12 @@ import Promise from 'bluebird';
 const hue = require('node-hue-api');
 const server = global.server = express();
 
+async function getHueApi(id) {
+  const connection = await db.get('SELECT user, ip FROM bridge_connections ' +
+                                'WHERE id = ?', id);
+  return new hue.HueApi(connection.ip, connection.user);
+}
+
 //
 // Register Node.js middleware
 // -----------------------------------------------------------------------------
@@ -69,18 +75,8 @@ server.post('/bridgeConnection', async (req, res) => {
   res.send(JSON.stringify(row));
 });
 
-server.get('/bridge', async (req, res) => {
-  const ip = req.query.ip;
-  const user = req.query.user;
-  if (typeof ip !== 'string') {
-    res.send('{"error": "Must provide Hue Bridge IP address in ip param"}');
-    return;
-  }
-  if (typeof user !== 'string') {
-    res.send('{"error": "Must provide Hue Bridge user in user param"}');
-    return;
-  }
-  const api = new hue.HueApi(ip, user);
+server.get('/bridge/:id', async (req, res) => {
+  const api = await getHueApi(req.params.id);
   api.config().then((bridge) => {
     res.send(JSON.stringify(bridge));
   }).fail((err) => {

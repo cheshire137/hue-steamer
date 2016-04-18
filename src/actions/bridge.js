@@ -2,9 +2,8 @@ import fetch from '../core/fetch';
 import Config from '../config.json';
 
 class Bridge {
-  static async getInfo(ip, user) {
-    return this.makeRequest('/bridge?ip=' + encodeURIComponent(ip) +
-                            '&user=' + encodeURIComponent(user));
+  static async getInfo(id) {
+    return this.makeRequest('/bridge/' + id);
   }
 
   static async saveConnection(ip, user) {
