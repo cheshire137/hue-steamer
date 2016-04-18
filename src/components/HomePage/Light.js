@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import s from './HomePage.scss';
 import Bridge from '../../actions/bridge';
 import Converter from '../../api/converter';
-import ColorPicker from 'react-color';
+import { PhotoshopPicker } from 'react-color';
 
 class Light extends Component {
   static propTypes = {
@@ -19,7 +19,7 @@ class Light extends Component {
   }
 
   componentDidMount() {
-    Bridge.getLight(this.props.id).then(this.onLightLoaded.bind(this));
+    this.updateLight();
   }
 
   onLightLoaded(light) {
@@ -27,7 +27,11 @@ class Light extends Component {
       console.error('failed to load light ' + this.props.id, light);
       return;
     }
-    this.setState({ light, loaded: true });
+    this.setState({
+      light,
+      loaded: true,
+      latestColor: this.getLightHex(light.state),
+    });
   }
 
   onLightToggle() {
@@ -41,22 +45,55 @@ class Light extends Component {
     }
   }
 
-  onLightToggleComplete(result) {
-    if (result) {
+  onLightToggleComplete(success) {
+    if (success) {
       const light = this.state.light;
       light.state.on = !light.state.on;
       this.setState({ light });
     }
   }
 
-  getLightHex() {
-    const lightState = this.state.light.state;
+  changeColor(color) {
+    console.log('color', color);
+    this.setState({ showColorPicker: false });
+    const xy = Converter.hexToCIE1931(color);
+    const x = xy[0];
+    const y = xy[1];
+    Bridge.setLightColor(this.props.id, x, y).
+           then(this.onColorChanged.bind(this));
+  }
+
+  onColorPickerChange(color) {
+    this.setState({ latestColor: color.hex });
+  }
+
+  onColorPickerAccept() {
+    this.setState({ showColorPicker: false });
+    this.changeColor(this.state.latestColor);
+  }
+
+  onColorPickerCancel() {
+    this.setState({ showColorPicker: false });
+  }
+
+  onColorChanged(success) {
+    if (success) {
+      this.updateLight();
+    }
+  }
+
+  getLightHex(optionalLightState) {
+    const lightState = optionalLightState || this.state.light.state;
     if (lightState.on) {
       const xy = lightState.xy;
       if (typeof xy === 'object') {
-        return '#' + Converter.cie1931ToHex(xy[0], xy[1], lightState.bri);
+        return Converter.cie1931ToHex(xy[0], xy[1], lightState.bri);
       }
     }
+  }
+
+  updateLight() {
+    Bridge.getLight(this.props.id).then(this.onLightLoaded.bind(this));
   }
 
   toggleColorPicker() {
@@ -70,9 +107,8 @@ class Light extends Component {
       display: this.state.showColorPicker ? 'block' : 'none',
     };
     if (typeof this.state.light === 'object') {
-      const backgroundColor = this.getLightHex();
-      if (typeof backgroundColor !== 'undefined') {
-        colorStyle.backgroundColor = backgroundColor;
+      if (typeof this.state.latestColor !== 'undefined') {
+        colorStyle.backgroundColor = '#' + this.state.latestColor;
       }
     }
     return (
@@ -111,7 +147,11 @@ class Light extends Component {
                     className={s.colorBlock} style={colorStyle}
                   ></button>
                   <div style={colorPickerStyle} className={s.colorPickerWrapper}>
-                    <ColorPicker type="chrome" color={colorStyle.backgroundColor} />
+                    <PhotoshopPicker color={colorStyle.backgroundColor}
+                      onChangeComplete={this.onColorPickerChange.bind(this)}
+                      onAccept={this.onColorPickerAccept.bind(this)}
+                      onCancel={this.onColorPickerCancel.bind(this)}
+                    />
                   </div>
                 </div>
               ) : ''}

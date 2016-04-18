@@ -27,14 +27,20 @@ class Bridge {
     return this.getGroup('0');
   }
 
-  static async turnOnLight(lightID) {
+  static async turnOnLight(id) {
     const opts = { method: 'POST' };
-    return this.makeRequest('/light/' + lightID + '/on', opts);
+    return this.makeRequest('/light/' + id + '/on', opts);
   }
 
-  static async turnOffLight(lightID) {
+  static async turnOffLight(id) {
     const opts = { method: 'POST' };
-    return this.makeRequest('/light/' + lightID + '/off', opts);
+    return this.makeRequest('/light/' + id + '/off', opts);
+  }
+
+  static async setLightColor(id, x, y) {
+    const opts = { method: 'POST' };
+    return this.makeRequest('/light/' + id + '/color' +
+                            '?x=' + x + '&y=' + y, opts);
   }
 
   static async makeRequest(path, optionalOptions) {

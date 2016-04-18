@@ -161,6 +161,14 @@ module.exports =
     }).done();
   }
   
+  function setLightState(api, id, state, res) {
+    api.setLightState(id, state).then(function (result) {
+      res.send(JSON.stringify(result));
+    }).fail(function (err) {
+      res.status(400).send(JSON.stringify(err));
+    }).done();
+  }
+  
   //
   // Register Node.js middleware
   // -----------------------------------------------------------------------------
@@ -360,15 +368,54 @@ module.exports =
         case 2:
           api = context$1$0.sent;
           lightState = hue.lightState;
-          state = lightState.create();
+          state = lightState.create().off();
   
-          api.setLightState(req.params.id, state.off()).then(function (result) {
-            res.send(JSON.stringify(result));
-          }).fail(function (err) {
-            res.status(400).send(JSON.stringify(err));
-          }).done();
+          setLightState(api, req.params.id, state, res);
   
         case 6:
+        case 'end':
+          return context$1$0.stop();
+      }
+    }, null, _this);
+  });
+  
+  server.post('/light/:id/color', function callee$0$0(req, res) {
+    var x, y, lightState, api, state;
+    return regeneratorRuntime.async(function callee$0$0$(context$1$0) {
+      while (1) switch (context$1$0.prev = context$1$0.next) {
+        case 0:
+          x = req.query.x;
+          y = req.query.y;
+  
+          if (!(typeof x !== 'string')) {
+            context$1$0.next = 5;
+            break;
+          }
+  
+          res.status(400).send('{"error": "Must provide x color in x param"}');
+          return context$1$0.abrupt('return');
+  
+        case 5:
+          if (!(typeof y !== 'string')) {
+            context$1$0.next = 8;
+            break;
+          }
+  
+          res.status(400).send('{"error": "Must provide y color in y param"}');
+          return context$1$0.abrupt('return');
+  
+        case 8:
+          lightState = hue.lightState;
+          context$1$0.next = 11;
+          return regeneratorRuntime.awrap(getHueApi(req.query.connectionID));
+  
+        case 11:
+          api = context$1$0.sent;
+          state = lightState.create().on().xy(x, y);
+  
+          setLightState(api, req.params.id, state, res);
+  
+        case 14:
         case 'end':
           return context$1$0.stop();
       }
@@ -3324,8 +3371,6 @@ module.exports =
   
   var _reactColor = __webpack_require__(56);
   
-  var _reactColor2 = _interopRequireDefault(_reactColor);
-  
   var Light = (function (_Component) {
     _inherits(Light, _Component);
   
@@ -3351,7 +3396,7 @@ module.exports =
     _createClass(Light, [{
       key: 'componentDidMount',
       value: function componentDidMount() {
-        _actionsBridge2['default'].getLight(this.props.id).then(this.onLightLoaded.bind(this));
+        this.updateLight();
       }
     }, {
       key: 'onLightLoaded',
@@ -3360,7 +3405,11 @@ module.exports =
           console.error('failed to load light ' + this.props.id, light);
           return;
         }
-        this.setState({ light: light, loaded: true });
+        this.setState({
+          light: light,
+          loaded: true,
+          latestColor: this.getLightHex(light.state)
+        });
       }
     }, {
       key: 'onLightToggle',
@@ -3374,23 +3423,61 @@ module.exports =
       }
     }, {
       key: 'onLightToggleComplete',
-      value: function onLightToggleComplete(result) {
-        if (result) {
+      value: function onLightToggleComplete(success) {
+        if (success) {
           var light = this.state.light;
           light.state.on = !light.state.on;
           this.setState({ light: light });
         }
       }
     }, {
+      key: 'changeColor',
+      value: function changeColor(color) {
+        console.log('color', color);
+        this.setState({ showColorPicker: false });
+        var xy = _apiConverter2['default'].hexToCIE1931(color);
+        var x = xy[0];
+        var y = xy[1];
+        _actionsBridge2['default'].setLightColor(this.props.id, x, y).then(this.onColorChanged.bind(this));
+      }
+    }, {
+      key: 'onColorPickerChange',
+      value: function onColorPickerChange(color) {
+        this.setState({ latestColor: color.hex });
+      }
+    }, {
+      key: 'onColorPickerAccept',
+      value: function onColorPickerAccept() {
+        this.setState({ showColorPicker: false });
+        this.changeColor(this.state.latestColor);
+      }
+    }, {
+      key: 'onColorPickerCancel',
+      value: function onColorPickerCancel() {
+        this.setState({ showColorPicker: false });
+      }
+    }, {
+      key: 'onColorChanged',
+      value: function onColorChanged(success) {
+        if (success) {
+          this.updateLight();
+        }
+      }
+    }, {
       key: 'getLightHex',
-      value: function getLightHex() {
-        var lightState = this.state.light.state;
+      value: function getLightHex(optionalLightState) {
+        var lightState = optionalLightState || this.state.light.state;
         if (lightState.on) {
           var xy = lightState.xy;
           if (typeof xy === 'object') {
-            return '#' + _apiConverter2['default'].cie1931ToHex(xy[0], xy[1], lightState.bri);
+            return _apiConverter2['default'].cie1931ToHex(xy[0], xy[1], lightState.bri);
           }
         }
+      }
+    }, {
+      key: 'updateLight',
+      value: function updateLight() {
+        _actionsBridge2['default'].getLight(this.props.id).then(this.onLightLoaded.bind(this));
       }
     }, {
       key: 'toggleColorPicker',
@@ -3406,9 +3493,8 @@ module.exports =
           display: this.state.showColorPicker ? 'block' : 'none'
         };
         if (typeof this.state.light === 'object') {
-          var backgroundColor = this.getLightHex();
-          if (typeof backgroundColor !== 'undefined') {
-            colorStyle.backgroundColor = backgroundColor;
+          if (typeof this.state.latestColor !== 'undefined') {
+            colorStyle.backgroundColor = '#' + this.state.latestColor;
           }
         }
         return _react2['default'].createElement(
@@ -3476,7 +3562,11 @@ module.exports =
                 _react2['default'].createElement(
                   'div',
                   { style: colorPickerStyle, className: _HomePageScss2['default'].colorPickerWrapper },
-                  _react2['default'].createElement(_reactColor2['default'], { type: 'chrome', color: colorStyle.backgroundColor })
+                  _react2['default'].createElement(_reactColor.PhotoshopPicker, { color: colorStyle.backgroundColor,
+                    onChangeComplete: this.onColorPickerChange.bind(this),
+                    onAccept: this.onColorPickerAccept.bind(this),
+                    onCancel: this.onColorPickerCancel.bind(this)
+                  })
                 )
               ) : ''
             )
@@ -3608,13 +3698,13 @@ module.exports =
       }
     }, {
       key: 'turnOnLight',
-      value: function turnOnLight(lightID) {
+      value: function turnOnLight(id) {
         var opts;
         return regeneratorRuntime.async(function turnOnLight$(context$2$0) {
           while (1) switch (context$2$0.prev = context$2$0.next) {
             case 0:
               opts = { method: 'POST' };
-              return context$2$0.abrupt('return', this.makeRequest('/light/' + lightID + '/on', opts));
+              return context$2$0.abrupt('return', this.makeRequest('/light/' + id + '/on', opts));
   
             case 2:
             case 'end':
@@ -3624,13 +3714,29 @@ module.exports =
       }
     }, {
       key: 'turnOffLight',
-      value: function turnOffLight(lightID) {
+      value: function turnOffLight(id) {
         var opts;
         return regeneratorRuntime.async(function turnOffLight$(context$2$0) {
           while (1) switch (context$2$0.prev = context$2$0.next) {
             case 0:
               opts = { method: 'POST' };
-              return context$2$0.abrupt('return', this.makeRequest('/light/' + lightID + '/off', opts));
+              return context$2$0.abrupt('return', this.makeRequest('/light/' + id + '/off', opts));
+  
+            case 2:
+            case 'end':
+              return context$2$0.stop();
+          }
+        }, null, this);
+      }
+    }, {
+      key: 'setLightColor',
+      value: function setLightColor(id, x, y) {
+        var opts;
+        return regeneratorRuntime.async(function setLightColor$(context$2$0) {
+          while (1) switch (context$2$0.prev = context$2$0.next) {
+            case 0:
+              opts = { method: 'POST' };
+              return context$2$0.abrupt('return', this.makeRequest('/light/' + id + '/color' + '?x=' + x + '&y=' + y, opts));
   
             case 2:
             case 'end':
@@ -3716,7 +3822,7 @@ module.exports =
       // Converts hexadecimal colors represented as a String to approximate CIE 1931
       // coordinates. May not produce accurate values.
       value: function hexToCIE1931(h) {
-        var rgb = _colorHelper2['default'].hexToRGB(h);
+        var rgb = _colorHelper2['default'].hexToRgb(h);
         return this.rgbToCIE1931(rgb[0], rgb[1], rgb[2]);
       }
   

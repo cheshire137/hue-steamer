@@ -6,7 +6,7 @@ class Converter {
   // Converts hexadecimal colors represented as a String to approximate CIE 1931
   // coordinates. May not produce accurate values.
   static hexToCIE1931(h) {
-    const rgb = ColorHelper.hexToRGB(h);
+    const rgb = ColorHelper.hexToRgb(h);
     return this.rgbToCIE1931(rgb[0], rgb[1], rgb[2]);
   }
 

@@ -44,6 +44,14 @@ function sendBridgeDetails(connection, res) {
   }).done();
 }
 
+function setLightState(api, id, state, res) {
+  api.setLightState(id, state).then((result) => {
+    res.send(JSON.stringify(result));
+  }).fail((err) => {
+    res.status(400).send(JSON.stringify(err));
+  }).done();
+}
+
 //
 // Register Node.js middleware
 // -----------------------------------------------------------------------------
@@ -126,12 +134,25 @@ server.post('/light/:id/on', async (req, res) => {
 server.post('/light/:id/off', async (req, res) => {
   const api = await getHueApi(req.query.connectionID);
   const lightState = hue.lightState;
-  const state = lightState.create();
-  api.setLightState(req.params.id, state.off()).then((result) => {
-    res.send(JSON.stringify(result));
-  }).fail((err) => {
-    res.status(400).send(JSON.stringify(err));
-  }).done();
+  const state = lightState.create().off();
+  setLightState(api, req.params.id, state, res);
+});
+
+server.post('/light/:id/color', async (req, res) => {
+  const x = req.query.x;
+  const y = req.query.y;
+  if (typeof x !== 'string') {
+    res.status(400).send('{"error": "Must provide x color in x param"}');
+    return;
+  }
+  if (typeof y !== 'string') {
+    res.status(400).send('{"error": "Must provide y color in y param"}');
+    return;
+  }
+  const lightState = hue.lightState;
+  const api = await getHueApi(req.query.connectionID);
+  const state = lightState.create().on().xy(x, y);
+  setLightState(api, req.params.id, state, res);
 });
 
 //
