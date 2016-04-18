@@ -24,8 +24,14 @@ const hue = require('node-hue-api');
 const server = global.server = express();
 
 async function getHueApi(id) {
-  const connection = await db.get('SELECT user, ip FROM bridge_connections ' +
-                                'WHERE id = ?', id);
+  let connection;
+  if (typeof id === 'undefined') {
+    connection = await db.get('SELECT user, ip FROM bridge_connections ' +
+                              'ORDER BY id DESC LIMIT 1');
+  } else {
+    connection = await db.get('SELECT user, ip FROM bridge_connections ' +
+                              'WHERE id = ?', id);
+  }
   return new hue.HueApi(connection.ip, connection.user);
 }
 
@@ -86,10 +92,6 @@ server.get('/bridge/:id', async (req, res) => {
 
 server.get('/group/:id', async (req, res) => {
   const groupID = req.params.id;
-  if (typeof req.query.connectionID === 'undefined') {
-    res.send('{"error": "Pass bridge connection ID in connectionID param"}');
-    return;
-  }
   const api = await getHueApi(req.query.connectionID);
   api.getGroup(groupID).then((group) => {
     res.send(JSON.stringify(group));
@@ -100,10 +102,6 @@ server.get('/group/:id', async (req, res) => {
 
 server.get('/light/:id', async (req, res) => {
   const lightID = req.params.id;
-  if (typeof req.query.connectionID === 'undefined') {
-    res.send('{"error": "Pass bridge connection ID in connectionID param"}');
-    return;
-  }
   const api = await getHueApi(req.query.connectionID);
   api.lightStatus(lightID).then((result) => {
     res.send(JSON.stringify(result));
@@ -114,10 +112,6 @@ server.get('/light/:id', async (req, res) => {
 
 server.post('/light/:id/on', async (req, res) => {
   const lightID = req.params.id;
-  if (typeof req.query.connectionID === 'undefined') {
-    res.send('{"error": "Pass bridge connection ID in connectionID param"}');
-    return;
-  }
   const api = await getHueApi(req.query.connectionID);
   const lightState = hue.lightState;
   const state = lightState.create();
@@ -130,10 +124,6 @@ server.post('/light/:id/on', async (req, res) => {
 
 server.post('/light/:id/off', async (req, res) => {
   const lightID = req.params.id;
-  if (typeof req.query.connectionID === 'undefined') {
-    res.send('{"error": "Pass bridge connection ID in connectionID param"}');
-    return;
-  }
   const api = await getHueApi(req.query.connectionID);
   const lightState = hue.lightState;
   const state = lightState.create();

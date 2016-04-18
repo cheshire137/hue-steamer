@@ -113,14 +113,32 @@ module.exports =
     return regeneratorRuntime.async(function getHueApi$(context$1$0) {
       while (1) switch (context$1$0.prev = context$1$0.next) {
         case 0:
-          context$1$0.next = 2;
-          return regeneratorRuntime.awrap(_sqlite2['default'].get('SELECT user, ip FROM bridge_connections ' + 'WHERE id = ?', id));
+          connection = undefined;
   
-        case 2:
-          connection = context$1$0.sent;
-          return context$1$0.abrupt('return', new hue.HueApi(connection.ip, connection.user));
+          if (!(typeof id === 'undefined')) {
+            context$1$0.next = 7;
+            break;
+          }
+  
+          context$1$0.next = 4;
+          return regeneratorRuntime.awrap(_sqlite2['default'].get('SELECT user, ip FROM bridge_connections ' + 'ORDER BY id DESC LIMIT 1'));
   
         case 4:
+          connection = context$1$0.sent;
+          context$1$0.next = 10;
+          break;
+  
+        case 7:
+          context$1$0.next = 9;
+          return regeneratorRuntime.awrap(_sqlite2['default'].get('SELECT user, ip FROM bridge_connections ' + 'WHERE id = ?', id));
+  
+        case 9:
+          connection = context$1$0.sent;
+  
+        case 10:
+          return context$1$0.abrupt('return', new hue.HueApi(connection.ip, connection.user));
+  
+        case 11:
         case 'end':
           return context$1$0.stop();
       }
@@ -252,20 +270,10 @@ module.exports =
       while (1) switch (context$1$0.prev = context$1$0.next) {
         case 0:
           groupID = req.params.id;
-  
-          if (!(typeof req.query.connectionID === 'undefined')) {
-            context$1$0.next = 4;
-            break;
-          }
-  
-          res.send('{"error": "Pass bridge connection ID in connectionID param"}');
-          return context$1$0.abrupt('return');
-  
-        case 4:
-          context$1$0.next = 6;
+          context$1$0.next = 3;
           return regeneratorRuntime.awrap(getHueApi(req.query.connectionID));
   
-        case 6:
+        case 3:
           api = context$1$0.sent;
   
           api.getGroup(groupID).then(function (group) {
@@ -274,7 +282,7 @@ module.exports =
             res.send(JSON.stringify(err));
           }).done();
   
-        case 8:
+        case 5:
         case 'end':
           return context$1$0.stop();
       }
@@ -287,20 +295,10 @@ module.exports =
       while (1) switch (context$1$0.prev = context$1$0.next) {
         case 0:
           lightID = req.params.id;
-  
-          if (!(typeof req.query.connectionID === 'undefined')) {
-            context$1$0.next = 4;
-            break;
-          }
-  
-          res.send('{"error": "Pass bridge connection ID in connectionID param"}');
-          return context$1$0.abrupt('return');
-  
-        case 4:
-          context$1$0.next = 6;
+          context$1$0.next = 3;
           return regeneratorRuntime.awrap(getHueApi(req.query.connectionID));
   
-        case 6:
+        case 3:
           api = context$1$0.sent;
   
           api.lightStatus(lightID).then(function (result) {
@@ -309,7 +307,7 @@ module.exports =
             res.send(JSON.stringify(err));
           }).done();
   
-        case 8:
+        case 5:
         case 'end':
           return context$1$0.stop();
       }
@@ -322,20 +320,10 @@ module.exports =
       while (1) switch (context$1$0.prev = context$1$0.next) {
         case 0:
           lightID = req.params.id;
-  
-          if (!(typeof req.query.connectionID === 'undefined')) {
-            context$1$0.next = 4;
-            break;
-          }
-  
-          res.send('{"error": "Pass bridge connection ID in connectionID param"}');
-          return context$1$0.abrupt('return');
-  
-        case 4:
-          context$1$0.next = 6;
+          context$1$0.next = 3;
           return regeneratorRuntime.awrap(getHueApi(req.query.connectionID));
   
-        case 6:
+        case 3:
           api = context$1$0.sent;
           lightState = hue.lightState;
           state = lightState.create();
@@ -346,7 +334,7 @@ module.exports =
             res.send(JSON.stringify(err));
           }).done();
   
-        case 10:
+        case 7:
         case 'end':
           return context$1$0.stop();
       }
@@ -359,20 +347,10 @@ module.exports =
       while (1) switch (context$1$0.prev = context$1$0.next) {
         case 0:
           lightID = req.params.id;
-  
-          if (!(typeof req.query.connectionID === 'undefined')) {
-            context$1$0.next = 4;
-            break;
-          }
-  
-          res.send('{"error": "Pass bridge connection ID in connectionID param"}');
-          return context$1$0.abrupt('return');
-  
-        case 4:
-          context$1$0.next = 6;
+          context$1$0.next = 3;
           return regeneratorRuntime.awrap(getHueApi(req.query.connectionID));
   
-        case 6:
+        case 3:
           api = context$1$0.sent;
           lightState = hue.lightState;
           state = lightState.create();
@@ -383,7 +361,7 @@ module.exports =
             res.send(JSON.stringify(err));
           }).done();
   
-        case 10:
+        case 7:
         case 'end':
           return context$1$0.stop();
       }
