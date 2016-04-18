@@ -17,8 +17,6 @@ class SettingsPage extends Component {
     super(props);
     const data = LocalStorage.getJSON();
     this.state = {
-      user: data.user,
-      ip: data.ip,
       bridge: data.bridge,
       haveBridge: typeof data.bridge === 'object',
       lightIDs: data.lightIDs,
@@ -53,14 +51,6 @@ class SettingsPage extends Component {
            then(this.onAllLightsLoaded.bind(this));
   }
 
-  handleIPChange(e) {
-    let ip = e.target.value.trim();
-    if (ip === '') {
-      ip = undefined;
-    }
-    this.setState({ ip, haveBridge: false });
-  }
-
   handleUserChange(e) {
     let user = e.target.value.trim();
     if (user === '') {
@@ -69,16 +59,28 @@ class SettingsPage extends Component {
     this.setState({ user, haveBridge: false });
   }
 
+  onBridgeConnectionSaved(bridgeConnection) {
+    console.log('saved bridge connection', bridgeConnection);
+  }
+
+  handleIPChange(e) {
+    let ip = e.target.value.trim();
+    if (ip === '') {
+      ip = undefined;
+    }
+    this.setState({ ip, haveBridge: false });
+  }
+
   handleSubmit(e) {
     e.preventDefault();
     LocalStorage.setMany({
-      user: this.state.user,
-      ip: this.state.ip,
       bridge: undefined,
       lightIDs: undefined,
     });
     if (typeof this.state.ip === 'string' &&
         typeof this.state.user === 'string') {
+      Bridge.saveConnection(this.state.ip, this.state.user).
+             then(this.onBridgeConnectionSaved.bind(this));
       Bridge.getInfo(this.state.ip, this.state.user).
              then(this.onBridgeLoaded.bind(this));
     }

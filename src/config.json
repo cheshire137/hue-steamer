@@ -2,6 +2,7 @@
   "development": {
     "localStorageKey": "hue-steamer",
     "serverUri": "http://localhost:5000",
-    "clientUri": "http://localhost:3000"
+    "clientUri": "http://localhost:3000",
+    "database": "hue-steamer-development.sqlite"
   }
 }

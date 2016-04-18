@@ -17,9 +17,10 @@ import Html from './components/Html';
 import assets from './assets';
 import { port } from './config';
 import Config from './config.json';
-// import HueApi from 'node-hue-api';
-const hue = require('node-hue-api');
+import db from 'sqlite';
+import Promise from 'bluebird';
 
+const hue = require('node-hue-api');
 const server = global.server = express();
 
 //
@@ -38,6 +39,28 @@ server.all('*', (req, res, next) => {
   res.header('Access-Control-Allow-Headers', 'X-Requested-With');
   res.header('Access-Control-Allow-Headers', 'Content-Type');
   next();
+});
+
+server.post('/bridgeConnection', async (req, res) => {
+  const ip = req.query.ip;
+  const user = req.query.user;
+  if (typeof ip !== 'string') {
+    res.send('{"error": "Must provide Hue Bridge IP address in ip param"}');
+    return;
+  }
+  if (typeof user !== 'string') {
+    res.send('{"error": "Must provide Hue Bridge user in user param"}');
+    return;
+  }
+  let row = await db.get('SELECT * FROM bridge_connections ' +
+                         'WHERE ip = ? AND user = ?', ip, user);
+  if (typeof row !== 'object') {
+    await db.run('INSERT INTO bridge_connections (user, ip) VALUES (?, ?)',
+                 user, ip);
+    row = await db.get('SELECT * FROM bridge_connections ORDER BY id DESC ' +
+                       'LIMIT 1');
+  }
+  res.send(JSON.stringify(row));
 });
 
 server.get('/bridge', async (req, res) => {
@@ -176,7 +199,13 @@ server.get('*', async (req, res, next) => {
 //
 // Launch the server
 // -----------------------------------------------------------------------------
-server.listen(port, () => {
-  /* eslint-disable no-console */
-  console.log(`The server is running at http://localhost:${port}/`);
-});
+const dbName = Config[process.env.NODE_ENV].database || ':memory:';
+console.log('Working with database ' + dbName);
+db.open(dbName, { verbose: true, Promise }).
+   catch(err => console.error(err)).
+   finally(() => {
+     server.listen(port, () => {
+       /* eslint-disable no-console */
+       console.log(`The server is running at http://localhost:${port}/`);
+     });
+   });
