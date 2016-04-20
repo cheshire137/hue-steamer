@@ -3,7 +3,7 @@ import s from './SettingsPage.scss';
 
 class BridgeDisplay extends Component {
   static propTypes = {
-    localtime: PropTypes.string.isRequired,
+    localtime: PropTypes.string,
     ipaddress: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
     modelid: PropTypes.string.isRequired,
@@ -26,24 +26,36 @@ class BridgeDisplay extends Component {
   render() {
     const bridgeUrl = 'http://' + this.props.ipaddress;
     return (
-      <dl className={s.bridgeDetails}>
-        <dt>Name</dt>
-        <dd>{this.props.name}</dd>
-        <dt>IP Address</dt>
-        <dd>
-          <a href={bridgeUrl} target="_blank">
-            {this.props.ipaddress}
-          </a>
-        </dd>
-        <dt>Model</dt>
-        <dd>{this.props.modelid}</dd>
-        <dt>Time</dt>
-        <dd>{this.getPrettyTime()}</dd>
-        <dt># Lights</dt>
-        <dd>
-          {typeof this.props.numLights === 'number' ? this.props.numLights : '--'}
-        </dd>
-      </dl>
+      <table className={s.bridgeDetails}>
+        <tbody>
+          <tr>
+            <th>Name</th>
+            <td>{this.props.name}</td>
+          </tr>
+          <tr>
+            <th>IP Address</th>
+            <td>
+              <a href={bridgeUrl} target="_blank">
+                {this.props.ipaddress}
+              </a>
+            </td>
+          </tr>
+          <tr>
+            <th>Model</th>
+            <td>{this.props.modelid}</td>
+          </tr>
+          <tr>
+            <th>Time</th>
+            <td>{this.getPrettyTime()}</td>
+          </tr>
+          <tr>
+            <th># Lights</th>
+            <td>
+              {typeof this.props.numLights === 'number' ? this.props.numLights : '--'}
+            </td>
+          </tr>
+        </tbody>
+      </table>
     );
   }
 }

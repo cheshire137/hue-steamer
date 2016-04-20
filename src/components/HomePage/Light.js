@@ -53,16 +53,6 @@ class Light extends Component {
     }
   }
 
-  changeColor(color) {
-    console.log('color', color);
-    this.setState({ showColorPicker: false });
-    const xy = Converter.hexToCIE1931(color);
-    const x = xy[0];
-    const y = xy[1];
-    Bridge.setLightColor(this.props.id, x, y).
-           then(this.onColorChanged.bind(this));
-  }
-
   onColorPickerChange(color) {
     this.setState({ latestColor: color.hex });
   }
@@ -90,6 +80,16 @@ class Light extends Component {
         return Converter.cie1931ToHex(xy[0], xy[1], lightState.bri);
       }
     }
+  }
+
+  changeColor(color) {
+    console.log('color', color);
+    this.setState({ showColorPicker: false });
+    const xy = Converter.hexToCIE1931(color);
+    const x = xy[0];
+    const y = xy[1];
+    Bridge.setLightColor(this.props.id, x, y).
+           then(this.onColorChanged.bind(this));
   }
 
   updateLight() {

@@ -9,9 +9,19 @@ class Bridge {
     return this.makeRequest('/bridges/' + id);
   }
 
+  static async discover() {
+    return this.makeRequest('/bridges/discover');
+  }
+
   static async save(ip, user) {
     const opts = { method: 'POST' };
     return this.makeRequest('/bridges?ip=' + encodeURIComponent(ip) +
+                            '&user=' + encodeURIComponent(user), opts);
+  }
+
+  static async registerUser(ip, user) {
+    const opts = { method: 'POST' };
+    return this.makeRequest('/users?ip=' + encodeURIComponent(ip) +
                             '&user=' + encodeURIComponent(user), opts);
   }
 
@@ -47,9 +57,16 @@ class Bridge {
     const options = optionalOptions || {};
     const url = Config[process.env.NODE_ENV].serverUri + path;
     const response = await fetch(url, options);
+    const json = await response.json();
     if (response.ok) {
-      const data = await response.json();
-      return data;
+      return json;
+    }
+    if (json.hasOwnProperty('error')) {
+      if (typeof json.error === 'string') {
+        throw new Error(json.error);
+      } else {
+        throw new Error(JSON.stringify(json.error));
+      }
     }
     throw new Error(response.statusText);
   }

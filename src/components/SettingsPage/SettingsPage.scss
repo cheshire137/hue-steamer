@@ -2,6 +2,13 @@
 
 .field {
   margin-bottom: 10px;
+  width: 47%;
+  float: left;
+  margin-right: 2%;
+}
+
+.formControls {
+  clear: both;
 }
 
 label {
@@ -71,29 +78,29 @@ button {
 }
 
 .bridgeDetails {
-  dt {
+  th {
     font-weight: 700;
-  }
-
-  dd {
-    margin-left: 0;
+    text-align: right;
+    padding-right: 15px;
   }
 }
 
-@media (min-width: 768px) {
-  .bridgeDetails {
-    dt {
-      float: left;
-      width: 7em;
-      overflow: hidden;
-      clear: left;
-      text-align: right;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
+.error {
+  padding: 15px;
+  margin-bottom: 20px;
+  border: 1px solid #ebccd1;
+  border-radius: 4px;
+  color: #a94442;
+  background-color: #f2dede;
+}
 
-    dd {
-      margin-left: 8em;
-    }
-  }
+.userField {
+  width: 20em;
+  display: inline-block;
+  margin-right: 10px;
+}
+
+.inlineButton {
+  height: 36px;
+  vertical-align: top;
 }

@@ -4,6 +4,7 @@ import withStyles from '../../decorators/withStyles';
 import LocalStorage from '../../stores/localStorage';
 import Bridge from '../../actions/bridge';
 import BridgeDisplay from './BridgeDisplay';
+import UserForm from './UserForm';
 
 const title = 'Settings';
 
@@ -19,6 +20,8 @@ class SettingsPage extends Component {
     this.state = {
       numLights: data.lightIDs ? data.lightIDs.length : undefined,
       bridgeConnectionID: data.bridgeConnectionID,
+      bridgeDiscovered: false,
+      discoveredIP: undefined,
     };
   }
 
@@ -69,20 +72,17 @@ class SettingsPage extends Component {
     console.error('failed to save bridge info', response);
   }
 
-  handleUserChange(e) {
-    let user = e.target.value.trim();
-    if (user === '') {
-      user = undefined;
+  onBridgesDiscovered(bridges) {
+    if (bridges.length > 0) {
+      this.setState({
+        discoveredIP: bridges[0].ipaddress,
+        bridgeDiscovered: true,
+      });
     }
-    this.setState({ user, haveBridge: false });
   }
 
-  handleIPChange(e) {
-    let ip = e.target.value.trim();
-    if (ip === '') {
-      ip = undefined;
-    }
-    this.setState({ ip, haveBridge: false });
+  discoverBridges() {
+    Bridge.discover().then(this.onBridgesDiscovered.bind(this));
   }
 
   handleSubmit(e) {
@@ -99,40 +99,88 @@ class SettingsPage extends Component {
     }
   }
 
+  handleIPChange(e) {
+    let ip = e.target.value.trim();
+    if (ip === '') {
+      ip = undefined;
+    }
+    this.setState({ ip, haveBridge: false });
+  }
+
+  handleUserChange(e) {
+    let user = e.target.value.trim();
+    if (user === '') {
+      user = undefined;
+    }
+    this.setState({ user, haveBridge: false });
+  }
+
   render() {
     return (
       <div>
         <header>
-          <h2>Settings</h2>
+          <h2>Bridge Setup</h2>
         </header>
-        <form onSubmit={this.handleSubmit.bind(this)}>
-          <div className={s.field}>
-            <label htmlFor="hue_bridge_ip">Philips Hue bridge IP address:</label>
-            <input type="text" id="hue_bridge_ip"
-              value={this.state.ip}
-              onChange={this.handleIPChange.bind(this)}
-              placeholder="e.g., 192.168.1.182"
-            />
-          </div>
-          <div className={s.field}>
-            <label htmlFor="hue_bridge_user">Philips Hue bridge user:</label>
-            <input type="text" id="hue_bridge_user"
-              value={this.state.user}
-              onChange={this.handleUserChange.bind(this)}
-              placeholder="e.g., 165131875f4bdff60d7f3dd05d46bd48"
-            />
-          </div>
-          <div className={s.field}>
-            <button type="submit">
-              Save
-            </button>
-          </div>
-        </form>
         {this.state.haveBridge ? (
           <BridgeDisplay {...this.state.bridge}
             numLights={this.state.numLights}
           />
-        ) : ''}
+        ) : (
+          <div>
+            {this.state.bridgeDiscovered ? (
+              <div>
+                {this.state.attemptedRegistration ? '' : (
+                  <div>
+                    <p>
+                      Found your bridge! Its IP address is
+                      <strong> {this.state.discoveredIP}</strong>.
+                    </p>
+                    <UserForm ip={this.state.discoveredIP}
+                      onBridgeSaved={this.onBridgeSaved.bind(this)}
+                    />
+                  </div>
+                )}
+              </div>
+            ) : (
+              <div>
+                <p>
+                  We have to connect to your Philips Hue bridge. You can connect to it
+                  manually:
+                </p>
+                <form onSubmit={this.handleSubmit.bind(this)}>
+                  <div className={s.field}>
+                    <label htmlFor="hue_bridge_ip">Philips Hue bridge IP address:</label>
+                    <input type="text" id="hue_bridge_ip"
+                      value={this.state.ip}
+                      onChange={this.handleIPChange.bind(this)}
+                      placeholder="e.g., 192.168.1.182"
+                    />
+                  </div>
+                  <div className={s.field}>
+                    <label htmlFor="hue_bridge_user">Philips Hue bridge user:</label>
+                    <input type="text" id="hue_bridge_user"
+                      value={this.state.user}
+                      onChange={this.handleUserChange.bind(this)}
+                      placeholder="e.g., 165131875f4bdff60d7f3dd05d46bd48"
+                    />
+                  </div>
+                  <div className={s.formControls}>
+                    <button type="submit">
+                      Save
+                    </button>
+                  </div>
+                </form>
+                <hr />
+                <p>
+                  Or we can search for it on your network:
+                </p>
+                <button onClick={this.discoverBridges.bind(this)} type="button">
+                  Discover Bridge
+                </button>
+              </div>
+            )}
+          </div>
+        )}
       </div>
     );
   }

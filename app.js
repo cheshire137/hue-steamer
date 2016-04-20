@@ -64,7 +64,13 @@ var displayBridge = function(bridge) {
   console.log("\tAPI version: " + bridge.apiversion);
   api.getGroup('0').then(displayGroup).done();
 };
-api.config().then(displayBridge).done();
+// api.config().then(displayBridge).done();
+
+var displayBridges = function(bridge) {
+    console.log("Hue Bridges Found: " + JSON.stringify(bridge));
+};
+
+hue.upnpSearch(2000).then(displayBridges).done();
 
 // // var redX = 0.6417, redY = 0.304;
 // // var blueX = 0.168, blueY = 0.041;

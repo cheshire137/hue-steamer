@@ -38,18 +38,32 @@ async function getHueApi(id) {
 function sendBridgeDetails(connection, res) {
   const api = new hue.HueApi(connection.ip, connection.user);
   api.config().then((bridge) => {
-    res.send(JSON.stringify({ connection, bridge }));
+    res.json({ connection, bridge });
   }).fail((err) => {
-    res.status(400).send(JSON.stringify({ error: err, connection }));
+    res.status(400).json({ error: err, connection });
   }).done();
 }
 
 function setLightState(api, id, state, res) {
   api.setLightState(id, state).then((result) => {
-    res.send(JSON.stringify(result));
+    res.json(result);
   }).fail((err) => {
-    res.status(400).send(JSON.stringify(err));
+    res.status(400).json(err);
   }).done();
+}
+
+async function saveBridge(ip, user) {
+  console.log('saveBridge', ip, user);
+  let bridge = await db.get('SELECT * FROM bridges ' +
+                            'WHERE ip = ? AND user = ?', ip, user);
+  if (typeof bridge === 'object') {
+    await db.run('UPDATE bridges SET user = ? WHERE ip = ?', user, ip);
+    bridge = await getBridge(bridge.id);
+  } else {
+    await db.run('INSERT INTO bridges (user, ip) VALUES (?, ?)', user, ip);
+    bridge = await getBridge();
+  }
+  return bridge;
 }
 
 //
@@ -75,6 +89,15 @@ server.get('/bridge', async (req, res) => {
   sendBridgeDetails(connection, res);
 });
 
+server.get('/bridges/discover', async (req, res) => {
+  const timeout = 2000; // 2 seconds
+  hue.nupnpSearch(timeout).then((bridges) => {
+    res.json(bridges);
+  }).fail((err) => {
+    res.status(400).json(err);
+  }).done();
+});
+
 server.get('/bridges/:id', async (req, res) => {
   const connection = await getBridge(req.params.id);
   sendBridgeDetails(connection, res);
@@ -82,41 +105,60 @@ server.get('/bridges/:id', async (req, res) => {
 
 server.post('/bridges', async (req, res) => {
   const ip = req.query.ip;
+  if (typeof ip !== 'string' || ip.length < 1) {
+    res.status(400).
+        json({ error: 'Must provide Hue Bridge IP address in ip param' });
+    return;
+  }
   const user = req.query.user;
-  if (typeof ip !== 'string') {
+  if (typeof user !== 'string' || user.length < 1) {
     res.status(400).
-        send('{"error": "Must provide Hue Bridge IP address in ip param"}');
+        json({ error: 'Must provide Hue Bridge user in user param' });
     return;
   }
-  if (typeof user !== 'string') {
+  const bridge = await saveBridge(ip, user);
+  sendBridgeDetails(bridge, res);
+});
+
+server.post('/users', async (req, res) => {
+  const ip = req.query.ip;
+  if (typeof ip !== 'string' || ip.length < 1) {
     res.status(400).
-        send('{"error": "Must provide Hue Bridge user in user param"}');
+        json({ error: 'Must provide Hue Bridge IP address in ip param' });
     return;
   }
-  let connection = await db.get('SELECT * FROM bridges ' +
-                                'WHERE ip = ? AND user = ?', ip, user);
-  if (typeof connection !== 'object') {
-    await db.run('INSERT INTO bridges (user, ip) VALUES (?, ?)', user, ip);
-    connection = await getBridge();
+  const userDescription = req.query.user;
+  if (typeof userDescription !== 'string' || userDescription.length < 1) {
+    res.status(400).
+        json({
+          error: 'Must provide Hue Bridge user description in user param',
+        });
+    return;
   }
-  sendBridgeDetails(connection, res);
+  const api = new hue.HueApi();
+  api.registerUser(ip, userDescription).then((user) => {
+    const bridge = saveBridge(ip, user);
+    sendBridgeDetails(bridge, res);
+  }).fail((err) => {
+    res.status(400).json({ error: err.message });
+  }).done();
 });
 
 server.get('/group/:id', async (req, res) => {
   const api = await getHueApi(req.query.connectionID);
   api.getGroup(req.params.id).then((group) => {
-    res.send(JSON.stringify(group));
+    res.json(group);
   }).fail((err) => {
-    res.status(400).send(JSON.stringify(err));
+    res.status(400).json(err);
   }).done();
 });
 
 server.get('/light/:id', async (req, res) => {
   const api = await getHueApi(req.query.connectionID);
   api.lightStatus(req.params.id).then((result) => {
-    res.send(JSON.stringify(result));
+    res.json(result);
   }).fail((err) => {
-    res.status(400).send(JSON.stringify(err));
+    res.status(400).json(err);
   }).done();
 });
 
@@ -125,9 +167,9 @@ server.post('/light/:id/on', async (req, res) => {
   const lightState = hue.lightState;
   const state = lightState.create();
   api.setLightState(req.params.id, state.on()).then((result) => {
-    res.send(JSON.stringify(result));
+    res.json(result);
   }).fail((err) => {
-    res.status(400).send(JSON.stringify(err));
+    res.status(400).json(err);
   }).done();
 });
 

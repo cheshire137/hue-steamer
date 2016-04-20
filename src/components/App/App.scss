@@ -1,6 +1,12 @@
 @import '../../../node_modules/normalize.css/normalize.css';
 @import '../variables.scss';
 
+* {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
 a, a:link, a:visited, a:active {
   color: $link-color;
 }
