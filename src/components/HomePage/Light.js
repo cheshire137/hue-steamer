@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import s from './HomePage.scss';
 import Bridge from '../../actions/bridge';
 import Converter from '../../api/converter';
-import { PhotoshopPicker } from 'react-color';
+import { SketchPicker } from 'react-color';
 
 class Light extends Component {
   static propTypes = {
@@ -55,11 +55,7 @@ class Light extends Component {
 
   onColorPickerChange(color) {
     this.setState({ latestColor: color.hex });
-  }
-
-  onColorPickerAccept() {
-    this.setState({ showColorPicker: false });
-    this.changeColor(this.state.latestColor);
+    this.changeColor(color.hex);
   }
 
   onColorPickerCancel() {
@@ -67,8 +63,8 @@ class Light extends Component {
   }
 
   onColorChanged(success) {
-    if (success) {
-      this.updateLight();
+    if (!success) {
+      console.error('failed to change light color', this.state.light.name);
     }
   }
 
@@ -83,8 +79,6 @@ class Light extends Component {
   }
 
   changeColor(color) {
-    console.log('color', color);
-    this.setState({ showColorPicker: false });
     const xy = Converter.hexToCIE1931(color);
     const x = xy[0];
     const y = xy[1];
@@ -147,10 +141,8 @@ class Light extends Component {
                     className={s.colorBlock} style={colorStyle}
                   ></button>
                   <div style={colorPickerStyle} className={s.colorPickerWrapper}>
-                    <PhotoshopPicker color={colorStyle.backgroundColor}
+                    <SketchPicker color={colorStyle.backgroundColor}
                       onChangeComplete={this.onColorPickerChange.bind(this)}
-                      onAccept={this.onColorPickerAccept.bind(this)}
-                      onCancel={this.onColorPickerCancel.bind(this)}
                     />
                   </div>
                 </div>

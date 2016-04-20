@@ -3435,12 +3435,7 @@ module.exports =
       key: 'onColorPickerChange',
       value: function onColorPickerChange(color) {
         this.setState({ latestColor: color.hex });
-      }
-    }, {
-      key: 'onColorPickerAccept',
-      value: function onColorPickerAccept() {
-        this.setState({ showColorPicker: false });
-        this.changeColor(this.state.latestColor);
+        this.changeColor(color.hex);
       }
     }, {
       key: 'onColorPickerCancel',
@@ -3450,8 +3445,8 @@ module.exports =
     }, {
       key: 'onColorChanged',
       value: function onColorChanged(success) {
-        if (success) {
-          this.updateLight();
+        if (!success) {
+          console.error('failed to change light color', this.state.light.name);
         }
       }
     }, {
@@ -3468,8 +3463,6 @@ module.exports =
     }, {
       key: 'changeColor',
       value: function changeColor(color) {
-        console.log('color', color);
-        this.setState({ showColorPicker: false });
         var xy = _apiConverter2['default'].hexToCIE1931(color);
         var x = xy[0];
         var y = xy[1];
@@ -3563,10 +3556,8 @@ module.exports =
                 _react2['default'].createElement(
                   'div',
                   { style: colorPickerStyle, className: _HomePageScss2['default'].colorPickerWrapper },
-                  _react2['default'].createElement(_reactColor.PhotoshopPicker, { color: colorStyle.backgroundColor,
-                    onChangeComplete: this.onColorPickerChange.bind(this),
-                    onAccept: this.onColorPickerAccept.bind(this),
-                    onCancel: this.onColorPickerCancel.bind(this)
+                  _react2['default'].createElement(_reactColor.SketchPicker, { color: colorStyle.backgroundColor,
+                    onChangeComplete: this.onColorPickerChange.bind(this)
                   })
                 )
               ) : ''
