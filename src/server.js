@@ -24,10 +24,10 @@ const server = global.server = express();
 
 async function getBridge(id) {
   if (typeof id === 'undefined') {
-    return await db.get('SELECT user, ip FROM bridges ' +
+    return await db.get('SELECT * FROM bridges ' +
                         'ORDER BY id DESC LIMIT 1');
   }
-  return await db.get('SELECT user, ip FROM bridges WHERE id = ?', id);
+  return await db.get('SELECT * FROM bridges WHERE id = ?', id);
 }
 
 async function getHueApi(id) {
@@ -53,7 +53,6 @@ function setLightState(api, id, state, res) {
 }
 
 async function saveBridge(ip, user) {
-  console.log('saveBridge', ip, user);
   let bridge = await db.get('SELECT * FROM bridges ' +
                             'WHERE ip = ? AND user = ?', ip, user);
   if (typeof bridge === 'object') {
@@ -85,6 +84,11 @@ server.all('*', (req, res, next) => {
 });
 
 server.get('/bridge', async (req, res) => {
+  const result = await db.get('SELECT COUNT(*) AS count FROM bridges');
+  if (result.count < 1) {
+    res.status(400).json({ error: 'There are no bridges.' });
+    return;
+  }
   const connection = await getBridge();
   sendBridgeDetails(connection, res);
 });

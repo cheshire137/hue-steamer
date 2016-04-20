@@ -114,14 +114,14 @@ module.exports =
           }
   
           context$1$0.next = 3;
-          return regeneratorRuntime.awrap(_sqlite2['default'].get('SELECT user, ip FROM bridges ' + 'ORDER BY id DESC LIMIT 1'));
+          return regeneratorRuntime.awrap(_sqlite2['default'].get('SELECT * FROM bridges ' + 'ORDER BY id DESC LIMIT 1'));
   
         case 3:
           return context$1$0.abrupt('return', context$1$0.sent);
   
         case 4:
           context$1$0.next = 6;
-          return regeneratorRuntime.awrap(_sqlite2['default'].get('SELECT user, ip FROM bridges WHERE id = ?', id));
+          return regeneratorRuntime.awrap(_sqlite2['default'].get('SELECT * FROM bridges WHERE id = ?', id));
   
         case 6:
           return context$1$0.abrupt('return', context$1$0.sent);
@@ -174,45 +174,44 @@ module.exports =
     return regeneratorRuntime.async(function saveBridge$(context$1$0) {
       while (1) switch (context$1$0.prev = context$1$0.next) {
         case 0:
-          console.log('saveBridge', ip, user);
-          context$1$0.next = 3;
+          context$1$0.next = 2;
           return regeneratorRuntime.awrap(_sqlite2['default'].get('SELECT * FROM bridges ' + 'WHERE ip = ? AND user = ?', ip, user));
   
-        case 3:
+        case 2:
           bridge = context$1$0.sent;
   
           if (!(typeof bridge === 'object')) {
-            context$1$0.next = 12;
+            context$1$0.next = 11;
             break;
           }
   
-          context$1$0.next = 7;
+          context$1$0.next = 6;
           return regeneratorRuntime.awrap(_sqlite2['default'].run('UPDATE bridges SET user = ? WHERE ip = ?', user, ip));
   
-        case 7:
-          context$1$0.next = 9;
+        case 6:
+          context$1$0.next = 8;
           return regeneratorRuntime.awrap(getBridge(bridge.id));
   
-        case 9:
+        case 8:
           bridge = context$1$0.sent;
-          context$1$0.next = 17;
+          context$1$0.next = 16;
           break;
   
-        case 12:
-          context$1$0.next = 14;
+        case 11:
+          context$1$0.next = 13;
           return regeneratorRuntime.awrap(_sqlite2['default'].run('INSERT INTO bridges (user, ip) VALUES (?, ?)', user, ip));
   
-        case 14:
-          context$1$0.next = 16;
+        case 13:
+          context$1$0.next = 15;
           return regeneratorRuntime.awrap(getBridge());
   
-        case 16:
+        case 15:
           bridge = context$1$0.sent;
   
-        case 17:
+        case 16:
           return context$1$0.abrupt('return', bridge);
   
-        case 18:
+        case 17:
         case 'end':
           return context$1$0.stop();
       }
@@ -237,19 +236,34 @@ module.exports =
   });
   
   server.get('/bridge', function callee$0$0(req, res) {
-    var connection;
+    var result, connection;
     return regeneratorRuntime.async(function callee$0$0$(context$1$0) {
       while (1) switch (context$1$0.prev = context$1$0.next) {
         case 0:
           context$1$0.next = 2;
-          return regeneratorRuntime.awrap(getBridge());
+          return regeneratorRuntime.awrap(_sqlite2['default'].get('SELECT COUNT(*) AS count FROM bridges'));
   
         case 2:
+          result = context$1$0.sent;
+  
+          if (!(result.count < 1)) {
+            context$1$0.next = 6;
+            break;
+          }
+  
+          res.status(400).json({ error: 'There are no bridges.' });
+          return context$1$0.abrupt('return');
+  
+        case 6:
+          context$1$0.next = 8;
+          return regeneratorRuntime.awrap(getBridge());
+  
+        case 8:
           connection = context$1$0.sent;
   
           sendBridgeDetails(connection, res);
   
-        case 4:
+        case 10:
         case 'end':
           return context$1$0.stop();
       }
@@ -3084,13 +3098,13 @@ module.exports =
   
   var _decoratorsWithStyles2 = _interopRequireDefault(_decoratorsWithStyles);
   
-  var _storesLocalStorage = __webpack_require__(47);
-  
-  var _storesLocalStorage2 = _interopRequireDefault(_storesLocalStorage);
-  
   var _coreLocation = __webpack_require__(27);
   
   var _coreLocation2 = _interopRequireDefault(_coreLocation);
+  
+  var _actionsBridge = __webpack_require__(52);
+  
+  var _actionsBridge2 = _interopRequireDefault(_actionsBridge);
   
   var _LightsList = __webpack_require__(50);
   
@@ -3113,25 +3127,39 @@ module.exports =
       _classCallCheck(this, _HomePage);
   
       _get(Object.getPrototypeOf(_HomePage.prototype), 'constructor', this).call(this, props);
-      var data = _storesLocalStorage2['default'].getJSON();
-      this.state = {
-        bridgeConnectionID: data.bridgeConnectionID,
-        lightIDs: data.lightIDs
-      };
+      this.state = {};
     }
   
     _createClass(HomePage, [{
       key: 'componentWillMount',
       value: function componentWillMount() {
         this.context.onSetTitle(title);
-        this.redirectIfNoBridgeSettings();
       }
     }, {
-      key: 'redirectIfNoBridgeSettings',
-      value: function redirectIfNoBridgeSettings() {
-        if (typeof this.state.bridgeConnectionID === 'undefined') {
-          _coreLocation2['default'].push(_extends({}, (0, _historyLibParsePath2['default'])('/settings')));
+      key: 'componentDidMount',
+      value: function componentDidMount() {
+        _actionsBridge2['default'].get().then(this.onBridgeLoaded.bind(this))['catch'](this.onBridgeLoadError.bind(this));
+      }
+    }, {
+      key: 'onBridgeLoaded',
+      value: function onBridgeLoaded(bridge) {
+        this.setState({ bridgeConnectionID: bridge.connection.id });
+        _actionsBridge2['default'].getAllLights(bridge.connection.id).then(this.onAllLightsLoaded.bind(this));
+      }
+    }, {
+      key: 'onBridgeLoadError',
+      value: function onBridgeLoadError(response) {
+        console.error('failed to load bridge', response);
+        _coreLocation2['default'].push(_extends({}, (0, _historyLibParsePath2['default'])('/settings')));
+      }
+    }, {
+      key: 'onAllLightsLoaded',
+      value: function onAllLightsLoaded(group) {
+        if (group.hasOwnProperty('errno')) {
+          console.error('failed to load group of all lights', group);
+          return;
         }
+        this.setState({ lightIDs: group.lights });
       }
     }, {
       key: 'render',
@@ -3219,129 +3247,7 @@ module.exports =
   };
 
 /***/ },
-/* 47 */
-/***/ function(module, exports, __webpack_require__) {
-
-  'use strict';
-  
-  Object.defineProperty(exports, '__esModule', {
-    value: true
-  });
-  
-  var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-  
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-  
-  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-  
-  var _configJson = __webpack_require__(48);
-  
-  var _configJson2 = _interopRequireDefault(_configJson);
-  
-  var _reactCookie = __webpack_require__(49);
-  
-  var _reactCookie2 = _interopRequireDefault(_reactCookie);
-  
-  var CookieAndLocalStorage = (function () {
-    function CookieAndLocalStorage() {
-      _classCallCheck(this, CookieAndLocalStorage);
-    }
-  
-    _createClass(CookieAndLocalStorage, [{
-      key: 'getItem',
-      value: function getItem(key) {
-        if (typeof window !== 'undefined') {
-          if (window.localStorage) {
-            return window.localStorage.getItem(key);
-          }
-          console.error('browser does not support local storage');
-        }
-        return _reactCookie2['default'].load(key);
-      }
-    }, {
-      key: 'setItem',
-      value: function setItem(key, value) {
-        if (typeof window !== 'undefined' && window.localStorage) {
-          window.localStorage.setItem(key, value);
-        }
-        _reactCookie2['default'].save(key, value, { path: '/' });
-      }
-    }]);
-  
-    return CookieAndLocalStorage;
-  })();
-  
-  var LocalStorage = (function () {
-    function LocalStorage() {
-      _classCallCheck(this, LocalStorage);
-    }
-  
-    _createClass(LocalStorage, null, [{
-      key: 'getStore',
-      value: function getStore() {
-        if (typeof this.store === 'undefined') {
-          this.store = new CookieAndLocalStorage();
-        }
-        return this.store;
-      }
-    }, {
-      key: 'getJSON',
-      value: function getJSON() {
-        var store = this.getStore();
-        var appData = store.getItem(_configJson2['default'][("development")].localStorageKey) || '{}';
-        return JSON.parse(appData);
-      }
-    }, {
-      key: 'get',
-      value: function get(key) {
-        var appData = this.getJSON();
-        return appData[key];
-      }
-    }, {
-      key: 'set',
-      value: function set(key, value) {
-        var appData = this.getJSON();
-        appData[key] = value;
-        this.writeHash(appData);
-      }
-    }, {
-      key: 'setMany',
-      value: function setMany(data) {
-        var appData = this.getJSON();
-        for (var key in data) {
-          if (data.hasOwnProperty(key)) {
-            var value = data[key];
-            if (typeof value === 'undefined') {
-              delete appData[key];
-            } else {
-              appData[key] = value;
-            }
-          }
-        }
-        this.writeHash(appData);
-      }
-    }, {
-      key: 'writeHash',
-      value: function writeHash(appData) {
-        var store = this.getStore();
-        store.setItem(_configJson2['default'][("development")].localStorageKey, JSON.stringify(appData));
-      }
-    }, {
-      key: 'delete',
-      value: function _delete(key) {
-        var appData = this.getJSON();
-        delete appData[key];
-        this.writeHash(appData);
-      }
-    }]);
-  
-    return LocalStorage;
-  })();
-  
-  exports['default'] = LocalStorage;
-  module.exports = exports['default'];
-
-/***/ },
+/* 47 */,
 /* 48 */
 /***/ function(module, exports) {
 
@@ -3355,12 +3261,7 @@ module.exports =
   };
 
 /***/ },
-/* 49 */
-/***/ function(module, exports) {
-
-  module.exports = require("react-cookie");
-
-/***/ },
+/* 49 */,
 /* 50 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -4366,10 +4267,6 @@ module.exports =
   
   var _decoratorsWithStyles2 = _interopRequireDefault(_decoratorsWithStyles);
   
-  var _storesLocalStorage = __webpack_require__(47);
-  
-  var _storesLocalStorage2 = _interopRequireDefault(_storesLocalStorage);
-  
   var _actionsBridge = __webpack_require__(52);
   
   var _actionsBridge2 = _interopRequireDefault(_actionsBridge);
@@ -4399,10 +4296,8 @@ module.exports =
       _classCallCheck(this, _SettingsPage);
   
       _get(Object.getPrototypeOf(_SettingsPage.prototype), 'constructor', this).call(this, props);
-      var data = _storesLocalStorage2['default'].getJSON();
       this.state = {
-        numLights: data.lightIDs ? data.lightIDs.length : undefined,
-        bridgeConnectionID: data.bridgeConnectionID,
+        numLights: undefined,
         bridgeDiscovered: false,
         discoveredIP: undefined
       };
@@ -4416,9 +4311,7 @@ module.exports =
     }, {
       key: 'componentDidMount',
       value: function componentDidMount() {
-        if (typeof this.state.bridgeConnectionID !== 'undefined') {
-          _actionsBridge2['default'].get(this.state.bridgeConnectionID).then(this.onBridgeLoaded.bind(this));
-        }
+        _actionsBridge2['default'].get().then(this.onBridgeLoaded.bind(this))['catch'](this.onBridgeLoadError.bind(this));
       }
     }, {
       key: 'onAllLightsLoaded',
@@ -4428,7 +4321,6 @@ module.exports =
           return;
         }
         this.setState({ numLights: group.lights.length });
-        _storesLocalStorage2['default'].set('lightIDs', group.lights);
       }
     }, {
       key: 'onBridgeLoaded',
@@ -4447,11 +4339,15 @@ module.exports =
         });
       }
     }, {
+      key: 'onBridgeLoadError',
+      value: function onBridgeLoadError(response) {
+        console.error('failed to load bridge', response);
+      }
+    }, {
       key: 'onBridgeSaved',
       value: function onBridgeSaved(bridgeAndConnection) {
         this.onBridgeLoaded(bridgeAndConnection);
         var connection = bridgeAndConnection.connection;
-        _storesLocalStorage2['default'].set('bridgeConnectionID', connection.id);
         _actionsBridge2['default'].getAllLights(connection.id).then(this.onAllLightsLoaded.bind(this));
       }
     }, {
@@ -4478,10 +4374,6 @@ module.exports =
       key: 'handleSubmit',
       value: function handleSubmit(e) {
         e.preventDefault();
-        _storesLocalStorage2['default'].setMany({
-          lightIDs: undefined,
-          bridgeConnectionID: undefined
-        });
         if (typeof this.state.ip === 'string' && typeof this.state.user === 'string') {
           _actionsBridge2['default'].save(this.state.ip, this.state.user).then(this.onBridgeSaved.bind(this))['catch'](this.onBridgeSaveError.bind(this));
         }

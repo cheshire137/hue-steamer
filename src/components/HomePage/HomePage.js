@@ -2,8 +2,8 @@ import React, { Component, PropTypes } from 'react';
 import s from './HomePage.scss';
 import parsePath from 'history/lib/parsePath';
 import withStyles from '../../decorators/withStyles';
-import LocalStorage from '../../stores/localStorage';
 import Location from '../../core/Location';
+import Bridge from '../../actions/bridge';
 import LightsList from './LightsList';
 
 const title = 'Hue Steamer';
@@ -16,24 +16,37 @@ class HomePage extends Component {
 
   constructor(props) {
     super(props);
-    const data = LocalStorage.getJSON();
-    this.state = {
-      bridgeConnectionID: data.bridgeConnectionID,
-      lightIDs: data.lightIDs,
-    };
+    this.state = {};
   }
 
   componentWillMount() {
     this.context.onSetTitle(title);
-    this.redirectIfNoBridgeSettings();
   }
 
-  redirectIfNoBridgeSettings() {
-    if (typeof this.state.bridgeConnectionID === 'undefined') {
-      Location.push({
-        ...(parsePath('/settings')),
-      });
+  componentDidMount() {
+    Bridge.get().then(this.onBridgeLoaded.bind(this)).
+           catch(this.onBridgeLoadError.bind(this));
+  }
+
+  onBridgeLoaded(bridge) {
+    this.setState({ bridgeConnectionID: bridge.connection.id });
+    Bridge.getAllLights(bridge.connection.id).
+           then(this.onAllLightsLoaded.bind(this));
+  }
+
+  onBridgeLoadError(response) {
+    console.error('failed to load bridge', response);
+    Location.push({
+      ...(parsePath('/settings')),
+    });
+  }
+
+  onAllLightsLoaded(group) {
+    if (group.hasOwnProperty('errno')) {
+      console.error('failed to load group of all lights', group);
+      return;
     }
+    this.setState({ lightIDs: group.lights });
   }
 
   render() {

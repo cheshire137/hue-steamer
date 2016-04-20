@@ -1,7 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import s from './SettingsPage.scss';
 import withStyles from '../../decorators/withStyles';
-import LocalStorage from '../../stores/localStorage';
 import Bridge from '../../actions/bridge';
 import BridgeDisplay from './BridgeDisplay';
 import UserForm from './UserForm';
@@ -16,10 +15,8 @@ class SettingsPage extends Component {
 
   constructor(props) {
     super(props);
-    const data = LocalStorage.getJSON();
     this.state = {
-      numLights: data.lightIDs ? data.lightIDs.length : undefined,
-      bridgeConnectionID: data.bridgeConnectionID,
+      numLights: undefined,
       bridgeDiscovered: false,
       discoveredIP: undefined,
     };
@@ -30,10 +27,8 @@ class SettingsPage extends Component {
   }
 
   componentDidMount() {
-    if (typeof this.state.bridgeConnectionID !== 'undefined') {
-      Bridge.get(this.state.bridgeConnectionID).
-             then(this.onBridgeLoaded.bind(this));
-    }
+    Bridge.get().then(this.onBridgeLoaded.bind(this)).
+           catch(this.onBridgeLoadError.bind(this));
   }
 
   onAllLightsLoaded(group) {
@@ -42,7 +37,6 @@ class SettingsPage extends Component {
       return;
     }
     this.setState({ numLights: group.lights.length });
-    LocalStorage.set('lightIDs', group.lights);
   }
 
   onBridgeLoaded(bridgeAndConnection) {
@@ -60,10 +54,13 @@ class SettingsPage extends Component {
     });
   }
 
+  onBridgeLoadError(response) {
+    console.error('failed to load bridge', response);
+  }
+
   onBridgeSaved(bridgeAndConnection) {
     this.onBridgeLoaded(bridgeAndConnection);
     const connection = bridgeAndConnection.connection;
-    LocalStorage.set('bridgeConnectionID', connection.id);
     Bridge.getAllLights(connection.id).
            then(this.onAllLightsLoaded.bind(this));
   }
@@ -87,10 +84,6 @@ class SettingsPage extends Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    LocalStorage.setMany({
-      lightIDs: undefined,
-      bridgeConnectionID: undefined,
-    });
     if (typeof this.state.ip === 'string' &&
         typeof this.state.user === 'string') {
       Bridge.save(this.state.ip, this.state.user).
