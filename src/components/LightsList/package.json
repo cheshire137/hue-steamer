@@ -1,0 +1,6 @@
+{
+  "name": "LightsList",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./LightsList.js"
+}

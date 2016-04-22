@@ -4,7 +4,7 @@ import parsePath from 'history/lib/parsePath';
 import withStyles from '../../decorators/withStyles';
 import Location from '../../core/Location';
 import Bridge from '../../actions/bridge';
-import LightsList from './LightsList';
+import LightsList from '../LightsList/LightsList';
 import GroupsList from '../GroupsList/GroupsList';
 
 const title = 'Hue Steamer';

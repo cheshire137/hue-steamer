@@ -1,0 +1,6 @@
+{
+  "name": "Light",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./Light.js"
+}

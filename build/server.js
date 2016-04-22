@@ -3148,9 +3148,9 @@ module.exports =
   
   var _actionsBridge2 = _interopRequireDefault(_actionsBridge);
   
-  var _LightsList = __webpack_require__(49);
+  var _LightsListLightsList = __webpack_require__(80);
   
-  var _LightsList2 = _interopRequireDefault(_LightsList);
+  var _LightsListLightsList2 = _interopRequireDefault(_LightsListLightsList);
   
   var _GroupsListGroupsList = __webpack_require__(74);
   
@@ -3254,7 +3254,7 @@ module.exports =
           'div',
           null,
           haveGroups ? _react2['default'].createElement(_GroupsListGroupsList2['default'], { groups: this.state.groups }) : 'Loading groups...',
-          haveLights ? _react2['default'].createElement(_LightsList2['default'], { ids: this.state.lightIDs,
+          haveLights ? _react2['default'].createElement(_LightsListLightsList2['default'], { ids: this.state.lightIDs,
             onLightLoaded: this.onLightLoaded.bind(this)
           }) : 'Loading lights...'
         );
@@ -3310,31 +3310,10 @@ module.exports =
   
   
   // module
-  exports.push([module.id, "/* #222 */   /* #404040 */ /* #555 */ /* #777 */ /* #eee */  /* Extra small screen / phone */  /* Small screen / tablet */  /* Medium screen / desktop */ /* Large screen / wide desktop */\n\n.HomePage_lightList_3oL {\n  list-style: none;\n  padding-left: 0;\n}\n\n.HomePage_light_2jt {\n  width: 223px;\n  display: inline-block;\n  margin: 0 5px 12px 5px;\n  padding: 6px;\n  border-radius: 2px;\n  border-width: 1px;\n  border-style: solid;\n}\n\n.HomePage_light_2jt .HomePage_lightHeader_1wr, .HomePage_light_2jt .HomePage_lightFooter_2nX {\n  display: table;\n  width: 100%;\n}\n\n.HomePage_light_2jt .HomePage_lightFooter_2nX {\n  margin-top: 5px;\n}\n\n.HomePage_light_2jt .HomePage_lightNameArea_my7, .HomePage_light_2jt .HomePage_metadata_pqP, .HomePage_light_2jt .HomePage_colorBlockAndPicker_Flb {\n  display: table-cell;\n  vertical-align: middle;\n}\n\n.HomePage_light_2jt .HomePage_name_nWG {\n  white-space: nowrap;\n  text-overflow: ellipsis;\n  overflow: hidden;\n  width: 151px;\n  display: block;\n}\n\n.HomePage_light_2jt .HomePage_metadata_pqP {\n  font-size: 13px;\n}\n\n.HomePage_light_2jt .HomePage_colorBlockAndPicker_Flb {\n  width: 50px;\n  position: relative;\n}\n\n.HomePage_light_2jt .HomePage_colorBlockAndPicker_Flb .HomePage_colorBlock_3k8 {\n  border-radius: 4px;\n  border: none;\n  width: 100%;\n  height: 100%\n}\n\n.HomePage_light_2jt .HomePage_colorBlockAndPicker_Flb .HomePage_colorBlock_3k8:focus {\n  outline: 0;\n}\n\n.HomePage_light_2jt .HomePage_colorBlockAndPicker_Flb .HomePage_colorPickerWrapper_26s {\n  z-index: 99;\n  position: absolute;\n}\n\n.HomePage_light_2jt .HomePage_type_1AJ {\n  display: block;\n}\n\n.HomePage_light_2jt .HomePage_manufacturer_3WL {\n  padding: 0 0.3em 0 0;\n}\n\n.HomePage_light_2jt .HomePage_model_3Ue {}\n\n.HomePage_light_2jt.HomePage_night_1p9 {\n  border-color: #38231D;\n  color: #E5E4E1;\n  background-color: #231511;\n}\n\n.HomePage_light_2jt.HomePage_night_1p9 .HomePage_metadata_pqP {\n  color: #97918A;\n}\n\n.HomePage_light_2jt.HomePage_day_2WC {\n  border-color: #ccc;\n}\n\n.HomePage_light_2jt.HomePage_day_2WC .HomePage_metadata_pqP {\n  color: #797979;\n}\n\n.HomePage_onoffswitch_3hQ {\n  position: relative;\n  display: table-cell;\n  vertical-align: middle;\n  width: 50px;\n  -webkit-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n}\n\n.HomePage_onoffswitch_3hQ .HomePage_onoffswitchCheckbox_3tD {\n  display: none\n}\n\n.HomePage_onoffswitch_3hQ .HomePage_onoffswitchCheckbox_3tD:checked + .HomePage_onoffswitchLabel_W_H .HomePage_onoffswitchInner_1zJ {\n  margin-left: 0;\n}\n\n.HomePage_onoffswitch_3hQ .HomePage_onoffswitchCheckbox_3tD:checked + .HomePage_onoffswitchLabel_W_H .HomePage_onoffswitchSwitch_1Vt {\n  right: 0;\n}\n\n.HomePage_onoffswitch_3hQ .HomePage_onoffswitchLabel_W_H {\n  display: block;\n  overflow: hidden;\n  cursor: pointer;\n  border: 2px solid #CCCCCC;\n  border-radius: 18px;\n}\n\n.HomePage_onoffswitch_3hQ .HomePage_onoffswitchInner_1zJ {\n  display: block;\n  width: 200%;\n  margin-left: -100%;\n  -webkit-transition: margin 0.3s ease-in 0s;\n  -o-transition: margin 0.3s ease-in 0s;\n  transition: margin 0.3s ease-in 0s\n}\n\n.HomePage_onoffswitch_3hQ .HomePage_onoffswitchInner_1zJ:before, .HomePage_onoffswitch_3hQ .HomePage_onoffswitchInner_1zJ:after {\n  display: block;\n  float: left;\n  width: 50%;\n  height: 18px;\n  padding: 0;\n  line-height: 18px;\n  font-size: 12px;\n  color: white;\n  font-weight: 700;\n  -webkit-box-sizing: border-box;\n          box-sizing: border-box;\n}\n\n.HomePage_onoffswitch_3hQ .HomePage_onoffswitchInner_1zJ:before {\n  content: \"on\";\n  padding-left: 10px;\n  background-color: #FFF7C2;\n  color: #474029;\n}\n\n.HomePage_onoffswitch_3hQ .HomePage_onoffswitchInner_1zJ:after {\n  content: \"off\";\n  padding-right: 10px;\n  background-color: #373634;\n  color: #D6D6D6;\n  text-align: right;\n}\n\n.HomePage_onoffswitch_3hQ .HomePage_onoffswitchSwitch_1Vt {\n  display: block;\n  width: 18px;\n  margin: 0px;\n  background: #FFFFFF;\n  position: absolute;\n  top: 0;\n  bottom: 0;\n  right: 32px;\n  border: 2px solid #CCCCCC;\n  border-radius: 18px;\n  -webkit-transition: all 0.3s ease-in 0s;\n  -o-transition: all 0.3s ease-in 0s;\n  transition: all 0.3s ease-in 0s;\n}\n", "", {"version":3,"sources":["/./src/components/variables.scss","/./src/components/HomePage/HomePage.scss"],"names":[],"mappings":"AACwD,UAAU,GACV,aAAa,CACb,UAAU,CACV,UAAU,CACV,UAAU,EASlC,gCAAgC,EAChC,2BAA2B,EAC3B,6BAA6B,CAC7B,iCAAiC;;ACfjE;EACE,iBAAiB;EACjB,gBAAgB;CACjB;;AAED;EACE,aAAa;EACb,sBAAsB;EACtB,uBAAuB;EACvB,aAAa;EACb,mBAAmB;EACnB,kBAAkB;EAClB,oBAAoB;CAiFrB;;AA/EC;EAEE,eAAe;EACf,YAAY;CACb;;AAED;EACE,gBAAgB;CACjB;;AAED;EAGE,oBAAoB;EACpB,uBAAuB;CACxB;;AAoBD;EACE,oBAAoB;EACpB,wBAAwB;EACxB,iBAAiB;EACjB,aAAa;EACb,eAAe;CAChB;;AAED;EACE,gBAAgB;CACjB;;AAED;EACE,YAAY;EACZ,mBAAmB;CAiBpB;;AAfC;EACE,mBAAmB;EACnB,aAAa;EACb,YAAY;EACZ,YAAa;CAKd;;AAHC;EACE,WAAW;CACZ;;AAGH;EACE,YAAY;EACZ,mBAAmB;CACpB;;AAGH;EACE,eAAe;CAChB;;AAED;EACE,qBAAqB;CACtB;;AAED,0CAEC;;AA7DD;EACE,sBAAsB;EACtB,eAAe;EACf,0BAA0B;CAK3B;;AAHC;EACE,eAAe;CAChB;;AAGH;EACE,mBAAmB;CAKpB;;AAHC;EACE,eAAe;CAChB;;AAiDL;EACE,mBAAmB;EACnB,oBAAoB;EACpB,uBAAuB;EACvB,YAAY;EACZ,0BAA0B;EAC1B,uBAAuB;EACvB,sBAAsB;CAqEvB;;AAnEC;EACE,aAAc;CAaf;;AATK;EACE,eAAe;CAChB;;AAED;EACE,SAAS;CACV;;AAKP;EACE,eAAe;EACf,iBAAiB;EACjB,gBAAgB;EAChB,0BAA0B;EAC1B,oBAAoB;CACrB;;AAED;EACE,eAAe;EACf,YAAY;EACZ,mBAAmB;EACnB,2CAAmC;EAAnC,sCAAmC;EAAnC,kCAAmC;CA6BpC;;AA3BC;EACE,eAAe;EACf,YAAY;EACZ,WAAW;EACX,aAAa;EACb,WAAW;EACX,kBAAkB;EAClB,gBAAgB;EAChB,aAAa;EACb,iBAAiB;EACjB,+BAAuB;UAAvB,uBAAuB;CACxB;;AAED;EACE,cAAc;EACd,mBAAmB;EACnB,0BAA0B;EAC1B,eAAe;CAChB;;AAED;EACE,eAAe;EACf,oBAAoB;EACpB,0BAA0B;EAC1B,eAAe;EACf,kBAAkB;CACnB;;AAGH;EACI,eAAe;EAAC,YAAY;EAAC,YAAY;EACzC,oBAAoB;EACpB,mBAAmB;EAAC,OAAO;EAAC,UAAU;EACtC,YAAY;EACZ,0BAA0B;EAAC,oBAAoB;EAC/C,wCAAgC;EAAhC,mCAAgC;EAAhC,gCAAgC;CACnC","file":"HomePage.scss","sourcesContent":["$white-base:            hsl(255, 255, 255);\r\n$gray-darker:           color(black lightness(+13.5%)); /* #222 */\r\n$gray-dark:             color(black lightness(+25%));   /* #404040 */\r\n$gray:                  color(black lightness(+33.5%)); /* #555 */\r\n$gray-light:            color(black lightness(+46.7%)); /* #777 */\r\n$gray-lighter:          color(black lightness(+93.5%)); /* #eee */\r\n\r\n$link-color: #E16C51;\r\n$link-hover-color: #97918A;\r\n\r\n$font-family-base:      'Segoe UI', 'HelveticaNeue-Light', sans-serif;\r\n\r\n$max-content-width:     1000px;\r\n\r\n$screen-xs-min:         480px;  /* Extra small screen / phone */\r\n$screen-sm-min:         768px;  /* Small screen / tablet */\r\n$screen-md-min:         992px;  /* Medium screen / desktop */\r\n$screen-lg-min:         1200px; /* Large screen / wide desktop */\r\n\r\n$animation-swift-out:   .45s cubic-bezier(0.3, 1, 0.4, 1) 0s;\r\n","@import '../variables.scss';\n\n.lightList {\n  list-style: none;\n  padding-left: 0;\n}\n\n.light {\n  width: 223px;\n  display: inline-block;\n  margin: 0 5px 12px 5px;\n  padding: 6px;\n  border-radius: 2px;\n  border-width: 1px;\n  border-style: solid;\n\n  .lightHeader,\n  .lightFooter {\n    display: table;\n    width: 100%;\n  }\n\n  .lightFooter {\n    margin-top: 5px;\n  }\n\n  .lightNameArea,\n  .metadata,\n  .colorBlockAndPicker {\n    display: table-cell;\n    vertical-align: middle;\n  }\n\n  &.night {\n    border-color: #38231D;\n    color: #E5E4E1;\n    background-color: #231511;\n\n    .metadata {\n      color: #97918A;\n    }\n  }\n\n  &.day {\n    border-color: #ccc;\n\n    .metadata {\n      color: #797979;\n    }\n  }\n\n  .name {\n    white-space: nowrap;\n    text-overflow: ellipsis;\n    overflow: hidden;\n    width: 151px;\n    display: block;\n  }\n\n  .metadata {\n    font-size: 13px;\n  }\n\n  .colorBlockAndPicker {\n    width: 50px;\n    position: relative;\n\n    .colorBlock {\n      border-radius: 4px;\n      border: none;\n      width: 100%;\n      height: 100%;\n\n      &:focus {\n        outline: 0;\n      }\n    }\n\n    .colorPickerWrapper {\n      z-index: 99;\n      position: absolute;\n    }\n  }\n\n  .type {\n    display: block;\n  }\n\n  .manufacturer {\n    padding: 0 0.3em 0 0;\n  }\n\n  .model {\n\n  }\n}\n\n.onoffswitch {\n  position: relative;\n  display: table-cell;\n  vertical-align: middle;\n  width: 50px;\n  -webkit-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n\n  .onoffswitchCheckbox {\n    display: none;\n\n    &:checked {\n      + .onoffswitchLabel {\n        .onoffswitchInner {\n          margin-left: 0;\n        }\n\n        .onoffswitchSwitch {\n          right: 0;\n        }\n      }\n    }\n  }\n\n  .onoffswitchLabel {\n    display: block;\n    overflow: hidden;\n    cursor: pointer;\n    border: 2px solid #CCCCCC;\n    border-radius: 18px;\n  }\n\n  .onoffswitchInner {\n    display: block;\n    width: 200%;\n    margin-left: -100%;\n    transition: margin 0.3s ease-in 0s;\n\n    &:before, &:after {\n      display: block;\n      float: left;\n      width: 50%;\n      height: 18px;\n      padding: 0;\n      line-height: 18px;\n      font-size: 12px;\n      color: white;\n      font-weight: 700;\n      box-sizing: border-box;\n    }\n\n    &:before {\n      content: \"on\";\n      padding-left: 10px;\n      background-color: #FFF7C2;\n      color: #474029;\n    }\n\n    &:after {\n      content: \"off\";\n      padding-right: 10px;\n      background-color: #373634;\n      color: #D6D6D6;\n      text-align: right;\n    }\n  }\n\n  .onoffswitchSwitch {\n      display: block; width: 18px; margin: 0px;\n      background: #FFFFFF;\n      position: absolute; top: 0; bottom: 0;\n      right: 32px;\n      border: 2px solid #CCCCCC; border-radius: 18px;\n      transition: all 0.3s ease-in 0s;\n  }\n}\n"],"sourceRoot":"webpack://"}]);
+  exports.push([module.id, "/* #222 */   /* #404040 */ /* #555 */ /* #777 */ /* #eee */  /* Extra small screen / phone */  /* Small screen / tablet */  /* Medium screen / desktop */ /* Large screen / wide desktop */\n", "", {"version":3,"sources":["/./src/components/variables.scss"],"names":[],"mappings":"AACwD,UAAU,GACV,aAAa,CACb,UAAU,CACV,UAAU,CACV,UAAU,EASlC,gCAAgC,EAChC,2BAA2B,EAC3B,6BAA6B,CAC7B,iCAAiC","file":"HomePage.scss","sourcesContent":["$white-base:            hsl(255, 255, 255);\r\n$gray-darker:           color(black lightness(+13.5%)); /* #222 */\r\n$gray-dark:             color(black lightness(+25%));   /* #404040 */\r\n$gray:                  color(black lightness(+33.5%)); /* #555 */\r\n$gray-light:            color(black lightness(+46.7%)); /* #777 */\r\n$gray-lighter:          color(black lightness(+93.5%)); /* #eee */\r\n\r\n$link-color: #E16C51;\r\n$link-hover-color: #97918A;\r\n\r\n$font-family-base:      'Segoe UI', 'HelveticaNeue-Light', sans-serif;\r\n\r\n$max-content-width:     1000px;\r\n\r\n$screen-xs-min:         480px;  /* Extra small screen / phone */\r\n$screen-sm-min:         768px;  /* Small screen / tablet */\r\n$screen-md-min:         992px;  /* Medium screen / desktop */\r\n$screen-lg-min:         1200px; /* Large screen / wide desktop */\r\n\r\n$animation-swift-out:   .45s cubic-bezier(0.3, 1, 0.4, 1) 0s;\r\n"],"sourceRoot":"webpack://"}]);
   
   // exports
-  exports.locals = {
-  	"lightList": "HomePage_lightList_3oL",
-  	"light": "HomePage_light_2jt",
-  	"lightHeader": "HomePage_lightHeader_1wr",
-  	"lightFooter": "HomePage_lightFooter_2nX",
-  	"lightNameArea": "HomePage_lightNameArea_my7",
-  	"metadata": "HomePage_metadata_pqP",
-  	"colorBlockAndPicker": "HomePage_colorBlockAndPicker_Flb",
-  	"name": "HomePage_name_nWG",
-  	"colorBlock": "HomePage_colorBlock_3k8",
-  	"colorPickerWrapper": "HomePage_colorPickerWrapper_26s",
-  	"type": "HomePage_type_1AJ",
-  	"manufacturer": "HomePage_manufacturer_3WL",
-  	"model": "HomePage_model_3Ue",
-  	"night": "HomePage_night_1p9",
-  	"day": "HomePage_day_2WC",
-  	"onoffswitch": "HomePage_onoffswitch_3hQ",
-  	"onoffswitchCheckbox": "HomePage_onoffswitchCheckbox_3tD",
-  	"onoffswitchLabel": "HomePage_onoffswitchLabel_W_H",
-  	"onoffswitchInner": "HomePage_onoffswitchInner_1zJ",
-  	"onoffswitchSwitch": "HomePage_onoffswitchSwitch_1Vt"
-  };
+
 
 /***/ },
 /* 47 */
@@ -3611,347 +3590,8 @@ module.exports =
   };
 
 /***/ },
-/* 49 */
-/***/ function(module, exports, __webpack_require__) {
-
-  'use strict';
-  
-  Object.defineProperty(exports, '__esModule', {
-    value: true
-  });
-  
-  var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-  
-  var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
-  
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-  
-  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-  
-  function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-  
-  var _react = __webpack_require__(4);
-  
-  var _react2 = _interopRequireDefault(_react);
-  
-  var _HomePageScss = __webpack_require__(45);
-  
-  var _HomePageScss2 = _interopRequireDefault(_HomePageScss);
-  
-  var _Light = __webpack_require__(50);
-  
-  var _Light2 = _interopRequireDefault(_Light);
-  
-  var LightsList = (function (_Component) {
-    _inherits(LightsList, _Component);
-  
-    _createClass(LightsList, null, [{
-      key: 'propTypes',
-      value: {
-        ids: _react.PropTypes.array.isRequired,
-        onLightLoaded: _react.PropTypes.func.isRequired
-      },
-      enumerable: true
-    }]);
-  
-    function LightsList(props, context) {
-      _classCallCheck(this, LightsList);
-  
-      _get(Object.getPrototypeOf(LightsList.prototype), 'constructor', this).call(this, props, context);
-      this.state = {};
-    }
-  
-    _createClass(LightsList, [{
-      key: 'render',
-      value: function render() {
-        var _this = this;
-  
-        return _react2['default'].createElement(
-          'div',
-          null,
-          _react2['default'].createElement(
-            'h2',
-            null,
-            'Lights'
-          ),
-          _react2['default'].createElement(
-            'ul',
-            { className: _HomePageScss2['default'].lightList },
-            this.props.ids.map(function (id) {
-              return _react2['default'].createElement(_Light2['default'], { key: id, id: id,
-                onLightLoaded: _this.props.onLightLoaded
-              });
-            })
-          )
-        );
-      }
-    }]);
-  
-    return LightsList;
-  })(_react.Component);
-  
-  exports['default'] = LightsList;
-  module.exports = exports['default'];
-
-/***/ },
-/* 50 */
-/***/ function(module, exports, __webpack_require__) {
-
-  'use strict';
-  
-  Object.defineProperty(exports, '__esModule', {
-    value: true
-  });
-  
-  var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-  
-  var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
-  
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-  
-  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-  
-  function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-  
-  var _react = __webpack_require__(4);
-  
-  var _react2 = _interopRequireDefault(_react);
-  
-  var _HomePageScss = __webpack_require__(45);
-  
-  var _HomePageScss2 = _interopRequireDefault(_HomePageScss);
-  
-  var _actionsBridge = __webpack_require__(47);
-  
-  var _actionsBridge2 = _interopRequireDefault(_actionsBridge);
-  
-  var _apiConverter = __webpack_require__(51);
-  
-  var _apiConverter2 = _interopRequireDefault(_apiConverter);
-  
-  var _reactColor = __webpack_require__(54);
-  
-  var _classnames = __webpack_require__(55);
-  
-  var _classnames2 = _interopRequireDefault(_classnames);
-  
-  var Light = (function (_Component) {
-    _inherits(Light, _Component);
-  
-    _createClass(Light, null, [{
-      key: 'propTypes',
-      value: {
-        id: _react.PropTypes.string.isRequired,
-        onLightLoaded: _react.PropTypes.func.isRequired
-      },
-      enumerable: true
-    }]);
-  
-    function Light(props, context) {
-      _classCallCheck(this, Light);
-  
-      _get(Object.getPrototypeOf(Light.prototype), 'constructor', this).call(this, props, context);
-      this.state = {
-        lights: [],
-        loaded: false,
-        showColorPicker: false
-      };
-    }
-  
-    _createClass(Light, [{
-      key: 'componentDidMount',
-      value: function componentDidMount() {
-        this.updateLight();
-      }
-    }, {
-      key: 'onLightLoaded',
-      value: function onLightLoaded(light) {
-        if (light.hasOwnProperty('errno')) {
-          console.error('failed to load light ' + this.props.id, light);
-          return;
-        }
-        light.id = this.props.id;
-        this.setState({
-          light: light,
-          loaded: true,
-          latestColor: this.getLightHex(light.state)
-        });
-        this.props.onLightLoaded(light);
-      }
-    }, {
-      key: 'onLightToggle',
-      value: function onLightToggle() {
-        var light = this.state.light;
-        if (light.state.on) {
-          _actionsBridge2['default'].turnOffLight(this.props.id).then(this.onLightToggleComplete.bind(this));
-        } else {
-          _actionsBridge2['default'].turnOnLight(this.props.id).then(this.onLightToggleComplete.bind(this));
-        }
-      }
-    }, {
-      key: 'onLightToggleComplete',
-      value: function onLightToggleComplete(success) {
-        if (success) {
-          var light = this.state.light;
-          light.state.on = !light.state.on;
-          this.setState({ light: light });
-        }
-      }
-    }, {
-      key: 'onColorPickerChange',
-      value: function onColorPickerChange(color) {
-        this.setState({ latestColor: color.hex });
-        this.changeColor(color.hex);
-      }
-    }, {
-      key: 'onColorPickerCancel',
-      value: function onColorPickerCancel() {
-        this.setState({ showColorPicker: false });
-      }
-    }, {
-      key: 'onColorChanged',
-      value: function onColorChanged(success) {
-        if (!success) {
-          console.error('failed to change light color', this.state.light.name);
-        }
-      }
-    }, {
-      key: 'getLightHex',
-      value: function getLightHex(optionalLightState) {
-        var lightState = optionalLightState || this.state.light.state;
-        if (lightState.on) {
-          var xy = lightState.xy;
-          if (typeof xy === 'object') {
-            return _apiConverter2['default'].cie1931ToHex(xy[0], xy[1], lightState.bri);
-          }
-        }
-      }
-    }, {
-      key: 'changeColor',
-      value: function changeColor(color) {
-        var xy = _apiConverter2['default'].hexToCIE1931(color);
-        var x = xy[0];
-        var y = xy[1];
-        _actionsBridge2['default'].setLightColor(this.props.id, x, y).then(this.onColorChanged.bind(this));
-      }
-    }, {
-      key: 'updateLight',
-      value: function updateLight() {
-        _actionsBridge2['default'].getLight(this.props.id).then(this.onLightLoaded.bind(this));
-      }
-    }, {
-      key: 'toggleColorPicker',
-      value: function toggleColorPicker() {
-        this.setState({ showColorPicker: !this.state.showColorPicker });
-      }
-    }, {
-      key: 'isNight',
-      value: function isNight() {
-        var curTime = new Date();
-        return curTime.getHours() >= 20;
-      }
-    }, {
-      key: 'render',
-      value: function render() {
-        var checkboxID = 'light-' + this.props.id + '-toggle';
-        var colorStyle = {};
-        var colorPickerStyle = {
-          display: this.state.showColorPicker ? 'block' : 'none'
-        };
-        if (typeof this.state.light === 'object') {
-          if (typeof this.state.latestColor !== 'undefined') {
-            colorStyle.backgroundColor = '#' + this.state.latestColor;
-          }
-        }
-        return _react2['default'].createElement(
-          'li',
-          { className: (0, _classnames2['default'])(_HomePageScss2['default'].light, this.isNight() ? _HomePageScss2['default'].night : _HomePageScss2['default'].day) },
-          this.state.loaded ? _react2['default'].createElement(
-            'div',
-            null,
-            _react2['default'].createElement(
-              'header',
-              { className: _HomePageScss2['default'].lightHeader },
-              _react2['default'].createElement(
-                'div',
-                { className: _HomePageScss2['default'].lightNameArea },
-                _react2['default'].createElement(
-                  'span',
-                  { className: _HomePageScss2['default'].name, title: this.state.light.name },
-                  this.state.light.name
-                )
-              ),
-              _react2['default'].createElement(
-                'div',
-                { className: _HomePageScss2['default'].onoffswitch },
-                _react2['default'].createElement('input', { type: 'checkbox', name: 'onoffswitch',
-                  className: _HomePageScss2['default'].onoffswitchCheckbox, id: checkboxID,
-                  checked: this.state.light.state.on,
-                  onChange: this.onLightToggle.bind(this)
-                }),
-                _react2['default'].createElement(
-                  'label',
-                  { className: _HomePageScss2['default'].onoffswitchLabel, htmlFor: checkboxID },
-                  _react2['default'].createElement('span', { className: _HomePageScss2['default'].onoffswitchInner }),
-                  _react2['default'].createElement('span', { className: _HomePageScss2['default'].onoffswitchSwitch })
-                )
-              )
-            ),
-            _react2['default'].createElement(
-              'footer',
-              { className: _HomePageScss2['default'].lightFooter },
-              _react2['default'].createElement(
-                'div',
-                { className: _HomePageScss2['default'].metadata },
-                _react2['default'].createElement(
-                  'span',
-                  { className: _HomePageScss2['default'].type },
-                  this.state.light.type
-                ),
-                _react2['default'].createElement(
-                  'span',
-                  { className: _HomePageScss2['default'].manufacturer },
-                  this.state.light.manufacturername
-                ),
-                _react2['default'].createElement(
-                  'span',
-                  { className: _HomePageScss2['default'].model },
-                  this.state.light.modelid
-                )
-              ),
-              colorStyle.backgroundColor ? _react2['default'].createElement(
-                'div',
-                { className: _HomePageScss2['default'].colorBlockAndPicker },
-                _react2['default'].createElement('button', { type: 'button', onClick: this.toggleColorPicker.bind(this),
-                  className: _HomePageScss2['default'].colorBlock, style: colorStyle
-                }),
-                _react2['default'].createElement(
-                  'div',
-                  { style: colorPickerStyle, className: _HomePageScss2['default'].colorPickerWrapper },
-                  _react2['default'].createElement(_reactColor.SketchPicker, { color: colorStyle.backgroundColor,
-                    onChangeComplete: this.onColorPickerChange.bind(this)
-                  })
-                )
-              ) : ''
-            )
-          ) : _react2['default'].createElement(
-            'span',
-            null,
-            'Loading light ',
-            this.props.id,
-            '...'
-          )
-        );
-      }
-    }]);
-  
-    return Light;
-  })(_react.Component);
-  
-  exports['default'] = Light;
-  module.exports = exports['default'];
-
-/***/ },
+/* 49 */,
+/* 50 */,
 /* 51 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -5546,6 +5186,473 @@ module.exports =
   // exports
   exports.locals = {
   	"groupList": "GroupsList_groupList_23X"
+  };
+
+/***/ },
+/* 77 */
+/***/ function(module, exports, __webpack_require__) {
+
+  'use strict';
+  
+  Object.defineProperty(exports, '__esModule', {
+    value: true
+  });
+  
+  var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+  
+  var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+  
+  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  
+  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+  
+  function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+  
+  var _react = __webpack_require__(4);
+  
+  var _react2 = _interopRequireDefault(_react);
+  
+  var _LightScss = __webpack_require__(78);
+  
+  var _LightScss2 = _interopRequireDefault(_LightScss);
+  
+  var _actionsBridge = __webpack_require__(47);
+  
+  var _actionsBridge2 = _interopRequireDefault(_actionsBridge);
+  
+  var _apiConverter = __webpack_require__(51);
+  
+  var _apiConverter2 = _interopRequireDefault(_apiConverter);
+  
+  var _reactColor = __webpack_require__(54);
+  
+  var _classnames = __webpack_require__(55);
+  
+  var _classnames2 = _interopRequireDefault(_classnames);
+  
+  var _decoratorsWithStyles = __webpack_require__(24);
+  
+  var _decoratorsWithStyles2 = _interopRequireDefault(_decoratorsWithStyles);
+  
+  var Light = (function (_Component) {
+    _inherits(Light, _Component);
+  
+    _createClass(Light, null, [{
+      key: 'propTypes',
+      value: {
+        id: _react.PropTypes.string.isRequired,
+        onLightLoaded: _react.PropTypes.func.isRequired
+      },
+      enumerable: true
+    }]);
+  
+    function Light(props, context) {
+      _classCallCheck(this, _Light);
+  
+      _get(Object.getPrototypeOf(_Light.prototype), 'constructor', this).call(this, props, context);
+      this.state = {
+        lights: [],
+        loaded: false,
+        showColorPicker: false
+      };
+    }
+  
+    _createClass(Light, [{
+      key: 'componentDidMount',
+      value: function componentDidMount() {
+        this.updateLight();
+      }
+    }, {
+      key: 'onLightLoaded',
+      value: function onLightLoaded(light) {
+        if (light.hasOwnProperty('errno')) {
+          console.error('failed to load light ' + this.props.id, light);
+          return;
+        }
+        light.id = this.props.id;
+        this.setState({
+          light: light,
+          loaded: true,
+          latestColor: this.getLightHex(light.state)
+        });
+        this.props.onLightLoaded(light);
+      }
+    }, {
+      key: 'onLightToggle',
+      value: function onLightToggle() {
+        var light = this.state.light;
+        if (light.state.on) {
+          _actionsBridge2['default'].turnOffLight(this.props.id).then(this.onLightToggleComplete.bind(this));
+        } else {
+          _actionsBridge2['default'].turnOnLight(this.props.id).then(this.onLightToggleComplete.bind(this));
+        }
+      }
+    }, {
+      key: 'onLightToggleComplete',
+      value: function onLightToggleComplete(success) {
+        if (success) {
+          var light = this.state.light;
+          light.state.on = !light.state.on;
+          this.setState({ light: light });
+        }
+      }
+    }, {
+      key: 'onColorPickerChange',
+      value: function onColorPickerChange(color) {
+        this.setState({ latestColor: color.hex });
+        this.changeColor(color.hex);
+      }
+    }, {
+      key: 'onColorPickerCancel',
+      value: function onColorPickerCancel() {
+        this.setState({ showColorPicker: false });
+      }
+    }, {
+      key: 'onColorChanged',
+      value: function onColorChanged(success) {
+        if (!success) {
+          console.error('failed to change light color', this.state.light.name);
+        }
+      }
+    }, {
+      key: 'getLightHex',
+      value: function getLightHex(optionalLightState) {
+        var lightState = optionalLightState || this.state.light.state;
+        if (lightState.on) {
+          var xy = lightState.xy;
+          if (typeof xy === 'object') {
+            return _apiConverter2['default'].cie1931ToHex(xy[0], xy[1], lightState.bri);
+          }
+        }
+      }
+    }, {
+      key: 'changeColor',
+      value: function changeColor(color) {
+        var xy = _apiConverter2['default'].hexToCIE1931(color);
+        var x = xy[0];
+        var y = xy[1];
+        _actionsBridge2['default'].setLightColor(this.props.id, x, y).then(this.onColorChanged.bind(this));
+      }
+    }, {
+      key: 'updateLight',
+      value: function updateLight() {
+        _actionsBridge2['default'].getLight(this.props.id).then(this.onLightLoaded.bind(this));
+      }
+    }, {
+      key: 'toggleColorPicker',
+      value: function toggleColorPicker() {
+        this.setState({ showColorPicker: !this.state.showColorPicker });
+      }
+    }, {
+      key: 'isNight',
+      value: function isNight() {
+        var curTime = new Date();
+        return curTime.getHours() >= 20;
+      }
+    }, {
+      key: 'render',
+      value: function render() {
+        var checkboxID = 'light-' + this.props.id + '-toggle';
+        var colorStyle = {};
+        var colorPickerStyle = {
+          display: this.state.showColorPicker ? 'block' : 'none'
+        };
+        if (typeof this.state.light === 'object') {
+          if (typeof this.state.latestColor !== 'undefined') {
+            colorStyle.backgroundColor = '#' + this.state.latestColor;
+          }
+        }
+        return _react2['default'].createElement(
+          'li',
+          { className: (0, _classnames2['default'])(_LightScss2['default'].light, this.isNight() ? _LightScss2['default'].night : _LightScss2['default'].day) },
+          this.state.loaded ? _react2['default'].createElement(
+            'div',
+            null,
+            _react2['default'].createElement(
+              'header',
+              { className: _LightScss2['default'].lightHeader },
+              _react2['default'].createElement(
+                'div',
+                { className: _LightScss2['default'].lightNameArea },
+                _react2['default'].createElement(
+                  'span',
+                  { className: _LightScss2['default'].name, title: this.state.light.name },
+                  this.state.light.name
+                )
+              ),
+              _react2['default'].createElement(
+                'div',
+                { className: _LightScss2['default'].onoffswitch },
+                _react2['default'].createElement('input', { type: 'checkbox', name: 'onoffswitch',
+                  className: _LightScss2['default'].onoffswitchCheckbox, id: checkboxID,
+                  checked: this.state.light.state.on,
+                  onChange: this.onLightToggle.bind(this)
+                }),
+                _react2['default'].createElement(
+                  'label',
+                  { className: _LightScss2['default'].onoffswitchLabel, htmlFor: checkboxID },
+                  _react2['default'].createElement('span', { className: _LightScss2['default'].onoffswitchInner }),
+                  _react2['default'].createElement('span', { className: _LightScss2['default'].onoffswitchSwitch })
+                )
+              )
+            ),
+            _react2['default'].createElement(
+              'footer',
+              { className: _LightScss2['default'].lightFooter },
+              _react2['default'].createElement(
+                'div',
+                { className: _LightScss2['default'].metadata },
+                _react2['default'].createElement(
+                  'span',
+                  { className: _LightScss2['default'].type },
+                  this.state.light.type
+                ),
+                _react2['default'].createElement(
+                  'span',
+                  { className: _LightScss2['default'].manufacturer },
+                  this.state.light.manufacturername
+                ),
+                _react2['default'].createElement(
+                  'span',
+                  { className: _LightScss2['default'].model },
+                  this.state.light.modelid
+                )
+              ),
+              colorStyle.backgroundColor ? _react2['default'].createElement(
+                'div',
+                { className: _LightScss2['default'].colorBlockAndPicker },
+                _react2['default'].createElement('button', { type: 'button', onClick: this.toggleColorPicker.bind(this),
+                  className: _LightScss2['default'].colorBlock, style: colorStyle
+                }),
+                _react2['default'].createElement(
+                  'div',
+                  { style: colorPickerStyle, className: _LightScss2['default'].colorPickerWrapper },
+                  _react2['default'].createElement(_reactColor.SketchPicker, { color: colorStyle.backgroundColor,
+                    onChangeComplete: this.onColorPickerChange.bind(this)
+                  })
+                )
+              ) : ''
+            )
+          ) : _react2['default'].createElement(
+            'span',
+            null,
+            'Loading light ',
+            this.props.id,
+            '...'
+          )
+        );
+      }
+    }]);
+  
+    var _Light = Light;
+    Light = (0, _decoratorsWithStyles2['default'])(_LightScss2['default'])(Light) || Light;
+    return Light;
+  })(_react.Component);
+  
+  exports['default'] = Light;
+  module.exports = exports['default'];
+
+/***/ },
+/* 78 */
+/***/ function(module, exports, __webpack_require__) {
+
+  
+      var content = __webpack_require__(79);
+      var insertCss = __webpack_require__(20);
+  
+      if (typeof content === 'string') {
+        content = [[module.id, content, '']];
+      }
+  
+      module.exports = content.locals || {};
+      module.exports._getCss = function() { return content.toString(); };
+      module.exports._insertCss = insertCss.bind(null, content);
+    
+      var removeCss = function() {};
+  
+      // Hot Module Replacement
+      // https://webpack.github.io/docs/hot-module-replacement
+      if (false) {
+        module.hot.accept("!!./../../../node_modules/css-loader/index.js?sourceMap&modules&localIdentName=[name]_[local]_[hash:base64:3]!./../../../node_modules/postcss-loader/index.js!./Light.scss", function() {
+          var newContent = require("!!./../../../node_modules/css-loader/index.js?sourceMap&modules&localIdentName=[name]_[local]_[hash:base64:3]!./../../../node_modules/postcss-loader/index.js!./Light.scss");
+          if (typeof newContent === 'string') {
+            newContent = [[module.id, content, '']];
+          }
+          removeCss = insertCss(newContent, { replace: true });
+        });
+        module.hot.dispose(function() { removeCss(); });
+      }
+    
+
+/***/ },
+/* 79 */
+/***/ function(module, exports, __webpack_require__) {
+
+  exports = module.exports = __webpack_require__(19)();
+  // imports
+  
+  
+  // module
+  exports.push([module.id, ".Light_light_31m {\n  width: 223px;\n  display: inline-block;\n  margin: 0 5px 12px 5px;\n  padding: 6px;\n  border-radius: 2px;\n  border-width: 1px;\n  border-style: solid\n}\n\n.Light_light_31m.Light_night_UWr {\n  border-color: #38231D;\n  color: #E5E4E1;\n  background-color: #231511;\n}\n\n.Light_light_31m.Light_night_UWr .Light_metadata_3mh {\n  color: #97918A\n}\n\n.Light_light_31m.Light_day_3-K {\n  border-color: #ccc;\n}\n\n.Light_light_31m.Light_day_3-K .Light_metadata_3mh {\n  color: #797979\n}\n\n.Light_lightHeader_Cjv, .Light_lightFooter_2ji {\n  display: table;\n  width: 100%;\n}\n\n.Light_lightFooter_2ji {\n  margin-top: 5px;\n}\n\n.Light_lightNameArea_1fg, .Light_metadata_3mh, .Light_colorBlockAndPicker_16B {\n  display: table-cell;\n  vertical-align: middle;\n}\n\n.Light_name_kaw {\n  white-space: nowrap;\n  text-overflow: ellipsis;\n  overflow: hidden;\n  width: 151px;\n  display: block;\n}\n\n.Light_metadata_3mh {\n  font-size: 13px;\n}\n\n.Light_colorBlockAndPicker_16B {\n  width: 50px;\n  position: relative;\n}\n\n.Light_colorBlockAndPicker_16B .Light_colorBlock_3S8 {\n  border-radius: 4px;\n  border: none;\n  width: 100%;\n  height: 100%\n}\n\n.Light_colorBlockAndPicker_16B .Light_colorBlock_3S8:focus {\n  outline: 0\n}\n\n.Light_colorBlockAndPicker_16B .Light_colorPickerWrapper_N1C {\n  z-index: 99;\n  position: absolute;\n}\n\n.Light_type_49F {\n  display: block;\n}\n\n.Light_manufacturer_3j2 {\n  padding: 0 0.3em 0 0;\n}\n\n.Light_model_3h3 {\n}\n\n.Light_onoffswitch_14R {\n  position: relative;\n  display: table-cell;\n  vertical-align: middle;\n  width: 50px;\n  -webkit-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n}\n\n.Light_onoffswitch_14R .Light_onoffswitchCheckbox_1c6 {\n  display: none\n}\n\n.Light_onoffswitch_14R .Light_onoffswitchCheckbox_1c6:checked + .Light_onoffswitchLabel_1bP .Light_onoffswitchInner_3Rc {\n  margin-left: 0\n}\n\n.Light_onoffswitch_14R .Light_onoffswitchCheckbox_1c6:checked + .Light_onoffswitchLabel_1bP .Light_onoffswitchSwitch_34u {\n  right: 0\n}\n\n.Light_onoffswitch_14R .Light_onoffswitchLabel_1bP {\n  display: block;\n  overflow: hidden;\n  cursor: pointer;\n  border: 2px solid #CCCCCC;\n  border-radius: 18px;\n}\n\n.Light_onoffswitch_14R .Light_onoffswitchInner_3Rc {\n  display: block;\n  width: 200%;\n  margin-left: -100%;\n  -webkit-transition: margin 0.3s ease-in 0s;\n  -o-transition: margin 0.3s ease-in 0s;\n  transition: margin 0.3s ease-in 0s\n}\n\n.Light_onoffswitch_14R .Light_onoffswitchInner_3Rc:before, .Light_onoffswitch_14R .Light_onoffswitchInner_3Rc:after {\n  display: block;\n  float: left;\n  width: 50%;\n  height: 18px;\n  padding: 0;\n  line-height: 18px;\n  font-size: 12px;\n  color: white;\n  font-weight: 700;\n  -webkit-box-sizing: border-box;\n          box-sizing: border-box\n}\n\n.Light_onoffswitch_14R .Light_onoffswitchInner_3Rc:before {\n  content: \"on\";\n  padding-left: 10px;\n  background-color: #FFF7C2;\n  color: #474029\n}\n\n.Light_onoffswitch_14R .Light_onoffswitchInner_3Rc:after {\n  content: \"off\";\n  padding-right: 10px;\n  background-color: #373634;\n  color: #D6D6D6;\n  text-align: right\n}\n\n.Light_onoffswitch_14R .Light_onoffswitchSwitch_34u {\n  display: block;\n  width: 18px;\n  margin: 0px;\n  background: #FFFFFF;\n  position: absolute;\n  top: 0;\n  bottom: 0;\n  right: 32px;\n  border: 2px solid #CCCCCC;\n  border-radius: 18px;\n  -webkit-transition: all 0.3s ease-in 0s;\n  -o-transition: all 0.3s ease-in 0s;\n  transition: all 0.3s ease-in 0s;\n}\n", "", {"version":3,"sources":["/./src/components/Light/Light.scss"],"names":[],"mappings":"AAAA;EACE,aAAa;EACb,sBAAsB;EACtB,uBAAuB;EACvB,aAAa;EACb,mBAAmB;EACnB,kBAAkB;EAClB,mBAAoB;CAmBrB;;AAjBC;EACE,sBAAsB;EACtB,eAAe;EACf,0BAA0B;CAK3B;;AAHC;EACE,cAAe;CAChB;;AAGH;EACE,mBAAmB;CAKpB;;AAHC;EACE,cAAe;CAChB;;AAIL;EAEE,eAAe;EACf,YAAY;CACb;;AAED;EACE,gBAAgB;CACjB;;AAED;EAGE,oBAAoB;EACpB,uBAAuB;CACxB;;AAED;EACE,oBAAoB;EACpB,wBAAwB;EACxB,iBAAiB;EACjB,aAAa;EACb,eAAe;CAChB;;AAED;EACE,gBAAgB;CACjB;;AAED;EACE,YAAY;EACZ,mBAAmB;CAiBpB;;AAfC;EACE,mBAAmB;EACnB,aAAa;EACb,YAAY;EACZ,YAAa;CAKd;;AAHC;EACE,UAAW;CACZ;;AAGH;EACE,YAAY;EACZ,mBAAmB;CACpB;;AAGH;EACE,eAAe;CAChB;;AAED;EACE,qBAAqB;CACtB;;AAED;CACC;;AAED;EACE,mBAAmB;EACnB,oBAAoB;EACpB,uBAAuB;EACvB,YAAY;EACZ,0BAA0B;EAC1B,uBAAuB;EACvB,sBAAsB;CAqEvB;;AAnEC;EACE,aAAc;CAaf;;AATK;EACE,cAAe;CAChB;;AAED;EACE,QAAS;CACV;;AAKP;EACE,eAAe;EACf,iBAAiB;EACjB,gBAAgB;EAChB,0BAA0B;EAC1B,oBAAoB;CACrB;;AAED;EACE,eAAe;EACf,YAAY;EACZ,mBAAmB;EACnB,2CAAmC;EAAnC,sCAAmC;EAAnC,kCAAmC;CA6BpC;;AA3BC;EACE,eAAe;EACf,YAAY;EACZ,WAAW;EACX,aAAa;EACb,WAAW;EACX,kBAAkB;EAClB,gBAAgB;EAChB,aAAa;EACb,iBAAiB;EACjB,+BAAuB;UAAvB,sBAAuB;CACxB;;AAED;EACE,cAAc;EACd,mBAAmB;EACnB,0BAA0B;EAC1B,cAAe;CAChB;;AAED;EACE,eAAe;EACf,oBAAoB;EACpB,0BAA0B;EAC1B,eAAe;EACf,iBAAkB;CACnB;;AAGH;EACI,eAAe;EAAC,YAAY;EAAC,YAAY;EACzC,oBAAoB;EACpB,mBAAmB;EAAC,OAAO;EAAC,UAAU;EACtC,YAAY;EACZ,0BAA0B;EAAC,oBAAoB;EAC/C,wCAAgC;EAAhC,mCAAgC;EAAhC,gCAAgC;CACnC","file":"Light.scss","sourcesContent":[".light {\n  width: 223px;\n  display: inline-block;\n  margin: 0 5px 12px 5px;\n  padding: 6px;\n  border-radius: 2px;\n  border-width: 1px;\n  border-style: solid;\n\n  &.night {\n    border-color: #38231D;\n    color: #E5E4E1;\n    background-color: #231511;\n\n    .metadata {\n      color: #97918A;\n    }\n  }\n\n  &.day {\n    border-color: #ccc;\n\n    .metadata {\n      color: #797979;\n    }\n  }\n}\n\n.lightHeader,\n.lightFooter {\n  display: table;\n  width: 100%;\n}\n\n.lightFooter {\n  margin-top: 5px;\n}\n\n.lightNameArea,\n.metadata,\n.colorBlockAndPicker {\n  display: table-cell;\n  vertical-align: middle;\n}\n\n.name {\n  white-space: nowrap;\n  text-overflow: ellipsis;\n  overflow: hidden;\n  width: 151px;\n  display: block;\n}\n\n.metadata {\n  font-size: 13px;\n}\n\n.colorBlockAndPicker {\n  width: 50px;\n  position: relative;\n\n  .colorBlock {\n    border-radius: 4px;\n    border: none;\n    width: 100%;\n    height: 100%;\n\n    &:focus {\n      outline: 0;\n    }\n  }\n\n  .colorPickerWrapper {\n    z-index: 99;\n    position: absolute;\n  }\n}\n\n.type {\n  display: block;\n}\n\n.manufacturer {\n  padding: 0 0.3em 0 0;\n}\n\n.model {\n}\n\n.onoffswitch {\n  position: relative;\n  display: table-cell;\n  vertical-align: middle;\n  width: 50px;\n  -webkit-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n\n  .onoffswitchCheckbox {\n    display: none;\n\n    &:checked {\n      + .onoffswitchLabel {\n        .onoffswitchInner {\n          margin-left: 0;\n        }\n\n        .onoffswitchSwitch {\n          right: 0;\n        }\n      }\n    }\n  }\n\n  .onoffswitchLabel {\n    display: block;\n    overflow: hidden;\n    cursor: pointer;\n    border: 2px solid #CCCCCC;\n    border-radius: 18px;\n  }\n\n  .onoffswitchInner {\n    display: block;\n    width: 200%;\n    margin-left: -100%;\n    transition: margin 0.3s ease-in 0s;\n\n    &:before, &:after {\n      display: block;\n      float: left;\n      width: 50%;\n      height: 18px;\n      padding: 0;\n      line-height: 18px;\n      font-size: 12px;\n      color: white;\n      font-weight: 700;\n      box-sizing: border-box;\n    }\n\n    &:before {\n      content: \"on\";\n      padding-left: 10px;\n      background-color: #FFF7C2;\n      color: #474029;\n    }\n\n    &:after {\n      content: \"off\";\n      padding-right: 10px;\n      background-color: #373634;\n      color: #D6D6D6;\n      text-align: right;\n    }\n  }\n\n  .onoffswitchSwitch {\n      display: block; width: 18px; margin: 0px;\n      background: #FFFFFF;\n      position: absolute; top: 0; bottom: 0;\n      right: 32px;\n      border: 2px solid #CCCCCC; border-radius: 18px;\n      transition: all 0.3s ease-in 0s;\n  }\n}\n"],"sourceRoot":"webpack://"}]);
+  
+  // exports
+  exports.locals = {
+  	"light": "Light_light_31m",
+  	"night": "Light_night_UWr",
+  	"metadata": "Light_metadata_3mh",
+  	"day": "Light_day_3-K",
+  	"lightHeader": "Light_lightHeader_Cjv",
+  	"lightFooter": "Light_lightFooter_2ji",
+  	"lightNameArea": "Light_lightNameArea_1fg",
+  	"colorBlockAndPicker": "Light_colorBlockAndPicker_16B",
+  	"name": "Light_name_kaw",
+  	"colorBlock": "Light_colorBlock_3S8",
+  	"colorPickerWrapper": "Light_colorPickerWrapper_N1C",
+  	"type": "Light_type_49F",
+  	"manufacturer": "Light_manufacturer_3j2",
+  	"model": "Light_model_3h3",
+  	"onoffswitch": "Light_onoffswitch_14R",
+  	"onoffswitchCheckbox": "Light_onoffswitchCheckbox_1c6",
+  	"onoffswitchLabel": "Light_onoffswitchLabel_1bP",
+  	"onoffswitchInner": "Light_onoffswitchInner_3Rc",
+  	"onoffswitchSwitch": "Light_onoffswitchSwitch_34u"
+  };
+
+/***/ },
+/* 80 */
+/***/ function(module, exports, __webpack_require__) {
+
+  'use strict';
+  
+  Object.defineProperty(exports, '__esModule', {
+    value: true
+  });
+  
+  var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+  
+  var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+  
+  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  
+  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+  
+  function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+  
+  var _react = __webpack_require__(4);
+  
+  var _react2 = _interopRequireDefault(_react);
+  
+  var _LightsListScss = __webpack_require__(81);
+  
+  var _LightsListScss2 = _interopRequireDefault(_LightsListScss);
+  
+  var _LightLight = __webpack_require__(77);
+  
+  var _LightLight2 = _interopRequireDefault(_LightLight);
+  
+  var _decoratorsWithStyles = __webpack_require__(24);
+  
+  var _decoratorsWithStyles2 = _interopRequireDefault(_decoratorsWithStyles);
+  
+  var LightsList = (function (_Component) {
+    _inherits(LightsList, _Component);
+  
+    _createClass(LightsList, null, [{
+      key: 'propTypes',
+      value: {
+        ids: _react.PropTypes.array.isRequired,
+        onLightLoaded: _react.PropTypes.func.isRequired
+      },
+      enumerable: true
+    }]);
+  
+    function LightsList(props, context) {
+      _classCallCheck(this, _LightsList);
+  
+      _get(Object.getPrototypeOf(_LightsList.prototype), 'constructor', this).call(this, props, context);
+      this.state = {};
+    }
+  
+    _createClass(LightsList, [{
+      key: 'render',
+      value: function render() {
+        var _this = this;
+  
+        return _react2['default'].createElement(
+          'div',
+          null,
+          _react2['default'].createElement(
+            'h2',
+            null,
+            'Lights'
+          ),
+          _react2['default'].createElement(
+            'ul',
+            { className: _LightsListScss2['default'].lightList },
+            this.props.ids.map(function (id) {
+              return _react2['default'].createElement(_LightLight2['default'], { key: id, id: id,
+                onLightLoaded: _this.props.onLightLoaded
+              });
+            })
+          )
+        );
+      }
+    }]);
+  
+    var _LightsList = LightsList;
+    LightsList = (0, _decoratorsWithStyles2['default'])(_LightsListScss2['default'])(LightsList) || LightsList;
+    return LightsList;
+  })(_react.Component);
+  
+  exports['default'] = LightsList;
+  module.exports = exports['default'];
+
+/***/ },
+/* 81 */
+/***/ function(module, exports, __webpack_require__) {
+
+  
+      var content = __webpack_require__(82);
+      var insertCss = __webpack_require__(20);
+  
+      if (typeof content === 'string') {
+        content = [[module.id, content, '']];
+      }
+  
+      module.exports = content.locals || {};
+      module.exports._getCss = function() { return content.toString(); };
+      module.exports._insertCss = insertCss.bind(null, content);
+    
+      var removeCss = function() {};
+  
+      // Hot Module Replacement
+      // https://webpack.github.io/docs/hot-module-replacement
+      if (false) {
+        module.hot.accept("!!./../../../node_modules/css-loader/index.js?sourceMap&modules&localIdentName=[name]_[local]_[hash:base64:3]!./../../../node_modules/postcss-loader/index.js!./LightsList.scss", function() {
+          var newContent = require("!!./../../../node_modules/css-loader/index.js?sourceMap&modules&localIdentName=[name]_[local]_[hash:base64:3]!./../../../node_modules/postcss-loader/index.js!./LightsList.scss");
+          if (typeof newContent === 'string') {
+            newContent = [[module.id, content, '']];
+          }
+          removeCss = insertCss(newContent, { replace: true });
+        });
+        module.hot.dispose(function() { removeCss(); });
+      }
+    
+
+/***/ },
+/* 82 */
+/***/ function(module, exports, __webpack_require__) {
+
+  exports = module.exports = __webpack_require__(19)();
+  // imports
+  
+  
+  // module
+  exports.push([module.id, ".LightsList_lightList_14S {\n  list-style: none;\n  padding-left: 0;\n}\n", "", {"version":3,"sources":["/./src/components/LightsList/LightsList.scss"],"names":[],"mappings":"AAAA;EACE,iBAAiB;EACjB,gBAAgB;CACjB","file":"LightsList.scss","sourcesContent":[".lightList {\n  list-style: none;\n  padding-left: 0;\n}\n"],"sourceRoot":"webpack://"}]);
+  
+  // exports
+  exports.locals = {
+  	"lightList": "LightsList_lightList_14S"
   };
 
 /***/ }

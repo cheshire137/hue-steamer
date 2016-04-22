@@ -1,7 +1,9 @@
 import React, { Component, PropTypes } from 'react';
-import s from './HomePage.scss';
-import Light from './Light';
+import s from './LightsList.scss';
+import Light from '../Light/Light';
+import withStyles from '../../decorators/withStyles';
 
+@withStyles(s)
 class LightsList extends Component {
   static propTypes = {
     ids: PropTypes.array.isRequired,

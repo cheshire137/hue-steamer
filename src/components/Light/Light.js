@@ -1,10 +1,12 @@
 import React, { Component, PropTypes } from 'react';
-import s from './HomePage.scss';
+import s from './Light.scss';
 import Bridge from '../../actions/bridge';
 import Converter from '../../api/converter';
 import { SketchPicker } from 'react-color';
 import cx from 'classnames';
+import withStyles from '../../decorators/withStyles';
 
+@withStyles(s)
 class Light extends Component {
   static propTypes = {
     id: PropTypes.string.isRequired,
