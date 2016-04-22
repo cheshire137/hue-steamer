@@ -1,7 +1,9 @@
 import React, { Component, PropTypes } from 'react';
-import s from './HomePage.scss';
+import s from './Group.scss';
 import cx from 'classnames';
+import withStyles from '../../decorators/withStyles';
 
+@withStyles(s)
 class Group extends Component {
   static propTypes = {
     id: PropTypes.string.isRequired,
@@ -32,7 +34,8 @@ class Group extends Component {
     }).join(', ');
     return (
       <li className={cx(s.group, this.isNight() ? s.night : s.day)}>
-        {this.props.name} {lightNames}
+        <h3 className={s.groupName}>{this.props.name}</h3>
+        {lightNames}
       </li>
     );
   }

@@ -5,7 +5,7 @@ import withStyles from '../../decorators/withStyles';
 import Location from '../../core/Location';
 import Bridge from '../../actions/bridge';
 import LightsList from './LightsList';
-import GroupsList from './GroupsList';
+import GroupsList from '../GroupsList/GroupsList';
 
 const title = 'Hue Steamer';
 

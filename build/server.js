@@ -83,11 +83,11 @@ module.exports =
   
   var _routes2 = _interopRequireDefault(_routes);
   
-  var _componentsHtml = __webpack_require__(60);
+  var _componentsHtml = __webpack_require__(65);
   
   var _componentsHtml2 = _interopRequireDefault(_componentsHtml);
   
-  var _assets = __webpack_require__(61);
+  var _assets = __webpack_require__(66);
   
   var _assets2 = _interopRequireDefault(_assets);
   
@@ -97,11 +97,11 @@ module.exports =
   
   var _configJson2 = _interopRequireDefault(_configJson);
   
-  var _sqlite = __webpack_require__(62);
+  var _sqlite = __webpack_require__(67);
   
   var _sqlite2 = _interopRequireDefault(_sqlite);
   
-  var hue = __webpack_require__(63);
+  var hue = __webpack_require__(68);
   var server = global.server = (0, _express2['default'])();
   
   function getBridge(id) {
@@ -226,7 +226,7 @@ module.exports =
   //
   // Register API middleware
   // -----------------------------------------------------------------------------
-  server.use('/api/content', __webpack_require__(64));
+  server.use('/api/content', __webpack_require__(69));
   
   server.all('*', function (req, res, next) {
     res.header('Access-Control-Allow-Origin', _configJson2['default'][("development")].clientUri);
@@ -727,7 +727,7 @@ module.exports =
   
   var _componentsHomePage2 = _interopRequireDefault(_componentsHomePage);
   
-  var _componentsSettingsPage = __webpack_require__(55);
+  var _componentsSettingsPage = __webpack_require__(60);
   
   var _componentsSettingsPage2 = _interopRequireDefault(_componentsSettingsPage);
   
@@ -3152,9 +3152,9 @@ module.exports =
   
   var _LightsList2 = _interopRequireDefault(_LightsList);
   
-  var _GroupsList = __webpack_require__(72);
+  var _GroupsListGroupsList = __webpack_require__(74);
   
-  var _GroupsList2 = _interopRequireDefault(_GroupsList);
+  var _GroupsListGroupsList2 = _interopRequireDefault(_GroupsListGroupsList);
   
   var title = 'Hue Steamer';
   
@@ -3253,7 +3253,7 @@ module.exports =
         return _react2['default'].createElement(
           'div',
           null,
-          haveGroups ? _react2['default'].createElement(_GroupsList2['default'], { groups: this.state.groups }) : 'Loading groups...',
+          haveGroups ? _react2['default'].createElement(_GroupsListGroupsList2['default'], { groups: this.state.groups }) : 'Loading groups...',
           haveLights ? _react2['default'].createElement(_LightsList2['default'], { ids: this.state.lightIDs,
             onLightLoaded: this.onLightLoaded.bind(this)
           }) : 'Loading lights...'
@@ -3310,13 +3310,11 @@ module.exports =
   
   
   // module
-  exports.push([module.id, "/* #222 */   /* #404040 */ /* #555 */ /* #777 */ /* #eee */  /* Extra small screen / phone */  /* Small screen / tablet */  /* Medium screen / desktop */ /* Large screen / wide desktop */\n\n.HomePage_lightList_3oL, .HomePage_groupList_3uQ {\n  list-style: none;\n  padding-left: 0;\n}\n\n.HomePage_groupList_3uQ {\n\n}\n\n.HomePage_group_1Vd {\n\n}\n\n.HomePage_light_2jt {\n  width: 223px;\n  display: inline-block;\n  margin: 0 5px 12px 5px;\n  padding: 6px;\n  border-radius: 2px;\n  border-width: 1px;\n  border-style: solid;\n}\n\n.HomePage_light_2jt .HomePage_lightHeader_1wr, .HomePage_light_2jt .HomePage_lightFooter_2nX {\n  display: table;\n  width: 100%;\n}\n\n.HomePage_light_2jt .HomePage_lightFooter_2nX {\n  margin-top: 5px;\n}\n\n.HomePage_light_2jt .HomePage_lightNameArea_my7, .HomePage_light_2jt .HomePage_metadata_pqP, .HomePage_light_2jt .HomePage_colorBlockAndPicker_Flb {\n  display: table-cell;\n  vertical-align: middle;\n}\n\n.HomePage_light_2jt .HomePage_name_nWG {\n  white-space: nowrap;\n  text-overflow: ellipsis;\n  overflow: hidden;\n  width: 151px;\n  display: block;\n}\n\n.HomePage_light_2jt .HomePage_metadata_pqP {\n  font-size: 13px;\n}\n\n.HomePage_light_2jt .HomePage_colorBlockAndPicker_Flb {\n  width: 50px;\n  position: relative;\n}\n\n.HomePage_light_2jt .HomePage_colorBlockAndPicker_Flb .HomePage_colorBlock_3k8 {\n  border-radius: 4px;\n  border: none;\n  width: 100%;\n  height: 100%\n}\n\n.HomePage_light_2jt .HomePage_colorBlockAndPicker_Flb .HomePage_colorBlock_3k8:focus {\n  outline: 0;\n}\n\n.HomePage_light_2jt .HomePage_colorBlockAndPicker_Flb .HomePage_colorPickerWrapper_26s {\n  z-index: 99;\n  position: absolute;\n}\n\n.HomePage_light_2jt .HomePage_type_1AJ {\n  display: block;\n}\n\n.HomePage_light_2jt .HomePage_manufacturer_3WL {\n  padding: 0 0.3em 0 0;\n}\n\n.HomePage_light_2jt .HomePage_model_3Ue {\n\n}\n\n.HomePage_light_2jt.HomePage_night_1p9 {\n  border-color: #38231D;\n  color: #E5E4E1;\n  background-color: #231511;\n}\n\n.HomePage_light_2jt.HomePage_night_1p9 .HomePage_metadata_pqP {\n  color: #97918A;\n}\n\n.HomePage_light_2jt.HomePage_day_2WC {\n  border-color: #ccc;\n}\n\n.HomePage_light_2jt.HomePage_day_2WC .HomePage_metadata_pqP {\n  color: #797979;\n}\n\n.HomePage_onoffswitch_3hQ {\n  position: relative;\n  display: table-cell;\n  vertical-align: middle;\n  width: 50px;\n  -webkit-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n}\n\n.HomePage_onoffswitch_3hQ .HomePage_onoffswitchCheckbox_3tD {\n  display: none\n}\n\n.HomePage_onoffswitch_3hQ .HomePage_onoffswitchCheckbox_3tD:checked + .HomePage_onoffswitchLabel_W_H .HomePage_onoffswitchInner_1zJ {\n  margin-left: 0;\n}\n\n.HomePage_onoffswitch_3hQ .HomePage_onoffswitchCheckbox_3tD:checked + .HomePage_onoffswitchLabel_W_H .HomePage_onoffswitchSwitch_1Vt {\n  right: 0;\n}\n\n.HomePage_onoffswitch_3hQ .HomePage_onoffswitchLabel_W_H {\n  display: block;\n  overflow: hidden;\n  cursor: pointer;\n  border: 2px solid #CCCCCC;\n  border-radius: 18px;\n}\n\n.HomePage_onoffswitch_3hQ .HomePage_onoffswitchInner_1zJ {\n  display: block;\n  width: 200%;\n  margin-left: -100%;\n  -webkit-transition: margin 0.3s ease-in 0s;\n  -o-transition: margin 0.3s ease-in 0s;\n  transition: margin 0.3s ease-in 0s\n}\n\n.HomePage_onoffswitch_3hQ .HomePage_onoffswitchInner_1zJ:before, .HomePage_onoffswitch_3hQ .HomePage_onoffswitchInner_1zJ:after {\n  display: block;\n  float: left;\n  width: 50%;\n  height: 18px;\n  padding: 0;\n  line-height: 18px;\n  font-size: 12px;\n  color: white;\n  font-weight: 700;\n  -webkit-box-sizing: border-box;\n          box-sizing: border-box;\n}\n\n.HomePage_onoffswitch_3hQ .HomePage_onoffswitchInner_1zJ:before {\n  content: \"on\";\n  padding-left: 10px;\n  background-color: #FFF7C2;\n  color: #474029;\n}\n\n.HomePage_onoffswitch_3hQ .HomePage_onoffswitchInner_1zJ:after {\n  content: \"off\";\n  padding-right: 10px;\n  background-color: #373634;\n  color: #D6D6D6;\n  text-align: right;\n}\n\n.HomePage_onoffswitch_3hQ .HomePage_onoffswitchSwitch_1Vt {\n  display: block;\n  width: 18px;\n  margin: 0px;\n  background: #FFFFFF;\n  position: absolute;\n  top: 0;\n  bottom: 0;\n  right: 32px;\n  border: 2px solid #CCCCCC;\n  border-radius: 18px;\n  -webkit-transition: all 0.3s ease-in 0s;\n  -o-transition: all 0.3s ease-in 0s;\n  transition: all 0.3s ease-in 0s;\n}\n", "", {"version":3,"sources":["/./src/components/variables.scss","/./src/components/HomePage/HomePage.scss"],"names":[],"mappings":"AACwD,UAAU,GACV,aAAa,CACb,UAAU,CACV,UAAU,CACV,UAAU,EASlC,gCAAgC,EAChC,2BAA2B,EAC3B,6BAA6B,CAC7B,iCAAiC;;ACfjE;EAEE,iBAAiB;EACjB,gBAAgB;CACjB;;AAED;;CAEC;;AAED;;CAEC;;AAED;EACE,aAAa;EACb,sBAAsB;EACtB,uBAAuB;EACvB,aAAa;EACb,mBAAmB;EACnB,kBAAkB;EAClB,oBAAoB;CAiFrB;;AA/EC;EAEE,eAAe;EACf,YAAY;CACb;;AAED;EACE,gBAAgB;CACjB;;AAED;EAGE,oBAAoB;EACpB,uBAAuB;CACxB;;AAoBD;EACE,oBAAoB;EACpB,wBAAwB;EACxB,iBAAiB;EACjB,aAAa;EACb,eAAe;CAChB;;AAED;EACE,gBAAgB;CACjB;;AAED;EACE,YAAY;EACZ,mBAAmB;CAiBpB;;AAfC;EACE,mBAAmB;EACnB,aAAa;EACb,YAAY;EACZ,YAAa;CAKd;;AAHC;EACE,WAAW;CACZ;;AAGH;EACE,YAAY;EACZ,mBAAmB;CACpB;;AAGH;EACE,eAAe;CAChB;;AAED;EACE,qBAAqB;CACtB;;AAED;;CAEC;;AA7DD;EACE,sBAAsB;EACtB,eAAe;EACf,0BAA0B;CAK3B;;AAHC;EACE,eAAe;CAChB;;AAGH;EACE,mBAAmB;CAKpB;;AAHC;EACE,eAAe;CAChB;;AAiDL;EACE,mBAAmB;EACnB,oBAAoB;EACpB,uBAAuB;EACvB,YAAY;EACZ,0BAA0B;EAC1B,uBAAuB;EACvB,sBAAsB;CAqEvB;;AAnEC;EACE,aAAc;CAaf;;AATK;EACE,eAAe;CAChB;;AAED;EACE,SAAS;CACV;;AAKP;EACE,eAAe;EACf,iBAAiB;EACjB,gBAAgB;EAChB,0BAA0B;EAC1B,oBAAoB;CACrB;;AAED;EACE,eAAe;EACf,YAAY;EACZ,mBAAmB;EACnB,2CAAmC;EAAnC,sCAAmC;EAAnC,kCAAmC;CA6BpC;;AA3BC;EACE,eAAe;EACf,YAAY;EACZ,WAAW;EACX,aAAa;EACb,WAAW;EACX,kBAAkB;EAClB,gBAAgB;EAChB,aAAa;EACb,iBAAiB;EACjB,+BAAuB;UAAvB,uBAAuB;CACxB;;AAED;EACE,cAAc;EACd,mBAAmB;EACnB,0BAA0B;EAC1B,eAAe;CAChB;;AAED;EACE,eAAe;EACf,oBAAoB;EACpB,0BAA0B;EAC1B,eAAe;EACf,kBAAkB;CACnB;;AAGH;EACI,eAAe;EAAC,YAAY;EAAC,YAAY;EACzC,oBAAoB;EACpB,mBAAmB;EAAC,OAAO;EAAC,UAAU;EACtC,YAAY;EACZ,0BAA0B;EAAC,oBAAoB;EAC/C,wCAAgC;EAAhC,mCAAgC;EAAhC,gCAAgC;CACnC","file":"HomePage.scss","sourcesContent":["$white-base:            hsl(255, 255, 255);\r\n$gray-darker:           color(black lightness(+13.5%)); /* #222 */\r\n$gray-dark:             color(black lightness(+25%));   /* #404040 */\r\n$gray:                  color(black lightness(+33.5%)); /* #555 */\r\n$gray-light:            color(black lightness(+46.7%)); /* #777 */\r\n$gray-lighter:          color(black lightness(+93.5%)); /* #eee */\r\n\r\n$link-color: #E16C51;\r\n$link-hover-color: #97918A;\r\n\r\n$font-family-base:      'Segoe UI', 'HelveticaNeue-Light', sans-serif;\r\n\r\n$max-content-width:     1000px;\r\n\r\n$screen-xs-min:         480px;  /* Extra small screen / phone */\r\n$screen-sm-min:         768px;  /* Small screen / tablet */\r\n$screen-md-min:         992px;  /* Medium screen / desktop */\r\n$screen-lg-min:         1200px; /* Large screen / wide desktop */\r\n\r\n$animation-swift-out:   .45s cubic-bezier(0.3, 1, 0.4, 1) 0s;\r\n","@import '../variables.scss';\n\n.lightList,\n.groupList {\n  list-style: none;\n  padding-left: 0;\n}\n\n.groupList {\n\n}\n\n.group {\n\n}\n\n.light {\n  width: 223px;\n  display: inline-block;\n  margin: 0 5px 12px 5px;\n  padding: 6px;\n  border-radius: 2px;\n  border-width: 1px;\n  border-style: solid;\n\n  .lightHeader,\n  .lightFooter {\n    display: table;\n    width: 100%;\n  }\n\n  .lightFooter {\n    margin-top: 5px;\n  }\n\n  .lightNameArea,\n  .metadata,\n  .colorBlockAndPicker {\n    display: table-cell;\n    vertical-align: middle;\n  }\n\n  &.night {\n    border-color: #38231D;\n    color: #E5E4E1;\n    background-color: #231511;\n\n    .metadata {\n      color: #97918A;\n    }\n  }\n\n  &.day {\n    border-color: #ccc;\n\n    .metadata {\n      color: #797979;\n    }\n  }\n\n  .name {\n    white-space: nowrap;\n    text-overflow: ellipsis;\n    overflow: hidden;\n    width: 151px;\n    display: block;\n  }\n\n  .metadata {\n    font-size: 13px;\n  }\n\n  .colorBlockAndPicker {\n    width: 50px;\n    position: relative;\n\n    .colorBlock {\n      border-radius: 4px;\n      border: none;\n      width: 100%;\n      height: 100%;\n\n      &:focus {\n        outline: 0;\n      }\n    }\n\n    .colorPickerWrapper {\n      z-index: 99;\n      position: absolute;\n    }\n  }\n\n  .type {\n    display: block;\n  }\n\n  .manufacturer {\n    padding: 0 0.3em 0 0;\n  }\n\n  .model {\n\n  }\n}\n\n.onoffswitch {\n  position: relative;\n  display: table-cell;\n  vertical-align: middle;\n  width: 50px;\n  -webkit-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n\n  .onoffswitchCheckbox {\n    display: none;\n\n    &:checked {\n      + .onoffswitchLabel {\n        .onoffswitchInner {\n          margin-left: 0;\n        }\n\n        .onoffswitchSwitch {\n          right: 0;\n        }\n      }\n    }\n  }\n\n  .onoffswitchLabel {\n    display: block;\n    overflow: hidden;\n    cursor: pointer;\n    border: 2px solid #CCCCCC;\n    border-radius: 18px;\n  }\n\n  .onoffswitchInner {\n    display: block;\n    width: 200%;\n    margin-left: -100%;\n    transition: margin 0.3s ease-in 0s;\n\n    &:before, &:after {\n      display: block;\n      float: left;\n      width: 50%;\n      height: 18px;\n      padding: 0;\n      line-height: 18px;\n      font-size: 12px;\n      color: white;\n      font-weight: 700;\n      box-sizing: border-box;\n    }\n\n    &:before {\n      content: \"on\";\n      padding-left: 10px;\n      background-color: #FFF7C2;\n      color: #474029;\n    }\n\n    &:after {\n      content: \"off\";\n      padding-right: 10px;\n      background-color: #373634;\n      color: #D6D6D6;\n      text-align: right;\n    }\n  }\n\n  .onoffswitchSwitch {\n      display: block; width: 18px; margin: 0px;\n      background: #FFFFFF;\n      position: absolute; top: 0; bottom: 0;\n      right: 32px;\n      border: 2px solid #CCCCCC; border-radius: 18px;\n      transition: all 0.3s ease-in 0s;\n  }\n}\n"],"sourceRoot":"webpack://"}]);
+  exports.push([module.id, "/* #222 */   /* #404040 */ /* #555 */ /* #777 */ /* #eee */  /* Extra small screen / phone */  /* Small screen / tablet */  /* Medium screen / desktop */ /* Large screen / wide desktop */\n\n.HomePage_lightList_3oL {\n  list-style: none;\n  padding-left: 0;\n}\n\n.HomePage_light_2jt {\n  width: 223px;\n  display: inline-block;\n  margin: 0 5px 12px 5px;\n  padding: 6px;\n  border-radius: 2px;\n  border-width: 1px;\n  border-style: solid;\n}\n\n.HomePage_light_2jt .HomePage_lightHeader_1wr, .HomePage_light_2jt .HomePage_lightFooter_2nX {\n  display: table;\n  width: 100%;\n}\n\n.HomePage_light_2jt .HomePage_lightFooter_2nX {\n  margin-top: 5px;\n}\n\n.HomePage_light_2jt .HomePage_lightNameArea_my7, .HomePage_light_2jt .HomePage_metadata_pqP, .HomePage_light_2jt .HomePage_colorBlockAndPicker_Flb {\n  display: table-cell;\n  vertical-align: middle;\n}\n\n.HomePage_light_2jt .HomePage_name_nWG {\n  white-space: nowrap;\n  text-overflow: ellipsis;\n  overflow: hidden;\n  width: 151px;\n  display: block;\n}\n\n.HomePage_light_2jt .HomePage_metadata_pqP {\n  font-size: 13px;\n}\n\n.HomePage_light_2jt .HomePage_colorBlockAndPicker_Flb {\n  width: 50px;\n  position: relative;\n}\n\n.HomePage_light_2jt .HomePage_colorBlockAndPicker_Flb .HomePage_colorBlock_3k8 {\n  border-radius: 4px;\n  border: none;\n  width: 100%;\n  height: 100%\n}\n\n.HomePage_light_2jt .HomePage_colorBlockAndPicker_Flb .HomePage_colorBlock_3k8:focus {\n  outline: 0;\n}\n\n.HomePage_light_2jt .HomePage_colorBlockAndPicker_Flb .HomePage_colorPickerWrapper_26s {\n  z-index: 99;\n  position: absolute;\n}\n\n.HomePage_light_2jt .HomePage_type_1AJ {\n  display: block;\n}\n\n.HomePage_light_2jt .HomePage_manufacturer_3WL {\n  padding: 0 0.3em 0 0;\n}\n\n.HomePage_light_2jt .HomePage_model_3Ue {}\n\n.HomePage_light_2jt.HomePage_night_1p9 {\n  border-color: #38231D;\n  color: #E5E4E1;\n  background-color: #231511;\n}\n\n.HomePage_light_2jt.HomePage_night_1p9 .HomePage_metadata_pqP {\n  color: #97918A;\n}\n\n.HomePage_light_2jt.HomePage_day_2WC {\n  border-color: #ccc;\n}\n\n.HomePage_light_2jt.HomePage_day_2WC .HomePage_metadata_pqP {\n  color: #797979;\n}\n\n.HomePage_onoffswitch_3hQ {\n  position: relative;\n  display: table-cell;\n  vertical-align: middle;\n  width: 50px;\n  -webkit-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n}\n\n.HomePage_onoffswitch_3hQ .HomePage_onoffswitchCheckbox_3tD {\n  display: none\n}\n\n.HomePage_onoffswitch_3hQ .HomePage_onoffswitchCheckbox_3tD:checked + .HomePage_onoffswitchLabel_W_H .HomePage_onoffswitchInner_1zJ {\n  margin-left: 0;\n}\n\n.HomePage_onoffswitch_3hQ .HomePage_onoffswitchCheckbox_3tD:checked + .HomePage_onoffswitchLabel_W_H .HomePage_onoffswitchSwitch_1Vt {\n  right: 0;\n}\n\n.HomePage_onoffswitch_3hQ .HomePage_onoffswitchLabel_W_H {\n  display: block;\n  overflow: hidden;\n  cursor: pointer;\n  border: 2px solid #CCCCCC;\n  border-radius: 18px;\n}\n\n.HomePage_onoffswitch_3hQ .HomePage_onoffswitchInner_1zJ {\n  display: block;\n  width: 200%;\n  margin-left: -100%;\n  -webkit-transition: margin 0.3s ease-in 0s;\n  -o-transition: margin 0.3s ease-in 0s;\n  transition: margin 0.3s ease-in 0s\n}\n\n.HomePage_onoffswitch_3hQ .HomePage_onoffswitchInner_1zJ:before, .HomePage_onoffswitch_3hQ .HomePage_onoffswitchInner_1zJ:after {\n  display: block;\n  float: left;\n  width: 50%;\n  height: 18px;\n  padding: 0;\n  line-height: 18px;\n  font-size: 12px;\n  color: white;\n  font-weight: 700;\n  -webkit-box-sizing: border-box;\n          box-sizing: border-box;\n}\n\n.HomePage_onoffswitch_3hQ .HomePage_onoffswitchInner_1zJ:before {\n  content: \"on\";\n  padding-left: 10px;\n  background-color: #FFF7C2;\n  color: #474029;\n}\n\n.HomePage_onoffswitch_3hQ .HomePage_onoffswitchInner_1zJ:after {\n  content: \"off\";\n  padding-right: 10px;\n  background-color: #373634;\n  color: #D6D6D6;\n  text-align: right;\n}\n\n.HomePage_onoffswitch_3hQ .HomePage_onoffswitchSwitch_1Vt {\n  display: block;\n  width: 18px;\n  margin: 0px;\n  background: #FFFFFF;\n  position: absolute;\n  top: 0;\n  bottom: 0;\n  right: 32px;\n  border: 2px solid #CCCCCC;\n  border-radius: 18px;\n  -webkit-transition: all 0.3s ease-in 0s;\n  -o-transition: all 0.3s ease-in 0s;\n  transition: all 0.3s ease-in 0s;\n}\n", "", {"version":3,"sources":["/./src/components/variables.scss","/./src/components/HomePage/HomePage.scss"],"names":[],"mappings":"AACwD,UAAU,GACV,aAAa,CACb,UAAU,CACV,UAAU,CACV,UAAU,EASlC,gCAAgC,EAChC,2BAA2B,EAC3B,6BAA6B,CAC7B,iCAAiC;;ACfjE;EACE,iBAAiB;EACjB,gBAAgB;CACjB;;AAED;EACE,aAAa;EACb,sBAAsB;EACtB,uBAAuB;EACvB,aAAa;EACb,mBAAmB;EACnB,kBAAkB;EAClB,oBAAoB;CAiFrB;;AA/EC;EAEE,eAAe;EACf,YAAY;CACb;;AAED;EACE,gBAAgB;CACjB;;AAED;EAGE,oBAAoB;EACpB,uBAAuB;CACxB;;AAoBD;EACE,oBAAoB;EACpB,wBAAwB;EACxB,iBAAiB;EACjB,aAAa;EACb,eAAe;CAChB;;AAED;EACE,gBAAgB;CACjB;;AAED;EACE,YAAY;EACZ,mBAAmB;CAiBpB;;AAfC;EACE,mBAAmB;EACnB,aAAa;EACb,YAAY;EACZ,YAAa;CAKd;;AAHC;EACE,WAAW;CACZ;;AAGH;EACE,YAAY;EACZ,mBAAmB;CACpB;;AAGH;EACE,eAAe;CAChB;;AAED;EACE,qBAAqB;CACtB;;AAED,0CAEC;;AA7DD;EACE,sBAAsB;EACtB,eAAe;EACf,0BAA0B;CAK3B;;AAHC;EACE,eAAe;CAChB;;AAGH;EACE,mBAAmB;CAKpB;;AAHC;EACE,eAAe;CAChB;;AAiDL;EACE,mBAAmB;EACnB,oBAAoB;EACpB,uBAAuB;EACvB,YAAY;EACZ,0BAA0B;EAC1B,uBAAuB;EACvB,sBAAsB;CAqEvB;;AAnEC;EACE,aAAc;CAaf;;AATK;EACE,eAAe;CAChB;;AAED;EACE,SAAS;CACV;;AAKP;EACE,eAAe;EACf,iBAAiB;EACjB,gBAAgB;EAChB,0BAA0B;EAC1B,oBAAoB;CACrB;;AAED;EACE,eAAe;EACf,YAAY;EACZ,mBAAmB;EACnB,2CAAmC;EAAnC,sCAAmC;EAAnC,kCAAmC;CA6BpC;;AA3BC;EACE,eAAe;EACf,YAAY;EACZ,WAAW;EACX,aAAa;EACb,WAAW;EACX,kBAAkB;EAClB,gBAAgB;EAChB,aAAa;EACb,iBAAiB;EACjB,+BAAuB;UAAvB,uBAAuB;CACxB;;AAED;EACE,cAAc;EACd,mBAAmB;EACnB,0BAA0B;EAC1B,eAAe;CAChB;;AAED;EACE,eAAe;EACf,oBAAoB;EACpB,0BAA0B;EAC1B,eAAe;EACf,kBAAkB;CACnB;;AAGH;EACI,eAAe;EAAC,YAAY;EAAC,YAAY;EACzC,oBAAoB;EACpB,mBAAmB;EAAC,OAAO;EAAC,UAAU;EACtC,YAAY;EACZ,0BAA0B;EAAC,oBAAoB;EAC/C,wCAAgC;EAAhC,mCAAgC;EAAhC,gCAAgC;CACnC","file":"HomePage.scss","sourcesContent":["$white-base:            hsl(255, 255, 255);\r\n$gray-darker:           color(black lightness(+13.5%)); /* #222 */\r\n$gray-dark:             color(black lightness(+25%));   /* #404040 */\r\n$gray:                  color(black lightness(+33.5%)); /* #555 */\r\n$gray-light:            color(black lightness(+46.7%)); /* #777 */\r\n$gray-lighter:          color(black lightness(+93.5%)); /* #eee */\r\n\r\n$link-color: #E16C51;\r\n$link-hover-color: #97918A;\r\n\r\n$font-family-base:      'Segoe UI', 'HelveticaNeue-Light', sans-serif;\r\n\r\n$max-content-width:     1000px;\r\n\r\n$screen-xs-min:         480px;  /* Extra small screen / phone */\r\n$screen-sm-min:         768px;  /* Small screen / tablet */\r\n$screen-md-min:         992px;  /* Medium screen / desktop */\r\n$screen-lg-min:         1200px; /* Large screen / wide desktop */\r\n\r\n$animation-swift-out:   .45s cubic-bezier(0.3, 1, 0.4, 1) 0s;\r\n","@import '../variables.scss';\n\n.lightList {\n  list-style: none;\n  padding-left: 0;\n}\n\n.light {\n  width: 223px;\n  display: inline-block;\n  margin: 0 5px 12px 5px;\n  padding: 6px;\n  border-radius: 2px;\n  border-width: 1px;\n  border-style: solid;\n\n  .lightHeader,\n  .lightFooter {\n    display: table;\n    width: 100%;\n  }\n\n  .lightFooter {\n    margin-top: 5px;\n  }\n\n  .lightNameArea,\n  .metadata,\n  .colorBlockAndPicker {\n    display: table-cell;\n    vertical-align: middle;\n  }\n\n  &.night {\n    border-color: #38231D;\n    color: #E5E4E1;\n    background-color: #231511;\n\n    .metadata {\n      color: #97918A;\n    }\n  }\n\n  &.day {\n    border-color: #ccc;\n\n    .metadata {\n      color: #797979;\n    }\n  }\n\n  .name {\n    white-space: nowrap;\n    text-overflow: ellipsis;\n    overflow: hidden;\n    width: 151px;\n    display: block;\n  }\n\n  .metadata {\n    font-size: 13px;\n  }\n\n  .colorBlockAndPicker {\n    width: 50px;\n    position: relative;\n\n    .colorBlock {\n      border-radius: 4px;\n      border: none;\n      width: 100%;\n      height: 100%;\n\n      &:focus {\n        outline: 0;\n      }\n    }\n\n    .colorPickerWrapper {\n      z-index: 99;\n      position: absolute;\n    }\n  }\n\n  .type {\n    display: block;\n  }\n\n  .manufacturer {\n    padding: 0 0.3em 0 0;\n  }\n\n  .model {\n\n  }\n}\n\n.onoffswitch {\n  position: relative;\n  display: table-cell;\n  vertical-align: middle;\n  width: 50px;\n  -webkit-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n\n  .onoffswitchCheckbox {\n    display: none;\n\n    &:checked {\n      + .onoffswitchLabel {\n        .onoffswitchInner {\n          margin-left: 0;\n        }\n\n        .onoffswitchSwitch {\n          right: 0;\n        }\n      }\n    }\n  }\n\n  .onoffswitchLabel {\n    display: block;\n    overflow: hidden;\n    cursor: pointer;\n    border: 2px solid #CCCCCC;\n    border-radius: 18px;\n  }\n\n  .onoffswitchInner {\n    display: block;\n    width: 200%;\n    margin-left: -100%;\n    transition: margin 0.3s ease-in 0s;\n\n    &:before, &:after {\n      display: block;\n      float: left;\n      width: 50%;\n      height: 18px;\n      padding: 0;\n      line-height: 18px;\n      font-size: 12px;\n      color: white;\n      font-weight: 700;\n      box-sizing: border-box;\n    }\n\n    &:before {\n      content: \"on\";\n      padding-left: 10px;\n      background-color: #FFF7C2;\n      color: #474029;\n    }\n\n    &:after {\n      content: \"off\";\n      padding-right: 10px;\n      background-color: #373634;\n      color: #D6D6D6;\n      text-align: right;\n    }\n  }\n\n  .onoffswitchSwitch {\n      display: block; width: 18px; margin: 0px;\n      background: #FFFFFF;\n      position: absolute; top: 0; bottom: 0;\n      right: 32px;\n      border: 2px solid #CCCCCC; border-radius: 18px;\n      transition: all 0.3s ease-in 0s;\n  }\n}\n"],"sourceRoot":"webpack://"}]);
   
   // exports
   exports.locals = {
   	"lightList": "HomePage_lightList_3oL",
-  	"groupList": "HomePage_groupList_3uQ",
-  	"group": "HomePage_group_1Vd",
   	"light": "HomePage_light_2jt",
   	"lightHeader": "HomePage_lightHeader_1wr",
   	"lightFooter": "HomePage_lightFooter_2nX",
@@ -3733,7 +3731,7 @@ module.exports =
   
   var _reactColor = __webpack_require__(54);
   
-  var _classnames = __webpack_require__(71);
+  var _classnames = __webpack_require__(55);
   
   var _classnames2 = _interopRequireDefault(_classnames);
   
@@ -4353,6 +4351,158 @@ module.exports =
 
 /***/ },
 /* 55 */
+/***/ function(module, exports) {
+
+  module.exports = require("classnames");
+
+/***/ },
+/* 56 */,
+/* 57 */
+/***/ function(module, exports, __webpack_require__) {
+
+  'use strict';
+  
+  Object.defineProperty(exports, '__esModule', {
+    value: true
+  });
+  
+  var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+  
+  var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+  
+  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  
+  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+  
+  function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+  
+  var _react = __webpack_require__(4);
+  
+  var _react2 = _interopRequireDefault(_react);
+  
+  var _GroupScss = __webpack_require__(58);
+  
+  var _GroupScss2 = _interopRequireDefault(_GroupScss);
+  
+  var _classnames = __webpack_require__(55);
+  
+  var _classnames2 = _interopRequireDefault(_classnames);
+  
+  var _decoratorsWithStyles = __webpack_require__(24);
+  
+  var _decoratorsWithStyles2 = _interopRequireDefault(_decoratorsWithStyles);
+  
+  var Group = (function (_Component) {
+    _inherits(Group, _Component);
+  
+    _createClass(Group, null, [{
+      key: 'propTypes',
+      value: {
+        id: _react.PropTypes.string.isRequired,
+        name: _react.PropTypes.string,
+        type: _react.PropTypes.string,
+        lights: _react.PropTypes.array
+      },
+      enumerable: true
+    }]);
+  
+    function Group(props, context) {
+      _classCallCheck(this, _Group);
+  
+      _get(Object.getPrototypeOf(_Group.prototype), 'constructor', this).call(this, props, context);
+      this.state = {};
+    }
+  
+    _createClass(Group, [{
+      key: 'componentDidMount',
+      value: function componentDidMount() {}
+    }, {
+      key: 'isNight',
+      value: function isNight() {
+        var curTime = new Date();
+        return curTime.getHours() >= 20;
+      }
+    }, {
+      key: 'render',
+      value: function render() {
+        var lightNames = this.props.lights.map(function (l) {
+          if (typeof l === 'string') {
+            return l;
+          }
+          return l.name;
+        }).join(', ');
+        return _react2['default'].createElement(
+          'li',
+          { className: (0, _classnames2['default'])(_GroupScss2['default'].group, this.isNight() ? _GroupScss2['default'].night : _GroupScss2['default'].day) },
+          _react2['default'].createElement(
+            'h3',
+            { className: _GroupScss2['default'].groupName },
+            this.props.name
+          ),
+          lightNames
+        );
+      }
+    }]);
+  
+    var _Group = Group;
+    Group = (0, _decoratorsWithStyles2['default'])(_GroupScss2['default'])(Group) || Group;
+    return Group;
+  })(_react.Component);
+  
+  exports['default'] = Group;
+  module.exports = exports['default'];
+
+/***/ },
+/* 58 */
+/***/ function(module, exports, __webpack_require__) {
+
+  
+      var content = __webpack_require__(59);
+      var insertCss = __webpack_require__(20);
+  
+      if (typeof content === 'string') {
+        content = [[module.id, content, '']];
+      }
+  
+      module.exports = content.locals || {};
+      module.exports._getCss = function() { return content.toString(); };
+      module.exports._insertCss = insertCss.bind(null, content);
+    
+      var removeCss = function() {};
+  
+      // Hot Module Replacement
+      // https://webpack.github.io/docs/hot-module-replacement
+      if (false) {
+        module.hot.accept("!!./../../../node_modules/css-loader/index.js?sourceMap&modules&localIdentName=[name]_[local]_[hash:base64:3]!./../../../node_modules/postcss-loader/index.js!./Group.scss", function() {
+          var newContent = require("!!./../../../node_modules/css-loader/index.js?sourceMap&modules&localIdentName=[name]_[local]_[hash:base64:3]!./../../../node_modules/postcss-loader/index.js!./Group.scss");
+          if (typeof newContent === 'string') {
+            newContent = [[module.id, content, '']];
+          }
+          removeCss = insertCss(newContent, { replace: true });
+        });
+        module.hot.dispose(function() { removeCss(); });
+      }
+    
+
+/***/ },
+/* 59 */
+/***/ function(module, exports, __webpack_require__) {
+
+  exports = module.exports = __webpack_require__(19)();
+  // imports
+  
+  
+  // module
+  exports.push([module.id, ".Group_group_23_ {\n\n}\n\n.Group_groupName_2Et {\n  margin-bottom: 0;\n}\n", "", {"version":3,"sources":["/./src/components/Group/Group.scss"],"names":[],"mappings":"AAAA;;CAEC;;AAED;EACE,iBAAiB;CAClB","file":"Group.scss","sourcesContent":[".group {\n\n}\n\n.groupName {\n  margin-bottom: 0;\n}\n"],"sourceRoot":"webpack://"}]);
+  
+  // exports
+  exports.locals = {
+  	"group": "Group_group_23_",
+  	"groupName": "Group_groupName_2Et"
+  };
+
+/***/ },
+/* 60 */
 /***/ function(module, exports, __webpack_require__) {
 
   'use strict';
@@ -4377,7 +4527,7 @@ module.exports =
   
   var _react2 = _interopRequireDefault(_react);
   
-  var _SettingsPageScss = __webpack_require__(56);
+  var _SettingsPageScss = __webpack_require__(61);
   
   var _SettingsPageScss2 = _interopRequireDefault(_SettingsPageScss);
   
@@ -4389,11 +4539,11 @@ module.exports =
   
   var _actionsBridge2 = _interopRequireDefault(_actionsBridge);
   
-  var _BridgeDisplay = __webpack_require__(58);
+  var _BridgeDisplay = __webpack_require__(63);
   
   var _BridgeDisplay2 = _interopRequireDefault(_BridgeDisplay);
   
-  var _UserForm = __webpack_require__(59);
+  var _UserForm = __webpack_require__(64);
   
   var _UserForm2 = _interopRequireDefault(_UserForm);
   
@@ -4631,11 +4781,11 @@ module.exports =
   module.exports = exports['default'];
 
 /***/ },
-/* 56 */
+/* 61 */
 /***/ function(module, exports, __webpack_require__) {
 
   
-      var content = __webpack_require__(57);
+      var content = __webpack_require__(62);
       var insertCss = __webpack_require__(20);
   
       if (typeof content === 'string') {
@@ -4663,7 +4813,7 @@ module.exports =
     
 
 /***/ },
-/* 57 */
+/* 62 */
 /***/ function(module, exports, __webpack_require__) {
 
   exports = module.exports = __webpack_require__(19)();
@@ -4684,7 +4834,7 @@ module.exports =
   };
 
 /***/ },
-/* 58 */
+/* 63 */
 /***/ function(module, exports, __webpack_require__) {
 
   'use strict';
@@ -4707,7 +4857,7 @@ module.exports =
   
   var _react2 = _interopRequireDefault(_react);
   
-  var _SettingsPageScss = __webpack_require__(56);
+  var _SettingsPageScss = __webpack_require__(61);
   
   var _SettingsPageScss2 = _interopRequireDefault(_SettingsPageScss);
   
@@ -4836,7 +4986,7 @@ module.exports =
   module.exports = exports['default'];
 
 /***/ },
-/* 59 */
+/* 64 */
 /***/ function(module, exports, __webpack_require__) {
 
   'use strict';
@@ -4859,7 +5009,7 @@ module.exports =
   
   var _react2 = _interopRequireDefault(_react);
   
-  var _SettingsPageScss = __webpack_require__(56);
+  var _SettingsPageScss = __webpack_require__(61);
   
   var _SettingsPageScss2 = _interopRequireDefault(_SettingsPageScss);
   
@@ -4983,7 +5133,7 @@ module.exports =
   module.exports = exports['default'];
 
 /***/ },
-/* 60 */
+/* 65 */
 /***/ function(module, exports, __webpack_require__) {
 
   /**
@@ -5088,25 +5238,25 @@ module.exports =
   module.exports = exports['default'];
 
 /***/ },
-/* 61 */
+/* 66 */
 /***/ function(module, exports) {
 
   module.exports = require("./assets");
 
 /***/ },
-/* 62 */
+/* 67 */
 /***/ function(module, exports) {
 
   module.exports = require("sqlite");
 
 /***/ },
-/* 63 */
+/* 68 */
 /***/ function(module, exports) {
 
   module.exports = require("node-hue-api");
 
 /***/ },
-/* 64 */
+/* 69 */
 /***/ function(module, exports, __webpack_require__) {
 
   /**
@@ -5128,7 +5278,7 @@ module.exports =
   
   function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
   
-  var _fs = __webpack_require__(65);
+  var _fs = __webpack_require__(70);
   
   var _fs2 = _interopRequireDefault(_fs);
   
@@ -5136,15 +5286,15 @@ module.exports =
   
   var _express = __webpack_require__(3);
   
-  var _bluebird = __webpack_require__(66);
+  var _bluebird = __webpack_require__(71);
   
   var _bluebird2 = _interopRequireDefault(_bluebird);
   
-  var _jade = __webpack_require__(67);
+  var _jade = __webpack_require__(72);
   
   var _jade2 = _interopRequireDefault(_jade);
   
-  var _frontMatter = __webpack_require__(68);
+  var _frontMatter = __webpack_require__(73);
   
   var _frontMatter2 = _interopRequireDefault(_frontMatter);
   
@@ -5241,39 +5391,31 @@ module.exports =
   module.exports = exports['default'];
 
 /***/ },
-/* 65 */
+/* 70 */
 /***/ function(module, exports) {
 
   module.exports = require("fs");
 
 /***/ },
-/* 66 */
+/* 71 */
 /***/ function(module, exports) {
 
   module.exports = require("bluebird");
 
 /***/ },
-/* 67 */
+/* 72 */
 /***/ function(module, exports) {
 
   module.exports = require("jade");
 
 /***/ },
-/* 68 */
+/* 73 */
 /***/ function(module, exports) {
 
   module.exports = require("front-matter");
 
 /***/ },
-/* 69 */,
-/* 70 */,
-/* 71 */
-/***/ function(module, exports) {
-
-  module.exports = require("classnames");
-
-/***/ },
-/* 72 */
+/* 74 */
 /***/ function(module, exports, __webpack_require__) {
 
   'use strict';
@@ -5298,13 +5440,17 @@ module.exports =
   
   var _react2 = _interopRequireDefault(_react);
   
-  var _HomePageScss = __webpack_require__(45);
+  var _GroupsListScss = __webpack_require__(75);
   
-  var _HomePageScss2 = _interopRequireDefault(_HomePageScss);
+  var _GroupsListScss2 = _interopRequireDefault(_GroupsListScss);
   
-  var _Group = __webpack_require__(73);
+  var _GroupGroup = __webpack_require__(57);
   
-  var _Group2 = _interopRequireDefault(_Group);
+  var _GroupGroup2 = _interopRequireDefault(_GroupGroup);
+  
+  var _decoratorsWithStyles = __webpack_require__(24);
+  
+  var _decoratorsWithStyles2 = _interopRequireDefault(_decoratorsWithStyles);
   
   var GroupsList = (function (_Component) {
     _inherits(GroupsList, _Component);
@@ -5318,9 +5464,9 @@ module.exports =
     }]);
   
     function GroupsList(props, context) {
-      _classCallCheck(this, GroupsList);
+      _classCallCheck(this, _GroupsList);
   
-      _get(Object.getPrototypeOf(GroupsList.prototype), 'constructor', this).call(this, props, context);
+      _get(Object.getPrototypeOf(_GroupsList.prototype), 'constructor', this).call(this, props, context);
       this.state = {};
     }
   
@@ -5337,15 +5483,17 @@ module.exports =
           ),
           _react2['default'].createElement(
             'ul',
-            { className: _HomePageScss2['default'].groupList },
+            { className: _GroupsListScss2['default'].groupList },
             this.props.groups.map(function (group) {
-              return _react2['default'].createElement(_Group2['default'], _extends({ key: group.id }, group));
+              return _react2['default'].createElement(_GroupGroup2['default'], _extends({ key: group.id }, group));
             })
           )
         );
       }
     }]);
   
+    var _GroupsList = GroupsList;
+    GroupsList = (0, _decoratorsWithStyles2['default'])(_GroupsListScss2['default'])(GroupsList) || GroupsList;
     return GroupsList;
   })(_react.Component);
   
@@ -5353,91 +5501,52 @@ module.exports =
   module.exports = exports['default'];
 
 /***/ },
-/* 73 */
+/* 75 */
 /***/ function(module, exports, __webpack_require__) {
 
-  'use strict';
   
-  Object.defineProperty(exports, '__esModule', {
-    value: true
-  });
+      var content = __webpack_require__(76);
+      var insertCss = __webpack_require__(20);
   
-  var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-  
-  var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
-  
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-  
-  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-  
-  function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-  
-  var _react = __webpack_require__(4);
-  
-  var _react2 = _interopRequireDefault(_react);
-  
-  var _HomePageScss = __webpack_require__(45);
-  
-  var _HomePageScss2 = _interopRequireDefault(_HomePageScss);
-  
-  var _classnames = __webpack_require__(71);
-  
-  var _classnames2 = _interopRequireDefault(_classnames);
-  
-  var Group = (function (_Component) {
-    _inherits(Group, _Component);
-  
-    _createClass(Group, null, [{
-      key: 'propTypes',
-      value: {
-        id: _react.PropTypes.string.isRequired,
-        name: _react.PropTypes.string,
-        type: _react.PropTypes.string,
-        lights: _react.PropTypes.array
-      },
-      enumerable: true
-    }]);
-  
-    function Group(props, context) {
-      _classCallCheck(this, Group);
-  
-      _get(Object.getPrototypeOf(Group.prototype), 'constructor', this).call(this, props, context);
-      this.state = {};
-    }
-  
-    _createClass(Group, [{
-      key: 'componentDidMount',
-      value: function componentDidMount() {}
-    }, {
-      key: 'isNight',
-      value: function isNight() {
-        var curTime = new Date();
-        return curTime.getHours() >= 20;
+      if (typeof content === 'string') {
+        content = [[module.id, content, '']];
       }
-    }, {
-      key: 'render',
-      value: function render() {
-        var lightNames = this.props.lights.map(function (l) {
-          if (typeof l === 'string') {
-            return l;
+  
+      module.exports = content.locals || {};
+      module.exports._getCss = function() { return content.toString(); };
+      module.exports._insertCss = insertCss.bind(null, content);
+    
+      var removeCss = function() {};
+  
+      // Hot Module Replacement
+      // https://webpack.github.io/docs/hot-module-replacement
+      if (false) {
+        module.hot.accept("!!./../../../node_modules/css-loader/index.js?sourceMap&modules&localIdentName=[name]_[local]_[hash:base64:3]!./../../../node_modules/postcss-loader/index.js!./GroupsList.scss", function() {
+          var newContent = require("!!./../../../node_modules/css-loader/index.js?sourceMap&modules&localIdentName=[name]_[local]_[hash:base64:3]!./../../../node_modules/postcss-loader/index.js!./GroupsList.scss");
+          if (typeof newContent === 'string') {
+            newContent = [[module.id, content, '']];
           }
-          return l.name;
-        }).join(', ');
-        return _react2['default'].createElement(
-          'li',
-          { className: (0, _classnames2['default'])(_HomePageScss2['default'].group, this.isNight() ? _HomePageScss2['default'].night : _HomePageScss2['default'].day) },
-          this.props.name,
-          ' ',
-          lightNames
-        );
+          removeCss = insertCss(newContent, { replace: true });
+        });
+        module.hot.dispose(function() { removeCss(); });
       }
-    }]);
+    
+
+/***/ },
+/* 76 */
+/***/ function(module, exports, __webpack_require__) {
+
+  exports = module.exports = __webpack_require__(19)();
+  // imports
   
-    return Group;
-  })(_react.Component);
   
-  exports['default'] = Group;
-  module.exports = exports['default'];
+  // module
+  exports.push([module.id, ".GroupsList_groupList_23X {\n  list-style: none;\n  padding-left: 0;\n}\n", "", {"version":3,"sources":["/./src/components/GroupsList/GroupsList.scss"],"names":[],"mappings":"AAAA;EACE,iBAAiB;EACjB,gBAAgB;CACjB","file":"GroupsList.scss","sourcesContent":[".groupList {\n  list-style: none;\n  padding-left: 0;\n}\n"],"sourceRoot":"webpack://"}]);
+  
+  // exports
+  exports.locals = {
+  	"groupList": "GroupsList_groupList_23X"
+  };
 
 /***/ }
 /******/ ]);

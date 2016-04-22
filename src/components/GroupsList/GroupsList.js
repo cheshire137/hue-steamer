@@ -1,7 +1,9 @@
 import React, { Component, PropTypes } from 'react';
-import s from './HomePage.scss';
-import Group from './Group';
+import s from './GroupsList.scss';
+import Group from '../Group/Group';
+import withStyles from '../../decorators/withStyles';
 
+@withStyles(s)
 class GroupsList extends Component {
   static propTypes = {
     groups: PropTypes.array.isRequired,
