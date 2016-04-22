@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import s from './HomePage.scss';
+import cx from 'classnames';
 import parsePath from 'history/lib/parsePath';
 import withStyles from '../../decorators/withStyles';
 import Location from '../../core/Location';
@@ -17,7 +18,10 @@ class HomePage extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { lights: {} };
+    this.state = {
+      lights: {},
+      activeTab: 'lights',
+    };
   }
 
   componentWillMount() {
@@ -87,27 +91,62 @@ class HomePage extends Component {
     this.setState({ lights, groups });
   }
 
+  showLightsTab(e) {
+    e.preventDefault();
+    e.target.blur();
+    this.setState({ activeTab: 'lights' });
+  }
+
+  showGroupsTab(e) {
+    e.preventDefault();
+    e.target.blur();
+    this.setState({ activeTab: 'groups' });
+  }
+
+  isNight() {
+    const curTime = new Date();
+    return curTime.getHours() >= 20;
+  }
+
   render() {
     const haveLights = typeof this.state.lightIDs === 'object';
     const haveGroups = typeof this.state.groups === 'object';
     return (
-      <div>
-        {haveLights ? (
-          <LightsList ids={this.state.lightIDs}
-            onLightLoaded={this.onLightLoaded.bind(this)}
-          />
-        ) : (
-          <p className={s.loading}>
-            Loading lights...
-          </p>
-        )}
-        {haveGroups ? (
-          <GroupsList groups={this.state.groups} />
-        ) : (
-          <p className={s.loading}>
-            Loading groups...
-          </p>
-        )}
+      <div className={this.isNight() ? s.night : s.day}>
+        <ul className={s.tabList}>
+          <li className={this.state.activeTab === 'lights' ? s.active : s.inactive}>
+            <a href="#" onClick={this.showLightsTab.bind(this)}>
+              Lights
+            </a>
+          </li>
+          <li className={this.state.activeTab === 'groups' ? s.active : s.inactive}>
+            <a href="#" onClick={this.showGroupsTab.bind(this)}>
+              Groups
+            </a>
+          </li>
+        </ul>
+        <div className={s.tabs}>
+          <div className={cx(s.lightsTab, s.tab, this.state.activeTab === 'lights' ? s.active : s.inactive)}>
+            {haveLights ? (
+              <LightsList ids={this.state.lightIDs}
+                onLightLoaded={this.onLightLoaded.bind(this)}
+              />
+            ) : (
+              <p className={s.loading}>
+                Loading lights...
+              </p>
+            )}
+          </div>
+          <div className={cx(s.groupsTab, s.tab, this.state.activeTab === 'groups' ? s.active : s.inactive)}>
+            {haveGroups ? (
+              <GroupsList groups={this.state.groups} />
+            ) : (
+              <p className={s.loading}>
+                Loading groups...
+              </p>
+            )}
+          </div>
+        </div>
       </div>
     );
   }

@@ -3132,6 +3132,10 @@ module.exports =
   
   var _HomePageScss2 = _interopRequireDefault(_HomePageScss);
   
+  var _classnames = __webpack_require__(59);
+  
+  var _classnames2 = _interopRequireDefault(_classnames);
+  
   var _historyLibParsePath = __webpack_require__(26);
   
   var _historyLibParsePath2 = _interopRequireDefault(_historyLibParsePath);
@@ -3173,7 +3177,10 @@ module.exports =
       _classCallCheck(this, _HomePage);
   
       _get(Object.getPrototypeOf(_HomePage.prototype), 'constructor', this).call(this, props);
-      this.state = { lights: {} };
+      this.state = {
+        lights: {},
+        activeTab: 'lights'
+      };
     }
   
     _createClass(HomePage, [{
@@ -3246,24 +3253,78 @@ module.exports =
         this.setState({ lights: lights, groups: groups });
       }
     }, {
+      key: 'showLightsTab',
+      value: function showLightsTab(e) {
+        e.preventDefault();
+        e.target.blur();
+        this.setState({ activeTab: 'lights' });
+      }
+    }, {
+      key: 'showGroupsTab',
+      value: function showGroupsTab(e) {
+        e.preventDefault();
+        e.target.blur();
+        this.setState({ activeTab: 'groups' });
+      }
+    }, {
+      key: 'isNight',
+      value: function isNight() {
+        var curTime = new Date();
+        return curTime.getHours() >= 20;
+      }
+    }, {
       key: 'render',
       value: function render() {
         var haveLights = typeof this.state.lightIDs === 'object';
         var haveGroups = typeof this.state.groups === 'object';
         return _react2['default'].createElement(
           'div',
-          null,
-          haveLights ? _react2['default'].createElement(_LightsListLightsList2['default'], { ids: this.state.lightIDs,
-            onLightLoaded: this.onLightLoaded.bind(this)
-          }) : _react2['default'].createElement(
-            'p',
-            { className: _HomePageScss2['default'].loading },
-            'Loading lights...'
+          { className: this.isNight() ? _HomePageScss2['default'].night : _HomePageScss2['default'].day },
+          _react2['default'].createElement(
+            'ul',
+            { className: _HomePageScss2['default'].tabList },
+            _react2['default'].createElement(
+              'li',
+              { className: this.state.activeTab === 'lights' ? _HomePageScss2['default'].active : _HomePageScss2['default'].inactive },
+              _react2['default'].createElement(
+                'a',
+                { href: '#', onClick: this.showLightsTab.bind(this) },
+                'Lights'
+              )
+            ),
+            _react2['default'].createElement(
+              'li',
+              { className: this.state.activeTab === 'groups' ? _HomePageScss2['default'].active : _HomePageScss2['default'].inactive },
+              _react2['default'].createElement(
+                'a',
+                { href: '#', onClick: this.showGroupsTab.bind(this) },
+                'Groups'
+              )
+            )
           ),
-          haveGroups ? _react2['default'].createElement(_GroupsListGroupsList2['default'], { groups: this.state.groups }) : _react2['default'].createElement(
-            'p',
-            { className: _HomePageScss2['default'].loading },
-            'Loading groups...'
+          _react2['default'].createElement(
+            'div',
+            { className: _HomePageScss2['default'].tabs },
+            _react2['default'].createElement(
+              'div',
+              { className: (0, _classnames2['default'])(_HomePageScss2['default'].lightsTab, _HomePageScss2['default'].tab, this.state.activeTab === 'lights' ? _HomePageScss2['default'].active : _HomePageScss2['default'].inactive) },
+              haveLights ? _react2['default'].createElement(_LightsListLightsList2['default'], { ids: this.state.lightIDs,
+                onLightLoaded: this.onLightLoaded.bind(this)
+              }) : _react2['default'].createElement(
+                'p',
+                { className: _HomePageScss2['default'].loading },
+                'Loading lights...'
+              )
+            ),
+            _react2['default'].createElement(
+              'div',
+              { className: (0, _classnames2['default'])(_HomePageScss2['default'].groupsTab, _HomePageScss2['default'].tab, this.state.activeTab === 'groups' ? _HomePageScss2['default'].active : _HomePageScss2['default'].inactive) },
+              haveGroups ? _react2['default'].createElement(_GroupsListGroupsList2['default'], { groups: this.state.groups }) : _react2['default'].createElement(
+                'p',
+                { className: _HomePageScss2['default'].loading },
+                'Loading groups...'
+              )
+            )
           )
         );
       }
@@ -3318,11 +3379,16 @@ module.exports =
   
   
   // module
-  exports.push([module.id, ".HomePage_loading_XqX {\n}\n", "", {"version":3,"sources":["/./src/components/HomePage/HomePage.scss"],"names":[],"mappings":"AAAA;CACC","file":"HomePage.scss","sourcesContent":[".loading {\n}\n"],"sourceRoot":"webpack://"}]);
+  exports.push([module.id, ".HomePage_loading_XqX {\n}\n\n.HomePage_tabList_uR3 {\n  list-style: none;\n  padding-left: 0;\n  border-bottom-width: 1px;\n  border-bottom-style: solid;\n}\n\n.HomePage_tabList_uR3 li {\n  display: inline-block;\n}\n\n.HomePage_tabList_uR3 li + li {\n  margin-left: 4px;\n}\n\n.HomePage_tabList_uR3 li a {\n  display: block;\n  padding: 0.3em 0.6em;\n  text-decoration: none;\n  border-style: solid;\n  border-width: 1px;\n  border-bottom-width: 0;\n  -webkit-border-top-left-radius: 4px;\n  -webkit-border-top-right-radius: 4px;\n  -moz-border-radius-topleft: 4px;\n  -moz-border-radius-topright: 4px;\n  border-top-left-radius: 4px;\n  border-top-right-radius: 4px;\n}\n\n.HomePage_tabList_uR3 li.HomePage_inactive_2yj a {\n  opacity: 0.75;\n}\n\n.HomePage_tabList_uR3 li.HomePage_active_lyV a {\n  margin-bottom: -1px;\n}\n\n.HomePage_night_1p9 .HomePage_tabList_uR3 {\n  border-color: #38231D;\n}\n\n.HomePage_night_1p9 .HomePage_tabList_uR3 li a {\n  border-color: #38231D;\n}\n\n.HomePage_night_1p9 .HomePage_tabList_uR3 li.HomePage_inactive_2yj a {\n  background-color: #231511;\n}\n\n.HomePage_night_1p9 .HomePage_tabList_uR3 li.HomePage_active_lyV {\n  border-bottom: 1px solid #101010;\n}\n\n.HomePage_tab_16Q {\n}\n\n.HomePage_tab_16Q.HomePage_inactive_2yj {\n  display: none;\n}\n", "", {"version":3,"sources":["/./src/components/HomePage/HomePage.scss"],"names":[],"mappings":"AAAA;CACC;;AAED;EACE,iBAAiB;EACjB,gBAAgB;EAChB,yBAAyB;EACzB,2BAA2B;CAoC5B;;AAlCC;EACE,sBAAsB;CAgCvB;;AA9BC;EACE,iBAAiB;CAClB;;AAED;EACE,eAAe;EACf,qBAAqB;EACrB,sBAAsB;EACtB,oBAAoB;EACpB,kBAAkB;EAClB,uBAAuB;EACvB,oCAAoC;EACpC,qCAAqC;EACrC,gCAAgC;EAChC,iCAAiC;EACjC,4BAA4B;EAC5B,6BAA6B;CAC9B;;AAGC;EACE,cAAc;CACf;;AAID;EACE,oBAAoB;CACrB;;AAML;EACE,sBAAsB;CAiBvB;;AAdG;EACE,sBAAsB;CACvB;;AAGC;EACE,0BAA0B;CAC3B;;AAGH;EACE,iCAAiC;CAClC;;AAKP;CAIC;;AAHC;EACE,cAAc;CACf","file":"HomePage.scss","sourcesContent":[".loading {\n}\n\n.tabList {\n  list-style: none;\n  padding-left: 0;\n  border-bottom-width: 1px;\n  border-bottom-style: solid;\n\n  li {\n    display: inline-block;\n\n    + li {\n      margin-left: 4px;\n    }\n\n    a {\n      display: block;\n      padding: 0.3em 0.6em;\n      text-decoration: none;\n      border-style: solid;\n      border-width: 1px;\n      border-bottom-width: 0;\n      -webkit-border-top-left-radius: 4px;\n      -webkit-border-top-right-radius: 4px;\n      -moz-border-radius-topleft: 4px;\n      -moz-border-radius-topright: 4px;\n      border-top-left-radius: 4px;\n      border-top-right-radius: 4px;\n    }\n\n    &.inactive {\n      a {\n        opacity: 0.75;\n      }\n    }\n\n    &.active {\n      a {\n        margin-bottom: -1px;\n      }\n    }\n  }\n}\n\n.night {\n  .tabList {\n    border-color: #38231D;\n\n    li {\n      a {\n        border-color: #38231D;\n      }\n\n      &.inactive {\n        a {\n          background-color: #231511;\n        }\n      }\n\n      &.active {\n        border-bottom: 1px solid #101010;\n      }\n    }\n  }\n}\n\n.tab {\n  &.inactive {\n    display: none;\n  }\n}\n"],"sourceRoot":"webpack://"}]);
   
   // exports
   exports.locals = {
-  	"loading": "HomePage_loading_XqX"
+  	"loading": "HomePage_loading_XqX",
+  	"tabList": "HomePage_tabList_uR3",
+  	"inactive": "HomePage_inactive_2yj",
+  	"active": "HomePage_active_lyV",
+  	"night": "HomePage_night_1p9",
+  	"tab": "HomePage_tab_16Q"
   };
 
 /***/ },
@@ -4521,20 +4587,11 @@ module.exports =
       key: 'render',
       value: function render() {
         return _react2['default'].createElement(
-          'div',
-          null,
-          _react2['default'].createElement(
-            'h2',
-            null,
-            'Groups'
-          ),
-          _react2['default'].createElement(
-            'ul',
-            { className: _GroupsListScss2['default'].groupList },
-            this.props.groups.map(function (group) {
-              return _react2['default'].createElement(_GroupGroup2['default'], _extends({ key: group.id }, group));
-            })
-          )
+          'ul',
+          { className: _GroupsListScss2['default'].groupList },
+          this.props.groups.map(function (group) {
+            return _react2['default'].createElement(_GroupGroup2['default'], _extends({ key: group.id }, group));
+          })
         );
       }
     }]);

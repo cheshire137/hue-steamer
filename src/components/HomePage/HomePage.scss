@@ -1,2 +1,72 @@
 .loading {
 }
+
+.tabList {
+  list-style: none;
+  padding-left: 0;
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+
+  li {
+    display: inline-block;
+
+    + li {
+      margin-left: 4px;
+    }
+
+    a {
+      display: block;
+      padding: 0.3em 0.6em;
+      text-decoration: none;
+      border-style: solid;
+      border-width: 1px;
+      border-bottom-width: 0;
+      -webkit-border-top-left-radius: 4px;
+      -webkit-border-top-right-radius: 4px;
+      -moz-border-radius-topleft: 4px;
+      -moz-border-radius-topright: 4px;
+      border-top-left-radius: 4px;
+      border-top-right-radius: 4px;
+    }
+
+    &.inactive {
+      a {
+        opacity: 0.75;
+      }
+    }
+
+    &.active {
+      a {
+        margin-bottom: -1px;
+      }
+    }
+  }
+}
+
+.night {
+  .tabList {
+    border-color: #38231D;
+
+    li {
+      a {
+        border-color: #38231D;
+      }
+
+      &.inactive {
+        a {
+          background-color: #231511;
+        }
+      }
+
+      &.active {
+        border-bottom: 1px solid #101010;
+      }
+    }
+  }
+}
+
+.tab {
+  &.inactive {
+    display: none;
+  }
+}

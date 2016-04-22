@@ -16,14 +16,11 @@ class GroupsList extends Component {
 
   render() {
     return (
-      <div>
-        <h2>Groups</h2>
-        <ul className={s.groupList}>
-          {this.props.groups.map((group) => {
-            return <Group key={group.id} {...group} />;
-          })}
-        </ul>
-      </div>
+      <ul className={s.groupList}>
+        {this.props.groups.map((group) => {
+          return <Group key={group.id} {...group} />;
+        })}
+      </ul>
     );
   }
 }
