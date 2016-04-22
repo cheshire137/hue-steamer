@@ -148,6 +148,15 @@ server.post('/users', async (req, res) => {
   }).done();
 });
 
+server.get('/groups', async (req, res) => {
+  const api = await getHueApi(req.query.connectionID);
+  api.groups().then((result) => {
+    res.json(result);
+  }).fail((err) => {
+    res.status(400).json(err);
+  }).done();
+});
+
 server.get('/group/:id', async (req, res) => {
   const api = await getHueApi(req.query.connectionID);
   api.getGroup(req.params.id).then((group) => {

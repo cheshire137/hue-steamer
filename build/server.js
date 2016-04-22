@@ -397,6 +397,30 @@ module.exports =
     }, null, _this);
   });
   
+  server.get('/groups', function callee$0$0(req, res) {
+    var api;
+    return regeneratorRuntime.async(function callee$0$0$(context$1$0) {
+      while (1) switch (context$1$0.prev = context$1$0.next) {
+        case 0:
+          context$1$0.next = 2;
+          return regeneratorRuntime.awrap(getHueApi(req.query.connectionID));
+  
+        case 2:
+          api = context$1$0.sent;
+  
+          api.groups().then(function (result) {
+            res.json(result);
+          }).fail(function (err) {
+            res.status(400).json(err);
+          }).done();
+  
+        case 4:
+        case 'end':
+          return context$1$0.stop();
+      }
+    }, null, _this);
+  });
+  
   server.get('/group/:id', function callee$0$0(req, res) {
     var api;
     return regeneratorRuntime.async(function callee$0$0$(context$1$0) {
@@ -3128,6 +3152,10 @@ module.exports =
   
   var _LightsList2 = _interopRequireDefault(_LightsList);
   
+  var _GroupsList = __webpack_require__(72);
+  
+  var _GroupsList2 = _interopRequireDefault(_GroupsList);
+  
   var title = 'Hue Steamer';
   
   var HomePage = (function (_Component) {
@@ -3145,7 +3173,7 @@ module.exports =
       _classCallCheck(this, _HomePage);
   
       _get(Object.getPrototypeOf(_HomePage.prototype), 'constructor', this).call(this, props);
-      this.state = {};
+      this.state = { lights: {} };
     }
   
     _createClass(HomePage, [{
@@ -3162,7 +3190,8 @@ module.exports =
       key: 'onBridgeLoaded',
       value: function onBridgeLoaded(bridge) {
         this.setState({ bridgeConnectionID: bridge.connection.id });
-        _actionsBridge2['default'].getAllLights(bridge.connection.id).then(this.onAllLightsLoaded.bind(this));
+        _actionsBridge2['default'].getAllLights(bridge.connection.id).then(this.onAllLightsLoaded.bind(this))['catch'](this.onAllLightsLoadError.bind(this));
+        _actionsBridge2['default'].getGroups().then(this.onGroupsLoaded.bind(this))['catch'](this.onGroupsLoadError.bind(this));
       }
     }, {
       key: 'onBridgeLoadError',
@@ -3173,20 +3202,61 @@ module.exports =
     }, {
       key: 'onAllLightsLoaded',
       value: function onAllLightsLoaded(group) {
-        if (group.hasOwnProperty('errno')) {
-          console.error('failed to load group of all lights', group);
-          return;
-        }
         this.setState({ lightIDs: group.lights });
+      }
+    }, {
+      key: 'onAllLightsLoadError',
+      value: function onAllLightsLoadError(response) {
+        console.error('failed to load group of all lights', response);
+      }
+    }, {
+      key: 'onGroupsLoaded',
+      value: function onGroupsLoaded(rawGroups) {
+        var groups = [];
+        for (var i = 0; i < rawGroups.length; i++) {
+          if (rawGroups[i].id !== '0') {
+            groups.push(rawGroups[i]);
+          }
+        }
+        this.setState({ groups: groups });
+      }
+    }, {
+      key: 'onGroupsLoadError',
+      value: function onGroupsLoadError(response) {
+        console.error('failed to load groups', response);
+      }
+    }, {
+      key: 'onLightLoaded',
+      value: function onLightLoaded(light) {
+        var lights = this.state.lights;
+        lights[light.id] = light;
+        var groups = this.state.groups;
+        if (typeof groups === 'object') {
+          for (var i = 0; i < groups.length; i++) {
+            var group = this.state.groups[i];
+            for (var j = 0; j < group.lights.length; j++) {
+              var lightID = group.lights[j];
+              if (lightID === light.id) {
+                group.lights[j] = light;
+                break;
+              }
+            }
+          }
+        }
+        this.setState({ lights: lights, groups: groups });
       }
     }, {
       key: 'render',
       value: function render() {
         var haveLights = typeof this.state.lightIDs === 'object';
+        var haveGroups = typeof this.state.groups === 'object';
         return _react2['default'].createElement(
           'div',
           null,
-          haveLights ? _react2['default'].createElement(_LightsList2['default'], { ids: this.state.lightIDs }) : 'Loading...'
+          haveGroups ? _react2['default'].createElement(_GroupsList2['default'], { groups: this.state.groups }) : 'Loading groups...',
+          haveLights ? _react2['default'].createElement(_LightsList2['default'], { ids: this.state.lightIDs,
+            onLightLoaded: this.onLightLoaded.bind(this)
+          }) : 'Loading lights...'
         );
       }
     }]);
@@ -3240,11 +3310,13 @@ module.exports =
   
   
   // module
-  exports.push([module.id, "/* #222 */   /* #404040 */ /* #555 */ /* #777 */ /* #eee */  /* Extra small screen / phone */  /* Small screen / tablet */  /* Medium screen / desktop */ /* Large screen / wide desktop */\n\n.HomePage_lightList_3oL {\n  list-style: none;\n  padding-left: 0;\n}\n\n.HomePage_light_2jt {\n  width: 223px;\n  display: inline-block;\n  margin: 0 5px 12px 5px;\n  padding: 6px;\n  border-radius: 2px;\n  border-width: 1px;\n  border-style: solid;\n}\n\n.HomePage_light_2jt .HomePage_lightHeader_1wr, .HomePage_light_2jt .HomePage_lightFooter_2nX {\n  display: table;\n  width: 100%;\n}\n\n.HomePage_light_2jt .HomePage_lightFooter_2nX {\n  margin-top: 5px;\n}\n\n.HomePage_light_2jt .HomePage_lightNameArea_my7, .HomePage_light_2jt .HomePage_metadata_pqP, .HomePage_light_2jt .HomePage_colorBlockAndPicker_Flb {\n  display: table-cell;\n  vertical-align: middle;\n}\n\n.HomePage_light_2jt .HomePage_name_nWG {\n  white-space: nowrap;\n  text-overflow: ellipsis;\n  overflow: hidden;\n  width: 151px;\n  display: block;\n}\n\n.HomePage_light_2jt .HomePage_metadata_pqP {\n  font-size: 13px;\n}\n\n.HomePage_light_2jt .HomePage_colorBlockAndPicker_Flb {\n  width: 50px;\n  position: relative;\n}\n\n.HomePage_light_2jt .HomePage_colorBlockAndPicker_Flb .HomePage_colorBlock_3k8 {\n  border-radius: 4px;\n  border: none;\n  width: 100%;\n  height: 100%\n}\n\n.HomePage_light_2jt .HomePage_colorBlockAndPicker_Flb .HomePage_colorBlock_3k8:focus {\n  outline: 0;\n}\n\n.HomePage_light_2jt .HomePage_colorBlockAndPicker_Flb .HomePage_colorPickerWrapper_26s {\n  z-index: 99;\n  position: absolute;\n}\n\n.HomePage_light_2jt .HomePage_type_1AJ {\n  display: block;\n}\n\n.HomePage_light_2jt .HomePage_manufacturer_3WL {\n  padding: 0 0.3em 0 0;\n}\n\n.HomePage_light_2jt .HomePage_model_3Ue {}\n\n.HomePage_light_2jt.HomePage_night_1p9 {\n  border-color: #38231D;\n  color: #E5E4E1;\n  background-color: #231511;\n}\n\n.HomePage_light_2jt.HomePage_night_1p9 .HomePage_metadata_pqP {\n  color: #97918A;\n}\n\n.HomePage_light_2jt.HomePage_day_2WC {\n  border-color: #ccc;\n}\n\n.HomePage_light_2jt.HomePage_day_2WC .HomePage_metadata_pqP {\n  color: #797979;\n}\n\n.HomePage_onoffswitch_3hQ {\n  position: relative;\n  display: table-cell;\n  vertical-align: middle;\n  width: 50px;\n  -webkit-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n}\n\n.HomePage_onoffswitch_3hQ .HomePage_onoffswitchCheckbox_3tD {\n  display: none\n}\n\n.HomePage_onoffswitch_3hQ .HomePage_onoffswitchCheckbox_3tD:checked + .HomePage_onoffswitchLabel_W_H .HomePage_onoffswitchInner_1zJ {\n  margin-left: 0;\n}\n\n.HomePage_onoffswitch_3hQ .HomePage_onoffswitchCheckbox_3tD:checked + .HomePage_onoffswitchLabel_W_H .HomePage_onoffswitchSwitch_1Vt {\n  right: 0;\n}\n\n.HomePage_onoffswitch_3hQ .HomePage_onoffswitchLabel_W_H {\n  display: block;\n  overflow: hidden;\n  cursor: pointer;\n  border: 2px solid #CCCCCC;\n  border-radius: 18px;\n}\n\n.HomePage_onoffswitch_3hQ .HomePage_onoffswitchInner_1zJ {\n  display: block;\n  width: 200%;\n  margin-left: -100%;\n  -webkit-transition: margin 0.3s ease-in 0s;\n  -o-transition: margin 0.3s ease-in 0s;\n  transition: margin 0.3s ease-in 0s\n}\n\n.HomePage_onoffswitch_3hQ .HomePage_onoffswitchInner_1zJ:before, .HomePage_onoffswitch_3hQ .HomePage_onoffswitchInner_1zJ:after {\n  display: block;\n  float: left;\n  width: 50%;\n  height: 18px;\n  padding: 0;\n  line-height: 18px;\n  font-size: 12px;\n  color: white;\n  font-weight: 700;\n  -webkit-box-sizing: border-box;\n          box-sizing: border-box;\n}\n\n.HomePage_onoffswitch_3hQ .HomePage_onoffswitchInner_1zJ:before {\n  content: \"on\";\n  padding-left: 10px;\n  background-color: #FFF7C2;\n  color: #474029;\n}\n\n.HomePage_onoffswitch_3hQ .HomePage_onoffswitchInner_1zJ:after {\n  content: \"off\";\n  padding-right: 10px;\n  background-color: #373634;\n  color: #D6D6D6;\n  text-align: right;\n}\n\n.HomePage_onoffswitch_3hQ .HomePage_onoffswitchSwitch_1Vt {\n  display: block;\n  width: 18px;\n  margin: 0px;\n  background: #FFFFFF;\n  position: absolute;\n  top: 0;\n  bottom: 0;\n  right: 32px;\n  border: 2px solid #CCCCCC;\n  border-radius: 18px;\n  -webkit-transition: all 0.3s ease-in 0s;\n  -o-transition: all 0.3s ease-in 0s;\n  transition: all 0.3s ease-in 0s;\n}\n", "", {"version":3,"sources":["/./src/components/variables.scss","/./src/components/HomePage/HomePage.scss"],"names":[],"mappings":"AACwD,UAAU,GACV,aAAa,CACb,UAAU,CACV,UAAU,CACV,UAAU,EASlC,gCAAgC,EAChC,2BAA2B,EAC3B,6BAA6B,CAC7B,iCAAiC;;ACfjE;EACE,iBAAiB;EACjB,gBAAgB;CACjB;;AAED;EACE,aAAa;EACb,sBAAsB;EACtB,uBAAuB;EACvB,aAAa;EACb,mBAAmB;EACnB,kBAAkB;EAClB,oBAAoB;CAiFrB;;AA/EC;EAEE,eAAe;EACf,YAAY;CACb;;AAED;EACE,gBAAgB;CACjB;;AAED;EAGE,oBAAoB;EACpB,uBAAuB;CACxB;;AAoBD;EACE,oBAAoB;EACpB,wBAAwB;EACxB,iBAAiB;EACjB,aAAa;EACb,eAAe;CAChB;;AAED;EACE,gBAAgB;CACjB;;AAED;EACE,YAAY;EACZ,mBAAmB;CAiBpB;;AAfC;EACE,mBAAmB;EACnB,aAAa;EACb,YAAY;EACZ,YAAa;CAKd;;AAHC;EACE,WAAW;CACZ;;AAGH;EACE,YAAY;EACZ,mBAAmB;CACpB;;AAGH;EACE,eAAe;CAChB;;AAED;EACE,qBAAqB;CACtB;;AAED,0CAEC;;AA7DD;EACE,sBAAsB;EACtB,eAAe;EACf,0BAA0B;CAK3B;;AAHC;EACE,eAAe;CAChB;;AAGH;EACE,mBAAmB;CAKpB;;AAHC;EACE,eAAe;CAChB;;AAiDL;EACE,mBAAmB;EACnB,oBAAoB;EACpB,uBAAuB;EACvB,YAAY;EACZ,0BAA0B;EAC1B,uBAAuB;EACvB,sBAAsB;CAqEvB;;AAnEC;EACE,aAAc;CAaf;;AATK;EACE,eAAe;CAChB;;AAED;EACE,SAAS;CACV;;AAKP;EACE,eAAe;EACf,iBAAiB;EACjB,gBAAgB;EAChB,0BAA0B;EAC1B,oBAAoB;CACrB;;AAED;EACE,eAAe;EACf,YAAY;EACZ,mBAAmB;EACnB,2CAAmC;EAAnC,sCAAmC;EAAnC,kCAAmC;CA6BpC;;AA3BC;EACE,eAAe;EACf,YAAY;EACZ,WAAW;EACX,aAAa;EACb,WAAW;EACX,kBAAkB;EAClB,gBAAgB;EAChB,aAAa;EACb,iBAAiB;EACjB,+BAAuB;UAAvB,uBAAuB;CACxB;;AAED;EACE,cAAc;EACd,mBAAmB;EACnB,0BAA0B;EAC1B,eAAe;CAChB;;AAED;EACE,eAAe;EACf,oBAAoB;EACpB,0BAA0B;EAC1B,eAAe;EACf,kBAAkB;CACnB;;AAGH;EACI,eAAe;EAAC,YAAY;EAAC,YAAY;EACzC,oBAAoB;EACpB,mBAAmB;EAAC,OAAO;EAAC,UAAU;EACtC,YAAY;EACZ,0BAA0B;EAAC,oBAAoB;EAC/C,wCAAgC;EAAhC,mCAAgC;EAAhC,gCAAgC;CACnC","file":"HomePage.scss","sourcesContent":["$white-base:            hsl(255, 255, 255);\r\n$gray-darker:           color(black lightness(+13.5%)); /* #222 */\r\n$gray-dark:             color(black lightness(+25%));   /* #404040 */\r\n$gray:                  color(black lightness(+33.5%)); /* #555 */\r\n$gray-light:            color(black lightness(+46.7%)); /* #777 */\r\n$gray-lighter:          color(black lightness(+93.5%)); /* #eee */\r\n\r\n$link-color: #E16C51;\r\n$link-hover-color: #97918A;\r\n\r\n$font-family-base:      'Segoe UI', 'HelveticaNeue-Light', sans-serif;\r\n\r\n$max-content-width:     1000px;\r\n\r\n$screen-xs-min:         480px;  /* Extra small screen / phone */\r\n$screen-sm-min:         768px;  /* Small screen / tablet */\r\n$screen-md-min:         992px;  /* Medium screen / desktop */\r\n$screen-lg-min:         1200px; /* Large screen / wide desktop */\r\n\r\n$animation-swift-out:   .45s cubic-bezier(0.3, 1, 0.4, 1) 0s;\r\n","@import '../variables.scss';\n\n.lightList {\n  list-style: none;\n  padding-left: 0;\n}\n\n.light {\n  width: 223px;\n  display: inline-block;\n  margin: 0 5px 12px 5px;\n  padding: 6px;\n  border-radius: 2px;\n  border-width: 1px;\n  border-style: solid;\n\n  .lightHeader,\n  .lightFooter {\n    display: table;\n    width: 100%;\n  }\n\n  .lightFooter {\n    margin-top: 5px;\n  }\n\n  .lightNameArea,\n  .metadata,\n  .colorBlockAndPicker {\n    display: table-cell;\n    vertical-align: middle;\n  }\n\n  &.night {\n    border-color: #38231D;\n    color: #E5E4E1;\n    background-color: #231511;\n\n    .metadata {\n      color: #97918A;\n    }\n  }\n\n  &.day {\n    border-color: #ccc;\n\n    .metadata {\n      color: #797979;\n    }\n  }\n\n  .name {\n    white-space: nowrap;\n    text-overflow: ellipsis;\n    overflow: hidden;\n    width: 151px;\n    display: block;\n  }\n\n  .metadata {\n    font-size: 13px;\n  }\n\n  .colorBlockAndPicker {\n    width: 50px;\n    position: relative;\n\n    .colorBlock {\n      border-radius: 4px;\n      border: none;\n      width: 100%;\n      height: 100%;\n\n      &:focus {\n        outline: 0;\n      }\n    }\n\n    .colorPickerWrapper {\n      z-index: 99;\n      position: absolute;\n    }\n  }\n\n  .type {\n    display: block;\n  }\n\n  .manufacturer {\n    padding: 0 0.3em 0 0;\n  }\n\n  .model {\n\n  }\n}\n\n.onoffswitch {\n  position: relative;\n  display: table-cell;\n  vertical-align: middle;\n  width: 50px;\n  -webkit-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n\n  .onoffswitchCheckbox {\n    display: none;\n\n    &:checked {\n      + .onoffswitchLabel {\n        .onoffswitchInner {\n          margin-left: 0;\n        }\n\n        .onoffswitchSwitch {\n          right: 0;\n        }\n      }\n    }\n  }\n\n  .onoffswitchLabel {\n    display: block;\n    overflow: hidden;\n    cursor: pointer;\n    border: 2px solid #CCCCCC;\n    border-radius: 18px;\n  }\n\n  .onoffswitchInner {\n    display: block;\n    width: 200%;\n    margin-left: -100%;\n    transition: margin 0.3s ease-in 0s;\n\n    &:before, &:after {\n      display: block;\n      float: left;\n      width: 50%;\n      height: 18px;\n      padding: 0;\n      line-height: 18px;\n      font-size: 12px;\n      color: white;\n      font-weight: 700;\n      box-sizing: border-box;\n    }\n\n    &:before {\n      content: \"on\";\n      padding-left: 10px;\n      background-color: #FFF7C2;\n      color: #474029;\n    }\n\n    &:after {\n      content: \"off\";\n      padding-right: 10px;\n      background-color: #373634;\n      color: #D6D6D6;\n      text-align: right;\n    }\n  }\n\n  .onoffswitchSwitch {\n      display: block; width: 18px; margin: 0px;\n      background: #FFFFFF;\n      position: absolute; top: 0; bottom: 0;\n      right: 32px;\n      border: 2px solid #CCCCCC; border-radius: 18px;\n      transition: all 0.3s ease-in 0s;\n  }\n}\n"],"sourceRoot":"webpack://"}]);
+  exports.push([module.id, "/* #222 */   /* #404040 */ /* #555 */ /* #777 */ /* #eee */  /* Extra small screen / phone */  /* Small screen / tablet */  /* Medium screen / desktop */ /* Large screen / wide desktop */\n\n.HomePage_lightList_3oL, .HomePage_groupList_3uQ {\n  list-style: none;\n  padding-left: 0;\n}\n\n.HomePage_groupList_3uQ {\n\n}\n\n.HomePage_group_1Vd {\n\n}\n\n.HomePage_light_2jt {\n  width: 223px;\n  display: inline-block;\n  margin: 0 5px 12px 5px;\n  padding: 6px;\n  border-radius: 2px;\n  border-width: 1px;\n  border-style: solid;\n}\n\n.HomePage_light_2jt .HomePage_lightHeader_1wr, .HomePage_light_2jt .HomePage_lightFooter_2nX {\n  display: table;\n  width: 100%;\n}\n\n.HomePage_light_2jt .HomePage_lightFooter_2nX {\n  margin-top: 5px;\n}\n\n.HomePage_light_2jt .HomePage_lightNameArea_my7, .HomePage_light_2jt .HomePage_metadata_pqP, .HomePage_light_2jt .HomePage_colorBlockAndPicker_Flb {\n  display: table-cell;\n  vertical-align: middle;\n}\n\n.HomePage_light_2jt .HomePage_name_nWG {\n  white-space: nowrap;\n  text-overflow: ellipsis;\n  overflow: hidden;\n  width: 151px;\n  display: block;\n}\n\n.HomePage_light_2jt .HomePage_metadata_pqP {\n  font-size: 13px;\n}\n\n.HomePage_light_2jt .HomePage_colorBlockAndPicker_Flb {\n  width: 50px;\n  position: relative;\n}\n\n.HomePage_light_2jt .HomePage_colorBlockAndPicker_Flb .HomePage_colorBlock_3k8 {\n  border-radius: 4px;\n  border: none;\n  width: 100%;\n  height: 100%\n}\n\n.HomePage_light_2jt .HomePage_colorBlockAndPicker_Flb .HomePage_colorBlock_3k8:focus {\n  outline: 0;\n}\n\n.HomePage_light_2jt .HomePage_colorBlockAndPicker_Flb .HomePage_colorPickerWrapper_26s {\n  z-index: 99;\n  position: absolute;\n}\n\n.HomePage_light_2jt .HomePage_type_1AJ {\n  display: block;\n}\n\n.HomePage_light_2jt .HomePage_manufacturer_3WL {\n  padding: 0 0.3em 0 0;\n}\n\n.HomePage_light_2jt .HomePage_model_3Ue {\n\n}\n\n.HomePage_light_2jt.HomePage_night_1p9 {\n  border-color: #38231D;\n  color: #E5E4E1;\n  background-color: #231511;\n}\n\n.HomePage_light_2jt.HomePage_night_1p9 .HomePage_metadata_pqP {\n  color: #97918A;\n}\n\n.HomePage_light_2jt.HomePage_day_2WC {\n  border-color: #ccc;\n}\n\n.HomePage_light_2jt.HomePage_day_2WC .HomePage_metadata_pqP {\n  color: #797979;\n}\n\n.HomePage_onoffswitch_3hQ {\n  position: relative;\n  display: table-cell;\n  vertical-align: middle;\n  width: 50px;\n  -webkit-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n}\n\n.HomePage_onoffswitch_3hQ .HomePage_onoffswitchCheckbox_3tD {\n  display: none\n}\n\n.HomePage_onoffswitch_3hQ .HomePage_onoffswitchCheckbox_3tD:checked + .HomePage_onoffswitchLabel_W_H .HomePage_onoffswitchInner_1zJ {\n  margin-left: 0;\n}\n\n.HomePage_onoffswitch_3hQ .HomePage_onoffswitchCheckbox_3tD:checked + .HomePage_onoffswitchLabel_W_H .HomePage_onoffswitchSwitch_1Vt {\n  right: 0;\n}\n\n.HomePage_onoffswitch_3hQ .HomePage_onoffswitchLabel_W_H {\n  display: block;\n  overflow: hidden;\n  cursor: pointer;\n  border: 2px solid #CCCCCC;\n  border-radius: 18px;\n}\n\n.HomePage_onoffswitch_3hQ .HomePage_onoffswitchInner_1zJ {\n  display: block;\n  width: 200%;\n  margin-left: -100%;\n  -webkit-transition: margin 0.3s ease-in 0s;\n  -o-transition: margin 0.3s ease-in 0s;\n  transition: margin 0.3s ease-in 0s\n}\n\n.HomePage_onoffswitch_3hQ .HomePage_onoffswitchInner_1zJ:before, .HomePage_onoffswitch_3hQ .HomePage_onoffswitchInner_1zJ:after {\n  display: block;\n  float: left;\n  width: 50%;\n  height: 18px;\n  padding: 0;\n  line-height: 18px;\n  font-size: 12px;\n  color: white;\n  font-weight: 700;\n  -webkit-box-sizing: border-box;\n          box-sizing: border-box;\n}\n\n.HomePage_onoffswitch_3hQ .HomePage_onoffswitchInner_1zJ:before {\n  content: \"on\";\n  padding-left: 10px;\n  background-color: #FFF7C2;\n  color: #474029;\n}\n\n.HomePage_onoffswitch_3hQ .HomePage_onoffswitchInner_1zJ:after {\n  content: \"off\";\n  padding-right: 10px;\n  background-color: #373634;\n  color: #D6D6D6;\n  text-align: right;\n}\n\n.HomePage_onoffswitch_3hQ .HomePage_onoffswitchSwitch_1Vt {\n  display: block;\n  width: 18px;\n  margin: 0px;\n  background: #FFFFFF;\n  position: absolute;\n  top: 0;\n  bottom: 0;\n  right: 32px;\n  border: 2px solid #CCCCCC;\n  border-radius: 18px;\n  -webkit-transition: all 0.3s ease-in 0s;\n  -o-transition: all 0.3s ease-in 0s;\n  transition: all 0.3s ease-in 0s;\n}\n", "", {"version":3,"sources":["/./src/components/variables.scss","/./src/components/HomePage/HomePage.scss"],"names":[],"mappings":"AACwD,UAAU,GACV,aAAa,CACb,UAAU,CACV,UAAU,CACV,UAAU,EASlC,gCAAgC,EAChC,2BAA2B,EAC3B,6BAA6B,CAC7B,iCAAiC;;ACfjE;EAEE,iBAAiB;EACjB,gBAAgB;CACjB;;AAED;;CAEC;;AAED;;CAEC;;AAED;EACE,aAAa;EACb,sBAAsB;EACtB,uBAAuB;EACvB,aAAa;EACb,mBAAmB;EACnB,kBAAkB;EAClB,oBAAoB;CAiFrB;;AA/EC;EAEE,eAAe;EACf,YAAY;CACb;;AAED;EACE,gBAAgB;CACjB;;AAED;EAGE,oBAAoB;EACpB,uBAAuB;CACxB;;AAoBD;EACE,oBAAoB;EACpB,wBAAwB;EACxB,iBAAiB;EACjB,aAAa;EACb,eAAe;CAChB;;AAED;EACE,gBAAgB;CACjB;;AAED;EACE,YAAY;EACZ,mBAAmB;CAiBpB;;AAfC;EACE,mBAAmB;EACnB,aAAa;EACb,YAAY;EACZ,YAAa;CAKd;;AAHC;EACE,WAAW;CACZ;;AAGH;EACE,YAAY;EACZ,mBAAmB;CACpB;;AAGH;EACE,eAAe;CAChB;;AAED;EACE,qBAAqB;CACtB;;AAED;;CAEC;;AA7DD;EACE,sBAAsB;EACtB,eAAe;EACf,0BAA0B;CAK3B;;AAHC;EACE,eAAe;CAChB;;AAGH;EACE,mBAAmB;CAKpB;;AAHC;EACE,eAAe;CAChB;;AAiDL;EACE,mBAAmB;EACnB,oBAAoB;EACpB,uBAAuB;EACvB,YAAY;EACZ,0BAA0B;EAC1B,uBAAuB;EACvB,sBAAsB;CAqEvB;;AAnEC;EACE,aAAc;CAaf;;AATK;EACE,eAAe;CAChB;;AAED;EACE,SAAS;CACV;;AAKP;EACE,eAAe;EACf,iBAAiB;EACjB,gBAAgB;EAChB,0BAA0B;EAC1B,oBAAoB;CACrB;;AAED;EACE,eAAe;EACf,YAAY;EACZ,mBAAmB;EACnB,2CAAmC;EAAnC,sCAAmC;EAAnC,kCAAmC;CA6BpC;;AA3BC;EACE,eAAe;EACf,YAAY;EACZ,WAAW;EACX,aAAa;EACb,WAAW;EACX,kBAAkB;EAClB,gBAAgB;EAChB,aAAa;EACb,iBAAiB;EACjB,+BAAuB;UAAvB,uBAAuB;CACxB;;AAED;EACE,cAAc;EACd,mBAAmB;EACnB,0BAA0B;EAC1B,eAAe;CAChB;;AAED;EACE,eAAe;EACf,oBAAoB;EACpB,0BAA0B;EAC1B,eAAe;EACf,kBAAkB;CACnB;;AAGH;EACI,eAAe;EAAC,YAAY;EAAC,YAAY;EACzC,oBAAoB;EACpB,mBAAmB;EAAC,OAAO;EAAC,UAAU;EACtC,YAAY;EACZ,0BAA0B;EAAC,oBAAoB;EAC/C,wCAAgC;EAAhC,mCAAgC;EAAhC,gCAAgC;CACnC","file":"HomePage.scss","sourcesContent":["$white-base:            hsl(255, 255, 255);\r\n$gray-darker:           color(black lightness(+13.5%)); /* #222 */\r\n$gray-dark:             color(black lightness(+25%));   /* #404040 */\r\n$gray:                  color(black lightness(+33.5%)); /* #555 */\r\n$gray-light:            color(black lightness(+46.7%)); /* #777 */\r\n$gray-lighter:          color(black lightness(+93.5%)); /* #eee */\r\n\r\n$link-color: #E16C51;\r\n$link-hover-color: #97918A;\r\n\r\n$font-family-base:      'Segoe UI', 'HelveticaNeue-Light', sans-serif;\r\n\r\n$max-content-width:     1000px;\r\n\r\n$screen-xs-min:         480px;  /* Extra small screen / phone */\r\n$screen-sm-min:         768px;  /* Small screen / tablet */\r\n$screen-md-min:         992px;  /* Medium screen / desktop */\r\n$screen-lg-min:         1200px; /* Large screen / wide desktop */\r\n\r\n$animation-swift-out:   .45s cubic-bezier(0.3, 1, 0.4, 1) 0s;\r\n","@import '../variables.scss';\n\n.lightList,\n.groupList {\n  list-style: none;\n  padding-left: 0;\n}\n\n.groupList {\n\n}\n\n.group {\n\n}\n\n.light {\n  width: 223px;\n  display: inline-block;\n  margin: 0 5px 12px 5px;\n  padding: 6px;\n  border-radius: 2px;\n  border-width: 1px;\n  border-style: solid;\n\n  .lightHeader,\n  .lightFooter {\n    display: table;\n    width: 100%;\n  }\n\n  .lightFooter {\n    margin-top: 5px;\n  }\n\n  .lightNameArea,\n  .metadata,\n  .colorBlockAndPicker {\n    display: table-cell;\n    vertical-align: middle;\n  }\n\n  &.night {\n    border-color: #38231D;\n    color: #E5E4E1;\n    background-color: #231511;\n\n    .metadata {\n      color: #97918A;\n    }\n  }\n\n  &.day {\n    border-color: #ccc;\n\n    .metadata {\n      color: #797979;\n    }\n  }\n\n  .name {\n    white-space: nowrap;\n    text-overflow: ellipsis;\n    overflow: hidden;\n    width: 151px;\n    display: block;\n  }\n\n  .metadata {\n    font-size: 13px;\n  }\n\n  .colorBlockAndPicker {\n    width: 50px;\n    position: relative;\n\n    .colorBlock {\n      border-radius: 4px;\n      border: none;\n      width: 100%;\n      height: 100%;\n\n      &:focus {\n        outline: 0;\n      }\n    }\n\n    .colorPickerWrapper {\n      z-index: 99;\n      position: absolute;\n    }\n  }\n\n  .type {\n    display: block;\n  }\n\n  .manufacturer {\n    padding: 0 0.3em 0 0;\n  }\n\n  .model {\n\n  }\n}\n\n.onoffswitch {\n  position: relative;\n  display: table-cell;\n  vertical-align: middle;\n  width: 50px;\n  -webkit-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n\n  .onoffswitchCheckbox {\n    display: none;\n\n    &:checked {\n      + .onoffswitchLabel {\n        .onoffswitchInner {\n          margin-left: 0;\n        }\n\n        .onoffswitchSwitch {\n          right: 0;\n        }\n      }\n    }\n  }\n\n  .onoffswitchLabel {\n    display: block;\n    overflow: hidden;\n    cursor: pointer;\n    border: 2px solid #CCCCCC;\n    border-radius: 18px;\n  }\n\n  .onoffswitchInner {\n    display: block;\n    width: 200%;\n    margin-left: -100%;\n    transition: margin 0.3s ease-in 0s;\n\n    &:before, &:after {\n      display: block;\n      float: left;\n      width: 50%;\n      height: 18px;\n      padding: 0;\n      line-height: 18px;\n      font-size: 12px;\n      color: white;\n      font-weight: 700;\n      box-sizing: border-box;\n    }\n\n    &:before {\n      content: \"on\";\n      padding-left: 10px;\n      background-color: #FFF7C2;\n      color: #474029;\n    }\n\n    &:after {\n      content: \"off\";\n      padding-right: 10px;\n      background-color: #373634;\n      color: #D6D6D6;\n      text-align: right;\n    }\n  }\n\n  .onoffswitchSwitch {\n      display: block; width: 18px; margin: 0px;\n      background: #FFFFFF;\n      position: absolute; top: 0; bottom: 0;\n      right: 32px;\n      border: 2px solid #CCCCCC; border-radius: 18px;\n      transition: all 0.3s ease-in 0s;\n  }\n}\n"],"sourceRoot":"webpack://"}]);
   
   // exports
   exports.locals = {
   	"lightList": "HomePage_lightList_3oL",
+  	"groupList": "HomePage_groupList_3uQ",
+  	"group": "HomePage_group_1Vd",
   	"light": "HomePage_light_2jt",
   	"lightHeader": "HomePage_lightHeader_1wr",
   	"lightFooter": "HomePage_lightFooter_2nX",
@@ -3358,6 +3430,20 @@ module.exports =
               return context$2$0.abrupt('return', this.makeRequest('/users?ip=' + encodeURIComponent(ip) + '&user=' + encodeURIComponent(user), opts));
   
             case 2:
+            case 'end':
+              return context$2$0.stop();
+          }
+        }, null, this);
+      }
+    }, {
+      key: 'getGroups',
+      value: function getGroups() {
+        return regeneratorRuntime.async(function getGroups$(context$2$0) {
+          while (1) switch (context$2$0.prev = context$2$0.next) {
+            case 0:
+              return context$2$0.abrupt('return', this.makeRequest('/groups'));
+  
+            case 1:
             case 'end':
               return context$2$0.stop();
           }
@@ -3564,7 +3650,8 @@ module.exports =
     _createClass(LightsList, null, [{
       key: 'propTypes',
       value: {
-        ids: _react.PropTypes.array.isRequired
+        ids: _react.PropTypes.array.isRequired,
+        onLightLoaded: _react.PropTypes.func.isRequired
       },
       enumerable: true
     }]);
@@ -3579,14 +3666,23 @@ module.exports =
     _createClass(LightsList, [{
       key: 'render',
       value: function render() {
+        var _this = this;
+  
         return _react2['default'].createElement(
           'div',
           null,
           _react2['default'].createElement(
+            'h2',
+            null,
+            'Lights'
+          ),
+          _react2['default'].createElement(
             'ul',
             { className: _HomePageScss2['default'].lightList },
             this.props.ids.map(function (id) {
-              return _react2['default'].createElement(_Light2['default'], { key: id, id: id });
+              return _react2['default'].createElement(_Light2['default'], { key: id, id: id,
+                onLightLoaded: _this.props.onLightLoaded
+              });
             })
           )
         );
@@ -3647,7 +3743,8 @@ module.exports =
     _createClass(Light, null, [{
       key: 'propTypes',
       value: {
-        id: _react.PropTypes.string.isRequired
+        id: _react.PropTypes.string.isRequired,
+        onLightLoaded: _react.PropTypes.func.isRequired
       },
       enumerable: true
     }]);
@@ -3675,11 +3772,13 @@ module.exports =
           console.error('failed to load light ' + this.props.id, light);
           return;
         }
+        light.id = this.props.id;
         this.setState({
           light: light,
           loaded: true,
           latestColor: this.getLightHex(light.state)
         });
+        this.props.onLightLoaded(light);
       }
     }, {
       key: 'onLightToggle',
@@ -5172,6 +5271,173 @@ module.exports =
 /***/ function(module, exports) {
 
   module.exports = require("classnames");
+
+/***/ },
+/* 72 */
+/***/ function(module, exports, __webpack_require__) {
+
+  'use strict';
+  
+  Object.defineProperty(exports, '__esModule', {
+    value: true
+  });
+  
+  var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+  
+  var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+  
+  var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+  
+  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  
+  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+  
+  function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+  
+  var _react = __webpack_require__(4);
+  
+  var _react2 = _interopRequireDefault(_react);
+  
+  var _HomePageScss = __webpack_require__(45);
+  
+  var _HomePageScss2 = _interopRequireDefault(_HomePageScss);
+  
+  var _Group = __webpack_require__(73);
+  
+  var _Group2 = _interopRequireDefault(_Group);
+  
+  var GroupsList = (function (_Component) {
+    _inherits(GroupsList, _Component);
+  
+    _createClass(GroupsList, null, [{
+      key: 'propTypes',
+      value: {
+        groups: _react.PropTypes.array.isRequired
+      },
+      enumerable: true
+    }]);
+  
+    function GroupsList(props, context) {
+      _classCallCheck(this, GroupsList);
+  
+      _get(Object.getPrototypeOf(GroupsList.prototype), 'constructor', this).call(this, props, context);
+      this.state = {};
+    }
+  
+    _createClass(GroupsList, [{
+      key: 'render',
+      value: function render() {
+        return _react2['default'].createElement(
+          'div',
+          null,
+          _react2['default'].createElement(
+            'h2',
+            null,
+            'Groups'
+          ),
+          _react2['default'].createElement(
+            'ul',
+            { className: _HomePageScss2['default'].groupList },
+            this.props.groups.map(function (group) {
+              return _react2['default'].createElement(_Group2['default'], _extends({ key: group.id }, group));
+            })
+          )
+        );
+      }
+    }]);
+  
+    return GroupsList;
+  })(_react.Component);
+  
+  exports['default'] = GroupsList;
+  module.exports = exports['default'];
+
+/***/ },
+/* 73 */
+/***/ function(module, exports, __webpack_require__) {
+
+  'use strict';
+  
+  Object.defineProperty(exports, '__esModule', {
+    value: true
+  });
+  
+  var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+  
+  var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+  
+  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  
+  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+  
+  function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+  
+  var _react = __webpack_require__(4);
+  
+  var _react2 = _interopRequireDefault(_react);
+  
+  var _HomePageScss = __webpack_require__(45);
+  
+  var _HomePageScss2 = _interopRequireDefault(_HomePageScss);
+  
+  var _classnames = __webpack_require__(71);
+  
+  var _classnames2 = _interopRequireDefault(_classnames);
+  
+  var Group = (function (_Component) {
+    _inherits(Group, _Component);
+  
+    _createClass(Group, null, [{
+      key: 'propTypes',
+      value: {
+        id: _react.PropTypes.string.isRequired,
+        name: _react.PropTypes.string,
+        type: _react.PropTypes.string,
+        lights: _react.PropTypes.array
+      },
+      enumerable: true
+    }]);
+  
+    function Group(props, context) {
+      _classCallCheck(this, Group);
+  
+      _get(Object.getPrototypeOf(Group.prototype), 'constructor', this).call(this, props, context);
+      this.state = {};
+    }
+  
+    _createClass(Group, [{
+      key: 'componentDidMount',
+      value: function componentDidMount() {}
+    }, {
+      key: 'isNight',
+      value: function isNight() {
+        var curTime = new Date();
+        return curTime.getHours() >= 20;
+      }
+    }, {
+      key: 'render',
+      value: function render() {
+        var lightNames = this.props.lights.map(function (l) {
+          if (typeof l === 'string') {
+            return l;
+          }
+          return l.name;
+        }).join(', ');
+        return _react2['default'].createElement(
+          'li',
+          { className: (0, _classnames2['default'])(_HomePageScss2['default'].group, this.isNight() ? _HomePageScss2['default'].night : _HomePageScss2['default'].day) },
+          this.props.name,
+          ' ',
+          lightNames
+        );
+      }
+    }]);
+  
+    return Group;
+  })(_react.Component);
+  
+  exports['default'] = Group;
+  module.exports = exports['default'];
 
 /***/ }
 /******/ ]);

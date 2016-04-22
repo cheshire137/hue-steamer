@@ -5,6 +5,7 @@ import Light from './Light';
 class LightsList extends Component {
   static propTypes = {
     ids: PropTypes.array.isRequired,
+    onLightLoaded: PropTypes.func.isRequired,
   };
 
   constructor(props, context) {
@@ -15,10 +16,13 @@ class LightsList extends Component {
   render() {
     return (
       <div>
+        <h2>Lights</h2>
         <ul className={s.lightList}>
           {this.props.ids.map((id) => {
             return (
-              <Light key={id} id={id} />
+              <Light key={id} id={id}
+                onLightLoaded={this.props.onLightLoaded}
+              />
             );
           })}
         </ul>

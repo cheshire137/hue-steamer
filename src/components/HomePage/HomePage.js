@@ -5,6 +5,7 @@ import withStyles from '../../decorators/withStyles';
 import Location from '../../core/Location';
 import Bridge from '../../actions/bridge';
 import LightsList from './LightsList';
+import GroupsList from './GroupsList';
 
 const title = 'Hue Steamer';
 
@@ -16,7 +17,7 @@ class HomePage extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = { lights: {} };
   }
 
   componentWillMount() {
@@ -31,7 +32,11 @@ class HomePage extends Component {
   onBridgeLoaded(bridge) {
     this.setState({ bridgeConnectionID: bridge.connection.id });
     Bridge.getAllLights(bridge.connection.id).
-           then(this.onAllLightsLoaded.bind(this));
+           then(this.onAllLightsLoaded.bind(this)).
+           catch(this.onAllLightsLoadError.bind(this));
+    Bridge.getGroups().
+           then(this.onGroupsLoaded.bind(this)).
+           catch(this.onGroupsLoadError.bind(this));
   }
 
   onBridgeLoadError(response) {
@@ -42,20 +47,59 @@ class HomePage extends Component {
   }
 
   onAllLightsLoaded(group) {
-    if (group.hasOwnProperty('errno')) {
-      console.error('failed to load group of all lights', group);
-      return;
-    }
     this.setState({ lightIDs: group.lights });
+  }
+
+  onAllLightsLoadError(response) {
+    console.error('failed to load group of all lights', response);
+  }
+
+  onGroupsLoaded(rawGroups) {
+    const groups = [];
+    for (let i = 0; i < rawGroups.length; i++) {
+      if (rawGroups[i].id !== '0') {
+        groups.push(rawGroups[i]);
+      }
+    }
+    this.setState({ groups });
+  }
+
+  onGroupsLoadError(response) {
+    console.error('failed to load groups', response);
+  }
+
+  onLightLoaded(light) {
+    const lights = this.state.lights;
+    lights[light.id] = light;
+    const groups = this.state.groups;
+    if (typeof groups === 'object') {
+      for (let i = 0; i < groups.length; i++) {
+        const group = this.state.groups[i];
+        for (let j = 0; j < group.lights.length; j++) {
+          const lightID = group.lights[j];
+          if (lightID === light.id) {
+            group.lights[j] = light;
+            break;
+          }
+        }
+      }
+    }
+    this.setState({ lights, groups });
   }
 
   render() {
     const haveLights = typeof this.state.lightIDs === 'object';
+    const haveGroups = typeof this.state.groups === 'object';
     return (
       <div>
+        {haveGroups ? (
+          <GroupsList groups={this.state.groups} />
+        ) : 'Loading groups...'}
         {haveLights ? (
-          <LightsList ids={this.state.lightIDs} />
-        ) : 'Loading...'}
+          <LightsList ids={this.state.lightIDs}
+            onLightLoaded={this.onLightLoaded.bind(this)}
+          />
+        ) : 'Loading lights...'}
       </div>
     );
   }

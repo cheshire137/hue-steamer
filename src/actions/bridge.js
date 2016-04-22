@@ -25,6 +25,10 @@ class Bridge {
                             '&user=' + encodeURIComponent(user), opts);
   }
 
+  static async getGroups() {
+    return this.makeRequest('/groups');
+  }
+
   static async getGroup(groupID) {
     return this.makeRequest('/group/' + (groupID || '0'));
   }

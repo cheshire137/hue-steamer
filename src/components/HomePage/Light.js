@@ -8,6 +8,7 @@ import cx from 'classnames';
 class Light extends Component {
   static propTypes = {
     id: PropTypes.string.isRequired,
+    onLightLoaded: PropTypes.func.isRequired,
   };
 
   constructor(props, context) {
@@ -28,11 +29,13 @@ class Light extends Component {
       console.error('failed to load light ' + this.props.id, light);
       return;
     }
+    light.id = this.props.id;
     this.setState({
       light,
       loaded: true,
       latestColor: this.getLightHex(light.state),
     });
+    this.props.onLightLoaded(light);
   }
 
   onLightToggle() {

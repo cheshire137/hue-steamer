@@ -1,8 +1,17 @@
 @import '../variables.scss';
 
-.lightList {
+.lightList,
+.groupList {
   list-style: none;
   padding-left: 0;
+}
+
+.groupList {
+
+}
+
+.group {
+
 }
 
 .light {
