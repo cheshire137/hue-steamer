@@ -23,10 +23,15 @@ html {
   line-height: 1.375;
 }
 
-body, .container {
+body, .containerDay, .containerNight, .container {
   display: flex;
   min-height: 100vh;
   flex-direction: column;
+}
+
+.containerNight {
+  background-color: #101010;
+  color: #97918A;
 }
 
 main {

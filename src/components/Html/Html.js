@@ -11,7 +11,6 @@ import React, { Component, PropTypes } from 'react';
 import { googleAnalyticsId } from '../../config';
 
 class Html extends Component {
-
   static propTypes = {
     title: PropTypes.string,
     description: PropTypes.string,
@@ -38,7 +37,7 @@ class Html extends Component {
 
   render() {
     return (
-      <html className="no-js" lang="">
+      <html className="no-js" lang="en">
       <head>
         <meta charSet="utf-8" />
         <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
@@ -56,7 +55,6 @@ class Html extends Component {
       </html>
     );
   }
-
 }
 
 export default Html;

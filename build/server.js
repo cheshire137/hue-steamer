@@ -83,11 +83,11 @@ module.exports =
   
   var _routes2 = _interopRequireDefault(_routes);
   
-  var _componentsHtml = __webpack_require__(61);
+  var _componentsHtml = __webpack_require__(60);
   
   var _componentsHtml2 = _interopRequireDefault(_componentsHtml);
   
-  var _assets = __webpack_require__(62);
+  var _assets = __webpack_require__(61);
   
   var _assets2 = _interopRequireDefault(_assets);
   
@@ -97,11 +97,11 @@ module.exports =
   
   var _configJson2 = _interopRequireDefault(_configJson);
   
-  var _sqlite = __webpack_require__(63);
+  var _sqlite = __webpack_require__(62);
   
   var _sqlite2 = _interopRequireDefault(_sqlite);
   
-  var hue = __webpack_require__(64);
+  var hue = __webpack_require__(63);
   var server = global.server = (0, _express2['default'])();
   
   function getBridge(id) {
@@ -226,7 +226,7 @@ module.exports =
   //
   // Register API middleware
   // -----------------------------------------------------------------------------
-  server.use('/api/content', __webpack_require__(65));
+  server.use('/api/content', __webpack_require__(64));
   
   server.all('*', function (req, res, next) {
     res.header('Access-Control-Allow-Origin', _configJson2['default'][("development")].clientUri);
@@ -703,7 +703,7 @@ module.exports =
   
   var _componentsHomePage2 = _interopRequireDefault(_componentsHomePage);
   
-  var _componentsSettingsPage = __webpack_require__(57);
+  var _componentsSettingsPage = __webpack_require__(55);
   
   var _componentsSettingsPage2 = _interopRequireDefault(_componentsSettingsPage);
   
@@ -1785,18 +1785,34 @@ module.exports =
         this.removeCss();
       }
     }, {
+      key: 'isNight',
+      value: function isNight() {
+        var curTime = new Date();
+        return curTime.getHours() >= 20;
+      }
+    }, {
       key: 'render',
       value: function render() {
+        var containerClass = undefined;
+        if (this.isNight()) {
+          containerClass = _AppScss2['default'].containerNight;
+        } else {
+          containerClass = _AppScss2['default'].containerDay;
+        }
         return !this.props.error ? _react2['default'].createElement(
           'div',
-          { className: _AppScss2['default'].container },
-          _react2['default'].createElement(_Header2['default'], null),
+          { className: containerClass },
           _react2['default'].createElement(
-            'main',
-            { className: _AppScss2['default'].pageMain },
-            this.props.children
-          ),
-          _react2['default'].createElement(_Footer2['default'], null)
+            'div',
+            { className: _AppScss2['default'].container },
+            _react2['default'].createElement(_Header2['default'], null),
+            _react2['default'].createElement(
+              'main',
+              { className: _AppScss2['default'].pageMain },
+              this.props.children
+            ),
+            _react2['default'].createElement(_Footer2['default'], null)
+          )
         ) : this.props.children;
       }
     }], [{
@@ -1876,10 +1892,12 @@ module.exports =
   
   
   // module
-  exports.push([module.id, "/*! normalize.css v3.0.3 | MIT License | github.com/necolas/normalize.css */\n\n/**\n * 1. Set default font family to sans-serif.\n * 2. Prevent iOS and IE text size adjust after device orientation change,\n *    without disabling user zoom.\n */\n\nhtml {\n  font-family: sans-serif; /* 1 */\n  -ms-text-size-adjust: 100%; /* 2 */\n  -webkit-text-size-adjust: 100%; /* 2 */\n}\n\n/**\n * Remove default margin.\n */\n\nbody {\n  margin: 0;\n}\n\n/* HTML5 display definitions\n   ========================================================================== */\n\n/**\n * Correct `block` display not defined for any HTML5 element in IE 8/9.\n * Correct `block` display not defined for `details` or `summary` in IE 10/11\n * and Firefox.\n * Correct `block` display not defined for `main` in IE 11.\n */\n\narticle, aside, details, figcaption, figure, footer, header, hgroup, main, menu, nav, section, summary {\n  display: block;\n}\n\n/**\n * 1. Correct `inline-block` display not defined in IE 8/9.\n * 2. Normalize vertical alignment of `progress` in Chrome, Firefox, and Opera.\n */\n\naudio, canvas, progress, video {\n  display: inline-block; /* 1 */\n  vertical-align: baseline; /* 2 */\n}\n\n/**\n * Prevent modern browsers from displaying `audio` without controls.\n * Remove excess height in iOS 5 devices.\n */\n\naudio:not([controls]) {\n  display: none;\n  height: 0;\n}\n\n/**\n * Address `[hidden]` styling not present in IE 8/9/10.\n * Hide the `template` element in IE 8/9/10/11, Safari, and Firefox < 22.\n */\n\n[hidden], template {\n  display: none;\n}\n\n/* Links\n   ========================================================================== */\n\n/**\n * Remove the gray background color from active links in IE 10.\n */\n\na {\n  background-color: transparent;\n}\n\n/**\n * Improve readability of focused elements when they are also in an\n * active/hover state.\n */\n\na:active, a:hover {\n  outline: 0;\n}\n\n/* Text-level semantics\n   ========================================================================== */\n\n/**\n * Address styling not present in IE 8/9/10/11, Safari, and Chrome.\n */\n\nabbr[title] {\n  border-bottom: 1px dotted;\n}\n\n/**\n * Address style set to `bolder` in Firefox 4+, Safari, and Chrome.\n */\n\nb, strong {\n  font-weight: bold;\n}\n\n/**\n * Address styling not present in Safari and Chrome.\n */\n\ndfn {\n  font-style: italic;\n}\n\n/**\n * Address variable `h1` font-size and margin within `section` and `article`\n * contexts in Firefox 4+, Safari, and Chrome.\n */\n\nh1 {\n  font-size: 2em;\n  margin: 0.67em 0;\n}\n\n/**\n * Address styling not present in IE 8/9.\n */\n\nmark {\n  background: #ff0;\n  color: #000;\n}\n\n/**\n * Address inconsistent and variable font size in all browsers.\n */\n\nsmall {\n  font-size: 80%;\n}\n\n/**\n * Prevent `sub` and `sup` affecting `line-height` in all browsers.\n */\n\nsub, sup {\n  font-size: 75%;\n  line-height: 0;\n  position: relative;\n  vertical-align: baseline;\n}\n\nsup {\n  top: -0.5em;\n}\n\nsub {\n  bottom: -0.25em;\n}\n\n/* Embedded content\n   ========================================================================== */\n\n/**\n * Remove border when inside `a` element in IE 8/9/10.\n */\n\nimg {\n  border: 0;\n}\n\n/**\n * Correct overflow not hidden in IE 9/10/11.\n */\n\nsvg:not(:root) {\n  overflow: hidden;\n}\n\n/* Grouping content\n   ========================================================================== */\n\n/**\n * Address margin not present in IE 8/9 and Safari.\n */\n\nfigure {\n  margin: 1em 40px;\n}\n\n/**\n * Address differences between Firefox and other browsers.\n */\n\nhr {\n  -webkit-box-sizing: content-box;\n          box-sizing: content-box;\n  height: 0;\n}\n\n/**\n * Contain overflow in all browsers.\n */\n\npre {\n  overflow: auto;\n}\n\n/**\n * Address odd `em`-unit font size rendering in all browsers.\n */\n\ncode, kbd, pre, samp {\n  font-family: monospace, monospace;\n  font-size: 1em;\n}\n\n/* Forms\n   ========================================================================== */\n\n/**\n * Known limitation: by default, Chrome and Safari on OS X allow very limited\n * styling of `select`, unless a `border` property is set.\n */\n\n/**\n * 1. Correct color not being inherited.\n *    Known issue: affects color of disabled elements.\n * 2. Correct font properties not being inherited.\n * 3. Address margins set differently in Firefox 4+, Safari, and Chrome.\n */\n\nbutton, input, optgroup, select, textarea {\n  color: inherit; /* 1 */\n  font: inherit; /* 2 */\n  margin: 0; /* 3 */\n}\n\n/**\n * Address `overflow` set to `hidden` in IE 8/9/10/11.\n */\n\nbutton {\n  overflow: visible;\n}\n\n/**\n * Address inconsistent `text-transform` inheritance for `button` and `select`.\n * All other form control elements do not inherit `text-transform` values.\n * Correct `button` style inheritance in Firefox, IE 8/9/10/11, and Opera.\n * Correct `select` style inheritance in Firefox.\n */\n\nbutton, select {\n  text-transform: none;\n}\n\n/**\n * 1. Avoid the WebKit bug in Android 4.0.* where (2) destroys native `audio`\n *    and `video` controls.\n * 2. Correct inability to style clickable `input` types in iOS.\n * 3. Improve usability and consistency of cursor style between image-type\n *    `input` and others.\n */\n\nbutton, html input[type=\"button\"], input[type=\"reset\"], input[type=\"submit\"] {\n  -webkit-appearance: button; /* 2 */\n  cursor: pointer; /* 3 */\n}\n\n/**\n * Re-set default cursor for disabled elements.\n */\n\nbutton[disabled], html input[disabled] {\n  cursor: default;\n}\n\n/**\n * Remove inner padding and border in Firefox 4+.\n */\n\nbutton::-moz-focus-inner, input::-moz-focus-inner {\n  border: 0;\n  padding: 0;\n}\n\n/**\n * Address Firefox 4+ setting `line-height` on `input` using `!important` in\n * the UA stylesheet.\n */\n\ninput {\n  line-height: normal;\n}\n\n/**\n * It's recommended that you don't attempt to style these elements.\n * Firefox's implementation doesn't respect box-sizing, padding, or width.\n *\n * 1. Address box sizing set to `content-box` in IE 8/9/10.\n * 2. Remove excess padding in IE 8/9/10.\n */\n\ninput[type=\"checkbox\"], input[type=\"radio\"] {\n  -webkit-box-sizing: border-box;\n          box-sizing: border-box; /* 1 */\n  padding: 0; /* 2 */\n}\n\n/**\n * Fix the cursor style for Chrome's increment/decrement buttons. For certain\n * `font-size` values of the `input`, it causes the cursor style of the\n * decrement button to change from `default` to `text`.\n */\n\ninput[type=\"number\"]::-webkit-inner-spin-button, input[type=\"number\"]::-webkit-outer-spin-button {\n  height: auto;\n}\n\n/**\n * 1. Address `appearance` set to `searchfield` in Safari and Chrome.\n * 2. Address `box-sizing` set to `border-box` in Safari and Chrome.\n */\n\ninput[type=\"search\"] {\n  -webkit-appearance: textfield; /* 1 */\n  -webkit-box-sizing: content-box;\n          box-sizing: content-box; /* 2 */\n}\n\n/**\n * Remove inner padding and search cancel button in Safari and Chrome on OS X.\n * Safari (but not Chrome) clips the cancel button when the search input has\n * padding (and `textfield` appearance).\n */\n\ninput[type=\"search\"]::-webkit-search-cancel-button, input[type=\"search\"]::-webkit-search-decoration {\n  -webkit-appearance: none;\n}\n\n/**\n * Define consistent border, margin, and padding.\n */\n\nfieldset {\n  border: 1px solid #c0c0c0;\n  margin: 0 2px;\n  padding: 0.35em 0.625em 0.75em;\n}\n\n/**\n * 1. Correct `color` not being inherited in IE 8/9/10/11.\n * 2. Remove padding so people aren't caught out if they zero out fieldsets.\n */\n\nlegend {\n  border: 0; /* 1 */\n  padding: 0; /* 2 */\n}\n\n/**\n * Remove default vertical scrollbar in IE 8/9/10/11.\n */\n\ntextarea {\n  overflow: auto;\n}\n\n/**\n * Don't inherit the `font-weight` (applied by a rule above).\n * NOTE: the default cannot safely be changed in Chrome and Safari on OS X.\n */\n\noptgroup {\n  font-weight: bold;\n}\n\n/* Tables\n   ========================================================================== */\n\n/**\n * Remove most spacing between table cells.\n */\n\ntable {\n  border-collapse: collapse;\n  border-spacing: 0;\n}\n\ntd, th {\n  padding: 0;\n} /* #222 */   /* #404040 */ /* #555 */ /* #777 */ /* #eee */  /* Extra small screen / phone */  /* Small screen / tablet */  /* Medium screen / desktop */ /* Large screen / wide desktop */\r\n\r\n* {\r\n  -webkit-box-sizing: border-box;\r\n  box-sizing: border-box;\r\n}\r\n\r\na, a:link, a:visited, a:active {\r\n  color: #E16C51;\r\n}\r\n\r\na:hover, a:focus {\r\n  color: #97918A;\r\n}\r\n\r\nhtml {\r\n  color: #222;\r\n  font-weight: 100;\r\n  font-size: 1em;\r\n  font-family: 'Segoe UI','HelveticaNeue-Light',sans-serif;\r\n  line-height: 1.375;\r\n}\r\n\r\nbody, .App_container_3x2 {\r\n  display: -webkit-box;\r\n  display: -webkit-flex;\r\n  display: -ms-flexbox;\r\n  display: flex;\r\n  min-height: 100vh;\r\n  -webkit-box-orient: vertical;\r\n  -webkit-box-direction: normal;\r\n  -webkit-flex-direction: column;\r\n      -ms-flex-direction: column;\r\n          flex-direction: column;\r\n}\r\n\r\nmain {\r\n  -webkit-box-flex: 1;\r\n  -webkit-flex: 1 0 auto;\r\n      -ms-flex: 1 0 auto;\r\n          flex: 1 0 auto;\r\n}\r\n\r\n.App_container_3x2 {\r\n  margin-left: auto;\r\n  margin-right: auto;\r\n}\r\n\r\n::-moz-selection {\r\n  background: #b3d4fc;\r\n  text-shadow: none;\r\n}\r\n\r\n::selection {\r\n  background: #b3d4fc;\r\n  text-shadow: none;\r\n}\r\n\r\nhr {\r\n  display: block;\r\n  height: 1px;\r\n  border: 0;\r\n  border-top: 1px solid #ccc;\r\n  margin: 1em 0;\r\n  padding: 0;\r\n}\r\n\r\naudio, canvas, iframe, img, svg, video {\r\n  vertical-align: middle;\r\n}\r\n\r\nfieldset {\r\n  border: 0;\r\n  margin: 0;\r\n  padding: 0;\r\n}\r\n\r\ntextarea {\r\n  resize: vertical;\r\n}\r\n\r\n@media print {\r\n  *, *:before, *:after {\r\n    background: transparent !important;\r\n    color: #000 !important;\r\n    -webkit-box-shadow: none !important;\r\n            box-shadow: none !important;\r\n    text-shadow: none !important;\r\n  }\r\n\r\n  a, a:visited {\r\n    text-decoration: underline;\r\n  }\r\n\r\n  a[href]:after {\r\n    content: \" (\" attr(href) \")\";\r\n  }\r\n\r\n  abbr[title]:after {\r\n    content: \" (\" attr(title) \")\";\r\n  }\r\n\r\n  a[href^=\"#\"]:after, a[href^=\"javascript:\"]:after {\r\n    content: \"\";\r\n  }\r\n\r\n  pre, blockquote {\r\n    border: 1px solid #999;\r\n    page-break-inside: avoid;\r\n  }\r\n\r\n  thead {\r\n    display: table-header-group;\r\n  }\r\n\r\n  tr, img {\r\n    page-break-inside: avoid;\r\n  }\r\n\r\n  img {\r\n    max-width: 100% !important;\r\n  }\r\n\r\n  p, h2, h3 {\r\n    orphans: 3;\r\n    widows: 3;\r\n  }\r\n\r\n  h2, h3 {\r\n    page-break-after: avoid;\r\n  }\r\n}\r\n\r\n@media (min-width: 992px) {\r\n  .App_container_3x2 {\r\n    width: 700px;\r\n  }\r\n}\r\n", "", {"version":3,"sources":["/./node_modules/normalize.css/normalize.css","/./src/components/variables.scss","/./src/components/App/App.scss"],"names":[],"mappings":"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","file":"App.scss","sourcesContent":["/*! normalize.css v3.0.3 | MIT License | github.com/necolas/normalize.css */\n\n/**\n * 1. Set default font family to sans-serif.\n * 2. Prevent iOS and IE text size adjust after device orientation change,\n *    without disabling user zoom.\n */\n\nhtml {\n  font-family: sans-serif; /* 1 */\n  -ms-text-size-adjust: 100%; /* 2 */\n  -webkit-text-size-adjust: 100%; /* 2 */\n}\n\n/**\n * Remove default margin.\n */\n\nbody {\n  margin: 0;\n}\n\n/* HTML5 display definitions\n   ========================================================================== */\n\n/**\n * Correct `block` display not defined for any HTML5 element in IE 8/9.\n * Correct `block` display not defined for `details` or `summary` in IE 10/11\n * and Firefox.\n * Correct `block` display not defined for `main` in IE 11.\n */\n\narticle,\naside,\ndetails,\nfigcaption,\nfigure,\nfooter,\nheader,\nhgroup,\nmain,\nmenu,\nnav,\nsection,\nsummary {\n  display: block;\n}\n\n/**\n * 1. Correct `inline-block` display not defined in IE 8/9.\n * 2. Normalize vertical alignment of `progress` in Chrome, Firefox, and Opera.\n */\n\naudio,\ncanvas,\nprogress,\nvideo {\n  display: inline-block; /* 1 */\n  vertical-align: baseline; /* 2 */\n}\n\n/**\n * Prevent modern browsers from displaying `audio` without controls.\n * Remove excess height in iOS 5 devices.\n */\n\naudio:not([controls]) {\n  display: none;\n  height: 0;\n}\n\n/**\n * Address `[hidden]` styling not present in IE 8/9/10.\n * Hide the `template` element in IE 8/9/10/11, Safari, and Firefox < 22.\n */\n\n[hidden],\ntemplate {\n  display: none;\n}\n\n/* Links\n   ========================================================================== */\n\n/**\n * Remove the gray background color from active links in IE 10.\n */\n\na {\n  background-color: transparent;\n}\n\n/**\n * Improve readability of focused elements when they are also in an\n * active/hover state.\n */\n\na:active,\na:hover {\n  outline: 0;\n}\n\n/* Text-level semantics\n   ========================================================================== */\n\n/**\n * Address styling not present in IE 8/9/10/11, Safari, and Chrome.\n */\n\nabbr[title] {\n  border-bottom: 1px dotted;\n}\n\n/**\n * Address style set to `bolder` in Firefox 4+, Safari, and Chrome.\n */\n\nb,\nstrong {\n  font-weight: bold;\n}\n\n/**\n * Address styling not present in Safari and Chrome.\n */\n\ndfn {\n  font-style: italic;\n}\n\n/**\n * Address variable `h1` font-size and margin within `section` and `article`\n * contexts in Firefox 4+, Safari, and Chrome.\n */\n\nh1 {\n  font-size: 2em;\n  margin: 0.67em 0;\n}\n\n/**\n * Address styling not present in IE 8/9.\n */\n\nmark {\n  background: #ff0;\n  color: #000;\n}\n\n/**\n * Address inconsistent and variable font size in all browsers.\n */\n\nsmall {\n  font-size: 80%;\n}\n\n/**\n * Prevent `sub` and `sup` affecting `line-height` in all browsers.\n */\n\nsub,\nsup {\n  font-size: 75%;\n  line-height: 0;\n  position: relative;\n  vertical-align: baseline;\n}\n\nsup {\n  top: -0.5em;\n}\n\nsub {\n  bottom: -0.25em;\n}\n\n/* Embedded content\n   ========================================================================== */\n\n/**\n * Remove border when inside `a` element in IE 8/9/10.\n */\n\nimg {\n  border: 0;\n}\n\n/**\n * Correct overflow not hidden in IE 9/10/11.\n */\n\nsvg:not(:root) {\n  overflow: hidden;\n}\n\n/* Grouping content\n   ========================================================================== */\n\n/**\n * Address margin not present in IE 8/9 and Safari.\n */\n\nfigure {\n  margin: 1em 40px;\n}\n\n/**\n * Address differences between Firefox and other browsers.\n */\n\nhr {\n  box-sizing: content-box;\n  height: 0;\n}\n\n/**\n * Contain overflow in all browsers.\n */\n\npre {\n  overflow: auto;\n}\n\n/**\n * Address odd `em`-unit font size rendering in all browsers.\n */\n\ncode,\nkbd,\npre,\nsamp {\n  font-family: monospace, monospace;\n  font-size: 1em;\n}\n\n/* Forms\n   ========================================================================== */\n\n/**\n * Known limitation: by default, Chrome and Safari on OS X allow very limited\n * styling of `select`, unless a `border` property is set.\n */\n\n/**\n * 1. Correct color not being inherited.\n *    Known issue: affects color of disabled elements.\n * 2. Correct font properties not being inherited.\n * 3. Address margins set differently in Firefox 4+, Safari, and Chrome.\n */\n\nbutton,\ninput,\noptgroup,\nselect,\ntextarea {\n  color: inherit; /* 1 */\n  font: inherit; /* 2 */\n  margin: 0; /* 3 */\n}\n\n/**\n * Address `overflow` set to `hidden` in IE 8/9/10/11.\n */\n\nbutton {\n  overflow: visible;\n}\n\n/**\n * Address inconsistent `text-transform` inheritance for `button` and `select`.\n * All other form control elements do not inherit `text-transform` values.\n * Correct `button` style inheritance in Firefox, IE 8/9/10/11, and Opera.\n * Correct `select` style inheritance in Firefox.\n */\n\nbutton,\nselect {\n  text-transform: none;\n}\n\n/**\n * 1. Avoid the WebKit bug in Android 4.0.* where (2) destroys native `audio`\n *    and `video` controls.\n * 2. Correct inability to style clickable `input` types in iOS.\n * 3. Improve usability and consistency of cursor style between image-type\n *    `input` and others.\n */\n\nbutton,\nhtml input[type=\"button\"], /* 1 */\ninput[type=\"reset\"],\ninput[type=\"submit\"] {\n  -webkit-appearance: button; /* 2 */\n  cursor: pointer; /* 3 */\n}\n\n/**\n * Re-set default cursor for disabled elements.\n */\n\nbutton[disabled],\nhtml input[disabled] {\n  cursor: default;\n}\n\n/**\n * Remove inner padding and border in Firefox 4+.\n */\n\nbutton::-moz-focus-inner,\ninput::-moz-focus-inner {\n  border: 0;\n  padding: 0;\n}\n\n/**\n * Address Firefox 4+ setting `line-height` on `input` using `!important` in\n * the UA stylesheet.\n */\n\ninput {\n  line-height: normal;\n}\n\n/**\n * It's recommended that you don't attempt to style these elements.\n * Firefox's implementation doesn't respect box-sizing, padding, or width.\n *\n * 1. Address box sizing set to `content-box` in IE 8/9/10.\n * 2. Remove excess padding in IE 8/9/10.\n */\n\ninput[type=\"checkbox\"],\ninput[type=\"radio\"] {\n  box-sizing: border-box; /* 1 */\n  padding: 0; /* 2 */\n}\n\n/**\n * Fix the cursor style for Chrome's increment/decrement buttons. For certain\n * `font-size` values of the `input`, it causes the cursor style of the\n * decrement button to change from `default` to `text`.\n */\n\ninput[type=\"number\"]::-webkit-inner-spin-button,\ninput[type=\"number\"]::-webkit-outer-spin-button {\n  height: auto;\n}\n\n/**\n * 1. Address `appearance` set to `searchfield` in Safari and Chrome.\n * 2. Address `box-sizing` set to `border-box` in Safari and Chrome.\n */\n\ninput[type=\"search\"] {\n  -webkit-appearance: textfield; /* 1 */\n  box-sizing: content-box; /* 2 */\n}\n\n/**\n * Remove inner padding and search cancel button in Safari and Chrome on OS X.\n * Safari (but not Chrome) clips the cancel button when the search input has\n * padding (and `textfield` appearance).\n */\n\ninput[type=\"search\"]::-webkit-search-cancel-button,\ninput[type=\"search\"]::-webkit-search-decoration {\n  -webkit-appearance: none;\n}\n\n/**\n * Define consistent border, margin, and padding.\n */\n\nfieldset {\n  border: 1px solid #c0c0c0;\n  margin: 0 2px;\n  padding: 0.35em 0.625em 0.75em;\n}\n\n/**\n * 1. Correct `color` not being inherited in IE 8/9/10/11.\n * 2. Remove padding so people aren't caught out if they zero out fieldsets.\n */\n\nlegend {\n  border: 0; /* 1 */\n  padding: 0; /* 2 */\n}\n\n/**\n * Remove default vertical scrollbar in IE 8/9/10/11.\n */\n\ntextarea {\n  overflow: auto;\n}\n\n/**\n * Don't inherit the `font-weight` (applied by a rule above).\n * NOTE: the default cannot safely be changed in Chrome and Safari on OS X.\n */\n\noptgroup {\n  font-weight: bold;\n}\n\n/* Tables\n   ========================================================================== */\n\n/**\n * Remove most spacing between table cells.\n */\n\ntable {\n  border-collapse: collapse;\n  border-spacing: 0;\n}\n\ntd,\nth {\n  padding: 0;\n}\n","$white-base:            hsl(255, 255, 255);\r\n$gray-darker:           color(black lightness(+13.5%)); /* #222 */\r\n$gray-dark:             color(black lightness(+25%));   /* #404040 */\r\n$gray:                  color(black lightness(+33.5%)); /* #555 */\r\n$gray-light:            color(black lightness(+46.7%)); /* #777 */\r\n$gray-lighter:          color(black lightness(+93.5%)); /* #eee */\r\n\r\n$link-color: #E16C51;\r\n$link-hover-color: #97918A;\r\n\r\n$font-family-base:      'Segoe UI', 'HelveticaNeue-Light', sans-serif;\r\n\r\n$max-content-width:     1000px;\r\n\r\n$screen-xs-min:         480px;  /* Extra small screen / phone */\r\n$screen-sm-min:         768px;  /* Small screen / tablet */\r\n$screen-md-min:         992px;  /* Medium screen / desktop */\r\n$screen-lg-min:         1200px; /* Large screen / wide desktop */\r\n\r\n$animation-swift-out:   .45s cubic-bezier(0.3, 1, 0.4, 1) 0s;\r\n","@import '../../../node_modules/normalize.css/normalize.css';\r\n@import '../variables.scss';\r\n\r\n* {\r\n  -webkit-box-sizing: border-box;\r\n  -moz-box-sizing: border-box;\r\n  box-sizing: border-box;\r\n}\r\n\r\na, a:link, a:visited, a:active {\r\n  color: $link-color;\r\n}\r\n\r\na:hover, a:focus {\r\n  color: $link-hover-color;\r\n}\r\n\r\nhtml {\r\n  color: #222;\r\n  font-weight: 100;\r\n  font-size: 1em;\r\n  font-family: $font-family-base;\r\n  line-height: 1.375;\r\n}\r\n\r\nbody, .container {\r\n  display: flex;\r\n  min-height: 100vh;\r\n  flex-direction: column;\r\n}\r\n\r\nmain {\r\n  flex: 1 0 auto;\r\n}\r\n\r\n.container {\r\n  margin-left: auto;\r\n  margin-right: auto;\r\n}\r\n\r\n::-moz-selection {\r\n  background: #b3d4fc;\r\n  text-shadow: none;\r\n}\r\n\r\n::selection {\r\n  background: #b3d4fc;\r\n  text-shadow: none;\r\n}\r\n\r\nhr {\r\n  display: block;\r\n  height: 1px;\r\n  border: 0;\r\n  border-top: 1px solid #ccc;\r\n  margin: 1em 0;\r\n  padding: 0;\r\n}\r\n\r\naudio,\r\ncanvas,\r\niframe,\r\nimg,\r\nsvg,\r\nvideo {\r\n  vertical-align: middle;\r\n}\r\n\r\nfieldset {\r\n  border: 0;\r\n  margin: 0;\r\n  padding: 0;\r\n}\r\n\r\ntextarea {\r\n  resize: vertical;\r\n}\r\n\r\n@media print {\r\n  *,\r\n  *:before,\r\n  *:after {\r\n    background: transparent !important;\r\n    color: #000 !important;\r\n    box-shadow: none !important;\r\n    text-shadow: none !important;\r\n  }\r\n\r\n  a,\r\n  a:visited {\r\n    text-decoration: underline;\r\n  }\r\n\r\n  a[href]:after {\r\n    content: \" (\" attr(href) \")\";\r\n  }\r\n\r\n  abbr[title]:after {\r\n    content: \" (\" attr(title) \")\";\r\n  }\r\n\r\n  a[href^=\"#\"]:after,\r\n  a[href^=\"javascript:\"]:after {\r\n    content: \"\";\r\n  }\r\n\r\n  pre,\r\n  blockquote {\r\n    border: 1px solid #999;\r\n    page-break-inside: avoid;\r\n  }\r\n\r\n  thead {\r\n    display: table-header-group;\r\n  }\r\n\r\n  tr,\r\n  img {\r\n    page-break-inside: avoid;\r\n  }\r\n\r\n  img {\r\n    max-width: 100% !important;\r\n  }\r\n\r\n  p,\r\n  h2,\r\n  h3 {\r\n    orphans: 3;\r\n    widows: 3;\r\n  }\r\n\r\n  h2,\r\n  h3 {\r\n    page-break-after: avoid;\r\n  }\r\n}\r\n\r\n@media (min-width: $screen-md-min) {\r\n  .container {\r\n    width: 700px;\r\n  }\r\n}\r\n"],"sourceRoot":"webpack://"}]);
+  exports.push([module.id, "/*! normalize.css v3.0.3 | MIT License | github.com/necolas/normalize.css */\n\n/**\n * 1. Set default font family to sans-serif.\n * 2. Prevent iOS and IE text size adjust after device orientation change,\n *    without disabling user zoom.\n */\n\nhtml {\n  font-family: sans-serif; /* 1 */\n  -ms-text-size-adjust: 100%; /* 2 */\n  -webkit-text-size-adjust: 100%; /* 2 */\n}\n\n/**\n * Remove default margin.\n */\n\nbody {\n  margin: 0;\n}\n\n/* HTML5 display definitions\n   ========================================================================== */\n\n/**\n * Correct `block` display not defined for any HTML5 element in IE 8/9.\n * Correct `block` display not defined for `details` or `summary` in IE 10/11\n * and Firefox.\n * Correct `block` display not defined for `main` in IE 11.\n */\n\narticle, aside, details, figcaption, figure, footer, header, hgroup, main, menu, nav, section, summary {\n  display: block;\n}\n\n/**\n * 1. Correct `inline-block` display not defined in IE 8/9.\n * 2. Normalize vertical alignment of `progress` in Chrome, Firefox, and Opera.\n */\n\naudio, canvas, progress, video {\n  display: inline-block; /* 1 */\n  vertical-align: baseline; /* 2 */\n}\n\n/**\n * Prevent modern browsers from displaying `audio` without controls.\n * Remove excess height in iOS 5 devices.\n */\n\naudio:not([controls]) {\n  display: none;\n  height: 0;\n}\n\n/**\n * Address `[hidden]` styling not present in IE 8/9/10.\n * Hide the `template` element in IE 8/9/10/11, Safari, and Firefox < 22.\n */\n\n[hidden], template {\n  display: none;\n}\n\n/* Links\n   ========================================================================== */\n\n/**\n * Remove the gray background color from active links in IE 10.\n */\n\na {\n  background-color: transparent;\n}\n\n/**\n * Improve readability of focused elements when they are also in an\n * active/hover state.\n */\n\na:active, a:hover {\n  outline: 0;\n}\n\n/* Text-level semantics\n   ========================================================================== */\n\n/**\n * Address styling not present in IE 8/9/10/11, Safari, and Chrome.\n */\n\nabbr[title] {\n  border-bottom: 1px dotted;\n}\n\n/**\n * Address style set to `bolder` in Firefox 4+, Safari, and Chrome.\n */\n\nb, strong {\n  font-weight: bold;\n}\n\n/**\n * Address styling not present in Safari and Chrome.\n */\n\ndfn {\n  font-style: italic;\n}\n\n/**\n * Address variable `h1` font-size and margin within `section` and `article`\n * contexts in Firefox 4+, Safari, and Chrome.\n */\n\nh1 {\n  font-size: 2em;\n  margin: 0.67em 0;\n}\n\n/**\n * Address styling not present in IE 8/9.\n */\n\nmark {\n  background: #ff0;\n  color: #000;\n}\n\n/**\n * Address inconsistent and variable font size in all browsers.\n */\n\nsmall {\n  font-size: 80%;\n}\n\n/**\n * Prevent `sub` and `sup` affecting `line-height` in all browsers.\n */\n\nsub, sup {\n  font-size: 75%;\n  line-height: 0;\n  position: relative;\n  vertical-align: baseline;\n}\n\nsup {\n  top: -0.5em;\n}\n\nsub {\n  bottom: -0.25em;\n}\n\n/* Embedded content\n   ========================================================================== */\n\n/**\n * Remove border when inside `a` element in IE 8/9/10.\n */\n\nimg {\n  border: 0;\n}\n\n/**\n * Correct overflow not hidden in IE 9/10/11.\n */\n\nsvg:not(:root) {\n  overflow: hidden;\n}\n\n/* Grouping content\n   ========================================================================== */\n\n/**\n * Address margin not present in IE 8/9 and Safari.\n */\n\nfigure {\n  margin: 1em 40px;\n}\n\n/**\n * Address differences between Firefox and other browsers.\n */\n\nhr {\n  -webkit-box-sizing: content-box;\n          box-sizing: content-box;\n  height: 0;\n}\n\n/**\n * Contain overflow in all browsers.\n */\n\npre {\n  overflow: auto;\n}\n\n/**\n * Address odd `em`-unit font size rendering in all browsers.\n */\n\ncode, kbd, pre, samp {\n  font-family: monospace, monospace;\n  font-size: 1em;\n}\n\n/* Forms\n   ========================================================================== */\n\n/**\n * Known limitation: by default, Chrome and Safari on OS X allow very limited\n * styling of `select`, unless a `border` property is set.\n */\n\n/**\n * 1. Correct color not being inherited.\n *    Known issue: affects color of disabled elements.\n * 2. Correct font properties not being inherited.\n * 3. Address margins set differently in Firefox 4+, Safari, and Chrome.\n */\n\nbutton, input, optgroup, select, textarea {\n  color: inherit; /* 1 */\n  font: inherit; /* 2 */\n  margin: 0; /* 3 */\n}\n\n/**\n * Address `overflow` set to `hidden` in IE 8/9/10/11.\n */\n\nbutton {\n  overflow: visible;\n}\n\n/**\n * Address inconsistent `text-transform` inheritance for `button` and `select`.\n * All other form control elements do not inherit `text-transform` values.\n * Correct `button` style inheritance in Firefox, IE 8/9/10/11, and Opera.\n * Correct `select` style inheritance in Firefox.\n */\n\nbutton, select {\n  text-transform: none;\n}\n\n/**\n * 1. Avoid the WebKit bug in Android 4.0.* where (2) destroys native `audio`\n *    and `video` controls.\n * 2. Correct inability to style clickable `input` types in iOS.\n * 3. Improve usability and consistency of cursor style between image-type\n *    `input` and others.\n */\n\nbutton, html input[type=\"button\"], input[type=\"reset\"], input[type=\"submit\"] {\n  -webkit-appearance: button; /* 2 */\n  cursor: pointer; /* 3 */\n}\n\n/**\n * Re-set default cursor for disabled elements.\n */\n\nbutton[disabled], html input[disabled] {\n  cursor: default;\n}\n\n/**\n * Remove inner padding and border in Firefox 4+.\n */\n\nbutton::-moz-focus-inner, input::-moz-focus-inner {\n  border: 0;\n  padding: 0;\n}\n\n/**\n * Address Firefox 4+ setting `line-height` on `input` using `!important` in\n * the UA stylesheet.\n */\n\ninput {\n  line-height: normal;\n}\n\n/**\n * It's recommended that you don't attempt to style these elements.\n * Firefox's implementation doesn't respect box-sizing, padding, or width.\n *\n * 1. Address box sizing set to `content-box` in IE 8/9/10.\n * 2. Remove excess padding in IE 8/9/10.\n */\n\ninput[type=\"checkbox\"], input[type=\"radio\"] {\n  -webkit-box-sizing: border-box;\n          box-sizing: border-box; /* 1 */\n  padding: 0; /* 2 */\n}\n\n/**\n * Fix the cursor style for Chrome's increment/decrement buttons. For certain\n * `font-size` values of the `input`, it causes the cursor style of the\n * decrement button to change from `default` to `text`.\n */\n\ninput[type=\"number\"]::-webkit-inner-spin-button, input[type=\"number\"]::-webkit-outer-spin-button {\n  height: auto;\n}\n\n/**\n * 1. Address `appearance` set to `searchfield` in Safari and Chrome.\n * 2. Address `box-sizing` set to `border-box` in Safari and Chrome.\n */\n\ninput[type=\"search\"] {\n  -webkit-appearance: textfield; /* 1 */\n  -webkit-box-sizing: content-box;\n          box-sizing: content-box; /* 2 */\n}\n\n/**\n * Remove inner padding and search cancel button in Safari and Chrome on OS X.\n * Safari (but not Chrome) clips the cancel button when the search input has\n * padding (and `textfield` appearance).\n */\n\ninput[type=\"search\"]::-webkit-search-cancel-button, input[type=\"search\"]::-webkit-search-decoration {\n  -webkit-appearance: none;\n}\n\n/**\n * Define consistent border, margin, and padding.\n */\n\nfieldset {\n  border: 1px solid #c0c0c0;\n  margin: 0 2px;\n  padding: 0.35em 0.625em 0.75em;\n}\n\n/**\n * 1. Correct `color` not being inherited in IE 8/9/10/11.\n * 2. Remove padding so people aren't caught out if they zero out fieldsets.\n */\n\nlegend {\n  border: 0; /* 1 */\n  padding: 0; /* 2 */\n}\n\n/**\n * Remove default vertical scrollbar in IE 8/9/10/11.\n */\n\ntextarea {\n  overflow: auto;\n}\n\n/**\n * Don't inherit the `font-weight` (applied by a rule above).\n * NOTE: the default cannot safely be changed in Chrome and Safari on OS X.\n */\n\noptgroup {\n  font-weight: bold;\n}\n\n/* Tables\n   ========================================================================== */\n\n/**\n * Remove most spacing between table cells.\n */\n\ntable {\n  border-collapse: collapse;\n  border-spacing: 0;\n}\n\ntd, th {\n  padding: 0;\n} /* #222 */   /* #404040 */ /* #555 */ /* #777 */ /* #eee */  /* Extra small screen / phone */  /* Small screen / tablet */  /* Medium screen / desktop */ /* Large screen / wide desktop */\r\n\r\n* {\r\n  -webkit-box-sizing: border-box;\r\n  box-sizing: border-box;\r\n}\r\n\r\na, a:link, a:visited, a:active {\r\n  color: #E16C51;\r\n}\r\n\r\na:hover, a:focus {\r\n  color: #97918A;\r\n}\r\n\r\nhtml {\r\n  color: #222;\r\n  font-weight: 100;\r\n  font-size: 1em;\r\n  font-family: 'Segoe UI','HelveticaNeue-Light',sans-serif;\r\n  line-height: 1.375;\r\n}\r\n\r\nbody, .App_containerDay_ZPM, .App_containerNight_xEF, .App_container_3x2 {\r\n  display: -webkit-box;\r\n  display: -webkit-flex;\r\n  display: -ms-flexbox;\r\n  display: flex;\r\n  min-height: 100vh;\r\n  -webkit-box-orient: vertical;\r\n  -webkit-box-direction: normal;\r\n  -webkit-flex-direction: column;\r\n      -ms-flex-direction: column;\r\n          flex-direction: column;\r\n}\r\n\r\n.App_containerNight_xEF {\r\n  background-color: #101010;\r\n  color: #97918A;\r\n}\r\n\r\nmain {\r\n  -webkit-box-flex: 1;\r\n  -webkit-flex: 1 0 auto;\r\n      -ms-flex: 1 0 auto;\r\n          flex: 1 0 auto;\r\n}\r\n\r\n.App_container_3x2 {\r\n  margin-left: auto;\r\n  margin-right: auto;\r\n}\r\n\r\n::-moz-selection {\r\n  background: #b3d4fc;\r\n  text-shadow: none;\r\n}\r\n\r\n::selection {\r\n  background: #b3d4fc;\r\n  text-shadow: none;\r\n}\r\n\r\nhr {\r\n  display: block;\r\n  height: 1px;\r\n  border: 0;\r\n  border-top: 1px solid #ccc;\r\n  margin: 1em 0;\r\n  padding: 0;\r\n}\r\n\r\naudio, canvas, iframe, img, svg, video {\r\n  vertical-align: middle;\r\n}\r\n\r\nfieldset {\r\n  border: 0;\r\n  margin: 0;\r\n  padding: 0;\r\n}\r\n\r\ntextarea {\r\n  resize: vertical;\r\n}\r\n\r\n@media print {\r\n  *, *:before, *:after {\r\n    background: transparent !important;\r\n    color: #000 !important;\r\n    -webkit-box-shadow: none !important;\r\n            box-shadow: none !important;\r\n    text-shadow: none !important;\r\n  }\r\n\r\n  a, a:visited {\r\n    text-decoration: underline;\r\n  }\r\n\r\n  a[href]:after {\r\n    content: \" (\" attr(href) \")\";\r\n  }\r\n\r\n  abbr[title]:after {\r\n    content: \" (\" attr(title) \")\";\r\n  }\r\n\r\n  a[href^=\"#\"]:after, a[href^=\"javascript:\"]:after {\r\n    content: \"\";\r\n  }\r\n\r\n  pre, blockquote {\r\n    border: 1px solid #999;\r\n    page-break-inside: avoid;\r\n  }\r\n\r\n  thead {\r\n    display: table-header-group;\r\n  }\r\n\r\n  tr, img {\r\n    page-break-inside: avoid;\r\n  }\r\n\r\n  img {\r\n    max-width: 100% !important;\r\n  }\r\n\r\n  p, h2, h3 {\r\n    orphans: 3;\r\n    widows: 3;\r\n  }\r\n\r\n  h2, h3 {\r\n    page-break-after: avoid;\r\n  }\r\n}\r\n\r\n@media (min-width: 992px) {\r\n  .App_container_3x2 {\r\n    width: 700px;\r\n  }\r\n}\r\n", "", {"version":3,"sources":["/./node_modules/normalize.css/normalize.css","/./src/components/variables.scss","/./src/components/App/App.scss"],"names":[],"mappings":"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","file":"App.scss","sourcesContent":["/*! normalize.css v3.0.3 | MIT License | github.com/necolas/normalize.css */\n\n/**\n * 1. Set default font family to sans-serif.\n * 2. Prevent iOS and IE text size adjust after device orientation change,\n *    without disabling user zoom.\n */\n\nhtml {\n  font-family: sans-serif; /* 1 */\n  -ms-text-size-adjust: 100%; /* 2 */\n  -webkit-text-size-adjust: 100%; /* 2 */\n}\n\n/**\n * Remove default margin.\n */\n\nbody {\n  margin: 0;\n}\n\n/* HTML5 display definitions\n   ========================================================================== */\n\n/**\n * Correct `block` display not defined for any HTML5 element in IE 8/9.\n * Correct `block` display not defined for `details` or `summary` in IE 10/11\n * and Firefox.\n * Correct `block` display not defined for `main` in IE 11.\n */\n\narticle,\naside,\ndetails,\nfigcaption,\nfigure,\nfooter,\nheader,\nhgroup,\nmain,\nmenu,\nnav,\nsection,\nsummary {\n  display: block;\n}\n\n/**\n * 1. Correct `inline-block` display not defined in IE 8/9.\n * 2. Normalize vertical alignment of `progress` in Chrome, Firefox, and Opera.\n */\n\naudio,\ncanvas,\nprogress,\nvideo {\n  display: inline-block; /* 1 */\n  vertical-align: baseline; /* 2 */\n}\n\n/**\n * Prevent modern browsers from displaying `audio` without controls.\n * Remove excess height in iOS 5 devices.\n */\n\naudio:not([controls]) {\n  display: none;\n  height: 0;\n}\n\n/**\n * Address `[hidden]` styling not present in IE 8/9/10.\n * Hide the `template` element in IE 8/9/10/11, Safari, and Firefox < 22.\n */\n\n[hidden],\ntemplate {\n  display: none;\n}\n\n/* Links\n   ========================================================================== */\n\n/**\n * Remove the gray background color from active links in IE 10.\n */\n\na {\n  background-color: transparent;\n}\n\n/**\n * Improve readability of focused elements when they are also in an\n * active/hover state.\n */\n\na:active,\na:hover {\n  outline: 0;\n}\n\n/* Text-level semantics\n   ========================================================================== */\n\n/**\n * Address styling not present in IE 8/9/10/11, Safari, and Chrome.\n */\n\nabbr[title] {\n  border-bottom: 1px dotted;\n}\n\n/**\n * Address style set to `bolder` in Firefox 4+, Safari, and Chrome.\n */\n\nb,\nstrong {\n  font-weight: bold;\n}\n\n/**\n * Address styling not present in Safari and Chrome.\n */\n\ndfn {\n  font-style: italic;\n}\n\n/**\n * Address variable `h1` font-size and margin within `section` and `article`\n * contexts in Firefox 4+, Safari, and Chrome.\n */\n\nh1 {\n  font-size: 2em;\n  margin: 0.67em 0;\n}\n\n/**\n * Address styling not present in IE 8/9.\n */\n\nmark {\n  background: #ff0;\n  color: #000;\n}\n\n/**\n * Address inconsistent and variable font size in all browsers.\n */\n\nsmall {\n  font-size: 80%;\n}\n\n/**\n * Prevent `sub` and `sup` affecting `line-height` in all browsers.\n */\n\nsub,\nsup {\n  font-size: 75%;\n  line-height: 0;\n  position: relative;\n  vertical-align: baseline;\n}\n\nsup {\n  top: -0.5em;\n}\n\nsub {\n  bottom: -0.25em;\n}\n\n/* Embedded content\n   ========================================================================== */\n\n/**\n * Remove border when inside `a` element in IE 8/9/10.\n */\n\nimg {\n  border: 0;\n}\n\n/**\n * Correct overflow not hidden in IE 9/10/11.\n */\n\nsvg:not(:root) {\n  overflow: hidden;\n}\n\n/* Grouping content\n   ========================================================================== */\n\n/**\n * Address margin not present in IE 8/9 and Safari.\n */\n\nfigure {\n  margin: 1em 40px;\n}\n\n/**\n * Address differences between Firefox and other browsers.\n */\n\nhr {\n  box-sizing: content-box;\n  height: 0;\n}\n\n/**\n * Contain overflow in all browsers.\n */\n\npre {\n  overflow: auto;\n}\n\n/**\n * Address odd `em`-unit font size rendering in all browsers.\n */\n\ncode,\nkbd,\npre,\nsamp {\n  font-family: monospace, monospace;\n  font-size: 1em;\n}\n\n/* Forms\n   ========================================================================== */\n\n/**\n * Known limitation: by default, Chrome and Safari on OS X allow very limited\n * styling of `select`, unless a `border` property is set.\n */\n\n/**\n * 1. Correct color not being inherited.\n *    Known issue: affects color of disabled elements.\n * 2. Correct font properties not being inherited.\n * 3. Address margins set differently in Firefox 4+, Safari, and Chrome.\n */\n\nbutton,\ninput,\noptgroup,\nselect,\ntextarea {\n  color: inherit; /* 1 */\n  font: inherit; /* 2 */\n  margin: 0; /* 3 */\n}\n\n/**\n * Address `overflow` set to `hidden` in IE 8/9/10/11.\n */\n\nbutton {\n  overflow: visible;\n}\n\n/**\n * Address inconsistent `text-transform` inheritance for `button` and `select`.\n * All other form control elements do not inherit `text-transform` values.\n * Correct `button` style inheritance in Firefox, IE 8/9/10/11, and Opera.\n * Correct `select` style inheritance in Firefox.\n */\n\nbutton,\nselect {\n  text-transform: none;\n}\n\n/**\n * 1. Avoid the WebKit bug in Android 4.0.* where (2) destroys native `audio`\n *    and `video` controls.\n * 2. Correct inability to style clickable `input` types in iOS.\n * 3. Improve usability and consistency of cursor style between image-type\n *    `input` and others.\n */\n\nbutton,\nhtml input[type=\"button\"], /* 1 */\ninput[type=\"reset\"],\ninput[type=\"submit\"] {\n  -webkit-appearance: button; /* 2 */\n  cursor: pointer; /* 3 */\n}\n\n/**\n * Re-set default cursor for disabled elements.\n */\n\nbutton[disabled],\nhtml input[disabled] {\n  cursor: default;\n}\n\n/**\n * Remove inner padding and border in Firefox 4+.\n */\n\nbutton::-moz-focus-inner,\ninput::-moz-focus-inner {\n  border: 0;\n  padding: 0;\n}\n\n/**\n * Address Firefox 4+ setting `line-height` on `input` using `!important` in\n * the UA stylesheet.\n */\n\ninput {\n  line-height: normal;\n}\n\n/**\n * It's recommended that you don't attempt to style these elements.\n * Firefox's implementation doesn't respect box-sizing, padding, or width.\n *\n * 1. Address box sizing set to `content-box` in IE 8/9/10.\n * 2. Remove excess padding in IE 8/9/10.\n */\n\ninput[type=\"checkbox\"],\ninput[type=\"radio\"] {\n  box-sizing: border-box; /* 1 */\n  padding: 0; /* 2 */\n}\n\n/**\n * Fix the cursor style for Chrome's increment/decrement buttons. For certain\n * `font-size` values of the `input`, it causes the cursor style of the\n * decrement button to change from `default` to `text`.\n */\n\ninput[type=\"number\"]::-webkit-inner-spin-button,\ninput[type=\"number\"]::-webkit-outer-spin-button {\n  height: auto;\n}\n\n/**\n * 1. Address `appearance` set to `searchfield` in Safari and Chrome.\n * 2. Address `box-sizing` set to `border-box` in Safari and Chrome.\n */\n\ninput[type=\"search\"] {\n  -webkit-appearance: textfield; /* 1 */\n  box-sizing: content-box; /* 2 */\n}\n\n/**\n * Remove inner padding and search cancel button in Safari and Chrome on OS X.\n * Safari (but not Chrome) clips the cancel button when the search input has\n * padding (and `textfield` appearance).\n */\n\ninput[type=\"search\"]::-webkit-search-cancel-button,\ninput[type=\"search\"]::-webkit-search-decoration {\n  -webkit-appearance: none;\n}\n\n/**\n * Define consistent border, margin, and padding.\n */\n\nfieldset {\n  border: 1px solid #c0c0c0;\n  margin: 0 2px;\n  padding: 0.35em 0.625em 0.75em;\n}\n\n/**\n * 1. Correct `color` not being inherited in IE 8/9/10/11.\n * 2. Remove padding so people aren't caught out if they zero out fieldsets.\n */\n\nlegend {\n  border: 0; /* 1 */\n  padding: 0; /* 2 */\n}\n\n/**\n * Remove default vertical scrollbar in IE 8/9/10/11.\n */\n\ntextarea {\n  overflow: auto;\n}\n\n/**\n * Don't inherit the `font-weight` (applied by a rule above).\n * NOTE: the default cannot safely be changed in Chrome and Safari on OS X.\n */\n\noptgroup {\n  font-weight: bold;\n}\n\n/* Tables\n   ========================================================================== */\n\n/**\n * Remove most spacing between table cells.\n */\n\ntable {\n  border-collapse: collapse;\n  border-spacing: 0;\n}\n\ntd,\nth {\n  padding: 0;\n}\n","$white-base:            hsl(255, 255, 255);\r\n$gray-darker:           color(black lightness(+13.5%)); /* #222 */\r\n$gray-dark:             color(black lightness(+25%));   /* #404040 */\r\n$gray:                  color(black lightness(+33.5%)); /* #555 */\r\n$gray-light:            color(black lightness(+46.7%)); /* #777 */\r\n$gray-lighter:          color(black lightness(+93.5%)); /* #eee */\r\n\r\n$link-color: #E16C51;\r\n$link-hover-color: #97918A;\r\n\r\n$font-family-base:      'Segoe UI', 'HelveticaNeue-Light', sans-serif;\r\n\r\n$max-content-width:     1000px;\r\n\r\n$screen-xs-min:         480px;  /* Extra small screen / phone */\r\n$screen-sm-min:         768px;  /* Small screen / tablet */\r\n$screen-md-min:         992px;  /* Medium screen / desktop */\r\n$screen-lg-min:         1200px; /* Large screen / wide desktop */\r\n\r\n$animation-swift-out:   .45s cubic-bezier(0.3, 1, 0.4, 1) 0s;\r\n","@import '../../../node_modules/normalize.css/normalize.css';\r\n@import '../variables.scss';\r\n\r\n* {\r\n  -webkit-box-sizing: border-box;\r\n  -moz-box-sizing: border-box;\r\n  box-sizing: border-box;\r\n}\r\n\r\na, a:link, a:visited, a:active {\r\n  color: $link-color;\r\n}\r\n\r\na:hover, a:focus {\r\n  color: $link-hover-color;\r\n}\r\n\r\nhtml {\r\n  color: #222;\r\n  font-weight: 100;\r\n  font-size: 1em;\r\n  font-family: $font-family-base;\r\n  line-height: 1.375;\r\n}\r\n\r\nbody, .containerDay, .containerNight, .container {\r\n  display: flex;\r\n  min-height: 100vh;\r\n  flex-direction: column;\r\n}\r\n\r\n.containerNight {\r\n  background-color: #101010;\r\n  color: #97918A;\r\n}\r\n\r\nmain {\r\n  flex: 1 0 auto;\r\n}\r\n\r\n.container {\r\n  margin-left: auto;\r\n  margin-right: auto;\r\n}\r\n\r\n::-moz-selection {\r\n  background: #b3d4fc;\r\n  text-shadow: none;\r\n}\r\n\r\n::selection {\r\n  background: #b3d4fc;\r\n  text-shadow: none;\r\n}\r\n\r\nhr {\r\n  display: block;\r\n  height: 1px;\r\n  border: 0;\r\n  border-top: 1px solid #ccc;\r\n  margin: 1em 0;\r\n  padding: 0;\r\n}\r\n\r\naudio,\r\ncanvas,\r\niframe,\r\nimg,\r\nsvg,\r\nvideo {\r\n  vertical-align: middle;\r\n}\r\n\r\nfieldset {\r\n  border: 0;\r\n  margin: 0;\r\n  padding: 0;\r\n}\r\n\r\ntextarea {\r\n  resize: vertical;\r\n}\r\n\r\n@media print {\r\n  *,\r\n  *:before,\r\n  *:after {\r\n    background: transparent !important;\r\n    color: #000 !important;\r\n    box-shadow: none !important;\r\n    text-shadow: none !important;\r\n  }\r\n\r\n  a,\r\n  a:visited {\r\n    text-decoration: underline;\r\n  }\r\n\r\n  a[href]:after {\r\n    content: \" (\" attr(href) \")\";\r\n  }\r\n\r\n  abbr[title]:after {\r\n    content: \" (\" attr(title) \")\";\r\n  }\r\n\r\n  a[href^=\"#\"]:after,\r\n  a[href^=\"javascript:\"]:after {\r\n    content: \"\";\r\n  }\r\n\r\n  pre,\r\n  blockquote {\r\n    border: 1px solid #999;\r\n    page-break-inside: avoid;\r\n  }\r\n\r\n  thead {\r\n    display: table-header-group;\r\n  }\r\n\r\n  tr,\r\n  img {\r\n    page-break-inside: avoid;\r\n  }\r\n\r\n  img {\r\n    max-width: 100% !important;\r\n  }\r\n\r\n  p,\r\n  h2,\r\n  h3 {\r\n    orphans: 3;\r\n    widows: 3;\r\n  }\r\n\r\n  h2,\r\n  h3 {\r\n    page-break-after: avoid;\r\n  }\r\n}\r\n\r\n@media (min-width: $screen-md-min) {\r\n  .container {\r\n    width: 700px;\r\n  }\r\n}\r\n"],"sourceRoot":"webpack://"}]);
   
   // exports
   exports.locals = {
+  	"containerDay": "App_containerDay_ZPM",
+  	"containerNight": "App_containerNight_xEF",
   	"container": "App_container_3x2"
   };
 
@@ -3102,11 +3120,11 @@ module.exports =
   
   var _coreLocation2 = _interopRequireDefault(_coreLocation);
   
-  var _actionsBridge = __webpack_require__(52);
+  var _actionsBridge = __webpack_require__(47);
   
   var _actionsBridge2 = _interopRequireDefault(_actionsBridge);
   
-  var _LightsList = __webpack_require__(50);
+  var _LightsList = __webpack_require__(49);
   
   var _LightsList2 = _interopRequireDefault(_LightsList);
   
@@ -3222,7 +3240,7 @@ module.exports =
   
   
   // module
-  exports.push([module.id, "/* #222 */   /* #404040 */ /* #555 */ /* #777 */ /* #eee */  /* Extra small screen / phone */  /* Small screen / tablet */  /* Medium screen / desktop */ /* Large screen / wide desktop */\n\n.HomePage_lightList_3oL {\n  list-style: none;\n  padding-left: 0;\n}\n\n.HomePage_lightList_3oL li {\n  width: 205px;\n  display: inline-block;\n  margin: 0 5px 12px 5px;\n  padding: 6px;\n  border-radius: 2px;\n  border: 1px solid #ccc;\n}\n\n.HomePage_light_2jt .HomePage_lightHeader_1wr, .HomePage_light_2jt .HomePage_lightFooter_2nX {\n  display: table;\n  width: 100%;\n}\n\n.HomePage_light_2jt .HomePage_lightFooter_2nX {\n  margin-top: 5px;\n}\n\n.HomePage_light_2jt .HomePage_lightNameArea_my7, .HomePage_light_2jt .HomePage_metadata_pqP, .HomePage_light_2jt .HomePage_colorBlockAndPicker_Flb {\n  display: table-cell;\n  vertical-align: middle;\n}\n\n.HomePage_light_2jt .HomePage_name_nWG {\n  white-space: nowrap;\n  text-overflow: ellipsis;\n  overflow: hidden;\n  width: 151px;\n  display: block;\n}\n\n.HomePage_light_2jt .HomePage_metadata_pqP {\n  font-size: 13px;\n  color: #797979;\n}\n\n.HomePage_light_2jt .HomePage_colorBlockAndPicker_Flb {\n  width: 54px;\n  position: relative;\n}\n\n.HomePage_light_2jt .HomePage_colorBlockAndPicker_Flb .HomePage_colorBlock_3k8 {\n  border-radius: 4px;\n  border: none;\n  width: 100%;\n  height: 100%\n}\n\n.HomePage_light_2jt .HomePage_colorBlockAndPicker_Flb .HomePage_colorBlock_3k8:focus {\n  outline: 0;\n}\n\n.HomePage_light_2jt .HomePage_colorBlockAndPicker_Flb .HomePage_colorPickerWrapper_26s {\n  z-index: 99;\n  position: absolute;\n}\n\n.HomePage_light_2jt .HomePage_type_1AJ {\n  display: block;\n}\n\n.HomePage_light_2jt .HomePage_manufacturer_3WL {\n  padding: 0 0.3em 0 0;\n}\n\n.HomePage_light_2jt .HomePage_model_3Ue {}\n\n.HomePage_onoffswitch_3hQ {\n  position: relative;\n  display: table-cell;\n  vertical-align: middle;\n  width: 54px;\n  -webkit-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n}\n\n.HomePage_onoffswitch_3hQ .HomePage_onoffswitchCheckbox_3tD {\n  display: none\n}\n\n.HomePage_onoffswitch_3hQ .HomePage_onoffswitchCheckbox_3tD:checked + .HomePage_onoffswitchLabel_W_H .HomePage_onoffswitchInner_1zJ {\n  margin-left: 0;\n}\n\n.HomePage_onoffswitch_3hQ .HomePage_onoffswitchCheckbox_3tD:checked + .HomePage_onoffswitchLabel_W_H .HomePage_onoffswitchSwitch_1Vt {\n  right: 0;\n}\n\n.HomePage_onoffswitch_3hQ .HomePage_onoffswitchLabel_W_H {\n  display: block;\n  overflow: hidden;\n  cursor: pointer;\n  border: 2px solid #CCCCCC;\n  border-radius: 18px;\n}\n\n.HomePage_onoffswitch_3hQ .HomePage_onoffswitchInner_1zJ {\n  display: block;\n  width: 200%;\n  margin-left: -100%;\n  -webkit-transition: margin 0.3s ease-in 0s;\n  -o-transition: margin 0.3s ease-in 0s;\n  transition: margin 0.3s ease-in 0s\n}\n\n.HomePage_onoffswitch_3hQ .HomePage_onoffswitchInner_1zJ:before, .HomePage_onoffswitch_3hQ .HomePage_onoffswitchInner_1zJ:after {\n  display: block;\n  float: left;\n  width: 50%;\n  height: 18px;\n  padding: 0;\n  line-height: 18px;\n  font-size: 12px;\n  color: white;\n  font-weight: 700;\n  -webkit-box-sizing: border-box;\n          box-sizing: border-box;\n}\n\n.HomePage_onoffswitch_3hQ .HomePage_onoffswitchInner_1zJ:before {\n  content: \"on\";\n  padding-left: 10px;\n  background-color: #FFF7C2;\n  color: #474029;\n}\n\n.HomePage_onoffswitch_3hQ .HomePage_onoffswitchInner_1zJ:after {\n  content: \"off\";\n  padding-right: 10px;\n  background-color: #373634;\n  color: #D6D6D6;\n  text-align: right;\n}\n\n.HomePage_onoffswitch_3hQ .HomePage_onoffswitchSwitch_1Vt {\n  display: block;\n  width: 18px;\n  margin: 0px;\n  background: #FFFFFF;\n  position: absolute;\n  top: 0;\n  bottom: 0;\n  right: 32px;\n  border: 2px solid #CCCCCC;\n  border-radius: 18px;\n  -webkit-transition: all 0.3s ease-in 0s;\n  -o-transition: all 0.3s ease-in 0s;\n  transition: all 0.3s ease-in 0s;\n}\n", "", {"version":3,"sources":["/./src/components/variables.scss","/./src/components/HomePage/HomePage.scss"],"names":[],"mappings":"AACwD,UAAU,GACV,aAAa,CACb,UAAU,CACV,UAAU,CACV,UAAU,EASlC,gCAAgC,EAChC,2BAA2B,EAC3B,6BAA6B,CAC7B,iCAAiC;;ACfjE;EACE,iBAAiB;EACjB,gBAAgB;CAUjB;;AARC;EACE,aAAa;EACb,sBAAsB;EACtB,uBAAuB;EACvB,aAAa;EACb,mBAAmB;EACnB,uBAAuB;CACxB;;AAID;EAEE,eAAe;EACf,YAAY;CACb;;AAED;EACE,gBAAgB;CACjB;;AAED;EAGE,oBAAoB;EACpB,uBAAuB;CACxB;;AAED;EACE,oBAAoB;EACpB,wBAAwB;EACxB,iBAAiB;EACjB,aAAa;EACb,eAAe;CAChB;;AAED;EACE,gBAAgB;EAChB,eAAe;CAChB;;AAED;EACE,YAAY;EACZ,mBAAmB;CAiBpB;;AAfC;EACE,mBAAmB;EACnB,aAAa;EACb,YAAY;EACZ,YAAa;CAKd;;AAHC;EACE,WAAW;CACZ;;AAGH;EACE,YAAY;EACZ,mBAAmB;CACpB;;AAGH;EACE,eAAe;CAChB;;AAED;EACE,qBAAqB;CACtB;;AAED,0CAEC;;AAGH;EACE,mBAAmB;EACnB,oBAAoB;EACpB,uBAAuB;EACvB,YAAY;EACZ,0BAA0B;EAC1B,uBAAuB;EACvB,sBAAsB;CAqEvB;;AAnEC;EACE,aAAc;CAaf;;AATK;EACE,eAAe;CAChB;;AAED;EACE,SAAS;CACV;;AAKP;EACE,eAAe;EACf,iBAAiB;EACjB,gBAAgB;EAChB,0BAA0B;EAC1B,oBAAoB;CACrB;;AAED;EACE,eAAe;EACf,YAAY;EACZ,mBAAmB;EACnB,2CAAmC;EAAnC,sCAAmC;EAAnC,kCAAmC;CA6BpC;;AA3BC;EACE,eAAe;EACf,YAAY;EACZ,WAAW;EACX,aAAa;EACb,WAAW;EACX,kBAAkB;EAClB,gBAAgB;EAChB,aAAa;EACb,iBAAiB;EACjB,+BAAuB;UAAvB,uBAAuB;CACxB;;AAED;EACE,cAAc;EACd,mBAAmB;EACnB,0BAA0B;EAC1B,eAAe;CAChB;;AAED;EACE,eAAe;EACf,oBAAoB;EACpB,0BAA0B;EAC1B,eAAe;EACf,kBAAkB;CACnB;;AAGH;EACI,eAAe;EAAC,YAAY;EAAC,YAAY;EACzC,oBAAoB;EACpB,mBAAmB;EAAC,OAAO;EAAC,UAAU;EACtC,YAAY;EACZ,0BAA0B;EAAC,oBAAoB;EAC/C,wCAAgC;EAAhC,mCAAgC;EAAhC,gCAAgC;CACnC","file":"HomePage.scss","sourcesContent":["$white-base:            hsl(255, 255, 255);\r\n$gray-darker:           color(black lightness(+13.5%)); /* #222 */\r\n$gray-dark:             color(black lightness(+25%));   /* #404040 */\r\n$gray:                  color(black lightness(+33.5%)); /* #555 */\r\n$gray-light:            color(black lightness(+46.7%)); /* #777 */\r\n$gray-lighter:          color(black lightness(+93.5%)); /* #eee */\r\n\r\n$link-color: #E16C51;\r\n$link-hover-color: #97918A;\r\n\r\n$font-family-base:      'Segoe UI', 'HelveticaNeue-Light', sans-serif;\r\n\r\n$max-content-width:     1000px;\r\n\r\n$screen-xs-min:         480px;  /* Extra small screen / phone */\r\n$screen-sm-min:         768px;  /* Small screen / tablet */\r\n$screen-md-min:         992px;  /* Medium screen / desktop */\r\n$screen-lg-min:         1200px; /* Large screen / wide desktop */\r\n\r\n$animation-swift-out:   .45s cubic-bezier(0.3, 1, 0.4, 1) 0s;\r\n","@import '../variables.scss';\n\n.lightList {\n  list-style: none;\n  padding-left: 0;\n\n  li {\n    width: 205px;\n    display: inline-block;\n    margin: 0 5px 12px 5px;\n    padding: 6px;\n    border-radius: 2px;\n    border: 1px solid #ccc;\n  }\n}\n\n.light {\n  .lightHeader,\n  .lightFooter {\n    display: table;\n    width: 100%;\n  }\n\n  .lightFooter {\n    margin-top: 5px;\n  }\n\n  .lightNameArea,\n  .metadata,\n  .colorBlockAndPicker {\n    display: table-cell;\n    vertical-align: middle;\n  }\n\n  .name {\n    white-space: nowrap;\n    text-overflow: ellipsis;\n    overflow: hidden;\n    width: 151px;\n    display: block;\n  }\n\n  .metadata {\n    font-size: 13px;\n    color: #797979;\n  }\n\n  .colorBlockAndPicker {\n    width: 54px;\n    position: relative;\n\n    .colorBlock {\n      border-radius: 4px;\n      border: none;\n      width: 100%;\n      height: 100%;\n\n      &:focus {\n        outline: 0;\n      }\n    }\n\n    .colorPickerWrapper {\n      z-index: 99;\n      position: absolute;\n    }\n  }\n\n  .type {\n    display: block;\n  }\n\n  .manufacturer {\n    padding: 0 0.3em 0 0;\n  }\n\n  .model {\n\n  }\n}\n\n.onoffswitch {\n  position: relative;\n  display: table-cell;\n  vertical-align: middle;\n  width: 54px;\n  -webkit-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n\n  .onoffswitchCheckbox {\n    display: none;\n\n    &:checked {\n      + .onoffswitchLabel {\n        .onoffswitchInner {\n          margin-left: 0;\n        }\n\n        .onoffswitchSwitch {\n          right: 0;\n        }\n      }\n    }\n  }\n\n  .onoffswitchLabel {\n    display: block;\n    overflow: hidden;\n    cursor: pointer;\n    border: 2px solid #CCCCCC;\n    border-radius: 18px;\n  }\n\n  .onoffswitchInner {\n    display: block;\n    width: 200%;\n    margin-left: -100%;\n    transition: margin 0.3s ease-in 0s;\n\n    &:before, &:after {\n      display: block;\n      float: left;\n      width: 50%;\n      height: 18px;\n      padding: 0;\n      line-height: 18px;\n      font-size: 12px;\n      color: white;\n      font-weight: 700;\n      box-sizing: border-box;\n    }\n\n    &:before {\n      content: \"on\";\n      padding-left: 10px;\n      background-color: #FFF7C2;\n      color: #474029;\n    }\n\n    &:after {\n      content: \"off\";\n      padding-right: 10px;\n      background-color: #373634;\n      color: #D6D6D6;\n      text-align: right;\n    }\n  }\n\n  .onoffswitchSwitch {\n      display: block; width: 18px; margin: 0px;\n      background: #FFFFFF;\n      position: absolute; top: 0; bottom: 0;\n      right: 32px;\n      border: 2px solid #CCCCCC; border-radius: 18px;\n      transition: all 0.3s ease-in 0s;\n  }\n}\n"],"sourceRoot":"webpack://"}]);
+  exports.push([module.id, "/* #222 */   /* #404040 */ /* #555 */ /* #777 */ /* #eee */  /* Extra small screen / phone */  /* Small screen / tablet */  /* Medium screen / desktop */ /* Large screen / wide desktop */\n\n.HomePage_lightList_3oL {\n  list-style: none;\n  padding-left: 0;\n}\n\n.HomePage_light_2jt {\n  width: 223px;\n  display: inline-block;\n  margin: 0 5px 12px 5px;\n  padding: 6px;\n  border-radius: 2px;\n  border-width: 1px;\n  border-style: solid;\n}\n\n.HomePage_light_2jt .HomePage_lightHeader_1wr, .HomePage_light_2jt .HomePage_lightFooter_2nX {\n  display: table;\n  width: 100%;\n}\n\n.HomePage_light_2jt .HomePage_lightFooter_2nX {\n  margin-top: 5px;\n}\n\n.HomePage_light_2jt .HomePage_lightNameArea_my7, .HomePage_light_2jt .HomePage_metadata_pqP, .HomePage_light_2jt .HomePage_colorBlockAndPicker_Flb {\n  display: table-cell;\n  vertical-align: middle;\n}\n\n.HomePage_light_2jt .HomePage_name_nWG {\n  white-space: nowrap;\n  text-overflow: ellipsis;\n  overflow: hidden;\n  width: 151px;\n  display: block;\n}\n\n.HomePage_light_2jt .HomePage_metadata_pqP {\n  font-size: 13px;\n}\n\n.HomePage_light_2jt .HomePage_colorBlockAndPicker_Flb {\n  width: 50px;\n  position: relative;\n}\n\n.HomePage_light_2jt .HomePage_colorBlockAndPicker_Flb .HomePage_colorBlock_3k8 {\n  border-radius: 4px;\n  border: none;\n  width: 100%;\n  height: 100%\n}\n\n.HomePage_light_2jt .HomePage_colorBlockAndPicker_Flb .HomePage_colorBlock_3k8:focus {\n  outline: 0;\n}\n\n.HomePage_light_2jt .HomePage_colorBlockAndPicker_Flb .HomePage_colorPickerWrapper_26s {\n  z-index: 99;\n  position: absolute;\n}\n\n.HomePage_light_2jt .HomePage_type_1AJ {\n  display: block;\n}\n\n.HomePage_light_2jt .HomePage_manufacturer_3WL {\n  padding: 0 0.3em 0 0;\n}\n\n.HomePage_light_2jt .HomePage_model_3Ue {}\n\n.HomePage_light_2jt.HomePage_night_1p9 {\n  border-color: #38231D;\n  color: #E5E4E1;\n  background-color: #231511;\n}\n\n.HomePage_light_2jt.HomePage_night_1p9 .HomePage_metadata_pqP {\n  color: #97918A;\n}\n\n.HomePage_light_2jt.HomePage_day_2WC {\n  border-color: #ccc;\n}\n\n.HomePage_light_2jt.HomePage_day_2WC .HomePage_metadata_pqP {\n  color: #797979;\n}\n\n.HomePage_onoffswitch_3hQ {\n  position: relative;\n  display: table-cell;\n  vertical-align: middle;\n  width: 50px;\n  -webkit-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n}\n\n.HomePage_onoffswitch_3hQ .HomePage_onoffswitchCheckbox_3tD {\n  display: none\n}\n\n.HomePage_onoffswitch_3hQ .HomePage_onoffswitchCheckbox_3tD:checked + .HomePage_onoffswitchLabel_W_H .HomePage_onoffswitchInner_1zJ {\n  margin-left: 0;\n}\n\n.HomePage_onoffswitch_3hQ .HomePage_onoffswitchCheckbox_3tD:checked + .HomePage_onoffswitchLabel_W_H .HomePage_onoffswitchSwitch_1Vt {\n  right: 0;\n}\n\n.HomePage_onoffswitch_3hQ .HomePage_onoffswitchLabel_W_H {\n  display: block;\n  overflow: hidden;\n  cursor: pointer;\n  border: 2px solid #CCCCCC;\n  border-radius: 18px;\n}\n\n.HomePage_onoffswitch_3hQ .HomePage_onoffswitchInner_1zJ {\n  display: block;\n  width: 200%;\n  margin-left: -100%;\n  -webkit-transition: margin 0.3s ease-in 0s;\n  -o-transition: margin 0.3s ease-in 0s;\n  transition: margin 0.3s ease-in 0s\n}\n\n.HomePage_onoffswitch_3hQ .HomePage_onoffswitchInner_1zJ:before, .HomePage_onoffswitch_3hQ .HomePage_onoffswitchInner_1zJ:after {\n  display: block;\n  float: left;\n  width: 50%;\n  height: 18px;\n  padding: 0;\n  line-height: 18px;\n  font-size: 12px;\n  color: white;\n  font-weight: 700;\n  -webkit-box-sizing: border-box;\n          box-sizing: border-box;\n}\n\n.HomePage_onoffswitch_3hQ .HomePage_onoffswitchInner_1zJ:before {\n  content: \"on\";\n  padding-left: 10px;\n  background-color: #FFF7C2;\n  color: #474029;\n}\n\n.HomePage_onoffswitch_3hQ .HomePage_onoffswitchInner_1zJ:after {\n  content: \"off\";\n  padding-right: 10px;\n  background-color: #373634;\n  color: #D6D6D6;\n  text-align: right;\n}\n\n.HomePage_onoffswitch_3hQ .HomePage_onoffswitchSwitch_1Vt {\n  display: block;\n  width: 18px;\n  margin: 0px;\n  background: #FFFFFF;\n  position: absolute;\n  top: 0;\n  bottom: 0;\n  right: 32px;\n  border: 2px solid #CCCCCC;\n  border-radius: 18px;\n  -webkit-transition: all 0.3s ease-in 0s;\n  -o-transition: all 0.3s ease-in 0s;\n  transition: all 0.3s ease-in 0s;\n}\n", "", {"version":3,"sources":["/./src/components/variables.scss","/./src/components/HomePage/HomePage.scss"],"names":[],"mappings":"AACwD,UAAU,GACV,aAAa,CACb,UAAU,CACV,UAAU,CACV,UAAU,EASlC,gCAAgC,EAChC,2BAA2B,EAC3B,6BAA6B,CAC7B,iCAAiC;;ACfjE;EACE,iBAAiB;EACjB,gBAAgB;CACjB;;AAED;EACE,aAAa;EACb,sBAAsB;EACtB,uBAAuB;EACvB,aAAa;EACb,mBAAmB;EACnB,kBAAkB;EAClB,oBAAoB;CAiFrB;;AA/EC;EAEE,eAAe;EACf,YAAY;CACb;;AAED;EACE,gBAAgB;CACjB;;AAED;EAGE,oBAAoB;EACpB,uBAAuB;CACxB;;AAoBD;EACE,oBAAoB;EACpB,wBAAwB;EACxB,iBAAiB;EACjB,aAAa;EACb,eAAe;CAChB;;AAED;EACE,gBAAgB;CACjB;;AAED;EACE,YAAY;EACZ,mBAAmB;CAiBpB;;AAfC;EACE,mBAAmB;EACnB,aAAa;EACb,YAAY;EACZ,YAAa;CAKd;;AAHC;EACE,WAAW;CACZ;;AAGH;EACE,YAAY;EACZ,mBAAmB;CACpB;;AAGH;EACE,eAAe;CAChB;;AAED;EACE,qBAAqB;CACtB;;AAED,0CAEC;;AA7DD;EACE,sBAAsB;EACtB,eAAe;EACf,0BAA0B;CAK3B;;AAHC;EACE,eAAe;CAChB;;AAGH;EACE,mBAAmB;CAKpB;;AAHC;EACE,eAAe;CAChB;;AAiDL;EACE,mBAAmB;EACnB,oBAAoB;EACpB,uBAAuB;EACvB,YAAY;EACZ,0BAA0B;EAC1B,uBAAuB;EACvB,sBAAsB;CAqEvB;;AAnEC;EACE,aAAc;CAaf;;AATK;EACE,eAAe;CAChB;;AAED;EACE,SAAS;CACV;;AAKP;EACE,eAAe;EACf,iBAAiB;EACjB,gBAAgB;EAChB,0BAA0B;EAC1B,oBAAoB;CACrB;;AAED;EACE,eAAe;EACf,YAAY;EACZ,mBAAmB;EACnB,2CAAmC;EAAnC,sCAAmC;EAAnC,kCAAmC;CA6BpC;;AA3BC;EACE,eAAe;EACf,YAAY;EACZ,WAAW;EACX,aAAa;EACb,WAAW;EACX,kBAAkB;EAClB,gBAAgB;EAChB,aAAa;EACb,iBAAiB;EACjB,+BAAuB;UAAvB,uBAAuB;CACxB;;AAED;EACE,cAAc;EACd,mBAAmB;EACnB,0BAA0B;EAC1B,eAAe;CAChB;;AAED;EACE,eAAe;EACf,oBAAoB;EACpB,0BAA0B;EAC1B,eAAe;EACf,kBAAkB;CACnB;;AAGH;EACI,eAAe;EAAC,YAAY;EAAC,YAAY;EACzC,oBAAoB;EACpB,mBAAmB;EAAC,OAAO;EAAC,UAAU;EACtC,YAAY;EACZ,0BAA0B;EAAC,oBAAoB;EAC/C,wCAAgC;EAAhC,mCAAgC;EAAhC,gCAAgC;CACnC","file":"HomePage.scss","sourcesContent":["$white-base:            hsl(255, 255, 255);\r\n$gray-darker:           color(black lightness(+13.5%)); /* #222 */\r\n$gray-dark:             color(black lightness(+25%));   /* #404040 */\r\n$gray:                  color(black lightness(+33.5%)); /* #555 */\r\n$gray-light:            color(black lightness(+46.7%)); /* #777 */\r\n$gray-lighter:          color(black lightness(+93.5%)); /* #eee */\r\n\r\n$link-color: #E16C51;\r\n$link-hover-color: #97918A;\r\n\r\n$font-family-base:      'Segoe UI', 'HelveticaNeue-Light', sans-serif;\r\n\r\n$max-content-width:     1000px;\r\n\r\n$screen-xs-min:         480px;  /* Extra small screen / phone */\r\n$screen-sm-min:         768px;  /* Small screen / tablet */\r\n$screen-md-min:         992px;  /* Medium screen / desktop */\r\n$screen-lg-min:         1200px; /* Large screen / wide desktop */\r\n\r\n$animation-swift-out:   .45s cubic-bezier(0.3, 1, 0.4, 1) 0s;\r\n","@import '../variables.scss';\n\n.lightList {\n  list-style: none;\n  padding-left: 0;\n}\n\n.light {\n  width: 223px;\n  display: inline-block;\n  margin: 0 5px 12px 5px;\n  padding: 6px;\n  border-radius: 2px;\n  border-width: 1px;\n  border-style: solid;\n\n  .lightHeader,\n  .lightFooter {\n    display: table;\n    width: 100%;\n  }\n\n  .lightFooter {\n    margin-top: 5px;\n  }\n\n  .lightNameArea,\n  .metadata,\n  .colorBlockAndPicker {\n    display: table-cell;\n    vertical-align: middle;\n  }\n\n  &.night {\n    border-color: #38231D;\n    color: #E5E4E1;\n    background-color: #231511;\n\n    .metadata {\n      color: #97918A;\n    }\n  }\n\n  &.day {\n    border-color: #ccc;\n\n    .metadata {\n      color: #797979;\n    }\n  }\n\n  .name {\n    white-space: nowrap;\n    text-overflow: ellipsis;\n    overflow: hidden;\n    width: 151px;\n    display: block;\n  }\n\n  .metadata {\n    font-size: 13px;\n  }\n\n  .colorBlockAndPicker {\n    width: 50px;\n    position: relative;\n\n    .colorBlock {\n      border-radius: 4px;\n      border: none;\n      width: 100%;\n      height: 100%;\n\n      &:focus {\n        outline: 0;\n      }\n    }\n\n    .colorPickerWrapper {\n      z-index: 99;\n      position: absolute;\n    }\n  }\n\n  .type {\n    display: block;\n  }\n\n  .manufacturer {\n    padding: 0 0.3em 0 0;\n  }\n\n  .model {\n\n  }\n}\n\n.onoffswitch {\n  position: relative;\n  display: table-cell;\n  vertical-align: middle;\n  width: 50px;\n  -webkit-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n\n  .onoffswitchCheckbox {\n    display: none;\n\n    &:checked {\n      + .onoffswitchLabel {\n        .onoffswitchInner {\n          margin-left: 0;\n        }\n\n        .onoffswitchSwitch {\n          right: 0;\n        }\n      }\n    }\n  }\n\n  .onoffswitchLabel {\n    display: block;\n    overflow: hidden;\n    cursor: pointer;\n    border: 2px solid #CCCCCC;\n    border-radius: 18px;\n  }\n\n  .onoffswitchInner {\n    display: block;\n    width: 200%;\n    margin-left: -100%;\n    transition: margin 0.3s ease-in 0s;\n\n    &:before, &:after {\n      display: block;\n      float: left;\n      width: 50%;\n      height: 18px;\n      padding: 0;\n      line-height: 18px;\n      font-size: 12px;\n      color: white;\n      font-weight: 700;\n      box-sizing: border-box;\n    }\n\n    &:before {\n      content: \"on\";\n      padding-left: 10px;\n      background-color: #FFF7C2;\n      color: #474029;\n    }\n\n    &:after {\n      content: \"off\";\n      padding-right: 10px;\n      background-color: #373634;\n      color: #D6D6D6;\n      text-align: right;\n    }\n  }\n\n  .onoffswitchSwitch {\n      display: block; width: 18px; margin: 0px;\n      background: #FFFFFF;\n      position: absolute; top: 0; bottom: 0;\n      right: 32px;\n      border: 2px solid #CCCCCC; border-radius: 18px;\n      transition: all 0.3s ease-in 0s;\n  }\n}\n"],"sourceRoot":"webpack://"}]);
   
   // exports
   exports.locals = {
@@ -3239,6 +3257,8 @@ module.exports =
   	"type": "HomePage_type_1AJ",
   	"manufacturer": "HomePage_manufacturer_3WL",
   	"model": "HomePage_model_3Ue",
+  	"night": "HomePage_night_1p9",
+  	"day": "HomePage_day_2WC",
   	"onoffswitch": "HomePage_onoffswitch_3hQ",
   	"onoffswitchCheckbox": "HomePage_onoffswitchCheckbox_3tD",
   	"onoffswitchLabel": "HomePage_onoffswitchLabel_W_H",
@@ -3247,340 +3267,7 @@ module.exports =
   };
 
 /***/ },
-/* 47 */,
-/* 48 */
-/***/ function(module, exports) {
-
-  module.exports = {
-  	"development": {
-  		"localStorageKey": "hue-steamer",
-  		"serverUri": "http://localhost:5000",
-  		"clientUri": "http://localhost:3000",
-  		"database": "hue-steamer-development.sqlite"
-  	}
-  };
-
-/***/ },
-/* 49 */,
-/* 50 */
-/***/ function(module, exports, __webpack_require__) {
-
-  'use strict';
-  
-  Object.defineProperty(exports, '__esModule', {
-    value: true
-  });
-  
-  var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-  
-  var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
-  
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-  
-  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-  
-  function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-  
-  var _react = __webpack_require__(4);
-  
-  var _react2 = _interopRequireDefault(_react);
-  
-  var _HomePageScss = __webpack_require__(45);
-  
-  var _HomePageScss2 = _interopRequireDefault(_HomePageScss);
-  
-  var _Light = __webpack_require__(51);
-  
-  var _Light2 = _interopRequireDefault(_Light);
-  
-  var LightsList = (function (_Component) {
-    _inherits(LightsList, _Component);
-  
-    _createClass(LightsList, null, [{
-      key: 'propTypes',
-      value: {
-        ids: _react.PropTypes.array.isRequired
-      },
-      enumerable: true
-    }]);
-  
-    function LightsList(props, context) {
-      _classCallCheck(this, LightsList);
-  
-      _get(Object.getPrototypeOf(LightsList.prototype), 'constructor', this).call(this, props, context);
-      this.state = {};
-    }
-  
-    _createClass(LightsList, [{
-      key: 'render',
-      value: function render() {
-        return _react2['default'].createElement(
-          'div',
-          null,
-          _react2['default'].createElement(
-            'ul',
-            { className: _HomePageScss2['default'].lightList },
-            this.props.ids.map(function (id) {
-              return _react2['default'].createElement(_Light2['default'], { key: id, id: id });
-            })
-          )
-        );
-      }
-    }]);
-  
-    return LightsList;
-  })(_react.Component);
-  
-  exports['default'] = LightsList;
-  module.exports = exports['default'];
-
-/***/ },
-/* 51 */
-/***/ function(module, exports, __webpack_require__) {
-
-  'use strict';
-  
-  Object.defineProperty(exports, '__esModule', {
-    value: true
-  });
-  
-  var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-  
-  var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
-  
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-  
-  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-  
-  function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-  
-  var _react = __webpack_require__(4);
-  
-  var _react2 = _interopRequireDefault(_react);
-  
-  var _HomePageScss = __webpack_require__(45);
-  
-  var _HomePageScss2 = _interopRequireDefault(_HomePageScss);
-  
-  var _actionsBridge = __webpack_require__(52);
-  
-  var _actionsBridge2 = _interopRequireDefault(_actionsBridge);
-  
-  var _apiConverter = __webpack_require__(53);
-  
-  var _apiConverter2 = _interopRequireDefault(_apiConverter);
-  
-  var _reactColor = __webpack_require__(56);
-  
-  var Light = (function (_Component) {
-    _inherits(Light, _Component);
-  
-    _createClass(Light, null, [{
-      key: 'propTypes',
-      value: {
-        id: _react.PropTypes.string.isRequired
-      },
-      enumerable: true
-    }]);
-  
-    function Light(props, context) {
-      _classCallCheck(this, Light);
-  
-      _get(Object.getPrototypeOf(Light.prototype), 'constructor', this).call(this, props, context);
-      this.state = {
-        lights: [],
-        loaded: false,
-        showColorPicker: false
-      };
-    }
-  
-    _createClass(Light, [{
-      key: 'componentDidMount',
-      value: function componentDidMount() {
-        this.updateLight();
-      }
-    }, {
-      key: 'onLightLoaded',
-      value: function onLightLoaded(light) {
-        if (light.hasOwnProperty('errno')) {
-          console.error('failed to load light ' + this.props.id, light);
-          return;
-        }
-        this.setState({
-          light: light,
-          loaded: true,
-          latestColor: this.getLightHex(light.state)
-        });
-      }
-    }, {
-      key: 'onLightToggle',
-      value: function onLightToggle() {
-        var light = this.state.light;
-        if (light.state.on) {
-          _actionsBridge2['default'].turnOffLight(this.props.id).then(this.onLightToggleComplete.bind(this));
-        } else {
-          _actionsBridge2['default'].turnOnLight(this.props.id).then(this.onLightToggleComplete.bind(this));
-        }
-      }
-    }, {
-      key: 'onLightToggleComplete',
-      value: function onLightToggleComplete(success) {
-        if (success) {
-          var light = this.state.light;
-          light.state.on = !light.state.on;
-          this.setState({ light: light });
-        }
-      }
-    }, {
-      key: 'onColorPickerChange',
-      value: function onColorPickerChange(color) {
-        this.setState({ latestColor: color.hex });
-        this.changeColor(color.hex);
-      }
-    }, {
-      key: 'onColorPickerCancel',
-      value: function onColorPickerCancel() {
-        this.setState({ showColorPicker: false });
-      }
-    }, {
-      key: 'onColorChanged',
-      value: function onColorChanged(success) {
-        if (!success) {
-          console.error('failed to change light color', this.state.light.name);
-        }
-      }
-    }, {
-      key: 'getLightHex',
-      value: function getLightHex(optionalLightState) {
-        var lightState = optionalLightState || this.state.light.state;
-        if (lightState.on) {
-          var xy = lightState.xy;
-          if (typeof xy === 'object') {
-            return _apiConverter2['default'].cie1931ToHex(xy[0], xy[1], lightState.bri);
-          }
-        }
-      }
-    }, {
-      key: 'changeColor',
-      value: function changeColor(color) {
-        var xy = _apiConverter2['default'].hexToCIE1931(color);
-        var x = xy[0];
-        var y = xy[1];
-        _actionsBridge2['default'].setLightColor(this.props.id, x, y).then(this.onColorChanged.bind(this));
-      }
-    }, {
-      key: 'updateLight',
-      value: function updateLight() {
-        _actionsBridge2['default'].getLight(this.props.id).then(this.onLightLoaded.bind(this));
-      }
-    }, {
-      key: 'toggleColorPicker',
-      value: function toggleColorPicker() {
-        this.setState({ showColorPicker: !this.state.showColorPicker });
-      }
-    }, {
-      key: 'render',
-      value: function render() {
-        var checkboxID = 'light-' + this.props.id + '-toggle';
-        var colorStyle = {};
-        var colorPickerStyle = {
-          display: this.state.showColorPicker ? 'block' : 'none'
-        };
-        if (typeof this.state.light === 'object') {
-          if (typeof this.state.latestColor !== 'undefined') {
-            colorStyle.backgroundColor = '#' + this.state.latestColor;
-          }
-        }
-        return _react2['default'].createElement(
-          'li',
-          { className: _HomePageScss2['default'].light },
-          this.state.loaded ? _react2['default'].createElement(
-            'div',
-            null,
-            _react2['default'].createElement(
-              'header',
-              { className: _HomePageScss2['default'].lightHeader },
-              _react2['default'].createElement(
-                'div',
-                { className: _HomePageScss2['default'].lightNameArea },
-                _react2['default'].createElement(
-                  'span',
-                  { className: _HomePageScss2['default'].name, title: this.state.light.name },
-                  this.state.light.name
-                )
-              ),
-              _react2['default'].createElement(
-                'div',
-                { className: _HomePageScss2['default'].onoffswitch },
-                _react2['default'].createElement('input', { type: 'checkbox', name: 'onoffswitch',
-                  className: _HomePageScss2['default'].onoffswitchCheckbox, id: checkboxID,
-                  checked: this.state.light.state.on,
-                  onChange: this.onLightToggle.bind(this)
-                }),
-                _react2['default'].createElement(
-                  'label',
-                  { className: _HomePageScss2['default'].onoffswitchLabel, htmlFor: checkboxID },
-                  _react2['default'].createElement('span', { className: _HomePageScss2['default'].onoffswitchInner }),
-                  _react2['default'].createElement('span', { className: _HomePageScss2['default'].onoffswitchSwitch })
-                )
-              )
-            ),
-            _react2['default'].createElement(
-              'footer',
-              { className: _HomePageScss2['default'].lightFooter },
-              _react2['default'].createElement(
-                'div',
-                { className: _HomePageScss2['default'].metadata },
-                _react2['default'].createElement(
-                  'span',
-                  { className: _HomePageScss2['default'].type },
-                  this.state.light.type
-                ),
-                _react2['default'].createElement(
-                  'span',
-                  { className: _HomePageScss2['default'].manufacturer },
-                  this.state.light.manufacturername
-                ),
-                _react2['default'].createElement(
-                  'span',
-                  { className: _HomePageScss2['default'].model },
-                  this.state.light.modelid
-                )
-              ),
-              colorStyle.backgroundColor ? _react2['default'].createElement(
-                'div',
-                { className: _HomePageScss2['default'].colorBlockAndPicker },
-                _react2['default'].createElement('button', { type: 'button', onClick: this.toggleColorPicker.bind(this),
-                  className: _HomePageScss2['default'].colorBlock, style: colorStyle
-                }),
-                _react2['default'].createElement(
-                  'div',
-                  { style: colorPickerStyle, className: _HomePageScss2['default'].colorPickerWrapper },
-                  _react2['default'].createElement(_reactColor.SketchPicker, { color: colorStyle.backgroundColor,
-                    onChangeComplete: this.onColorPickerChange.bind(this)
-                  })
-                )
-              ) : ''
-            )
-          ) : _react2['default'].createElement(
-            'span',
-            null,
-            'Loading light ',
-            this.props.id,
-            '...'
-          )
-        );
-      }
-    }]);
-  
-    return Light;
-  })(_react.Component);
-  
-  exports['default'] = Light;
-  module.exports = exports['default'];
-
-/***/ },
-/* 52 */
+/* 47 */
 /***/ function(module, exports, __webpack_require__) {
 
   'use strict';
@@ -3827,7 +3514,348 @@ module.exports =
   module.exports = exports['default'];
 
 /***/ },
-/* 53 */
+/* 48 */
+/***/ function(module, exports) {
+
+  module.exports = {
+  	"development": {
+  		"localStorageKey": "hue-steamer",
+  		"serverUri": "http://localhost:5000",
+  		"clientUri": "http://localhost:3000",
+  		"database": "hue-steamer-development.sqlite"
+  	}
+  };
+
+/***/ },
+/* 49 */
+/***/ function(module, exports, __webpack_require__) {
+
+  'use strict';
+  
+  Object.defineProperty(exports, '__esModule', {
+    value: true
+  });
+  
+  var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+  
+  var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+  
+  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  
+  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+  
+  function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+  
+  var _react = __webpack_require__(4);
+  
+  var _react2 = _interopRequireDefault(_react);
+  
+  var _HomePageScss = __webpack_require__(45);
+  
+  var _HomePageScss2 = _interopRequireDefault(_HomePageScss);
+  
+  var _Light = __webpack_require__(50);
+  
+  var _Light2 = _interopRequireDefault(_Light);
+  
+  var LightsList = (function (_Component) {
+    _inherits(LightsList, _Component);
+  
+    _createClass(LightsList, null, [{
+      key: 'propTypes',
+      value: {
+        ids: _react.PropTypes.array.isRequired
+      },
+      enumerable: true
+    }]);
+  
+    function LightsList(props, context) {
+      _classCallCheck(this, LightsList);
+  
+      _get(Object.getPrototypeOf(LightsList.prototype), 'constructor', this).call(this, props, context);
+      this.state = {};
+    }
+  
+    _createClass(LightsList, [{
+      key: 'render',
+      value: function render() {
+        return _react2['default'].createElement(
+          'div',
+          null,
+          _react2['default'].createElement(
+            'ul',
+            { className: _HomePageScss2['default'].lightList },
+            this.props.ids.map(function (id) {
+              return _react2['default'].createElement(_Light2['default'], { key: id, id: id });
+            })
+          )
+        );
+      }
+    }]);
+  
+    return LightsList;
+  })(_react.Component);
+  
+  exports['default'] = LightsList;
+  module.exports = exports['default'];
+
+/***/ },
+/* 50 */
+/***/ function(module, exports, __webpack_require__) {
+
+  'use strict';
+  
+  Object.defineProperty(exports, '__esModule', {
+    value: true
+  });
+  
+  var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+  
+  var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+  
+  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  
+  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+  
+  function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+  
+  var _react = __webpack_require__(4);
+  
+  var _react2 = _interopRequireDefault(_react);
+  
+  var _HomePageScss = __webpack_require__(45);
+  
+  var _HomePageScss2 = _interopRequireDefault(_HomePageScss);
+  
+  var _actionsBridge = __webpack_require__(47);
+  
+  var _actionsBridge2 = _interopRequireDefault(_actionsBridge);
+  
+  var _apiConverter = __webpack_require__(51);
+  
+  var _apiConverter2 = _interopRequireDefault(_apiConverter);
+  
+  var _reactColor = __webpack_require__(54);
+  
+  var _classnames = __webpack_require__(71);
+  
+  var _classnames2 = _interopRequireDefault(_classnames);
+  
+  var Light = (function (_Component) {
+    _inherits(Light, _Component);
+  
+    _createClass(Light, null, [{
+      key: 'propTypes',
+      value: {
+        id: _react.PropTypes.string.isRequired
+      },
+      enumerable: true
+    }]);
+  
+    function Light(props, context) {
+      _classCallCheck(this, Light);
+  
+      _get(Object.getPrototypeOf(Light.prototype), 'constructor', this).call(this, props, context);
+      this.state = {
+        lights: [],
+        loaded: false,
+        showColorPicker: false
+      };
+    }
+  
+    _createClass(Light, [{
+      key: 'componentDidMount',
+      value: function componentDidMount() {
+        this.updateLight();
+      }
+    }, {
+      key: 'onLightLoaded',
+      value: function onLightLoaded(light) {
+        if (light.hasOwnProperty('errno')) {
+          console.error('failed to load light ' + this.props.id, light);
+          return;
+        }
+        this.setState({
+          light: light,
+          loaded: true,
+          latestColor: this.getLightHex(light.state)
+        });
+      }
+    }, {
+      key: 'onLightToggle',
+      value: function onLightToggle() {
+        var light = this.state.light;
+        if (light.state.on) {
+          _actionsBridge2['default'].turnOffLight(this.props.id).then(this.onLightToggleComplete.bind(this));
+        } else {
+          _actionsBridge2['default'].turnOnLight(this.props.id).then(this.onLightToggleComplete.bind(this));
+        }
+      }
+    }, {
+      key: 'onLightToggleComplete',
+      value: function onLightToggleComplete(success) {
+        if (success) {
+          var light = this.state.light;
+          light.state.on = !light.state.on;
+          this.setState({ light: light });
+        }
+      }
+    }, {
+      key: 'onColorPickerChange',
+      value: function onColorPickerChange(color) {
+        this.setState({ latestColor: color.hex });
+        this.changeColor(color.hex);
+      }
+    }, {
+      key: 'onColorPickerCancel',
+      value: function onColorPickerCancel() {
+        this.setState({ showColorPicker: false });
+      }
+    }, {
+      key: 'onColorChanged',
+      value: function onColorChanged(success) {
+        if (!success) {
+          console.error('failed to change light color', this.state.light.name);
+        }
+      }
+    }, {
+      key: 'getLightHex',
+      value: function getLightHex(optionalLightState) {
+        var lightState = optionalLightState || this.state.light.state;
+        if (lightState.on) {
+          var xy = lightState.xy;
+          if (typeof xy === 'object') {
+            return _apiConverter2['default'].cie1931ToHex(xy[0], xy[1], lightState.bri);
+          }
+        }
+      }
+    }, {
+      key: 'changeColor',
+      value: function changeColor(color) {
+        var xy = _apiConverter2['default'].hexToCIE1931(color);
+        var x = xy[0];
+        var y = xy[1];
+        _actionsBridge2['default'].setLightColor(this.props.id, x, y).then(this.onColorChanged.bind(this));
+      }
+    }, {
+      key: 'updateLight',
+      value: function updateLight() {
+        _actionsBridge2['default'].getLight(this.props.id).then(this.onLightLoaded.bind(this));
+      }
+    }, {
+      key: 'toggleColorPicker',
+      value: function toggleColorPicker() {
+        this.setState({ showColorPicker: !this.state.showColorPicker });
+      }
+    }, {
+      key: 'isNight',
+      value: function isNight() {
+        var curTime = new Date();
+        return curTime.getHours() >= 20;
+      }
+    }, {
+      key: 'render',
+      value: function render() {
+        var checkboxID = 'light-' + this.props.id + '-toggle';
+        var colorStyle = {};
+        var colorPickerStyle = {
+          display: this.state.showColorPicker ? 'block' : 'none'
+        };
+        if (typeof this.state.light === 'object') {
+          if (typeof this.state.latestColor !== 'undefined') {
+            colorStyle.backgroundColor = '#' + this.state.latestColor;
+          }
+        }
+        return _react2['default'].createElement(
+          'li',
+          { className: (0, _classnames2['default'])(_HomePageScss2['default'].light, this.isNight() ? _HomePageScss2['default'].night : _HomePageScss2['default'].day) },
+          this.state.loaded ? _react2['default'].createElement(
+            'div',
+            null,
+            _react2['default'].createElement(
+              'header',
+              { className: _HomePageScss2['default'].lightHeader },
+              _react2['default'].createElement(
+                'div',
+                { className: _HomePageScss2['default'].lightNameArea },
+                _react2['default'].createElement(
+                  'span',
+                  { className: _HomePageScss2['default'].name, title: this.state.light.name },
+                  this.state.light.name
+                )
+              ),
+              _react2['default'].createElement(
+                'div',
+                { className: _HomePageScss2['default'].onoffswitch },
+                _react2['default'].createElement('input', { type: 'checkbox', name: 'onoffswitch',
+                  className: _HomePageScss2['default'].onoffswitchCheckbox, id: checkboxID,
+                  checked: this.state.light.state.on,
+                  onChange: this.onLightToggle.bind(this)
+                }),
+                _react2['default'].createElement(
+                  'label',
+                  { className: _HomePageScss2['default'].onoffswitchLabel, htmlFor: checkboxID },
+                  _react2['default'].createElement('span', { className: _HomePageScss2['default'].onoffswitchInner }),
+                  _react2['default'].createElement('span', { className: _HomePageScss2['default'].onoffswitchSwitch })
+                )
+              )
+            ),
+            _react2['default'].createElement(
+              'footer',
+              { className: _HomePageScss2['default'].lightFooter },
+              _react2['default'].createElement(
+                'div',
+                { className: _HomePageScss2['default'].metadata },
+                _react2['default'].createElement(
+                  'span',
+                  { className: _HomePageScss2['default'].type },
+                  this.state.light.type
+                ),
+                _react2['default'].createElement(
+                  'span',
+                  { className: _HomePageScss2['default'].manufacturer },
+                  this.state.light.manufacturername
+                ),
+                _react2['default'].createElement(
+                  'span',
+                  { className: _HomePageScss2['default'].model },
+                  this.state.light.modelid
+                )
+              ),
+              colorStyle.backgroundColor ? _react2['default'].createElement(
+                'div',
+                { className: _HomePageScss2['default'].colorBlockAndPicker },
+                _react2['default'].createElement('button', { type: 'button', onClick: this.toggleColorPicker.bind(this),
+                  className: _HomePageScss2['default'].colorBlock, style: colorStyle
+                }),
+                _react2['default'].createElement(
+                  'div',
+                  { style: colorPickerStyle, className: _HomePageScss2['default'].colorPickerWrapper },
+                  _react2['default'].createElement(_reactColor.SketchPicker, { color: colorStyle.backgroundColor,
+                    onChangeComplete: this.onColorPickerChange.bind(this)
+                  })
+                )
+              ) : ''
+            )
+          ) : _react2['default'].createElement(
+            'span',
+            null,
+            'Loading light ',
+            this.props.id,
+            '...'
+          )
+        );
+      }
+    }]);
+  
+    return Light;
+  })(_react.Component);
+  
+  exports['default'] = Light;
+  module.exports = exports['default'];
+
+/***/ },
+/* 51 */
 /***/ function(module, exports, __webpack_require__) {
 
   'use strict';
@@ -3842,7 +3870,7 @@ module.exports =
   
   function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
   
-  var _colorHelper = __webpack_require__(54);
+  var _colorHelper = __webpack_require__(52);
   
   var _colorHelper2 = _interopRequireDefault(_colorHelper);
   
@@ -3924,7 +3952,7 @@ module.exports =
   module.exports = exports['default'];
 
 /***/ },
-/* 54 */
+/* 52 */
 /***/ function(module, exports, __webpack_require__) {
 
   'use strict';
@@ -3939,7 +3967,7 @@ module.exports =
   
   function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
   
-  var _xyPoint = __webpack_require__(55);
+  var _xyPoint = __webpack_require__(53);
   
   var _xyPoint2 = _interopRequireDefault(_xyPoint);
   
@@ -4197,7 +4225,7 @@ module.exports =
   module.exports = exports['default'];
 
 /***/ },
-/* 55 */
+/* 53 */
 /***/ function(module, exports) {
 
   "use strict";
@@ -4219,13 +4247,13 @@ module.exports =
   module.exports = exports["default"];
 
 /***/ },
-/* 56 */
+/* 54 */
 /***/ function(module, exports) {
 
   module.exports = require("react-color");
 
 /***/ },
-/* 57 */
+/* 55 */
 /***/ function(module, exports, __webpack_require__) {
 
   'use strict';
@@ -4250,7 +4278,7 @@ module.exports =
   
   var _react2 = _interopRequireDefault(_react);
   
-  var _SettingsPageScss = __webpack_require__(58);
+  var _SettingsPageScss = __webpack_require__(56);
   
   var _SettingsPageScss2 = _interopRequireDefault(_SettingsPageScss);
   
@@ -4258,15 +4286,15 @@ module.exports =
   
   var _decoratorsWithStyles2 = _interopRequireDefault(_decoratorsWithStyles);
   
-  var _actionsBridge = __webpack_require__(52);
+  var _actionsBridge = __webpack_require__(47);
   
   var _actionsBridge2 = _interopRequireDefault(_actionsBridge);
   
-  var _BridgeDisplay = __webpack_require__(60);
+  var _BridgeDisplay = __webpack_require__(58);
   
   var _BridgeDisplay2 = _interopRequireDefault(_BridgeDisplay);
   
-  var _UserForm = __webpack_require__(70);
+  var _UserForm = __webpack_require__(59);
   
   var _UserForm2 = _interopRequireDefault(_UserForm);
   
@@ -4504,11 +4532,11 @@ module.exports =
   module.exports = exports['default'];
 
 /***/ },
-/* 58 */
+/* 56 */
 /***/ function(module, exports, __webpack_require__) {
 
   
-      var content = __webpack_require__(59);
+      var content = __webpack_require__(57);
       var insertCss = __webpack_require__(20);
   
       if (typeof content === 'string') {
@@ -4536,7 +4564,7 @@ module.exports =
     
 
 /***/ },
-/* 59 */
+/* 57 */
 /***/ function(module, exports, __webpack_require__) {
 
   exports = module.exports = __webpack_require__(19)();
@@ -4557,7 +4585,7 @@ module.exports =
   };
 
 /***/ },
-/* 60 */
+/* 58 */
 /***/ function(module, exports, __webpack_require__) {
 
   'use strict';
@@ -4580,7 +4608,7 @@ module.exports =
   
   var _react2 = _interopRequireDefault(_react);
   
-  var _SettingsPageScss = __webpack_require__(58);
+  var _SettingsPageScss = __webpack_require__(56);
   
   var _SettingsPageScss2 = _interopRequireDefault(_SettingsPageScss);
   
@@ -4709,289 +4737,7 @@ module.exports =
   module.exports = exports['default'];
 
 /***/ },
-/* 61 */
-/***/ function(module, exports, __webpack_require__) {
-
-  /**
-   * React Starter Kit (https://www.reactstarterkit.com/)
-   *
-   * Copyright © 2014-2016 Kriasoft, LLC. All rights reserved.
-   *
-   * This source code is licensed under the MIT license found in the
-   * LICENSE.txt file in the root directory of this source tree.
-   */
-  
-  'use strict';
-  
-  Object.defineProperty(exports, '__esModule', {
-    value: true
-  });
-  
-  var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-  
-  var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
-  
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-  
-  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-  
-  function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-  
-  var _react = __webpack_require__(4);
-  
-  var _react2 = _interopRequireDefault(_react);
-  
-  var _config = __webpack_require__(14);
-  
-  var Html = (function (_Component) {
-    _inherits(Html, _Component);
-  
-    function Html() {
-      _classCallCheck(this, Html);
-  
-      _get(Object.getPrototypeOf(Html.prototype), 'constructor', this).apply(this, arguments);
-    }
-  
-    _createClass(Html, [{
-      key: 'trackingCode',
-      value: function trackingCode() {
-        return { __html: '(function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=' + 'function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;' + 'e=o.createElement(i);r=o.getElementsByTagName(i)[0];' + 'e.src=\'https://www.google-analytics.com/analytics.js\';' + 'r.parentNode.insertBefore(e,r)}(window,document,\'script\',\'ga\'));' + ('ga(\'create\',\'' + _config.googleAnalyticsId + '\',\'auto\');ga(\'send\',\'pageview\');')
-        };
-      }
-    }, {
-      key: 'render',
-      value: function render() {
-        return _react2['default'].createElement(
-          'html',
-          { className: 'no-js', lang: '' },
-          _react2['default'].createElement(
-            'head',
-            null,
-            _react2['default'].createElement('meta', { charSet: 'utf-8' }),
-            _react2['default'].createElement('meta', { httpEquiv: 'X-UA-Compatible', content: 'IE=edge' }),
-            _react2['default'].createElement(
-              'title',
-              null,
-              this.props.title
-            ),
-            _react2['default'].createElement('meta', { name: 'description', content: this.props.description }),
-            _react2['default'].createElement('meta', { name: 'viewport', content: 'width=device-width, initial-scale=1' }),
-            _react2['default'].createElement('link', { rel: 'apple-touch-icon', href: 'apple-touch-icon.png' }),
-            _react2['default'].createElement('style', { id: 'css', dangerouslySetInnerHTML: { __html: this.props.css } })
-          ),
-          _react2['default'].createElement(
-            'body',
-            null,
-            _react2['default'].createElement('div', { id: 'app', dangerouslySetInnerHTML: { __html: this.props.body } }),
-            _react2['default'].createElement('script', { src: this.props.entry }),
-            _react2['default'].createElement('script', { dangerouslySetInnerHTML: this.trackingCode() })
-          )
-        );
-      }
-    }], [{
-      key: 'propTypes',
-      value: {
-        title: _react.PropTypes.string,
-        description: _react.PropTypes.string,
-        css: _react.PropTypes.string,
-        body: _react.PropTypes.string.isRequired,
-        entry: _react.PropTypes.string.isRequired
-      },
-      enumerable: true
-    }, {
-      key: 'defaultProps',
-      value: {
-        title: '',
-        description: ''
-      },
-      enumerable: true
-    }]);
-  
-    return Html;
-  })(_react.Component);
-  
-  exports['default'] = Html;
-  module.exports = exports['default'];
-
-/***/ },
-/* 62 */
-/***/ function(module, exports) {
-
-  module.exports = require("./assets");
-
-/***/ },
-/* 63 */
-/***/ function(module, exports) {
-
-  module.exports = require("sqlite");
-
-/***/ },
-/* 64 */
-/***/ function(module, exports) {
-
-  module.exports = require("node-hue-api");
-
-/***/ },
-/* 65 */
-/***/ function(module, exports, __webpack_require__) {
-
-  /**
-   * React Starter Kit (https://www.reactstarterkit.com/)
-   *
-   * Copyright © 2014-2016 Kriasoft, LLC. All rights reserved.
-   *
-   * This source code is licensed under the MIT license found in the
-   * LICENSE.txt file in the root directory of this source tree.
-   */
-  
-  'use strict';
-  
-  Object.defineProperty(exports, '__esModule', {
-    value: true
-  });
-  
-  var _this = this;
-  
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-  
-  var _fs = __webpack_require__(66);
-  
-  var _fs2 = _interopRequireDefault(_fs);
-  
-  var _path = __webpack_require__(2);
-  
-  var _express = __webpack_require__(3);
-  
-  var _bluebird = __webpack_require__(67);
-  
-  var _bluebird2 = _interopRequireDefault(_bluebird);
-  
-  var _jade = __webpack_require__(68);
-  
-  var _jade2 = _interopRequireDefault(_jade);
-  
-  var _frontMatter = __webpack_require__(69);
-  
-  var _frontMatter2 = _interopRequireDefault(_frontMatter);
-  
-  // A folder with Jade/Markdown/HTML content pages
-  var CONTENT_DIR = (0, _path.join)(__dirname, './content');
-  
-  // Extract 'front matter' metadata and generate HTML
-  var parseJade = function parseJade(path, jadeContent) {
-    var fmContent = (0, _frontMatter2['default'])(jadeContent);
-    var htmlContent = _jade2['default'].render(fmContent.body);
-    return Object.assign({ path: path, content: htmlContent }, fmContent.attributes);
-  };
-  
-  var readFile = _bluebird2['default'].promisify(_fs2['default'].readFile);
-  var fileExists = function fileExists(filename) {
-    return new _bluebird2['default'](function (resolve) {
-      _fs2['default'].exists(filename, resolve);
-    });
-  };
-  
-  var router = new _express.Router();
-  
-  router.get('/', function callee$0$0(req, res, next) {
-    var path, fileName, source, content;
-    return regeneratorRuntime.async(function callee$0$0$(context$1$0) {
-      while (1) switch (context$1$0.prev = context$1$0.next) {
-        case 0:
-          context$1$0.prev = 0;
-          path = req.query.path;
-  
-          if (!(!path || path === 'undefined')) {
-            context$1$0.next = 5;
-            break;
-          }
-  
-          res.status(400).send({ error: 'The \'path\' query parameter cannot be empty.' });
-          return context$1$0.abrupt('return');
-  
-        case 5:
-          fileName = (0, _path.join)(CONTENT_DIR, (path === '/' ? '/index' : path) + '.jade');
-          context$1$0.next = 8;
-          return regeneratorRuntime.awrap(fileExists(fileName));
-  
-        case 8:
-          if (context$1$0.sent) {
-            context$1$0.next = 10;
-            break;
-          }
-  
-          fileName = (0, _path.join)(CONTENT_DIR, path + '/index.jade');
-  
-        case 10:
-          context$1$0.next = 12;
-          return regeneratorRuntime.awrap(fileExists(fileName));
-  
-        case 12:
-          if (context$1$0.sent) {
-            context$1$0.next = 16;
-            break;
-          }
-  
-          res.status(404).send({ error: 'The page \'' + path + '\' is not found.' });
-          context$1$0.next = 21;
-          break;
-  
-        case 16:
-          context$1$0.next = 18;
-          return regeneratorRuntime.awrap(readFile(fileName, { encoding: 'utf8' }));
-  
-        case 18:
-          source = context$1$0.sent;
-          content = parseJade(path, source);
-  
-          res.status(200).send(content);
-  
-        case 21:
-          context$1$0.next = 26;
-          break;
-  
-        case 23:
-          context$1$0.prev = 23;
-          context$1$0.t0 = context$1$0['catch'](0);
-  
-          next(context$1$0.t0);
-  
-        case 26:
-        case 'end':
-          return context$1$0.stop();
-      }
-    }, null, _this, [[0, 23]]);
-  });
-  
-  exports['default'] = router;
-  module.exports = exports['default'];
-
-/***/ },
-/* 66 */
-/***/ function(module, exports) {
-
-  module.exports = require("fs");
-
-/***/ },
-/* 67 */
-/***/ function(module, exports) {
-
-  module.exports = require("bluebird");
-
-/***/ },
-/* 68 */
-/***/ function(module, exports) {
-
-  module.exports = require("jade");
-
-/***/ },
-/* 69 */
-/***/ function(module, exports) {
-
-  module.exports = require("front-matter");
-
-/***/ },
-/* 70 */
+/* 59 */
 /***/ function(module, exports, __webpack_require__) {
 
   'use strict';
@@ -5014,11 +4760,11 @@ module.exports =
   
   var _react2 = _interopRequireDefault(_react);
   
-  var _SettingsPageScss = __webpack_require__(58);
+  var _SettingsPageScss = __webpack_require__(56);
   
   var _SettingsPageScss2 = _interopRequireDefault(_SettingsPageScss);
   
-  var _actionsBridge = __webpack_require__(52);
+  var _actionsBridge = __webpack_require__(47);
   
   var _actionsBridge2 = _interopRequireDefault(_actionsBridge);
   
@@ -5136,6 +4882,296 @@ module.exports =
   
   exports['default'] = UserForm;
   module.exports = exports['default'];
+
+/***/ },
+/* 60 */
+/***/ function(module, exports, __webpack_require__) {
+
+  /**
+   * React Starter Kit (https://www.reactstarterkit.com/)
+   *
+   * Copyright © 2014-2016 Kriasoft, LLC. All rights reserved.
+   *
+   * This source code is licensed under the MIT license found in the
+   * LICENSE.txt file in the root directory of this source tree.
+   */
+  
+  'use strict';
+  
+  Object.defineProperty(exports, '__esModule', {
+    value: true
+  });
+  
+  var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+  
+  var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+  
+  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  
+  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+  
+  function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+  
+  var _react = __webpack_require__(4);
+  
+  var _react2 = _interopRequireDefault(_react);
+  
+  var _config = __webpack_require__(14);
+  
+  var Html = (function (_Component) {
+    _inherits(Html, _Component);
+  
+    function Html() {
+      _classCallCheck(this, Html);
+  
+      _get(Object.getPrototypeOf(Html.prototype), 'constructor', this).apply(this, arguments);
+    }
+  
+    _createClass(Html, [{
+      key: 'trackingCode',
+      value: function trackingCode() {
+        return { __html: '(function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=' + 'function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;' + 'e=o.createElement(i);r=o.getElementsByTagName(i)[0];' + 'e.src=\'https://www.google-analytics.com/analytics.js\';' + 'r.parentNode.insertBefore(e,r)}(window,document,\'script\',\'ga\'));' + ('ga(\'create\',\'' + _config.googleAnalyticsId + '\',\'auto\');ga(\'send\',\'pageview\');')
+        };
+      }
+    }, {
+      key: 'render',
+      value: function render() {
+        return _react2['default'].createElement(
+          'html',
+          { className: 'no-js', lang: 'en' },
+          _react2['default'].createElement(
+            'head',
+            null,
+            _react2['default'].createElement('meta', { charSet: 'utf-8' }),
+            _react2['default'].createElement('meta', { httpEquiv: 'X-UA-Compatible', content: 'IE=edge' }),
+            _react2['default'].createElement(
+              'title',
+              null,
+              this.props.title
+            ),
+            _react2['default'].createElement('meta', { name: 'description', content: this.props.description }),
+            _react2['default'].createElement('meta', { name: 'viewport', content: 'width=device-width, initial-scale=1' }),
+            _react2['default'].createElement('link', { rel: 'apple-touch-icon', href: 'apple-touch-icon.png' }),
+            _react2['default'].createElement('style', { id: 'css', dangerouslySetInnerHTML: { __html: this.props.css } })
+          ),
+          _react2['default'].createElement(
+            'body',
+            null,
+            _react2['default'].createElement('div', { id: 'app', dangerouslySetInnerHTML: { __html: this.props.body } }),
+            _react2['default'].createElement('script', { src: this.props.entry }),
+            _react2['default'].createElement('script', { dangerouslySetInnerHTML: this.trackingCode() })
+          )
+        );
+      }
+    }], [{
+      key: 'propTypes',
+      value: {
+        title: _react.PropTypes.string,
+        description: _react.PropTypes.string,
+        css: _react.PropTypes.string,
+        body: _react.PropTypes.string.isRequired,
+        entry: _react.PropTypes.string.isRequired
+      },
+      enumerable: true
+    }, {
+      key: 'defaultProps',
+      value: {
+        title: '',
+        description: ''
+      },
+      enumerable: true
+    }]);
+  
+    return Html;
+  })(_react.Component);
+  
+  exports['default'] = Html;
+  module.exports = exports['default'];
+
+/***/ },
+/* 61 */
+/***/ function(module, exports) {
+
+  module.exports = require("./assets");
+
+/***/ },
+/* 62 */
+/***/ function(module, exports) {
+
+  module.exports = require("sqlite");
+
+/***/ },
+/* 63 */
+/***/ function(module, exports) {
+
+  module.exports = require("node-hue-api");
+
+/***/ },
+/* 64 */
+/***/ function(module, exports, __webpack_require__) {
+
+  /**
+   * React Starter Kit (https://www.reactstarterkit.com/)
+   *
+   * Copyright © 2014-2016 Kriasoft, LLC. All rights reserved.
+   *
+   * This source code is licensed under the MIT license found in the
+   * LICENSE.txt file in the root directory of this source tree.
+   */
+  
+  'use strict';
+  
+  Object.defineProperty(exports, '__esModule', {
+    value: true
+  });
+  
+  var _this = this;
+  
+  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  
+  var _fs = __webpack_require__(65);
+  
+  var _fs2 = _interopRequireDefault(_fs);
+  
+  var _path = __webpack_require__(2);
+  
+  var _express = __webpack_require__(3);
+  
+  var _bluebird = __webpack_require__(66);
+  
+  var _bluebird2 = _interopRequireDefault(_bluebird);
+  
+  var _jade = __webpack_require__(67);
+  
+  var _jade2 = _interopRequireDefault(_jade);
+  
+  var _frontMatter = __webpack_require__(68);
+  
+  var _frontMatter2 = _interopRequireDefault(_frontMatter);
+  
+  // A folder with Jade/Markdown/HTML content pages
+  var CONTENT_DIR = (0, _path.join)(__dirname, './content');
+  
+  // Extract 'front matter' metadata and generate HTML
+  var parseJade = function parseJade(path, jadeContent) {
+    var fmContent = (0, _frontMatter2['default'])(jadeContent);
+    var htmlContent = _jade2['default'].render(fmContent.body);
+    return Object.assign({ path: path, content: htmlContent }, fmContent.attributes);
+  };
+  
+  var readFile = _bluebird2['default'].promisify(_fs2['default'].readFile);
+  var fileExists = function fileExists(filename) {
+    return new _bluebird2['default'](function (resolve) {
+      _fs2['default'].exists(filename, resolve);
+    });
+  };
+  
+  var router = new _express.Router();
+  
+  router.get('/', function callee$0$0(req, res, next) {
+    var path, fileName, source, content;
+    return regeneratorRuntime.async(function callee$0$0$(context$1$0) {
+      while (1) switch (context$1$0.prev = context$1$0.next) {
+        case 0:
+          context$1$0.prev = 0;
+          path = req.query.path;
+  
+          if (!(!path || path === 'undefined')) {
+            context$1$0.next = 5;
+            break;
+          }
+  
+          res.status(400).send({ error: 'The \'path\' query parameter cannot be empty.' });
+          return context$1$0.abrupt('return');
+  
+        case 5:
+          fileName = (0, _path.join)(CONTENT_DIR, (path === '/' ? '/index' : path) + '.jade');
+          context$1$0.next = 8;
+          return regeneratorRuntime.awrap(fileExists(fileName));
+  
+        case 8:
+          if (context$1$0.sent) {
+            context$1$0.next = 10;
+            break;
+          }
+  
+          fileName = (0, _path.join)(CONTENT_DIR, path + '/index.jade');
+  
+        case 10:
+          context$1$0.next = 12;
+          return regeneratorRuntime.awrap(fileExists(fileName));
+  
+        case 12:
+          if (context$1$0.sent) {
+            context$1$0.next = 16;
+            break;
+          }
+  
+          res.status(404).send({ error: 'The page \'' + path + '\' is not found.' });
+          context$1$0.next = 21;
+          break;
+  
+        case 16:
+          context$1$0.next = 18;
+          return regeneratorRuntime.awrap(readFile(fileName, { encoding: 'utf8' }));
+  
+        case 18:
+          source = context$1$0.sent;
+          content = parseJade(path, source);
+  
+          res.status(200).send(content);
+  
+        case 21:
+          context$1$0.next = 26;
+          break;
+  
+        case 23:
+          context$1$0.prev = 23;
+          context$1$0.t0 = context$1$0['catch'](0);
+  
+          next(context$1$0.t0);
+  
+        case 26:
+        case 'end':
+          return context$1$0.stop();
+      }
+    }, null, _this, [[0, 23]]);
+  });
+  
+  exports['default'] = router;
+  module.exports = exports['default'];
+
+/***/ },
+/* 65 */
+/***/ function(module, exports) {
+
+  module.exports = require("fs");
+
+/***/ },
+/* 66 */
+/***/ function(module, exports) {
+
+  module.exports = require("bluebird");
+
+/***/ },
+/* 67 */
+/***/ function(module, exports) {
+
+  module.exports = require("jade");
+
+/***/ },
+/* 68 */
+/***/ function(module, exports) {
+
+  module.exports = require("front-matter");
+
+/***/ },
+/* 69 */,
+/* 70 */,
+/* 71 */
+/***/ function(module, exports) {
+
+  module.exports = require("classnames");
 
 /***/ }
 /******/ ]);

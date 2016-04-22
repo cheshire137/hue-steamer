@@ -50,14 +50,27 @@ class App extends Component {
     this.removeCss();
   }
 
+  isNight() {
+    const curTime = new Date();
+    return curTime.getHours() >= 20;
+  }
+
   render() {
+    let containerClass;
+    if (this.isNight()) {
+      containerClass = s.containerNight;
+    } else {
+      containerClass = s.containerDay;
+    }
     return !this.props.error ? (
-      <div className={s.container}>
-        <Header />
-        <main className={s.pageMain}>
-          {this.props.children}
-        </main>
-        <Footer />
+      <div className={containerClass}>
+        <div className={s.container}>
+          <Header />
+          <main className={s.pageMain}>
+            {this.props.children}
+          </main>
+          <Footer />
+        </div>
       </div>
     ) : this.props.children;
   }

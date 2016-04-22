@@ -3,18 +3,17 @@
 .lightList {
   list-style: none;
   padding-left: 0;
-
-  li {
-    width: 205px;
-    display: inline-block;
-    margin: 0 5px 12px 5px;
-    padding: 6px;
-    border-radius: 2px;
-    border: 1px solid #ccc;
-  }
 }
 
 .light {
+  width: 223px;
+  display: inline-block;
+  margin: 0 5px 12px 5px;
+  padding: 6px;
+  border-radius: 2px;
+  border-width: 1px;
+  border-style: solid;
+
   .lightHeader,
   .lightFooter {
     display: table;
@@ -32,6 +31,24 @@
     vertical-align: middle;
   }
 
+  &.night {
+    border-color: #38231D;
+    color: #E5E4E1;
+    background-color: #231511;
+
+    .metadata {
+      color: #97918A;
+    }
+  }
+
+  &.day {
+    border-color: #ccc;
+
+    .metadata {
+      color: #797979;
+    }
+  }
+
   .name {
     white-space: nowrap;
     text-overflow: ellipsis;
@@ -42,11 +59,10 @@
 
   .metadata {
     font-size: 13px;
-    color: #797979;
   }
 
   .colorBlockAndPicker {
-    width: 54px;
+    width: 50px;
     position: relative;
 
     .colorBlock {
@@ -83,7 +99,7 @@
   position: relative;
   display: table-cell;
   vertical-align: middle;
-  width: 54px;
+  width: 50px;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;

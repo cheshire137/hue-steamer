@@ -3,6 +3,7 @@ import s from './HomePage.scss';
 import Bridge from '../../actions/bridge';
 import Converter from '../../api/converter';
 import { SketchPicker } from 'react-color';
+import cx from 'classnames';
 
 class Light extends Component {
   static propTypes = {
@@ -94,6 +95,11 @@ class Light extends Component {
     this.setState({ showColorPicker: !this.state.showColorPicker });
   }
 
+  isNight() {
+    const curTime = new Date();
+    return curTime.getHours() >= 20;
+  }
+
   render() {
     const checkboxID = 'light-' + this.props.id + '-toggle';
     const colorStyle = {};
@@ -106,7 +112,7 @@ class Light extends Component {
       }
     }
     return (
-      <li className={s.light}>
+      <li className={cx(s.light, this.isNight() ? s.night : s.day)}>
         {this.state.loaded ? (
           <div>
             <header className={s.lightHeader}>
