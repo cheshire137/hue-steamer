@@ -92,14 +92,22 @@ class HomePage extends Component {
     const haveGroups = typeof this.state.groups === 'object';
     return (
       <div>
-        {haveGroups ? (
-          <GroupsList groups={this.state.groups} />
-        ) : 'Loading groups...'}
         {haveLights ? (
           <LightsList ids={this.state.lightIDs}
             onLightLoaded={this.onLightLoaded.bind(this)}
           />
-        ) : 'Loading lights...'}
+        ) : (
+          <p className={s.loading}>
+            Loading lights...
+          </p>
+        )}
+        {haveGroups ? (
+          <GroupsList groups={this.state.groups} />
+        ) : (
+          <p className={s.loading}>
+            Loading groups...
+          </p>
+        )}
       </div>
     );
   }
