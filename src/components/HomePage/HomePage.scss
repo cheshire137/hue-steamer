@@ -65,6 +65,37 @@
   }
 }
 
+.day {
+  .tabList {
+    border-color: #ccc;
+
+    li {
+      a {
+        border-color: #ccc;
+        color: #97918A;
+
+        &:hover, &:focus {
+          color: #E16C51;
+        }
+      }
+
+      &.inactive {
+        a {
+          background-color: #f1f1f1;
+        }
+      }
+
+      &.active {
+        border-bottom: 1px solid #fff;
+
+        a {
+          color: #E16C51;
+        }
+      }
+    }
+  }
+}
+
 .tab {
   &.inactive {
     display: none;

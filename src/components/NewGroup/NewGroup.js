@@ -80,11 +80,13 @@ class NewGroup extends Component {
     return (
       <form onSubmit={this.handleSubmit.bind(this)}>
         <div className={s.field}>
-          <label className={s.label} htmlFor="new-group-name">Name</label>
+          <label className={s.label} htmlFor="new-group-name">Name:</label>
           <input type="text" id="new-group-name"
             onChange={this.onNameChange.bind(this)}
             value={this.state.name}
             placeholder="e.g., Back Bedroom"
+            className={s.textField}
+            autofocus="autofocus"
           />
         </div>
         <div className={cx(s.lightsField, s.field)}>
@@ -99,7 +101,7 @@ class NewGroup extends Component {
           })}
         </div>
         <div className={s.formControls}>
-          <button type="submit" disabled={!this.isValid()}>
+          <button type="submit" className={s.btn} disabled={!this.isValid()}>
             Save
           </button>
         </div>

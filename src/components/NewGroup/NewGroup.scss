@@ -1,6 +1,5 @@
 .field {
   margin-bottom: 10px;
-  width: 47%;
   float: left;
   margin-right: 2%;
 
@@ -17,8 +16,17 @@
 }
 
 .label {
-  display: block;
+  display: inline-block;
   font-weight: 700;
-  margin-bottom: 5px;
   font-size: 14px;
+  margin: 0 10px;
+}
+
+input[type="text"].textField {
+  display: inline-block;
+  width: 20em;
+}
+
+button.btn {
+  margin-left: 10px;
 }

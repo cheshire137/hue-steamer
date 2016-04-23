@@ -24,6 +24,10 @@ html {
   line-height: 1.375;
 }
 
+body {
+  background-color: #fff;
+}
+
 body, .containerDay, .containerNight, .container {
   display: flex;
   min-height: 100vh;
