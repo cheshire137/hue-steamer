@@ -46,10 +46,11 @@ class NewGroup extends Component {
     const lights = this.props.lights;
     group.lights = lightIDs.map((id) => lights[id]);
     this.props.onCreated(group);
+    this.setState({ checkedLightIDs: [], name: '' });
   }
 
-  onGroupSaveError(response) {
-    console.error('failed to create group', this.state.name, response);
+  onGroupSaveError(name, response) {
+    console.error('failed to create group', name, response);
   }
 
   handleSubmit(e) {
@@ -61,7 +62,7 @@ class NewGroup extends Component {
     const lightIDs = this.state.checkedLightIDs;
     Bridge.createGroup(name, lightIDs).
            then(this.onGroupSaved.bind(this, name, lightIDs)).
-           catch(this.onGroupSaveError.bind(this));
+           catch(this.onGroupSaveError.bind(this, name));
   }
 
   isValid() {
@@ -82,6 +83,7 @@ class NewGroup extends Component {
           <label className={s.label} htmlFor="new-group-name">Name</label>
           <input type="text" id="new-group-name"
             onChange={this.onNameChange.bind(this)}
+            value={this.state.name}
             placeholder="e.g., Back Bedroom"
           />
         </div>

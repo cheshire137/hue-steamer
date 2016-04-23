@@ -87,12 +87,12 @@ class Group extends Component {
       <li className={cx(s.group, this.isNight() ? s.night : s.day)}>
         <header className={s.groupHeader}>
           <h3 className={s.groupName}>
-            {this.state.open ? (
-              <FontAwesome name="chevron-down" className={s.openIndicator} />
-            ) : (
-              <FontAwesome name="chevron-right" className={s.openIndicator} />
-            )}
             <a href="#" onClick={this.toggleGroupOpen.bind(this)}>
+              {this.state.open ? (
+                <FontAwesome name="chevron-down" className={s.openIndicator} />
+              ) : (
+                <FontAwesome name="chevron-right" className={s.openIndicator} />
+              )}
               {this.props.name}
             </a>
           </h3>

@@ -67,6 +67,7 @@ class HomePage extends Component {
         groups.push(rawGroups[i]);
       }
     }
+    groups.sort((groupA, groupB) => groupA.name.localeCompare(groupB.name));
     this.setState({ groups });
   }
 

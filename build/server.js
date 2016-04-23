@@ -3335,6 +3335,9 @@ module.exports =
             groups.push(rawGroups[i]);
           }
         }
+        groups.sort(function (groupA, groupB) {
+          return groupA.name.localeCompare(groupB.name);
+        });
         this.setState({ groups: groups });
       }
     }, {
@@ -5050,10 +5053,10 @@ module.exports =
             _react2['default'].createElement(
               'h3',
               { className: _GroupScss2['default'].groupName },
-              this.state.open ? _react2['default'].createElement(_reactFontawesome2['default'], { name: 'chevron-down', className: _GroupScss2['default'].openIndicator }) : _react2['default'].createElement(_reactFontawesome2['default'], { name: 'chevron-right', className: _GroupScss2['default'].openIndicator }),
               _react2['default'].createElement(
                 'a',
                 { href: '#', onClick: this.toggleGroupOpen.bind(this) },
+                this.state.open ? _react2['default'].createElement(_reactFontawesome2['default'], { name: 'chevron-down', className: _GroupScss2['default'].openIndicator }) : _react2['default'].createElement(_reactFontawesome2['default'], { name: 'chevron-right', className: _GroupScss2['default'].openIndicator }),
                 this.props.name
               )
             ),
@@ -6285,11 +6288,12 @@ module.exports =
           return lights[id];
         });
         this.props.onCreated(group);
+        this.setState({ checkedLightIDs: [], name: '' });
       }
     }, {
       key: 'onGroupSaveError',
-      value: function onGroupSaveError(response) {
-        console.error('failed to create group', this.state.name, response);
+      value: function onGroupSaveError(name, response) {
+        console.error('failed to create group', name, response);
       }
     }, {
       key: 'handleSubmit',
@@ -6300,7 +6304,7 @@ module.exports =
         }
         var name = this.state.name;
         var lightIDs = this.state.checkedLightIDs;
-        _actionsBridge2['default'].createGroup(name, lightIDs).then(this.onGroupSaved.bind(this, name, lightIDs))['catch'](this.onGroupSaveError.bind(this));
+        _actionsBridge2['default'].createGroup(name, lightIDs).then(this.onGroupSaved.bind(this, name, lightIDs))['catch'](this.onGroupSaveError.bind(this, name));
       }
     }, {
       key: 'isValid',
@@ -6332,6 +6336,7 @@ module.exports =
             ),
             _react2['default'].createElement('input', { type: 'text', id: 'new-group-name',
               onChange: this.onNameChange.bind(this),
+              value: this.state.name,
               placeholder: 'e.g., Back Bedroom'
             })
           ),
