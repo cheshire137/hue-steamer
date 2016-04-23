@@ -4754,6 +4754,10 @@ module.exports =
   
   var _reactFontawesome2 = _interopRequireDefault(_reactFontawesome);
   
+  var _OnOffSwitchOnOffSwitch = __webpack_require__(81);
+  
+  var _OnOffSwitchOnOffSwitch2 = _interopRequireDefault(_OnOffSwitchOnOffSwitch);
+  
   var Group = (function (_Component) {
     _inherits(Group, _Component);
   
@@ -4781,6 +4785,11 @@ module.exports =
       key: 'componentDidMount',
       value: function componentDidMount() {}
     }, {
+      key: 'onLightsToggle',
+      value: function onLightsToggle() {
+        console.log('toggle lights in group', this.props.id);
+      }
+    }, {
       key: 'isNight',
       value: function isNight() {
         var curTime = new Date();
@@ -4792,6 +4801,21 @@ module.exports =
         event.preventDefault();
         this.setState({ open: !this.state.open });
         event.target.blur();
+      }
+    }, {
+      key: 'areAllLightsOn',
+      value: function areAllLightsOn() {
+        for (var i = 0; i < this.props.lights.length; i++) {
+          var light = this.props.lights[i];
+          if (typeof light === 'string') {
+            // Light not fully loaded, just have its ID
+            return false;
+          }
+          if (!light.state.on) {
+            return false;
+          }
+        }
+        return true;
       }
     }, {
       key: 'render',
@@ -4808,6 +4832,7 @@ module.exports =
         } else {
           groupStyle.display = 'none';
         }
+        var checkboxID = 'group-' + this.props.id + '-toggle';
         return _react2['default'].createElement(
           'li',
           { className: (0, _classnames2['default'])(_GroupScss2['default'].group, this.isNight() ? _GroupScss2['default'].night : _GroupScss2['default'].day) },
@@ -4821,6 +4846,9 @@ module.exports =
               this.props.name
             )
           ),
+          _react2['default'].createElement(_OnOffSwitchOnOffSwitch2['default'], { id: checkboxID, on: this.areAllLightsOn(),
+            onToggle: this.onLightsToggle.bind(this)
+          }),
           _react2['default'].createElement(
             'div',
             { className: _GroupScss2['default'].groupContents, style: groupStyle },
