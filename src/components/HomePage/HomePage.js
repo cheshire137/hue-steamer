@@ -74,8 +74,8 @@ class HomePage extends Component {
   }
 
   onLightLoaded(light) {
-    const lights = this.state.lights;
-    lights[light.id] = light;
+    const lightsHash = this.state.lights;
+    lightsHash[light.id] = light;
     const groups = this.state.groups;
     if (typeof groups === 'object') {
       for (let i = 0; i < groups.length; i++) {
@@ -89,7 +89,40 @@ class HomePage extends Component {
         }
       }
     }
-    this.setState({ lights, groups });
+    const sortedLightIDs = this.sortLightIDsByName(lightsHash);
+    this.setState({ lights: lightsHash, groups, lightIDs: sortedLightIDs });
+  }
+
+  sortLightIDsByName(lightsHash) {
+    const lightsList = [];
+    for (const lightID in lightsHash) {
+      if (lightsHash.hasOwnProperty(lightID)) {
+        lightsList.push(lightsHash[lightID]);
+      }
+    }
+    lightsList.sort((lightA, lightB) => {
+      return lightA.name.localeCompare(lightB.name);
+    });
+    const lightIDs = this.state.lightIDs.slice();
+    lightIDs.sort((idA, idB) => {
+      let indexA = -1;
+      let indexB = -1;
+      for (let i = 0; i < lightsList.length; i++) {
+        if (lightsList[i].id === idA) {
+          indexA = i;
+          break;
+        }
+        if (lightsList[i].id === idB) {
+          indexB = i;
+          break;
+        }
+      }
+      if (indexA < indexB) {
+        return 1;
+      }
+      return indexA > indexB ? -1 : 0;
+    });
+    return lightIDs;
   }
 
   showTab(e, activeTab) {

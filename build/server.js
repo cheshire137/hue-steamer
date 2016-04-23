@@ -3282,8 +3282,8 @@ module.exports =
     }, {
       key: 'onLightLoaded',
       value: function onLightLoaded(light) {
-        var lights = this.state.lights;
-        lights[light.id] = light;
+        var lightsHash = this.state.lights;
+        lightsHash[light.id] = light;
         var groups = this.state.groups;
         if (typeof groups === 'object') {
           for (var i = 0; i < groups.length; i++) {
@@ -3297,7 +3297,41 @@ module.exports =
             }
           }
         }
-        this.setState({ lights: lights, groups: groups });
+        var sortedLightIDs = this.sortLightIDsByName(lightsHash);
+        this.setState({ lights: lightsHash, groups: groups, lightIDs: sortedLightIDs });
+      }
+    }, {
+      key: 'sortLightIDsByName',
+      value: function sortLightIDsByName(lightsHash) {
+        var lightsList = [];
+        for (var lightID in lightsHash) {
+          if (lightsHash.hasOwnProperty(lightID)) {
+            lightsList.push(lightsHash[lightID]);
+          }
+        }
+        lightsList.sort(function (lightA, lightB) {
+          return lightA.name.localeCompare(lightB.name);
+        });
+        var lightIDs = this.state.lightIDs.slice();
+        lightIDs.sort(function (idA, idB) {
+          var indexA = -1;
+          var indexB = -1;
+          for (var i = 0; i < lightsList.length; i++) {
+            if (lightsList[i].id === idA) {
+              indexA = i;
+              break;
+            }
+            if (lightsList[i].id === idB) {
+              indexB = i;
+              break;
+            }
+          }
+          if (indexA < indexB) {
+            return 1;
+          }
+          return indexA > indexB ? -1 : 0;
+        });
+        return lightIDs;
       }
     }, {
       key: 'showTab',
