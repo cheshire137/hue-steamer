@@ -1,17 +1,19 @@
 .group {
-  + .group {
-    margin-top: 10px;
-    border-top-width: 1px;
-    border-top-style: solid;
-    padding-top: 10px;
+  width: 48%;
+  margin: 0 1% 10px;
+  display: inline-block;
+  border-width: 1px;
+  border-style: solid;
+  padding: 10px;
+  border-radius: 2px;
+  vertical-align: top;
 
-    &.night {
-      border-top-color: #38231D;
-    }
+  &.night {
+    border-color: #38231D;
+  }
 
-    &.day {
-      border-top-color: #ccc;
-    }
+  &.day {
+    border-color: #ccc;
   }
 }
 
@@ -23,6 +25,8 @@
 .groupName {
   margin-bottom: 0;
   display: table-cell;
+  font-weight: normal;
+  font-size: 18px;
 
   a {
     text-decoration: none;
@@ -35,4 +39,30 @@
 
 .onOffSwitch {
   float: right;
+}
+
+.groupContents {
+  margin-left: 18px;
+  margin-right: 50px;
+  font-size: 13px;
+}
+
+.groupLights {
+  list-style: none;
+  padding-left: 0;
+}
+
+.groupLight {
+  white-space: nowrap;
+  display: inline-block;
+
+  &:after {
+    content: ",\a0";
+  }
+
+  &:last-child {
+    &:after {
+      content: "";
+    }
+  }
 }

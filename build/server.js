@@ -5073,7 +5073,19 @@ module.exports =
           _react2['default'].createElement(
             'div',
             { className: _GroupScss2['default'].groupContents, style: groupStyle },
-            lightNames
+            _react2['default'].createElement(
+              'ul',
+              { className: _GroupScss2['default'].groupLights },
+              this.props.lights.map(function (light) {
+                var isString = typeof light === 'string';
+                var key = 'light-' + (isString ? light : light.id);
+                return _react2['default'].createElement(
+                  'li',
+                  { key: key, className: _GroupScss2['default'].groupLight },
+                  isString ? light : light.name
+                );
+              })
+            )
           )
         );
       }
@@ -5128,7 +5140,7 @@ module.exports =
   
   
   // module
-  exports.push([module.id, ".Group_group_23_ + .Group_group_23_ {\n  margin-top: 10px;\n  border-top-width: 1px;\n  border-top-style: solid;\n  padding-top: 10px\n}\n\n.Group_group_23_ + .Group_group_23_.Group_night_WFU {\n  border-top-color: #38231D\n}\n\n.Group_group_23_ + .Group_group_23_.Group_day_22J {\n  border-top-color: #ccc\n}\n\n.Group_groupHeader_g_v {\n  display: table;\n  width: 100%;\n}\n\n.Group_groupName_2Et {\n  margin-bottom: 0;\n  display: table-cell;\n}\n\n.Group_groupName_2Et a {\n  text-decoration: none;\n}\n\n.Group_openIndicator_2t7 {\n  margin-right: 5px;\n}\n\n.Group_onOffSwitch_QKC {\n  float: right;\n}\n", "", {"version":3,"sources":["/./src/components/Group/Group.scss"],"names":[],"mappings":"AACE;EACE,iBAAiB;EACjB,sBAAsB;EACtB,wBAAwB;EACxB,iBAAkB;CASnB;;AAPC;EACE,yBAA0B;CAC3B;;AAED;EACE,sBAAuB;CACxB;;AAIL;EACE,eAAe;EACf,YAAY;CACb;;AAED;EACE,iBAAiB;EACjB,oBAAoB;CAKrB;;AAHC;EACE,sBAAsB;CACvB;;AAGH;EACE,kBAAkB;CACnB;;AAED;EACE,aAAa;CACd","file":"Group.scss","sourcesContent":[".group {\n  + .group {\n    margin-top: 10px;\n    border-top-width: 1px;\n    border-top-style: solid;\n    padding-top: 10px;\n\n    &.night {\n      border-top-color: #38231D;\n    }\n\n    &.day {\n      border-top-color: #ccc;\n    }\n  }\n}\n\n.groupHeader {\n  display: table;\n  width: 100%;\n}\n\n.groupName {\n  margin-bottom: 0;\n  display: table-cell;\n\n  a {\n    text-decoration: none;\n  }\n}\n\n.openIndicator {\n  margin-right: 5px;\n}\n\n.onOffSwitch {\n  float: right;\n}\n"],"sourceRoot":"webpack://"}]);
+  exports.push([module.id, ".Group_group_23_ {\n  width: 48%;\n  margin: 0 1% 10px;\n  display: inline-block;\n  border-width: 1px;\n  border-style: solid;\n  padding: 10px;\n  border-radius: 2px;\n  vertical-align: top\n}\n\n.Group_group_23_.Group_night_WFU {\n  border-color: #38231D\n}\n\n.Group_group_23_.Group_day_22J {\n  border-color: #ccc\n}\n\n.Group_groupHeader_g_v {\n  display: table;\n  width: 100%;\n}\n\n.Group_groupName_2Et {\n  margin-bottom: 0;\n  display: table-cell;\n  font-weight: normal;\n  font-size: 18px;\n}\n\n.Group_groupName_2Et a {\n  text-decoration: none;\n}\n\n.Group_openIndicator_2t7 {\n  margin-right: 5px;\n}\n\n.Group_onOffSwitch_QKC {\n  float: right;\n}\n\n.Group_groupContents_3Z0 {\n  margin-left: 18px;\n  margin-right: 50px;\n  font-size: 13px;\n}\n\n.Group_groupLights_MkK {\n  list-style: none;\n  padding-left: 0;\n}\n\n.Group_groupLight_1rf {\n  white-space: nowrap;\n  display: inline-block\n}\n\n.Group_groupLight_1rf:after {\n  content: \",\\A0\"\n}\n\n.Group_groupLight_1rf:last-child {}\n\n.Group_groupLight_1rf:last-child:after {\n  content: \"\"\n}\n", "", {"version":3,"sources":["/./src/components/Group/Group.scss"],"names":[],"mappings":"AAAA;EACE,WAAW;EACX,kBAAkB;EAClB,sBAAsB;EACtB,kBAAkB;EAClB,oBAAoB;EACpB,cAAc;EACd,mBAAmB;EACnB,mBAAoB;CASrB;;AAPC;EACE,qBAAsB;CACvB;;AAED;EACE,kBAAmB;CACpB;;AAGH;EACE,eAAe;EACf,YAAY;CACb;;AAED;EACE,iBAAiB;EACjB,oBAAoB;EACpB,oBAAoB;EACpB,gBAAgB;CAKjB;;AAHC;EACE,sBAAsB;CACvB;;AAGH;EACE,kBAAkB;CACnB;;AAED;EACE,aAAa;CACd;;AAED;EACE,kBAAkB;EAClB,mBAAmB;EACnB,gBAAgB;CACjB;;AAED;EACE,iBAAiB;EACjB,gBAAgB;CACjB;;AAED;EACE,oBAAoB;EACpB,qBAAsB;CAWvB;;AATC;EACE,eAAgB;CACjB;;AAED,mCAIC;;AAHC;EACE,WAAY;CACb","file":"Group.scss","sourcesContent":[".group {\n  width: 48%;\n  margin: 0 1% 10px;\n  display: inline-block;\n  border-width: 1px;\n  border-style: solid;\n  padding: 10px;\n  border-radius: 2px;\n  vertical-align: top;\n\n  &.night {\n    border-color: #38231D;\n  }\n\n  &.day {\n    border-color: #ccc;\n  }\n}\n\n.groupHeader {\n  display: table;\n  width: 100%;\n}\n\n.groupName {\n  margin-bottom: 0;\n  display: table-cell;\n  font-weight: normal;\n  font-size: 18px;\n\n  a {\n    text-decoration: none;\n  }\n}\n\n.openIndicator {\n  margin-right: 5px;\n}\n\n.onOffSwitch {\n  float: right;\n}\n\n.groupContents {\n  margin-left: 18px;\n  margin-right: 50px;\n  font-size: 13px;\n}\n\n.groupLights {\n  list-style: none;\n  padding-left: 0;\n}\n\n.groupLight {\n  white-space: nowrap;\n  display: inline-block;\n\n  &:after {\n    content: \",\\a0\";\n  }\n\n  &:last-child {\n    &:after {\n      content: \"\";\n    }\n  }\n}\n"],"sourceRoot":"webpack://"}]);
   
   // exports
   exports.locals = {
@@ -5138,7 +5150,10 @@ module.exports =
   	"groupHeader": "Group_groupHeader_g_v",
   	"groupName": "Group_groupName_2Et",
   	"openIndicator": "Group_openIndicator_2t7",
-  	"onOffSwitch": "Group_onOffSwitch_QKC"
+  	"onOffSwitch": "Group_onOffSwitch_QKC",
+  	"groupContents": "Group_groupContents_3Z0",
+  	"groupLights": "Group_groupLights_MkK",
+  	"groupLight": "Group_groupLight_1rf"
   };
 
 /***/ },

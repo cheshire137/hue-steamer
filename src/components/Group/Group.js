@@ -101,7 +101,17 @@ class Group extends Component {
           />
         </header>
         <div className={s.groupContents} style={groupStyle}>
-          {lightNames}
+          <ul className={s.groupLights}>
+            {this.props.lights.map((light) => {
+              const isString = typeof light === 'string';
+              const key = 'light-' + (isString ? light : light.id);
+              return (
+                <li key={key} className={s.groupLight}>
+                  {isString ? light : light.name}
+                </li>
+              );
+            })}
+          </ul>
         </div>
       </li>
     );
