@@ -79,6 +79,9 @@ class NewGroup extends Component {
     const checkedLightIDs = this.state.checkedLightIDs;
     return (
       <form onSubmit={this.handleSubmit.bind(this)}>
+        <p className={s.helpText}>
+          Use groups to control multiple lights at once.
+        </p>
         <div className={s.field}>
           <label className={s.label} htmlFor="new-group-name">Name:</label>
           <input type="text" id="new-group-name"
@@ -86,7 +89,7 @@ class NewGroup extends Component {
             value={this.state.name}
             placeholder="e.g., Back Bedroom"
             className={s.textField}
-            autofocus="autofocus"
+            autoFocus="autofocus"
           />
         </div>
         <div className={cx(s.lightsField, s.field)}>

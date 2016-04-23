@@ -8,6 +8,7 @@ import Bridge from '../../actions/bridge';
 import LightsList from '../LightsList/LightsList';
 import GroupsList from '../GroupsList/GroupsList';
 import NewGroup from '../NewGroup/NewGroup';
+import LocalStorage from '../../stores/localStorage';
 
 const title = 'Hue Steamer';
 
@@ -21,7 +22,7 @@ class HomePage extends Component {
     super(props);
     this.state = {
       lights: {},
-      activeTab: 'lights',
+      activeTab: LocalStorage.get('activeTab') || 'lights',
       lightIDs: [],
     };
   }
@@ -159,6 +160,7 @@ class HomePage extends Component {
       event.target.blur();
     }
     this.setState({ activeTab });
+    LocalStorage.set('activeTab', activeTab);
   }
 
   showLightsTab(event) {

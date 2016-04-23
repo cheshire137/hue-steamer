@@ -3269,6 +3269,10 @@ module.exports =
   
   var _NewGroupNewGroup2 = _interopRequireDefault(_NewGroupNewGroup);
   
+  var _storesLocalStorage = __webpack_require__(90);
+  
+  var _storesLocalStorage2 = _interopRequireDefault(_storesLocalStorage);
+  
   var title = 'Hue Steamer';
   
   var HomePage = (function (_Component) {
@@ -3288,7 +3292,7 @@ module.exports =
       _get(Object.getPrototypeOf(_HomePage.prototype), 'constructor', this).call(this, props);
       this.state = {
         lights: {},
-        activeTab: 'lights',
+        activeTab: _storesLocalStorage2['default'].get('activeTab') || 'lights',
         lightIDs: []
       };
     }
@@ -3441,6 +3445,7 @@ module.exports =
           event.target.blur();
         }
         this.setState({ activeTab: activeTab });
+        _storesLocalStorage2['default'].set('activeTab', activeTab);
       }
     }, {
       key: 'showLightsTab',
@@ -6328,6 +6333,11 @@ module.exports =
           'form',
           { onSubmit: this.handleSubmit.bind(this) },
           _react2['default'].createElement(
+            'p',
+            { className: _NewGroupScss2['default'].helpText },
+            'Use groups to control multiple lights at once.'
+          ),
+          _react2['default'].createElement(
             'div',
             { className: _NewGroupScss2['default'].field },
             _react2['default'].createElement(
@@ -6340,7 +6350,7 @@ module.exports =
               value: this.state.name,
               placeholder: 'e.g., Back Bedroom',
               className: _NewGroupScss2['default'].textField,
-              autofocus: 'autofocus'
+              autoFocus: 'autofocus'
             })
           ),
           _react2['default'].createElement(
@@ -6415,7 +6425,7 @@ module.exports =
   
   
   // module
-  exports.push([module.id, ".NewGroup_field_23N {\n  margin-bottom: 10px;\n  float: left;\n  margin-right: 2%\n}\n\n.NewGroup_field_23N.NewGroup_lightsField_3Xa {\n  width: 100%;\n  clear: left;\n  margin-right: 0;\n  float: none\n}\n\n.NewGroup_formControls_bby {\n  clear: both;\n}\n\n.NewGroup_label_RVI {\n  display: inline-block;\n  font-weight: 700;\n  font-size: 14px;\n  margin: 0 10px;\n}\n\ninput[type=\"text\"].NewGroup_textField_2sJ {\n  display: inline-block;\n  width: 20em;\n}\n\nbutton.NewGroup_btn_36n {\n  margin-left: 10px;\n}\n", "", {"version":3,"sources":["/./src/components/NewGroup/NewGroup.scss"],"names":[],"mappings":"AAAA;EACE,oBAAoB;EACpB,YAAY;EACZ,gBAAiB;CAQlB;;AANC;EACE,YAAY;EACZ,YAAY;EACZ,gBAAgB;EAChB,WAAY;CACb;;AAGH;EACE,YAAY;CACb;;AAED;EACE,sBAAsB;EACtB,iBAAiB;EACjB,gBAAgB;EAChB,eAAe;CAChB;;AAED;EACE,sBAAsB;EACtB,YAAY;CACb;;AAED;EACE,kBAAkB;CACnB","file":"NewGroup.scss","sourcesContent":[".field {\n  margin-bottom: 10px;\n  float: left;\n  margin-right: 2%;\n\n  &.lightsField {\n    width: 100%;\n    clear: left;\n    margin-right: 0;\n    float: none;\n  }\n}\n\n.formControls {\n  clear: both;\n}\n\n.label {\n  display: inline-block;\n  font-weight: 700;\n  font-size: 14px;\n  margin: 0 10px;\n}\n\ninput[type=\"text\"].textField {\n  display: inline-block;\n  width: 20em;\n}\n\nbutton.btn {\n  margin-left: 10px;\n}\n"],"sourceRoot":"webpack://"}]);
+  exports.push([module.id, ".NewGroup_field_23N {\n  margin-bottom: 10px;\n  float: left;\n  margin-right: 2%\n}\n\n.NewGroup_field_23N.NewGroup_lightsField_3Xa {\n  width: 100%;\n  clear: left;\n  margin-right: 0;\n  float: none\n}\n\n.NewGroup_formControls_bby {\n  clear: both;\n}\n\n.NewGroup_label_RVI {\n  display: inline-block;\n  font-weight: 700;\n  font-size: 14px;\n  margin: 0 10px;\n}\n\ninput[type=\"text\"].NewGroup_textField_2sJ {\n  display: inline-block;\n  width: 20em;\n}\n\nbutton.NewGroup_btn_36n {\n  margin-left: 10px;\n}\n\n.NewGroup_helpText_ymc {\n  margin: 0 10px 10px 10px;\n}\n", "", {"version":3,"sources":["/./src/components/NewGroup/NewGroup.scss"],"names":[],"mappings":"AAAA;EACE,oBAAoB;EACpB,YAAY;EACZ,gBAAiB;CAQlB;;AANC;EACE,YAAY;EACZ,YAAY;EACZ,gBAAgB;EAChB,WAAY;CACb;;AAGH;EACE,YAAY;CACb;;AAED;EACE,sBAAsB;EACtB,iBAAiB;EACjB,gBAAgB;EAChB,eAAe;CAChB;;AAED;EACE,sBAAsB;EACtB,YAAY;CACb;;AAED;EACE,kBAAkB;CACnB;;AAED;EACE,yBAAyB;CAC1B","file":"NewGroup.scss","sourcesContent":[".field {\n  margin-bottom: 10px;\n  float: left;\n  margin-right: 2%;\n\n  &.lightsField {\n    width: 100%;\n    clear: left;\n    margin-right: 0;\n    float: none;\n  }\n}\n\n.formControls {\n  clear: both;\n}\n\n.label {\n  display: inline-block;\n  font-weight: 700;\n  font-size: 14px;\n  margin: 0 10px;\n}\n\ninput[type=\"text\"].textField {\n  display: inline-block;\n  width: 20em;\n}\n\nbutton.btn {\n  margin-left: 10px;\n}\n\n.helpText {\n  margin: 0 10px 10px 10px;\n}\n"],"sourceRoot":"webpack://"}]);
   
   // exports
   exports.locals = {
@@ -6424,7 +6434,8 @@ module.exports =
   	"formControls": "NewGroup_formControls_bby",
   	"label": "NewGroup_label_RVI",
   	"textField": "NewGroup_textField_2sJ",
-  	"btn": "NewGroup_btn_36n"
+  	"btn": "NewGroup_btn_36n",
+  	"helpText": "NewGroup_helpText_ymc"
   };
 
 /***/ },
@@ -6558,6 +6569,135 @@ module.exports =
   	"label": "LightCheckbox_label_3Di",
   	"checkbox": "LightCheckbox_checkbox_2sa"
   };
+
+/***/ },
+/* 90 */
+/***/ function(module, exports, __webpack_require__) {
+
+  'use strict';
+  
+  Object.defineProperty(exports, '__esModule', {
+    value: true
+  });
+  
+  var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+  
+  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  
+  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+  
+  var _configJson = __webpack_require__(49);
+  
+  var _configJson2 = _interopRequireDefault(_configJson);
+  
+  var _reactCookie = __webpack_require__(91);
+  
+  var _reactCookie2 = _interopRequireDefault(_reactCookie);
+  
+  var CookieAndLocalStorage = (function () {
+    function CookieAndLocalStorage() {
+      _classCallCheck(this, CookieAndLocalStorage);
+    }
+  
+    _createClass(CookieAndLocalStorage, [{
+      key: 'getItem',
+      value: function getItem(key) {
+        if (typeof window !== 'undefined') {
+          if (window.localStorage) {
+            return window.localStorage.getItem(key);
+          }
+          console.error('browser does not support local storage');
+        }
+        return _reactCookie2['default'].load(key);
+      }
+    }, {
+      key: 'setItem',
+      value: function setItem(key, value) {
+        if (typeof window !== 'undefined' && window.localStorage) {
+          window.localStorage.setItem(key, value);
+        }
+        _reactCookie2['default'].save(key, value, { path: '/' });
+      }
+    }]);
+  
+    return CookieAndLocalStorage;
+  })();
+  
+  var LocalStorage = (function () {
+    function LocalStorage() {
+      _classCallCheck(this, LocalStorage);
+    }
+  
+    _createClass(LocalStorage, null, [{
+      key: 'getStore',
+      value: function getStore() {
+        if (typeof this.store === 'undefined') {
+          this.store = new CookieAndLocalStorage();
+        }
+        return this.store;
+      }
+    }, {
+      key: 'getJSON',
+      value: function getJSON() {
+        var store = this.getStore();
+        var appData = store.getItem(_configJson2['default'][("development")].localStorageKey) || '{}';
+        return JSON.parse(appData);
+      }
+    }, {
+      key: 'get',
+      value: function get(key) {
+        var appData = this.getJSON();
+        return appData[key];
+      }
+    }, {
+      key: 'set',
+      value: function set(key, value) {
+        var appData = this.getJSON();
+        appData[key] = value;
+        this.writeHash(appData);
+      }
+    }, {
+      key: 'setMany',
+      value: function setMany(data) {
+        var appData = this.getJSON();
+        for (var key in data) {
+          if (data.hasOwnProperty(key)) {
+            var value = data[key];
+            if (typeof value === 'undefined') {
+              delete appData[key];
+            } else {
+              appData[key] = value;
+            }
+          }
+        }
+        this.writeHash(appData);
+      }
+    }, {
+      key: 'writeHash',
+      value: function writeHash(appData) {
+        var store = this.getStore();
+        store.setItem(_configJson2['default'][("development")].localStorageKey, JSON.stringify(appData));
+      }
+    }, {
+      key: 'delete',
+      value: function _delete(key) {
+        var appData = this.getJSON();
+        delete appData[key];
+        this.writeHash(appData);
+      }
+    }]);
+  
+    return LocalStorage;
+  })();
+  
+  exports['default'] = LocalStorage;
+  module.exports = exports['default'];
+
+/***/ },
+/* 91 */
+/***/ function(module, exports) {
+
+  module.exports = require("react-cookie");
 
 /***/ }
 /******/ ]);
