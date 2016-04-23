@@ -51,6 +51,16 @@ class Bridge {
     return this.makeRequest('/light/' + id + '/off', opts);
   }
 
+  static async turnOnGroup(id) {
+    const opts = { method: 'POST' };
+    return this.makeRequest('/group/' + id + '/on', opts);
+  }
+
+  static async turnOffGroup(id) {
+    const opts = { method: 'POST' };
+    return this.makeRequest('/group/' + id + '/off', opts);
+  }
+
   static async setLightColor(id, x, y) {
     const opts = { method: 'POST' };
     return this.makeRequest('/light/' + id + '/color' +

@@ -52,6 +52,14 @@ function setLightState(api, id, state, res) {
   }).done();
 }
 
+function setGroupLightState(api, id, state, res) {
+  api.setLightState(id, state).then((result) => {
+    res.json(result);
+  }).fail((err) => {
+    res.status(400).json(err);
+  }).done();
+}
+
 async function saveBridge(ip, user) {
   let bridge = await db.get('SELECT * FROM bridges ' +
                             'WHERE ip = ? AND user = ?', ip, user);
@@ -177,20 +185,26 @@ server.get('/light/:id', async (req, res) => {
 
 server.post('/light/:id/on', async (req, res) => {
   const api = await getHueApi(req.query.connectionID);
-  const lightState = hue.lightState;
-  const state = lightState.create();
-  api.setLightState(req.params.id, state.on()).then((result) => {
-    res.json(result);
-  }).fail((err) => {
-    res.status(400).json(err);
-  }).done();
+  const state = hue.lightState.create().on();
+  setLightState(api, req.params.id, state, res);
 });
 
 server.post('/light/:id/off', async (req, res) => {
   const api = await getHueApi(req.query.connectionID);
-  const lightState = hue.lightState;
-  const state = lightState.create().off();
+  const state = hue.lightState.create().off();
   setLightState(api, req.params.id, state, res);
+});
+
+server.post('/group/:id/on', async (req, res) => {
+  const api = await getHueApi(req.query.connectionID);
+  const state = hue.lightState.create().on();
+  setGroupLightState(api, req.params.id, state, res);
+});
+
+server.post('/group/:id/off', async (req, res) => {
+  const api = await getHueApi(req.query.connectionID);
+  const state = hue.lightState.create().off();
+  setGroupLightState(api, req.params.id, state, res);
 });
 
 server.post('/light/:id/color', async (req, res) => {
@@ -204,9 +218,8 @@ server.post('/light/:id/color', async (req, res) => {
     res.status(400).send('{"error": "Must provide y color in y param"}');
     return;
   }
-  const lightState = hue.lightState;
   const api = await getHueApi(req.query.connectionID);
-  const state = lightState.create().on().xy(x, y);
+  const state = hue.lightState.create().on().xy(x, y);
   setLightState(api, req.params.id, state, res);
 });
 

@@ -93,7 +93,7 @@ module.exports =
   
   var _config = __webpack_require__(14);
   
-  var _configJson = __webpack_require__(48);
+  var _configJson = __webpack_require__(49);
   
   var _configJson2 = _interopRequireDefault(_configJson);
   
@@ -162,6 +162,14 @@ module.exports =
   }
   
   function setLightState(api, id, state, res) {
+    api.setLightState(id, state).then(function (result) {
+      res.json(result);
+    }).fail(function (err) {
+      res.status(400).json(err);
+    }).done();
+  }
+  
+  function setGroupLightState(api, id, state, res) {
     api.setLightState(id, state).then(function (result) {
       res.json(result);
     }).fail(function (err) {
@@ -470,7 +478,7 @@ module.exports =
   });
   
   server.post('/light/:id/on', function callee$0$0(req, res) {
-    var api, lightState, state;
+    var api, state;
     return regeneratorRuntime.async(function callee$0$0$(context$1$0) {
       while (1) switch (context$1$0.prev = context$1$0.next) {
         case 0:
@@ -479,16 +487,11 @@ module.exports =
   
         case 2:
           api = context$1$0.sent;
-          lightState = hue.lightState;
-          state = lightState.create();
+          state = hue.lightState.create().on();
   
-          api.setLightState(req.params.id, state.on()).then(function (result) {
-            res.json(result);
-          }).fail(function (err) {
-            res.status(400).json(err);
-          }).done();
+          setLightState(api, req.params.id, state, res);
   
-        case 6:
+        case 5:
         case 'end':
           return context$1$0.stop();
       }
@@ -496,7 +499,7 @@ module.exports =
   });
   
   server.post('/light/:id/off', function callee$0$0(req, res) {
-    var api, lightState, state;
+    var api, state;
     return regeneratorRuntime.async(function callee$0$0$(context$1$0) {
       while (1) switch (context$1$0.prev = context$1$0.next) {
         case 0:
@@ -505,12 +508,53 @@ module.exports =
   
         case 2:
           api = context$1$0.sent;
-          lightState = hue.lightState;
-          state = lightState.create().off();
+          state = hue.lightState.create().off();
   
           setLightState(api, req.params.id, state, res);
   
-        case 6:
+        case 5:
+        case 'end':
+          return context$1$0.stop();
+      }
+    }, null, _this);
+  });
+  
+  server.post('/group/:id/on', function callee$0$0(req, res) {
+    var api, state;
+    return regeneratorRuntime.async(function callee$0$0$(context$1$0) {
+      while (1) switch (context$1$0.prev = context$1$0.next) {
+        case 0:
+          context$1$0.next = 2;
+          return regeneratorRuntime.awrap(getHueApi(req.query.connectionID));
+  
+        case 2:
+          api = context$1$0.sent;
+          state = hue.lightState.create().on();
+  
+          setGroupLightState(api, req.params.id, state, res);
+  
+        case 5:
+        case 'end':
+          return context$1$0.stop();
+      }
+    }, null, _this);
+  });
+  
+  server.post('/group/:id/off', function callee$0$0(req, res) {
+    var api, state;
+    return regeneratorRuntime.async(function callee$0$0$(context$1$0) {
+      while (1) switch (context$1$0.prev = context$1$0.next) {
+        case 0:
+          context$1$0.next = 2;
+          return regeneratorRuntime.awrap(getHueApi(req.query.connectionID));
+  
+        case 2:
+          api = context$1$0.sent;
+          state = hue.lightState.create().off();
+  
+          setGroupLightState(api, req.params.id, state, res);
+  
+        case 5:
         case 'end':
           return context$1$0.stop();
       }
@@ -518,7 +562,7 @@ module.exports =
   });
   
   server.post('/light/:id/color', function callee$0$0(req, res) {
-    var x, y, lightState, api, state;
+    var x, y, api, state;
     return regeneratorRuntime.async(function callee$0$0$(context$1$0) {
       while (1) switch (context$1$0.prev = context$1$0.next) {
         case 0:
@@ -543,17 +587,16 @@ module.exports =
           return context$1$0.abrupt('return');
   
         case 8:
-          lightState = hue.lightState;
-          context$1$0.next = 11;
+          context$1$0.next = 10;
           return regeneratorRuntime.awrap(getHueApi(req.query.connectionID));
   
-        case 11:
+        case 10:
           api = context$1$0.sent;
-          state = lightState.create().on().xy(x, y);
+          state = hue.lightState.create().on().xy(x, y);
   
           setLightState(api, req.params.id, state, res);
   
-        case 14:
+        case 13:
         case 'end':
           return context$1$0.stop();
       }
@@ -3132,7 +3175,7 @@ module.exports =
   
   var _HomePageScss2 = _interopRequireDefault(_HomePageScss);
   
-  var _classnames = __webpack_require__(59);
+  var _classnames = __webpack_require__(47);
   
   var _classnames2 = _interopRequireDefault(_classnames);
   
@@ -3148,11 +3191,11 @@ module.exports =
   
   var _coreLocation2 = _interopRequireDefault(_coreLocation);
   
-  var _actionsBridge = __webpack_require__(47);
+  var _actionsBridge = __webpack_require__(48);
   
   var _actionsBridge2 = _interopRequireDefault(_actionsBridge);
   
-  var _LightsListLightsList = __webpack_require__(49);
+  var _LightsListLightsList = __webpack_require__(50);
   
   var _LightsListLightsList2 = _interopRequireDefault(_LightsListLightsList);
   
@@ -3393,6 +3436,12 @@ module.exports =
 
 /***/ },
 /* 47 */
+/***/ function(module, exports) {
+
+  module.exports = require("classnames");
+
+/***/ },
+/* 48 */
 /***/ function(module, exports, __webpack_require__) {
 
   'use strict';
@@ -3411,7 +3460,7 @@ module.exports =
   
   var _coreFetch2 = _interopRequireDefault(_coreFetch);
   
-  var _configJson = __webpack_require__(48);
+  var _configJson = __webpack_require__(49);
   
   var _configJson2 = _interopRequireDefault(_configJson);
   
@@ -3577,6 +3626,38 @@ module.exports =
         }, null, this);
       }
     }, {
+      key: 'turnOnGroup',
+      value: function turnOnGroup(id) {
+        var opts;
+        return regeneratorRuntime.async(function turnOnGroup$(context$2$0) {
+          while (1) switch (context$2$0.prev = context$2$0.next) {
+            case 0:
+              opts = { method: 'POST' };
+              return context$2$0.abrupt('return', this.makeRequest('/group/' + id + '/on', opts));
+  
+            case 2:
+            case 'end':
+              return context$2$0.stop();
+          }
+        }, null, this);
+      }
+    }, {
+      key: 'turnOffGroup',
+      value: function turnOffGroup(id) {
+        var opts;
+        return regeneratorRuntime.async(function turnOffGroup$(context$2$0) {
+          while (1) switch (context$2$0.prev = context$2$0.next) {
+            case 0:
+              opts = { method: 'POST' };
+              return context$2$0.abrupt('return', this.makeRequest('/group/' + id + '/off', opts));
+  
+            case 2:
+            case 'end':
+              return context$2$0.stop();
+          }
+        }, null, this);
+      }
+    }, {
       key: 'setLightColor',
       value: function setLightColor(id, x, y) {
         var opts;
@@ -3653,7 +3734,7 @@ module.exports =
   module.exports = exports['default'];
 
 /***/ },
-/* 48 */
+/* 49 */
 /***/ function(module, exports) {
 
   module.exports = {
@@ -3666,7 +3747,7 @@ module.exports =
   };
 
 /***/ },
-/* 49 */
+/* 50 */
 /***/ function(module, exports, __webpack_require__) {
 
   'use strict';
@@ -3689,11 +3770,11 @@ module.exports =
   
   var _react2 = _interopRequireDefault(_react);
   
-  var _LightsListScss = __webpack_require__(50);
+  var _LightsListScss = __webpack_require__(51);
   
   var _LightsListScss2 = _interopRequireDefault(_LightsListScss);
   
-  var _LightLight = __webpack_require__(52);
+  var _LightLight = __webpack_require__(53);
   
   var _LightLight2 = _interopRequireDefault(_LightLight);
   
@@ -3746,11 +3827,11 @@ module.exports =
   module.exports = exports['default'];
 
 /***/ },
-/* 50 */
+/* 51 */
 /***/ function(module, exports, __webpack_require__) {
 
   
-      var content = __webpack_require__(51);
+      var content = __webpack_require__(52);
       var insertCss = __webpack_require__(20);
   
       if (typeof content === 'string') {
@@ -3778,7 +3859,7 @@ module.exports =
     
 
 /***/ },
-/* 51 */
+/* 52 */
 /***/ function(module, exports, __webpack_require__) {
 
   exports = module.exports = __webpack_require__(19)();
@@ -3794,7 +3875,7 @@ module.exports =
   };
 
 /***/ },
-/* 52 */
+/* 53 */
 /***/ function(module, exports, __webpack_require__) {
 
   'use strict';
@@ -3817,21 +3898,21 @@ module.exports =
   
   var _react2 = _interopRequireDefault(_react);
   
-  var _LightScss = __webpack_require__(53);
+  var _LightScss = __webpack_require__(54);
   
   var _LightScss2 = _interopRequireDefault(_LightScss);
   
-  var _actionsBridge = __webpack_require__(47);
+  var _actionsBridge = __webpack_require__(48);
   
   var _actionsBridge2 = _interopRequireDefault(_actionsBridge);
   
-  var _apiConverter = __webpack_require__(55);
+  var _apiConverter = __webpack_require__(56);
   
   var _apiConverter2 = _interopRequireDefault(_apiConverter);
   
-  var _reactColor = __webpack_require__(58);
+  var _reactColor = __webpack_require__(59);
   
-  var _classnames = __webpack_require__(59);
+  var _classnames = __webpack_require__(47);
   
   var _classnames2 = _interopRequireDefault(_classnames);
   
@@ -4058,11 +4139,11 @@ module.exports =
   module.exports = exports['default'];
 
 /***/ },
-/* 53 */
+/* 54 */
 /***/ function(module, exports, __webpack_require__) {
 
   
-      var content = __webpack_require__(54);
+      var content = __webpack_require__(55);
       var insertCss = __webpack_require__(20);
   
       if (typeof content === 'string') {
@@ -4090,7 +4171,7 @@ module.exports =
     
 
 /***/ },
-/* 54 */
+/* 55 */
 /***/ function(module, exports, __webpack_require__) {
 
   exports = module.exports = __webpack_require__(19)();
@@ -4124,7 +4205,7 @@ module.exports =
   };
 
 /***/ },
-/* 55 */
+/* 56 */
 /***/ function(module, exports, __webpack_require__) {
 
   'use strict';
@@ -4139,7 +4220,7 @@ module.exports =
   
   function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
   
-  var _colorHelper = __webpack_require__(56);
+  var _colorHelper = __webpack_require__(57);
   
   var _colorHelper2 = _interopRequireDefault(_colorHelper);
   
@@ -4221,7 +4302,7 @@ module.exports =
   module.exports = exports['default'];
 
 /***/ },
-/* 56 */
+/* 57 */
 /***/ function(module, exports, __webpack_require__) {
 
   'use strict';
@@ -4236,7 +4317,7 @@ module.exports =
   
   function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
   
-  var _xyPoint = __webpack_require__(57);
+  var _xyPoint = __webpack_require__(58);
   
   var _xyPoint2 = _interopRequireDefault(_xyPoint);
   
@@ -4494,7 +4575,7 @@ module.exports =
   module.exports = exports['default'];
 
 /***/ },
-/* 57 */
+/* 58 */
 /***/ function(module, exports) {
 
   "use strict";
@@ -4516,16 +4597,10 @@ module.exports =
   module.exports = exports["default"];
 
 /***/ },
-/* 58 */
-/***/ function(module, exports) {
-
-  module.exports = require("react-color");
-
-/***/ },
 /* 59 */
 /***/ function(module, exports) {
 
-  module.exports = require("classnames");
+  module.exports = require("react-color");
 
 /***/ },
 /* 60 */
@@ -4680,7 +4755,7 @@ module.exports =
   
   var _GroupScss2 = _interopRequireDefault(_GroupScss);
   
-  var _classnames = __webpack_require__(59);
+  var _classnames = __webpack_require__(47);
   
   var _classnames2 = _interopRequireDefault(_classnames);
   
@@ -4866,7 +4941,7 @@ module.exports =
   
   var _decoratorsWithStyles2 = _interopRequireDefault(_decoratorsWithStyles);
   
-  var _actionsBridge = __webpack_require__(47);
+  var _actionsBridge = __webpack_require__(48);
   
   var _actionsBridge2 = _interopRequireDefault(_actionsBridge);
   
@@ -5344,7 +5419,7 @@ module.exports =
   
   var _SettingsPageScss2 = _interopRequireDefault(_SettingsPageScss);
   
-  var _actionsBridge = __webpack_require__(47);
+  var _actionsBridge = __webpack_require__(48);
   
   var _actionsBridge2 = _interopRequireDefault(_actionsBridge);
   
