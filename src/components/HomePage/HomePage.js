@@ -139,7 +139,9 @@ class HomePage extends Component {
           </div>
           <div className={cx(s.groupsTab, s.tab, this.state.activeTab === 'groups' ? s.active : s.inactive)}>
             {haveGroups ? (
-              <GroupsList groups={this.state.groups} />
+              <GroupsList groups={this.state.groups}
+                onLightLoaded={this.onLightLoaded.bind(this)}
+              />
             ) : (
               <p className={s.loading}>
                 Loading groups...

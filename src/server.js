@@ -53,7 +53,7 @@ function setLightState(api, id, state, res) {
 }
 
 function setGroupLightState(api, id, state, res) {
-  api.setLightState(id, state).then((result) => {
+  api.setGroupLightState(id, state).then((result) => {
     res.json(result);
   }).fail((err) => {
     res.status(400).json(err);

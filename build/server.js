@@ -170,7 +170,7 @@ module.exports =
   }
   
   function setGroupLightState(api, id, state, res) {
-    api.setLightState(id, state).then(function (result) {
+    api.setGroupLightState(id, state).then(function (result) {
       res.json(result);
     }).fail(function (err) {
       res.status(400).json(err);
@@ -3362,7 +3362,9 @@ module.exports =
             _react2['default'].createElement(
               'div',
               { className: (0, _classnames2['default'])(_HomePageScss2['default'].groupsTab, _HomePageScss2['default'].tab, this.state.activeTab === 'groups' ? _HomePageScss2['default'].active : _HomePageScss2['default'].inactive) },
-              haveGroups ? _react2['default'].createElement(_GroupsListGroupsList2['default'], { groups: this.state.groups }) : _react2['default'].createElement(
+              haveGroups ? _react2['default'].createElement(_GroupsListGroupsList2['default'], { groups: this.state.groups,
+                onLightLoaded: this.onLightLoaded.bind(this)
+              }) : _react2['default'].createElement(
                 'p',
                 { className: _HomePageScss2['default'].loading },
                 'Loading groups...'
@@ -4633,7 +4635,8 @@ module.exports =
     _createClass(GroupsList, null, [{
       key: 'propTypes',
       value: {
-        groups: _react.PropTypes.array.isRequired
+        groups: _react.PropTypes.array.isRequired,
+        onLightLoaded: _react.PropTypes.func.isRequired
       },
       enumerable: true
     }]);
@@ -4648,11 +4651,15 @@ module.exports =
     _createClass(GroupsList, [{
       key: 'render',
       value: function render() {
+        var _this = this;
+  
         return _react2['default'].createElement(
           'ul',
           { className: _GroupsListScss2['default'].groupList },
           this.props.groups.map(function (group) {
-            return _react2['default'].createElement(_GroupGroup2['default'], _extends({ key: group.id }, group));
+            return _react2['default'].createElement(_GroupGroup2['default'], _extends({ key: group.id }, group, {
+              onLightLoaded: _this.props.onLightLoaded
+            }));
           })
         );
       }
@@ -4758,6 +4765,10 @@ module.exports =
   
   var _OnOffSwitchOnOffSwitch2 = _interopRequireDefault(_OnOffSwitchOnOffSwitch);
   
+  var _actionsBridge = __webpack_require__(48);
+  
+  var _actionsBridge2 = _interopRequireDefault(_actionsBridge);
+  
   var Group = (function (_Component) {
     _inherits(Group, _Component);
   
@@ -4767,7 +4778,8 @@ module.exports =
         id: _react.PropTypes.string.isRequired,
         name: _react.PropTypes.string,
         type: _react.PropTypes.string,
-        lights: _react.PropTypes.array
+        lights: _react.PropTypes.array,
+        onLightLoaded: _react.PropTypes.func.isRequired
       },
       enumerable: true
     }]);
@@ -4777,17 +4789,30 @@ module.exports =
   
       _get(Object.getPrototypeOf(_Group.prototype), 'constructor', this).call(this, props, context);
       this.state = {
-        open: false
+        open: false,
+        on: false
       };
     }
   
     _createClass(Group, [{
-      key: 'componentDidMount',
-      value: function componentDidMount() {}
-    }, {
       key: 'onLightsToggle',
       value: function onLightsToggle() {
-        console.log('toggle lights in group', this.props.id);
+        if (this.areAllLightsOn()) {
+          _actionsBridge2['default'].turnOffGroup(this.props.id).then(this.onLightsToggleComplete.bind(this, false));
+        } else {
+          _actionsBridge2['default'].turnOnGroup(this.props.id).then(this.onLightsToggleComplete.bind(this, true));
+        }
+      }
+    }, {
+      key: 'onLightsToggleComplete',
+      value: function onLightsToggleComplete(on, success) {
+        if (success) {
+          for (var j = 0; j < this.props.lights.length; j++) {
+            var light = this.props.lights[j];
+            light.state.on = on;
+            this.props.onLightLoaded(light);
+          }
+        }
       }
     }, {
       key: 'isNight',

@@ -4,6 +4,7 @@ import cx from 'classnames';
 import withStyles from '../../decorators/withStyles';
 import FontAwesome from 'react-fontawesome';
 import OnOffSwitch from '../OnOffSwitch/OnOffSwitch';
+import Bridge from '../../actions/bridge';
 
 @withStyles(s)
 class Group extends Component {
@@ -12,20 +13,35 @@ class Group extends Component {
     name: PropTypes.string,
     type: PropTypes.string,
     lights: PropTypes.array,
+    onLightLoaded: PropTypes.func.isRequired,
   };
 
   constructor(props, context) {
     super(props, context);
     this.state = {
       open: false,
+      on: false,
     };
   }
 
-  componentDidMount() {
+  onLightsToggle() {
+    if (this.areAllLightsOn()) {
+      Bridge.turnOffGroup(this.props.id).
+             then(this.onLightsToggleComplete.bind(this, false));
+    } else {
+      Bridge.turnOnGroup(this.props.id).
+             then(this.onLightsToggleComplete.bind(this, true));
+    }
   }
 
-  onLightsToggle() {
-    console.log('toggle lights in group', this.props.id);
+  onLightsToggleComplete(on, success) {
+    if (success) {
+      for (let j = 0; j < this.props.lights.length; j++) {
+        const light = this.props.lights[j];
+        light.state.on = on;
+        this.props.onLightLoaded(light);
+      }
+    }
   }
 
   isNight() {

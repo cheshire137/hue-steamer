@@ -7,6 +7,7 @@ import withStyles from '../../decorators/withStyles';
 class GroupsList extends Component {
   static propTypes = {
     groups: PropTypes.array.isRequired,
+    onLightLoaded: PropTypes.func.isRequired,
   };
 
   constructor(props, context) {
@@ -18,7 +19,11 @@ class GroupsList extends Component {
     return (
       <ul className={s.groupList}>
         {this.props.groups.map((group) => {
-          return <Group key={group.id} {...group} />;
+          return (
+            <Group key={group.id} {...group}
+              onLightLoaded={this.props.onLightLoaded}
+            />
+          );
         })}
       </ul>
     );
