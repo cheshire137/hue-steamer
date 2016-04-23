@@ -39,6 +39,13 @@ class Bridge {
                             '&ids=' + lightIDs.join(','), opts);
   }
 
+  static async updateGroup(id, name, lightIDs) {
+    const opts = { method: 'PUT' };
+    return this.makeRequest('/group/' + id +
+                            '?name=' + encodeURIComponent(name) +
+                            '&ids=' + lightIDs.join(','), opts);
+  }
+
   static async getLight(lightID) {
     return this.makeRequest('/light/' + lightID);
   }

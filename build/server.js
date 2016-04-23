@@ -515,6 +515,68 @@ module.exports =
     }, null, _this);
   });
   
+  server.put('/group/:id', function callee$0$0(req, res) {
+    var name, lightIDs, api;
+    return regeneratorRuntime.async(function callee$0$0$(context$1$0) {
+      while (1) switch (context$1$0.prev = context$1$0.next) {
+        case 0:
+          name = req.query.name;
+  
+          if (!(typeof name !== 'string')) {
+            context$1$0.next = 4;
+            break;
+          }
+  
+          res.status(400).json({ error: 'Must pass group name in name param' });
+          return context$1$0.abrupt('return');
+  
+        case 4:
+          name = name.trim();
+  
+          if (!(name.length < 1)) {
+            context$1$0.next = 8;
+            break;
+          }
+  
+          res.status(400).json({
+            error: 'Must pass group name at least 1 character long'
+          });
+          return context$1$0.abrupt('return');
+  
+        case 8:
+          lightIDs = req.query.ids;
+  
+          if (!(typeof lightIDs !== 'string')) {
+            context$1$0.next = 12;
+            break;
+          }
+  
+          res.status(400).json({
+            error: 'Must pass comma-separated list of light IDs in ids param'
+          });
+          return context$1$0.abrupt('return');
+  
+        case 12:
+          lightIDs = lightIDs.split(',');
+          context$1$0.next = 15;
+          return regeneratorRuntime.awrap(getHueApi(req.query.connectionID));
+  
+        case 15:
+          api = context$1$0.sent;
+  
+          api.updateGroup(req.params.id, name, lightIDs).then(function (result) {
+            res.json(result);
+          }).fail(function (err) {
+            res.status(400).json(err);
+          }).done();
+  
+        case 17:
+        case 'end':
+          return context$1$0.stop();
+      }
+    }, null, _this);
+  });
+  
   server.get('/light/:id', function callee$0$0(req, res) {
     var api;
     return regeneratorRuntime.async(function callee$0$0$(context$1$0) {
@@ -3756,6 +3818,22 @@ module.exports =
         }, null, this);
       }
     }, {
+      key: 'updateGroup',
+      value: function updateGroup(id, name, lightIDs) {
+        var opts;
+        return regeneratorRuntime.async(function updateGroup$(context$2$0) {
+          while (1) switch (context$2$0.prev = context$2$0.next) {
+            case 0:
+              opts = { method: 'PUT' };
+              return context$2$0.abrupt('return', this.makeRequest('/group/' + id + '?name=' + encodeURIComponent(name) + '&ids=' + lightIDs.join(','), opts));
+  
+            case 2:
+            case 'end':
+              return context$2$0.stop();
+          }
+        }, null, this);
+      }
+    }, {
       key: 'getLight',
       value: function getLight(lightID) {
         return regeneratorRuntime.async(function getLight$(context$2$0) {
@@ -5155,7 +5233,7 @@ module.exports =
   
   
   // module
-  exports.push([module.id, ".Group_group_23_ {\n  width: 48%;\n  margin: 0 1% 10px;\n  display: inline-block;\n  border-width: 1px;\n  border-style: solid;\n  padding: 10px;\n  border-radius: 2px;\n  vertical-align: top\n}\n\n.Group_group_23_.Group_night_WFU {\n  border-color: #38231D\n}\n\n.Group_group_23_.Group_day_22J {\n  border-color: #ccc\n}\n\n.Group_groupHeader_g_v {\n  display: table;\n  width: 100%;\n}\n\n.Group_groupName_2Et {\n  margin-bottom: 0;\n  display: table-cell;\n  font-weight: normal;\n  font-size: 18px;\n}\n\n.Group_groupName_2Et a {\n  text-decoration: none;\n}\n\n.Group_openIndicator_2t7 {\n  margin-right: 5px;\n}\n\n.Group_onOffSwitch_QKC {\n  float: right;\n}\n\n.Group_groupContents_3Z0 {\n  margin-left: 18px;\n  margin-right: 50px;\n  font-size: 13px;\n}\n\n.Group_groupLights_MkK {\n  list-style: none;\n  padding-left: 0;\n}\n\n.Group_groupLight_1rf {\n  white-space: nowrap;\n  display: inline-block\n}\n\n.Group_groupLight_1rf:after {\n  content: \",\\A0\"\n}\n\n.Group_groupLight_1rf:last-child {}\n\n.Group_groupLight_1rf:last-child:after {\n  content: \"\"\n}\n", "", {"version":3,"sources":["/./src/components/Group/Group.scss"],"names":[],"mappings":"AAAA;EACE,WAAW;EACX,kBAAkB;EAClB,sBAAsB;EACtB,kBAAkB;EAClB,oBAAoB;EACpB,cAAc;EACd,mBAAmB;EACnB,mBAAoB;CASrB;;AAPC;EACE,qBAAsB;CACvB;;AAED;EACE,kBAAmB;CACpB;;AAGH;EACE,eAAe;EACf,YAAY;CACb;;AAED;EACE,iBAAiB;EACjB,oBAAoB;EACpB,oBAAoB;EACpB,gBAAgB;CAKjB;;AAHC;EACE,sBAAsB;CACvB;;AAGH;EACE,kBAAkB;CACnB;;AAED;EACE,aAAa;CACd;;AAED;EACE,kBAAkB;EAClB,mBAAmB;EACnB,gBAAgB;CACjB;;AAED;EACE,iBAAiB;EACjB,gBAAgB;CACjB;;AAED;EACE,oBAAoB;EACpB,qBAAsB;CAWvB;;AATC;EACE,eAAgB;CACjB;;AAED,mCAIC;;AAHC;EACE,WAAY;CACb","file":"Group.scss","sourcesContent":[".group {\n  width: 48%;\n  margin: 0 1% 10px;\n  display: inline-block;\n  border-width: 1px;\n  border-style: solid;\n  padding: 10px;\n  border-radius: 2px;\n  vertical-align: top;\n\n  &.night {\n    border-color: #38231D;\n  }\n\n  &.day {\n    border-color: #ccc;\n  }\n}\n\n.groupHeader {\n  display: table;\n  width: 100%;\n}\n\n.groupName {\n  margin-bottom: 0;\n  display: table-cell;\n  font-weight: normal;\n  font-size: 18px;\n\n  a {\n    text-decoration: none;\n  }\n}\n\n.openIndicator {\n  margin-right: 5px;\n}\n\n.onOffSwitch {\n  float: right;\n}\n\n.groupContents {\n  margin-left: 18px;\n  margin-right: 50px;\n  font-size: 13px;\n}\n\n.groupLights {\n  list-style: none;\n  padding-left: 0;\n}\n\n.groupLight {\n  white-space: nowrap;\n  display: inline-block;\n\n  &:after {\n    content: \",\\a0\";\n  }\n\n  &:last-child {\n    &:after {\n      content: \"\";\n    }\n  }\n}\n"],"sourceRoot":"webpack://"}]);
+  exports.push([module.id, ".Group_group_23_ {\n  width: 48%;\n  margin: 0 1% 10px;\n  display: inline-block;\n  border-width: 1px;\n  border-style: solid;\n  padding: 10px;\n  border-radius: 2px;\n  vertical-align: top\n}\n\n.Group_group_23_.Group_night_WFU {\n  border-color: #38231D\n}\n\n.Group_group_23_.Group_day_22J {\n  border-color: #ccc\n}\n\n.Group_groupHeader_g_v {\n  display: table;\n  width: 100%;\n}\n\n.Group_groupName_2Et {\n  margin-bottom: 0;\n  display: table-cell;\n  font-weight: normal;\n  font-size: 18px;\n}\n\n.Group_groupName_2Et a {\n  text-decoration: none;\n}\n\n.Group_openIndicator_2t7 {\n  margin-right: 5px;\n  font-size: 16px;\n}\n\n.Group_onOffSwitch_QKC {\n  float: right;\n}\n\n.Group_groupContents_3Z0 {\n  margin-left: 23px;\n  margin-right: 55px;\n  font-size: 13px;\n}\n\n.Group_groupLights_MkK {\n  list-style: none;\n  padding-left: 0;\n}\n\n.Group_groupLight_1rf {\n  white-space: nowrap;\n  display: inline-block\n}\n\n.Group_groupLight_1rf:after {\n  content: \",\\A0\"\n}\n\n.Group_groupLight_1rf:last-child {}\n\n.Group_groupLight_1rf:last-child:after {\n  content: \"\"\n}\n", "", {"version":3,"sources":["/./src/components/Group/Group.scss"],"names":[],"mappings":"AAAA;EACE,WAAW;EACX,kBAAkB;EAClB,sBAAsB;EACtB,kBAAkB;EAClB,oBAAoB;EACpB,cAAc;EACd,mBAAmB;EACnB,mBAAoB;CASrB;;AAPC;EACE,qBAAsB;CACvB;;AAED;EACE,kBAAmB;CACpB;;AAGH;EACE,eAAe;EACf,YAAY;CACb;;AAED;EACE,iBAAiB;EACjB,oBAAoB;EACpB,oBAAoB;EACpB,gBAAgB;CAKjB;;AAHC;EACE,sBAAsB;CACvB;;AAGH;EACE,kBAAkB;EAClB,gBAAgB;CACjB;;AAED;EACE,aAAa;CACd;;AAED;EACE,kBAAkB;EAClB,mBAAmB;EACnB,gBAAgB;CACjB;;AAED;EACE,iBAAiB;EACjB,gBAAgB;CACjB;;AAED;EACE,oBAAoB;EACpB,qBAAsB;CAWvB;;AATC;EACE,eAAgB;CACjB;;AAED,mCAIC;;AAHC;EACE,WAAY;CACb","file":"Group.scss","sourcesContent":[".group {\n  width: 48%;\n  margin: 0 1% 10px;\n  display: inline-block;\n  border-width: 1px;\n  border-style: solid;\n  padding: 10px;\n  border-radius: 2px;\n  vertical-align: top;\n\n  &.night {\n    border-color: #38231D;\n  }\n\n  &.day {\n    border-color: #ccc;\n  }\n}\n\n.groupHeader {\n  display: table;\n  width: 100%;\n}\n\n.groupName {\n  margin-bottom: 0;\n  display: table-cell;\n  font-weight: normal;\n  font-size: 18px;\n\n  a {\n    text-decoration: none;\n  }\n}\n\n.openIndicator {\n  margin-right: 5px;\n  font-size: 16px;\n}\n\n.onOffSwitch {\n  float: right;\n}\n\n.groupContents {\n  margin-left: 23px;\n  margin-right: 55px;\n  font-size: 13px;\n}\n\n.groupLights {\n  list-style: none;\n  padding-left: 0;\n}\n\n.groupLight {\n  white-space: nowrap;\n  display: inline-block;\n\n  &:after {\n    content: \",\\a0\";\n  }\n\n  &:last-child {\n    &:after {\n      content: \"\";\n    }\n  }\n}\n"],"sourceRoot":"webpack://"}]);
   
   // exports
   exports.locals = {
