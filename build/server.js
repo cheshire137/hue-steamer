@@ -3920,6 +3920,10 @@ module.exports =
   
   var _decoratorsWithStyles2 = _interopRequireDefault(_decoratorsWithStyles);
   
+  var _OnOffSwitchOnOffSwitch = __webpack_require__(81);
+  
+  var _OnOffSwitchOnOffSwitch2 = _interopRequireDefault(_OnOffSwitchOnOffSwitch);
+  
   var Light = (function (_Component) {
     _inherits(Light, _Component);
   
@@ -4066,21 +4070,9 @@ module.exports =
                   this.state.light.name
                 )
               ),
-              _react2['default'].createElement(
-                'div',
-                { className: _LightScss2['default'].onoffswitch },
-                _react2['default'].createElement('input', { type: 'checkbox', name: 'onoffswitch',
-                  className: _LightScss2['default'].onoffswitchCheckbox, id: checkboxID,
-                  checked: this.state.light.state.on,
-                  onChange: this.onLightToggle.bind(this)
-                }),
-                _react2['default'].createElement(
-                  'label',
-                  { className: _LightScss2['default'].onoffswitchLabel, htmlFor: checkboxID },
-                  _react2['default'].createElement('span', { className: _LightScss2['default'].onoffswitchInner }),
-                  _react2['default'].createElement('span', { className: _LightScss2['default'].onoffswitchSwitch })
-                )
-              )
+              _react2['default'].createElement(_OnOffSwitchOnOffSwitch2['default'], { id: checkboxID, on: this.state.light.state.on,
+                onToggle: this.onLightToggle.bind(this)
+              })
             ),
             _react2['default'].createElement(
               'footer',
@@ -4179,7 +4171,7 @@ module.exports =
   
   
   // module
-  exports.push([module.id, ".Light_light_31m {\n  width: 223px;\n  display: inline-block;\n  margin: 0 5px 12px 5px;\n  padding: 6px;\n  border-radius: 2px;\n  border-width: 1px;\n  border-style: solid\n}\n\n.Light_light_31m.Light_night_UWr {\n  border-color: #38231D;\n  color: #E5E4E1;\n  background-color: #231511;\n}\n\n.Light_light_31m.Light_night_UWr .Light_metadata_3mh {\n  color: #97918A\n}\n\n.Light_light_31m.Light_day_3-K {\n  border-color: #ccc;\n}\n\n.Light_light_31m.Light_day_3-K .Light_metadata_3mh {\n  color: #797979\n}\n\n.Light_lightHeader_Cjv, .Light_lightFooter_2ji {\n  display: table;\n  width: 100%;\n}\n\n.Light_lightFooter_2ji {\n  margin-top: 5px;\n}\n\n.Light_lightNameArea_1fg, .Light_metadata_3mh, .Light_colorBlockAndPicker_16B {\n  display: table-cell;\n  vertical-align: middle;\n}\n\n.Light_name_kaw {\n  white-space: nowrap;\n  text-overflow: ellipsis;\n  overflow: hidden;\n  width: 151px;\n  display: block;\n}\n\n.Light_metadata_3mh {\n  font-size: 13px;\n}\n\n.Light_colorBlockAndPicker_16B {\n  width: 50px;\n  position: relative;\n}\n\n.Light_colorBlockAndPicker_16B .Light_colorBlock_3S8 {\n  border-radius: 4px;\n  border: none;\n  width: 100%;\n  height: 100%\n}\n\n.Light_colorBlockAndPicker_16B .Light_colorBlock_3S8:focus {\n  outline: 0\n}\n\n.Light_colorBlockAndPicker_16B .Light_colorPickerWrapper_N1C {\n  z-index: 99;\n  position: absolute;\n}\n\n.Light_type_49F {\n  display: block;\n}\n\n.Light_manufacturer_3j2 {\n  padding: 0 0.3em 0 0;\n}\n\n.Light_model_3h3 {\n}\n\n.Light_onoffswitch_14R {\n  position: relative;\n  display: table-cell;\n  vertical-align: middle;\n  width: 50px;\n  -webkit-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n}\n\n.Light_onoffswitch_14R .Light_onoffswitchCheckbox_1c6 {\n  display: none\n}\n\n.Light_onoffswitch_14R .Light_onoffswitchCheckbox_1c6:checked + .Light_onoffswitchLabel_1bP .Light_onoffswitchInner_3Rc {\n  margin-left: 0\n}\n\n.Light_onoffswitch_14R .Light_onoffswitchCheckbox_1c6:checked + .Light_onoffswitchLabel_1bP .Light_onoffswitchSwitch_34u {\n  right: 0\n}\n\n.Light_onoffswitch_14R .Light_onoffswitchLabel_1bP {\n  display: block;\n  overflow: hidden;\n  cursor: pointer;\n  border: 2px solid #CCCCCC;\n  border-radius: 18px;\n}\n\n.Light_onoffswitch_14R .Light_onoffswitchInner_3Rc {\n  display: block;\n  width: 200%;\n  margin-left: -100%;\n  -webkit-transition: margin 0.3s ease-in 0s;\n  -o-transition: margin 0.3s ease-in 0s;\n  transition: margin 0.3s ease-in 0s\n}\n\n.Light_onoffswitch_14R .Light_onoffswitchInner_3Rc:before, .Light_onoffswitch_14R .Light_onoffswitchInner_3Rc:after {\n  display: block;\n  float: left;\n  width: 50%;\n  height: 18px;\n  padding: 0;\n  line-height: 18px;\n  font-size: 12px;\n  color: white;\n  font-weight: 700;\n  -webkit-box-sizing: border-box;\n          box-sizing: border-box\n}\n\n.Light_onoffswitch_14R .Light_onoffswitchInner_3Rc:before {\n  content: \"on\";\n  padding-left: 10px;\n  background-color: #FFF7C2;\n  color: #474029\n}\n\n.Light_onoffswitch_14R .Light_onoffswitchInner_3Rc:after {\n  content: \"off\";\n  padding-right: 10px;\n  background-color: #373634;\n  color: #D6D6D6;\n  text-align: right\n}\n\n.Light_onoffswitch_14R .Light_onoffswitchSwitch_34u {\n  display: block;\n  width: 18px;\n  margin: 0px;\n  background: #FFFFFF;\n  position: absolute;\n  top: 0;\n  bottom: 0;\n  right: 32px;\n  border: 2px solid #CCCCCC;\n  border-radius: 18px;\n  -webkit-transition: all 0.3s ease-in 0s;\n  -o-transition: all 0.3s ease-in 0s;\n  transition: all 0.3s ease-in 0s;\n}\n", "", {"version":3,"sources":["/./src/components/Light/Light.scss"],"names":[],"mappings":"AAAA;EACE,aAAa;EACb,sBAAsB;EACtB,uBAAuB;EACvB,aAAa;EACb,mBAAmB;EACnB,kBAAkB;EAClB,mBAAoB;CAmBrB;;AAjBC;EACE,sBAAsB;EACtB,eAAe;EACf,0BAA0B;CAK3B;;AAHC;EACE,cAAe;CAChB;;AAGH;EACE,mBAAmB;CAKpB;;AAHC;EACE,cAAe;CAChB;;AAIL;EAEE,eAAe;EACf,YAAY;CACb;;AAED;EACE,gBAAgB;CACjB;;AAED;EAGE,oBAAoB;EACpB,uBAAuB;CACxB;;AAED;EACE,oBAAoB;EACpB,wBAAwB;EACxB,iBAAiB;EACjB,aAAa;EACb,eAAe;CAChB;;AAED;EACE,gBAAgB;CACjB;;AAED;EACE,YAAY;EACZ,mBAAmB;CAiBpB;;AAfC;EACE,mBAAmB;EACnB,aAAa;EACb,YAAY;EACZ,YAAa;CAKd;;AAHC;EACE,UAAW;CACZ;;AAGH;EACE,YAAY;EACZ,mBAAmB;CACpB;;AAGH;EACE,eAAe;CAChB;;AAED;EACE,qBAAqB;CACtB;;AAED;CACC;;AAED;EACE,mBAAmB;EACnB,oBAAoB;EACpB,uBAAuB;EACvB,YAAY;EACZ,0BAA0B;EAC1B,uBAAuB;EACvB,sBAAsB;CAqEvB;;AAnEC;EACE,aAAc;CAaf;;AATK;EACE,cAAe;CAChB;;AAED;EACE,QAAS;CACV;;AAKP;EACE,eAAe;EACf,iBAAiB;EACjB,gBAAgB;EAChB,0BAA0B;EAC1B,oBAAoB;CACrB;;AAED;EACE,eAAe;EACf,YAAY;EACZ,mBAAmB;EACnB,2CAAmC;EAAnC,sCAAmC;EAAnC,kCAAmC;CA6BpC;;AA3BC;EACE,eAAe;EACf,YAAY;EACZ,WAAW;EACX,aAAa;EACb,WAAW;EACX,kBAAkB;EAClB,gBAAgB;EAChB,aAAa;EACb,iBAAiB;EACjB,+BAAuB;UAAvB,sBAAuB;CACxB;;AAED;EACE,cAAc;EACd,mBAAmB;EACnB,0BAA0B;EAC1B,cAAe;CAChB;;AAED;EACE,eAAe;EACf,oBAAoB;EACpB,0BAA0B;EAC1B,eAAe;EACf,iBAAkB;CACnB;;AAGH;EACI,eAAe;EAAC,YAAY;EAAC,YAAY;EACzC,oBAAoB;EACpB,mBAAmB;EAAC,OAAO;EAAC,UAAU;EACtC,YAAY;EACZ,0BAA0B;EAAC,oBAAoB;EAC/C,wCAAgC;EAAhC,mCAAgC;EAAhC,gCAAgC;CACnC","file":"Light.scss","sourcesContent":[".light {\n  width: 223px;\n  display: inline-block;\n  margin: 0 5px 12px 5px;\n  padding: 6px;\n  border-radius: 2px;\n  border-width: 1px;\n  border-style: solid;\n\n  &.night {\n    border-color: #38231D;\n    color: #E5E4E1;\n    background-color: #231511;\n\n    .metadata {\n      color: #97918A;\n    }\n  }\n\n  &.day {\n    border-color: #ccc;\n\n    .metadata {\n      color: #797979;\n    }\n  }\n}\n\n.lightHeader,\n.lightFooter {\n  display: table;\n  width: 100%;\n}\n\n.lightFooter {\n  margin-top: 5px;\n}\n\n.lightNameArea,\n.metadata,\n.colorBlockAndPicker {\n  display: table-cell;\n  vertical-align: middle;\n}\n\n.name {\n  white-space: nowrap;\n  text-overflow: ellipsis;\n  overflow: hidden;\n  width: 151px;\n  display: block;\n}\n\n.metadata {\n  font-size: 13px;\n}\n\n.colorBlockAndPicker {\n  width: 50px;\n  position: relative;\n\n  .colorBlock {\n    border-radius: 4px;\n    border: none;\n    width: 100%;\n    height: 100%;\n\n    &:focus {\n      outline: 0;\n    }\n  }\n\n  .colorPickerWrapper {\n    z-index: 99;\n    position: absolute;\n  }\n}\n\n.type {\n  display: block;\n}\n\n.manufacturer {\n  padding: 0 0.3em 0 0;\n}\n\n.model {\n}\n\n.onoffswitch {\n  position: relative;\n  display: table-cell;\n  vertical-align: middle;\n  width: 50px;\n  -webkit-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n\n  .onoffswitchCheckbox {\n    display: none;\n\n    &:checked {\n      + .onoffswitchLabel {\n        .onoffswitchInner {\n          margin-left: 0;\n        }\n\n        .onoffswitchSwitch {\n          right: 0;\n        }\n      }\n    }\n  }\n\n  .onoffswitchLabel {\n    display: block;\n    overflow: hidden;\n    cursor: pointer;\n    border: 2px solid #CCCCCC;\n    border-radius: 18px;\n  }\n\n  .onoffswitchInner {\n    display: block;\n    width: 200%;\n    margin-left: -100%;\n    transition: margin 0.3s ease-in 0s;\n\n    &:before, &:after {\n      display: block;\n      float: left;\n      width: 50%;\n      height: 18px;\n      padding: 0;\n      line-height: 18px;\n      font-size: 12px;\n      color: white;\n      font-weight: 700;\n      box-sizing: border-box;\n    }\n\n    &:before {\n      content: \"on\";\n      padding-left: 10px;\n      background-color: #FFF7C2;\n      color: #474029;\n    }\n\n    &:after {\n      content: \"off\";\n      padding-right: 10px;\n      background-color: #373634;\n      color: #D6D6D6;\n      text-align: right;\n    }\n  }\n\n  .onoffswitchSwitch {\n      display: block; width: 18px; margin: 0px;\n      background: #FFFFFF;\n      position: absolute; top: 0; bottom: 0;\n      right: 32px;\n      border: 2px solid #CCCCCC; border-radius: 18px;\n      transition: all 0.3s ease-in 0s;\n  }\n}\n"],"sourceRoot":"webpack://"}]);
+  exports.push([module.id, ".Light_light_31m {\n  width: 223px;\n  display: inline-block;\n  margin: 0 5px 12px 5px;\n  padding: 6px;\n  border-radius: 2px;\n  border-width: 1px;\n  border-style: solid\n}\n\n.Light_light_31m.Light_night_UWr {\n  border-color: #38231D;\n  color: #E5E4E1;\n  background-color: #231511;\n}\n\n.Light_light_31m.Light_night_UWr .Light_metadata_3mh {\n  color: #97918A\n}\n\n.Light_light_31m.Light_day_3-K {\n  border-color: #ccc;\n}\n\n.Light_light_31m.Light_day_3-K .Light_metadata_3mh {\n  color: #797979\n}\n\n.Light_lightHeader_Cjv, .Light_lightFooter_2ji {\n  display: table;\n  width: 100%;\n}\n\n.Light_lightFooter_2ji {\n  margin-top: 5px;\n}\n\n.Light_lightNameArea_1fg, .Light_metadata_3mh, .Light_colorBlockAndPicker_16B {\n  display: table-cell;\n  vertical-align: middle;\n}\n\n.Light_name_kaw {\n  white-space: nowrap;\n  text-overflow: ellipsis;\n  overflow: hidden;\n  width: 151px;\n  display: block;\n}\n\n.Light_metadata_3mh {\n  font-size: 13px;\n}\n\n.Light_colorBlockAndPicker_16B {\n  width: 50px;\n  position: relative;\n}\n\n.Light_colorBlockAndPicker_16B .Light_colorBlock_3S8 {\n  border-radius: 4px;\n  border: none;\n  width: 100%;\n  height: 100%\n}\n\n.Light_colorBlockAndPicker_16B .Light_colorBlock_3S8:focus {\n  outline: 0\n}\n\n.Light_colorBlockAndPicker_16B .Light_colorPickerWrapper_N1C {\n  z-index: 99;\n  position: absolute;\n}\n\n.Light_type_49F {\n  display: block;\n}\n\n.Light_manufacturer_3j2 {\n  padding: 0 0.3em 0 0;\n}\n\n.Light_model_3h3 {\n}\n", "", {"version":3,"sources":["/./src/components/Light/Light.scss"],"names":[],"mappings":"AAAA;EACE,aAAa;EACb,sBAAsB;EACtB,uBAAuB;EACvB,aAAa;EACb,mBAAmB;EACnB,kBAAkB;EAClB,mBAAoB;CAmBrB;;AAjBC;EACE,sBAAsB;EACtB,eAAe;EACf,0BAA0B;CAK3B;;AAHC;EACE,cAAe;CAChB;;AAGH;EACE,mBAAmB;CAKpB;;AAHC;EACE,cAAe;CAChB;;AAIL;EAEE,eAAe;EACf,YAAY;CACb;;AAED;EACE,gBAAgB;CACjB;;AAED;EAGE,oBAAoB;EACpB,uBAAuB;CACxB;;AAED;EACE,oBAAoB;EACpB,wBAAwB;EACxB,iBAAiB;EACjB,aAAa;EACb,eAAe;CAChB;;AAED;EACE,gBAAgB;CACjB;;AAED;EACE,YAAY;EACZ,mBAAmB;CAiBpB;;AAfC;EACE,mBAAmB;EACnB,aAAa;EACb,YAAY;EACZ,YAAa;CAKd;;AAHC;EACE,UAAW;CACZ;;AAGH;EACE,YAAY;EACZ,mBAAmB;CACpB;;AAGH;EACE,eAAe;CAChB;;AAED;EACE,qBAAqB;CACtB;;AAED;CACC","file":"Light.scss","sourcesContent":[".light {\n  width: 223px;\n  display: inline-block;\n  margin: 0 5px 12px 5px;\n  padding: 6px;\n  border-radius: 2px;\n  border-width: 1px;\n  border-style: solid;\n\n  &.night {\n    border-color: #38231D;\n    color: #E5E4E1;\n    background-color: #231511;\n\n    .metadata {\n      color: #97918A;\n    }\n  }\n\n  &.day {\n    border-color: #ccc;\n\n    .metadata {\n      color: #797979;\n    }\n  }\n}\n\n.lightHeader,\n.lightFooter {\n  display: table;\n  width: 100%;\n}\n\n.lightFooter {\n  margin-top: 5px;\n}\n\n.lightNameArea,\n.metadata,\n.colorBlockAndPicker {\n  display: table-cell;\n  vertical-align: middle;\n}\n\n.name {\n  white-space: nowrap;\n  text-overflow: ellipsis;\n  overflow: hidden;\n  width: 151px;\n  display: block;\n}\n\n.metadata {\n  font-size: 13px;\n}\n\n.colorBlockAndPicker {\n  width: 50px;\n  position: relative;\n\n  .colorBlock {\n    border-radius: 4px;\n    border: none;\n    width: 100%;\n    height: 100%;\n\n    &:focus {\n      outline: 0;\n    }\n  }\n\n  .colorPickerWrapper {\n    z-index: 99;\n    position: absolute;\n  }\n}\n\n.type {\n  display: block;\n}\n\n.manufacturer {\n  padding: 0 0.3em 0 0;\n}\n\n.model {\n}\n"],"sourceRoot":"webpack://"}]);
   
   // exports
   exports.locals = {
@@ -4196,12 +4188,7 @@ module.exports =
   	"colorPickerWrapper": "Light_colorPickerWrapper_N1C",
   	"type": "Light_type_49F",
   	"manufacturer": "Light_manufacturer_3j2",
-  	"model": "Light_model_3h3",
-  	"onoffswitch": "Light_onoffswitch_14R",
-  	"onoffswitchCheckbox": "Light_onoffswitchCheckbox_1c6",
-  	"onoffswitchLabel": "Light_onoffswitchLabel_1bP",
-  	"onoffswitchInner": "Light_onoffswitchInner_3Rc",
-  	"onoffswitchSwitch": "Light_onoffswitchSwitch_34u"
+  	"model": "Light_model_3h3"
   };
 
 /***/ },
@@ -5820,6 +5807,139 @@ module.exports =
 /***/ function(module, exports) {
 
   module.exports = require("front-matter");
+
+/***/ },
+/* 81 */
+/***/ function(module, exports, __webpack_require__) {
+
+  'use strict';
+  
+  Object.defineProperty(exports, '__esModule', {
+    value: true
+  });
+  
+  var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+  
+  var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+  
+  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  
+  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+  
+  function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+  
+  var _react = __webpack_require__(4);
+  
+  var _react2 = _interopRequireDefault(_react);
+  
+  var _OnOffSwitchScss = __webpack_require__(82);
+  
+  var _OnOffSwitchScss2 = _interopRequireDefault(_OnOffSwitchScss);
+  
+  var _decoratorsWithStyles = __webpack_require__(24);
+  
+  var _decoratorsWithStyles2 = _interopRequireDefault(_decoratorsWithStyles);
+  
+  var OnOffSwitch = (function (_Component) {
+    _inherits(OnOffSwitch, _Component);
+  
+    _createClass(OnOffSwitch, null, [{
+      key: 'propTypes',
+      value: {
+        id: _react.PropTypes.string.isRequired,
+        on: _react.PropTypes.bool.isRequired,
+        onToggle: _react.PropTypes.func.isRequired
+      },
+      enumerable: true
+    }]);
+  
+    function OnOffSwitch(props, context) {
+      _classCallCheck(this, _OnOffSwitch);
+  
+      _get(Object.getPrototypeOf(_OnOffSwitch.prototype), 'constructor', this).call(this, props, context);
+      this.state = {};
+    }
+  
+    _createClass(OnOffSwitch, [{
+      key: 'render',
+      value: function render() {
+        return _react2['default'].createElement(
+          'div',
+          { className: _OnOffSwitchScss2['default'].onoffswitch },
+          _react2['default'].createElement('input', { type: 'checkbox', name: 'onoffswitch',
+            className: _OnOffSwitchScss2['default'].onoffswitchCheckbox, id: this.props.id,
+            checked: this.props.on,
+            onChange: this.props.onToggle.bind(this)
+          }),
+          _react2['default'].createElement(
+            'label',
+            { className: _OnOffSwitchScss2['default'].onoffswitchLabel, htmlFor: this.props.id },
+            _react2['default'].createElement('span', { className: _OnOffSwitchScss2['default'].onoffswitchInner }),
+            _react2['default'].createElement('span', { className: _OnOffSwitchScss2['default'].onoffswitchSwitch })
+          )
+        );
+      }
+    }]);
+  
+    var _OnOffSwitch = OnOffSwitch;
+    OnOffSwitch = (0, _decoratorsWithStyles2['default'])(_OnOffSwitchScss2['default'])(OnOffSwitch) || OnOffSwitch;
+    return OnOffSwitch;
+  })(_react.Component);
+  
+  exports['default'] = OnOffSwitch;
+  module.exports = exports['default'];
+
+/***/ },
+/* 82 */
+/***/ function(module, exports, __webpack_require__) {
+
+  
+      var content = __webpack_require__(83);
+      var insertCss = __webpack_require__(20);
+  
+      if (typeof content === 'string') {
+        content = [[module.id, content, '']];
+      }
+  
+      module.exports = content.locals || {};
+      module.exports._getCss = function() { return content.toString(); };
+      module.exports._insertCss = insertCss.bind(null, content);
+    
+      var removeCss = function() {};
+  
+      // Hot Module Replacement
+      // https://webpack.github.io/docs/hot-module-replacement
+      if (false) {
+        module.hot.accept("!!./../../../node_modules/css-loader/index.js?sourceMap&modules&localIdentName=[name]_[local]_[hash:base64:3]!./../../../node_modules/postcss-loader/index.js!./OnOffSwitch.scss", function() {
+          var newContent = require("!!./../../../node_modules/css-loader/index.js?sourceMap&modules&localIdentName=[name]_[local]_[hash:base64:3]!./../../../node_modules/postcss-loader/index.js!./OnOffSwitch.scss");
+          if (typeof newContent === 'string') {
+            newContent = [[module.id, content, '']];
+          }
+          removeCss = insertCss(newContent, { replace: true });
+        });
+        module.hot.dispose(function() { removeCss(); });
+      }
+    
+
+/***/ },
+/* 83 */
+/***/ function(module, exports, __webpack_require__) {
+
+  exports = module.exports = __webpack_require__(19)();
+  // imports
+  
+  
+  // module
+  exports.push([module.id, ".OnOffSwitch_onoffswitch_3aL {\n  position: relative;\n  display: table-cell;\n  vertical-align: middle;\n  width: 50px;\n  -webkit-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n}\n.OnOffSwitch_onoffswitch_3aL .OnOffSwitch_onoffswitchCheckbox_3ON {\n  display: none\n}\n.OnOffSwitch_onoffswitch_3aL .OnOffSwitch_onoffswitchCheckbox_3ON:checked + .OnOffSwitch_onoffswitchLabel_1z- .OnOffSwitch_onoffswitchInner_suM {\n  margin-left: 0;\n}\n.OnOffSwitch_onoffswitch_3aL .OnOffSwitch_onoffswitchCheckbox_3ON:checked + .OnOffSwitch_onoffswitchLabel_1z- .OnOffSwitch_onoffswitchSwitch_1-K {\n  right: 0;\n}\n.OnOffSwitch_onoffswitch_3aL .OnOffSwitch_onoffswitchLabel_1z- {\n  display: block;\n  overflow: hidden;\n  cursor: pointer;\n  border: 2px solid #CCCCCC;\n  border-radius: 18px;\n}\n.OnOffSwitch_onoffswitch_3aL .OnOffSwitch_onoffswitchInner_suM {\n  display: block;\n  width: 200%;\n  margin-left: -100%;\n  -webkit-transition: margin 0.3s ease-in 0s;\n  -o-transition: margin 0.3s ease-in 0s;\n  transition: margin 0.3s ease-in 0s\n}\n.OnOffSwitch_onoffswitch_3aL .OnOffSwitch_onoffswitchInner_suM:before, .OnOffSwitch_onoffswitch_3aL .OnOffSwitch_onoffswitchInner_suM:after {\n  display: block;\n  float: left;\n  width: 50%;\n  height: 18px;\n  padding: 0;\n  line-height: 18px;\n  font-size: 12px;\n  color: white;\n  font-weight: 700;\n  -webkit-box-sizing: border-box;\n          box-sizing: border-box;\n}\n.OnOffSwitch_onoffswitch_3aL .OnOffSwitch_onoffswitchInner_suM:before {\n  content: \"on\";\n  padding-left: 10px;\n  background-color: #FFF7C2;\n  color: #474029;\n}\n.OnOffSwitch_onoffswitch_3aL .OnOffSwitch_onoffswitchInner_suM:after {\n  content: \"off\";\n  padding-right: 10px;\n  background-color: #373634;\n  color: #D6D6D6;\n  text-align: right;\n}\n.OnOffSwitch_onoffswitch_3aL .OnOffSwitch_onoffswitchSwitch_1-K {\n  display: block;\n  width: 18px;\n  margin: 0px;\n  background: #FFFFFF;\n  position: absolute;\n  top: 0;\n  bottom: 0;\n  right: 32px;\n  border: 2px solid #CCCCCC;\n  border-radius: 18px;\n  -webkit-transition: all 0.3s ease-in 0s;\n  -o-transition: all 0.3s ease-in 0s;\n  transition: all 0.3s ease-in 0s;\n}\n", "", {"version":3,"sources":["/./src/components/OnOffSwitch/OnOffSwitch.scss"],"names":[],"mappings":"AAAA;EACE,mBAAmB;EACnB,oBAAoB;EACpB,uBAAuB;EACvB,YAAY;EACZ,0BAA0B;EAC1B,uBAAuB;EACvB,sBAAsB;CA0EvB;AAxEC;EACE,aAAc;CAaf;AATK;EACE,eAAe;CAChB;AAED;EACE,SAAS;CACV;AAKP;EACE,eAAe;EACf,iBAAiB;EACjB,gBAAgB;EAChB,0BAA0B;EAC1B,oBAAoB;CACrB;AAED;EACE,eAAe;EACf,YAAY;EACZ,mBAAmB;EACnB,2CAAmC;EAAnC,sCAAmC;EAAnC,kCAAmC;CA6BpC;AA3BC;EACE,eAAe;EACf,YAAY;EACZ,WAAW;EACX,aAAa;EACb,WAAW;EACX,kBAAkB;EAClB,gBAAgB;EAChB,aAAa;EACb,iBAAiB;EACjB,+BAAuB;UAAvB,uBAAuB;CACxB;AAED;EACE,cAAc;EACd,mBAAmB;EACnB,0BAA0B;EAC1B,eAAe;CAChB;AAED;EACE,eAAe;EACf,oBAAoB;EACpB,0BAA0B;EAC1B,eAAe;EACf,kBAAkB;CACnB;AAGH;EACE,eAAe;EACf,YAAY;EACZ,YAAY;EACZ,oBAAoB;EACpB,mBAAmB;EACnB,OAAO;EACP,UAAU;EACV,YAAY;EACZ,0BAA0B;EAC1B,oBAAoB;EACpB,wCAAgC;EAAhC,mCAAgC;EAAhC,gCAAgC;CACjC","file":"OnOffSwitch.scss","sourcesContent":[".onoffswitch {\n  position: relative;\n  display: table-cell;\n  vertical-align: middle;\n  width: 50px;\n  -webkit-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n\n  .onoffswitchCheckbox {\n    display: none;\n\n    &:checked {\n      + .onoffswitchLabel {\n        .onoffswitchInner {\n          margin-left: 0;\n        }\n\n        .onoffswitchSwitch {\n          right: 0;\n        }\n      }\n    }\n  }\n\n  .onoffswitchLabel {\n    display: block;\n    overflow: hidden;\n    cursor: pointer;\n    border: 2px solid #CCCCCC;\n    border-radius: 18px;\n  }\n\n  .onoffswitchInner {\n    display: block;\n    width: 200%;\n    margin-left: -100%;\n    transition: margin 0.3s ease-in 0s;\n\n    &:before, &:after {\n      display: block;\n      float: left;\n      width: 50%;\n      height: 18px;\n      padding: 0;\n      line-height: 18px;\n      font-size: 12px;\n      color: white;\n      font-weight: 700;\n      box-sizing: border-box;\n    }\n\n    &:before {\n      content: \"on\";\n      padding-left: 10px;\n      background-color: #FFF7C2;\n      color: #474029;\n    }\n\n    &:after {\n      content: \"off\";\n      padding-right: 10px;\n      background-color: #373634;\n      color: #D6D6D6;\n      text-align: right;\n    }\n  }\n\n  .onoffswitchSwitch {\n    display: block;\n    width: 18px;\n    margin: 0px;\n    background: #FFFFFF;\n    position: absolute;\n    top: 0;\n    bottom: 0;\n    right: 32px;\n    border: 2px solid #CCCCCC;\n    border-radius: 18px;\n    transition: all 0.3s ease-in 0s;\n  }\n}\n"],"sourceRoot":"webpack://"}]);
+  
+  // exports
+  exports.locals = {
+  	"onoffswitch": "OnOffSwitch_onoffswitch_3aL",
+  	"onoffswitchCheckbox": "OnOffSwitch_onoffswitchCheckbox_3ON",
+  	"onoffswitchLabel": "OnOffSwitch_onoffswitchLabel_1z-",
+  	"onoffswitchInner": "OnOffSwitch_onoffswitchInner_suM",
+  	"onoffswitchSwitch": "OnOffSwitch_onoffswitchSwitch_1-K"
+  };
 
 /***/ }
 /******/ ]);

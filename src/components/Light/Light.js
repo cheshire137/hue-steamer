@@ -5,6 +5,7 @@ import Converter from '../../api/converter';
 import { SketchPicker } from 'react-color';
 import cx from 'classnames';
 import withStyles from '../../decorators/withStyles';
+import OnOffSwitch from '../OnOffSwitch/OnOffSwitch';
 
 @withStyles(s)
 class Light extends Component {
@@ -126,17 +127,9 @@ class Light extends Component {
                   {this.state.light.name}
                 </span>
               </div>
-              <div className={s.onoffswitch}>
-                <input type="checkbox" name="onoffswitch"
-                  className={s.onoffswitchCheckbox} id={checkboxID}
-                  checked={this.state.light.state.on}
-                  onChange={this.onLightToggle.bind(this)}
-                />
-                <label className={s.onoffswitchLabel} htmlFor={checkboxID}>
-                  <span className={s.onoffswitchInner}></span>
-                  <span className={s.onoffswitchSwitch}></span>
-                </label>
-              </div>
+              <OnOffSwitch id={checkboxID} on={this.state.light.state.on}
+                onToggle={this.onLightToggle.bind(this)}
+              />
             </header>
             <footer className={s.lightFooter}>
               <div className={s.metadata}>

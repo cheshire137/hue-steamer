@@ -1,0 +1,6 @@
+{
+  "name": "OnOffSwitch",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./OnOffSwitch.js"
+}
