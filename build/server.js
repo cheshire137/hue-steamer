@@ -4796,8 +4796,8 @@ module.exports =
         return curTime.getHours() >= 20;
       }
     }, {
-      key: 'toggleGroup',
-      value: function toggleGroup(event) {
+      key: 'toggleGroupOpen',
+      value: function toggleGroupOpen(event) {
         event.preventDefault();
         this.setState({ open: !this.state.open });
         event.target.blur();
@@ -4837,18 +4837,22 @@ module.exports =
           'li',
           { className: (0, _classnames2['default'])(_GroupScss2['default'].group, this.isNight() ? _GroupScss2['default'].night : _GroupScss2['default'].day) },
           _react2['default'].createElement(
-            'h3',
-            { className: _GroupScss2['default'].groupName },
-            this.state.open ? _react2['default'].createElement(_reactFontawesome2['default'], { name: 'chevron-down', className: _GroupScss2['default'].openIndicator }) : _react2['default'].createElement(_reactFontawesome2['default'], { name: 'chevron-right', className: _GroupScss2['default'].openIndicator }),
+            'header',
+            { className: _GroupScss2['default'].groupHeader },
             _react2['default'].createElement(
-              'a',
-              { href: '#', onClick: this.toggleGroup.bind(this) },
-              this.props.name
-            )
+              'h3',
+              { className: _GroupScss2['default'].groupName },
+              this.state.open ? _react2['default'].createElement(_reactFontawesome2['default'], { name: 'chevron-down', className: _GroupScss2['default'].openIndicator }) : _react2['default'].createElement(_reactFontawesome2['default'], { name: 'chevron-right', className: _GroupScss2['default'].openIndicator }),
+              _react2['default'].createElement(
+                'a',
+                { href: '#', onClick: this.toggleGroupOpen.bind(this) },
+                this.props.name
+              )
+            ),
+            _react2['default'].createElement(_OnOffSwitchOnOffSwitch2['default'], { id: checkboxID, on: this.areAllLightsOn(),
+              onToggle: this.onLightsToggle.bind(this)
+            })
           ),
-          _react2['default'].createElement(_OnOffSwitchOnOffSwitch2['default'], { id: checkboxID, on: this.areAllLightsOn(),
-            onToggle: this.onLightsToggle.bind(this)
-          }),
           _react2['default'].createElement(
             'div',
             { className: _GroupScss2['default'].groupContents, style: groupStyle },
@@ -4907,13 +4911,17 @@ module.exports =
   
   
   // module
-  exports.push([module.id, ".Group_group_23_ {\n\n}\n\n.Group_groupName_2Et {\n  margin-bottom: 0;\n}\n\n.Group_groupName_2Et a {\n  text-decoration: none;\n}\n\n.Group_openIndicator_2t7 {\n  margin-right: 5px;\n}\n", "", {"version":3,"sources":["/./src/components/Group/Group.scss"],"names":[],"mappings":"AAAA;;CAEC;;AAED;EACE,iBAAiB;CAKlB;;AAHC;EACE,sBAAsB;CACvB;;AAGH;EACE,kBAAkB;CACnB","file":"Group.scss","sourcesContent":[".group {\n\n}\n\n.groupName {\n  margin-bottom: 0;\n\n  a {\n    text-decoration: none;\n  }\n}\n\n.openIndicator {\n  margin-right: 5px;\n}\n"],"sourceRoot":"webpack://"}]);
+  exports.push([module.id, ".Group_group_23_ + .Group_group_23_ {\n  margin-top: 10px;\n  border-top-width: 1px;\n  border-top-style: solid;\n  padding-top: 10px\n}\n\n.Group_group_23_ + .Group_group_23_.Group_night_WFU {\n  border-top-color: #38231D\n}\n\n.Group_group_23_ + .Group_group_23_.Group_day_22J {\n  border-top-color: #ccc\n}\n\n.Group_groupHeader_g_v {\n  display: table;\n  width: 100%;\n}\n\n.Group_groupName_2Et {\n  margin-bottom: 0;\n  display: table-cell;\n}\n\n.Group_groupName_2Et a {\n  text-decoration: none;\n}\n\n.Group_openIndicator_2t7 {\n  margin-right: 5px;\n}\n\n.Group_onOffSwitch_QKC {\n  float: right;\n}\n", "", {"version":3,"sources":["/./src/components/Group/Group.scss"],"names":[],"mappings":"AACE;EACE,iBAAiB;EACjB,sBAAsB;EACtB,wBAAwB;EACxB,iBAAkB;CASnB;;AAPC;EACE,yBAA0B;CAC3B;;AAED;EACE,sBAAuB;CACxB;;AAIL;EACE,eAAe;EACf,YAAY;CACb;;AAED;EACE,iBAAiB;EACjB,oBAAoB;CAKrB;;AAHC;EACE,sBAAsB;CACvB;;AAGH;EACE,kBAAkB;CACnB;;AAED;EACE,aAAa;CACd","file":"Group.scss","sourcesContent":[".group {\n  + .group {\n    margin-top: 10px;\n    border-top-width: 1px;\n    border-top-style: solid;\n    padding-top: 10px;\n\n    &.night {\n      border-top-color: #38231D;\n    }\n\n    &.day {\n      border-top-color: #ccc;\n    }\n  }\n}\n\n.groupHeader {\n  display: table;\n  width: 100%;\n}\n\n.groupName {\n  margin-bottom: 0;\n  display: table-cell;\n\n  a {\n    text-decoration: none;\n  }\n}\n\n.openIndicator {\n  margin-right: 5px;\n}\n\n.onOffSwitch {\n  float: right;\n}\n"],"sourceRoot":"webpack://"}]);
   
   // exports
   exports.locals = {
   	"group": "Group_group_23_",
+  	"night": "Group_night_WFU",
+  	"day": "Group_day_22J",
+  	"groupHeader": "Group_groupHeader_g_v",
   	"groupName": "Group_groupName_2Et",
-  	"openIndicator": "Group_openIndicator_2t7"
+  	"openIndicator": "Group_openIndicator_2t7",
+  	"onOffSwitch": "Group_onOffSwitch_QKC"
   };
 
 /***/ },

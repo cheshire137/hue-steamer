@@ -1,9 +1,28 @@
 .group {
+  + .group {
+    margin-top: 10px;
+    border-top-width: 1px;
+    border-top-style: solid;
+    padding-top: 10px;
 
+    &.night {
+      border-top-color: #38231D;
+    }
+
+    &.day {
+      border-top-color: #ccc;
+    }
+  }
+}
+
+.groupHeader {
+  display: table;
+  width: 100%;
 }
 
 .groupName {
   margin-bottom: 0;
+  display: table-cell;
 
   a {
     text-decoration: none;
@@ -12,4 +31,8 @@
 
 .openIndicator {
   margin-right: 5px;
+}
+
+.onOffSwitch {
+  float: right;
 }

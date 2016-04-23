@@ -33,7 +33,7 @@ class Group extends Component {
     return curTime.getHours() >= 20;
   }
 
-  toggleGroup(event) {
+  toggleGroupOpen(event) {
     event.preventDefault();
     this.setState({ open: !this.state.open });
     event.target.blur();
@@ -69,19 +69,21 @@ class Group extends Component {
     const checkboxID = 'group-' + this.props.id + '-toggle';
     return (
       <li className={cx(s.group, this.isNight() ? s.night : s.day)}>
-        <h3 className={s.groupName}>
-          {this.state.open ? (
-            <FontAwesome name="chevron-down" className={s.openIndicator} />
-          ) : (
-            <FontAwesome name="chevron-right" className={s.openIndicator} />
-          )}
-          <a href="#" onClick={this.toggleGroup.bind(this)}>
-            {this.props.name}
-          </a>
-        </h3>
-        <OnOffSwitch id={checkboxID} on={this.areAllLightsOn()}
-          onToggle={this.onLightsToggle.bind(this)}
-        />
+        <header className={s.groupHeader}>
+          <h3 className={s.groupName}>
+            {this.state.open ? (
+              <FontAwesome name="chevron-down" className={s.openIndicator} />
+            ) : (
+              <FontAwesome name="chevron-right" className={s.openIndicator} />
+            )}
+            <a href="#" onClick={this.toggleGroupOpen.bind(this)}>
+              {this.props.name}
+            </a>
+          </h3>
+          <OnOffSwitch id={checkboxID} on={this.areAllLightsOn()}
+            onToggle={this.onLightsToggle.bind(this)}
+          />
+        </header>
         <div className={s.groupContents} style={groupStyle}>
           {lightNames}
         </div>
