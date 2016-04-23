@@ -12,37 +12,43 @@ class Light extends Component {
   static propTypes = {
     id: PropTypes.string.isRequired,
     onLightLoaded: PropTypes.func.isRequired,
+    light: PropTypes.object,
   };
 
   constructor(props, context) {
     super(props, context);
+    let latestColor = undefined;
+    let loaded = false;
+    if (typeof props.light === 'object') {
+      latestColor = this.getLightHex(props.light.state);
+      loaded = true;
+    }
     this.state = {
-      lights: [],
-      loaded: false,
+      loaded,
       showColorPicker: false,
+      latestColor,
     };
   }
 
   componentDidMount() {
-    this.updateLight();
+    if (!this.state.loaded) {
+      Bridge.getLight(this.props.id).
+             then(this.onLightLoaded.bind(this)).
+             catch(this.onLightLoadError.bind(this));
+    }
   }
 
   onLightLoaded(light) {
-    if (light.hasOwnProperty('errno')) {
-      console.error('failed to load light ' + this.props.id, light);
-      return;
-    }
     light.id = this.props.id;
-    this.setState({
-      light,
-      loaded: true,
-      latestColor: this.getLightHex(light.state),
-    });
     this.props.onLightLoaded(light);
   }
 
+  onLightLoadError(response) {
+    console.error('failed to load light ' + this.props.id, response);
+  }
+
   onLightToggle() {
-    const light = this.state.light;
+    const light = this.props.light;
     if (light.state.on) {
       Bridge.turnOffLight(this.props.id).
              then(this.onLightToggleComplete.bind(this));
@@ -54,7 +60,7 @@ class Light extends Component {
 
   onLightToggleComplete(success) {
     if (success) {
-      const light = this.state.light;
+      const light = this.props.light;
       light.state.on = !light.state.on;
       this.setState({ light });
     }
@@ -71,12 +77,12 @@ class Light extends Component {
 
   onColorChanged(success) {
     if (!success) {
-      console.error('failed to change light color', this.state.light.name);
+      console.error('failed to change light color', this.props.light.name);
     }
   }
 
   getLightHex(optionalLightState) {
-    const lightState = optionalLightState || this.state.light.state;
+    const lightState = optionalLightState || this.props.light.state;
     if (lightState.on) {
       const xy = lightState.xy;
       if (typeof xy === 'object') {
@@ -91,10 +97,6 @@ class Light extends Component {
     const y = xy[1];
     Bridge.setLightColor(this.props.id, x, y).
            then(this.onColorChanged.bind(this));
-  }
-
-  updateLight() {
-    Bridge.getLight(this.props.id).then(this.onLightLoaded.bind(this));
   }
 
   toggleColorPicker() {
@@ -112,7 +114,7 @@ class Light extends Component {
     const colorPickerStyle = {
       display: this.state.showColorPicker ? 'block' : 'none',
     };
-    if (typeof this.state.light === 'object') {
+    if (typeof this.props.light === 'object') {
       if (typeof this.state.latestColor !== 'undefined') {
         colorStyle.backgroundColor = '#' + this.state.latestColor;
       }
@@ -123,21 +125,21 @@ class Light extends Component {
           <div>
             <header className={s.lightHeader}>
               <div className={s.lightNameArea}>
-                <span className={s.name} title={this.state.light.name}>
-                  {this.state.light.name}
+                <span className={s.name} title={this.props.light.name}>
+                  {this.props.light.name}
                 </span>
               </div>
-              <OnOffSwitch id={checkboxID} on={this.state.light.state.on}
+              <OnOffSwitch id={checkboxID} on={this.props.light.state.on}
                 onToggle={this.onLightToggle.bind(this)}
               />
             </header>
             <footer className={s.lightFooter}>
               <div className={s.metadata}>
-                <span className={s.type}>{this.state.light.type}</span>
+                <span className={s.type}>{this.props.light.type}</span>
                 <span className={s.manufacturer}>
-                  {this.state.light.manufacturername}
+                  {this.props.light.manufacturername}
                 </span>
-                <span className={s.model}>{this.state.light.modelid}</span>
+                <span className={s.model}>{this.props.light.modelid}</span>
               </div>
               {colorStyle.backgroundColor ? (
                 <div className={s.colorBlockAndPicker}>

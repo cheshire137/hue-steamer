@@ -8,6 +8,7 @@ import LightCheckbox from '../LightCheckbox/LightCheckbox';
 class NewGroup extends Component {
   static propTypes = {
     lights: PropTypes.object.isRequired,
+    ids: PropTypes.array.isRequired,
   };
 
   constructor(props, context) {
@@ -56,7 +57,6 @@ class NewGroup extends Component {
   }
 
   render() {
-    const lightIDs = Object.keys(this.props.lights);
     const checkedLightIDs = this.state.checkedLightIDs;
     return (
       <form onSubmit={this.handleSubmit.bind(this)}>
@@ -68,7 +68,7 @@ class NewGroup extends Component {
           />
         </div>
         <div className={cx(s.lightsField, s.field)}>
-          {lightIDs.map((lightID) => {
+          {this.props.ids.map((lightID) => {
             return (
               <LightCheckbox key={lightID} id={lightID}
                 onToggle={this.onLightToggled.bind(this)}

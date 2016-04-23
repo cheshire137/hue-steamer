@@ -3226,7 +3226,8 @@ module.exports =
       _get(Object.getPrototypeOf(_HomePage.prototype), 'constructor', this).call(this, props);
       this.state = {
         lights: {},
-        activeTab: 'lights'
+        activeTab: 'lights',
+        lightIDs: []
       };
     }
   
@@ -3282,39 +3283,84 @@ module.exports =
     }, {
       key: 'onLightLoaded',
       value: function onLightLoaded(light) {
-        var lightsHash = this.state.lights;
-        lightsHash[light.id] = light;
-        var groups = this.state.groups;
-        if (typeof groups === 'object') {
-          for (var i = 0; i < groups.length; i++) {
-            var group = this.state.groups[i];
-            for (var j = 0; j < group.lights.length; j++) {
-              var lightID = group.lights[j];
-              if (lightID === light.id) {
-                group.lights[j] = light;
-                break;
-              }
-            }
+        var oldLights = this.state.lights;
+        var lightsHash = {};
+        for (var id in oldLights) {
+          if (oldLights.hasOwnProperty(id)) {
+            lightsHash[id] = oldLights[id];
           }
         }
-        var sortedLightIDs = this.sortLightIDsByName(lightsHash);
-        this.setState({ lights: lightsHash, groups: groups, lightIDs: sortedLightIDs });
+        lightsHash[light.id] = light;
+        var lights = this.hashValues(lightsHash);
+        lights.sort(this.lightCompare);
+        this.setState({
+          lights: lightsHash,
+          groups: this.updateLightInGroups(light),
+          lightIDs: lights.map(function (l) {
+            return l.id;
+          })
+        });
       }
     }, {
-      key: 'sortLightIDsByName',
-      value: function sortLightIDsByName(lightsHash) {
-        var lightsList = [];
-        for (var lightID in lightsHash) {
-          if (lightsHash.hasOwnProperty(lightID)) {
-            lightsList.push(lightsHash[lightID]);
+      key: 'updateLightInGroups',
+      value: function updateLightInGroups(light) {
+        var _this = this;
+  
+        var groups = this.state.groups;
+        if (typeof groups !== 'object') {
+          return groups;
+        }
+        return groups.slice().map(function (group) {
+          return _this.updateLightInGroup(light, group);
+        });
+      }
+    }, {
+      key: 'updateLightInGroup',
+      value: function updateLightInGroup(light, oldGroup) {
+        var group = {};
+        var lights = oldGroup.lights.slice();
+        for (var i = 0; i < lights.length; i++) {
+          var lightID = lights[i];
+          if (lightID === light.id) {
+            lights[i] = light;
+            break;
           }
         }
-        lightsList.sort(function (lightA, lightB) {
-          return lightA.name.localeCompare(lightB.name);
-        });
-        return lightsList.map(function (light) {
-          return light.id;
-        });
+        lights.sort(this.lightCompare);
+        for (var key in oldGroup) {
+          if (oldGroup.hasOwnProperty(key)) {
+            group[key] = oldGroup[key];
+          }
+        }
+        group.lights = lights;
+        return group;
+      }
+    }, {
+      key: 'lightCompare',
+      value: function lightCompare(lightA, lightB) {
+        var isLightALoaded = typeof lightA === 'object';
+        var isLightBLoaded = typeof lightB === 'object';
+        if (!isLightALoaded && !isLightBLoaded) {
+          return 0;
+        }
+        if (!isLightALoaded) {
+          return -1;
+        }
+        if (!isLightBLoaded) {
+          return 1;
+        }
+        return lightA.name.localeCompare(lightB.name);
+      }
+    }, {
+      key: 'hashValues',
+      value: function hashValues(hash) {
+        var values = [];
+        for (var key in hash) {
+          if (hash.hasOwnProperty(key)) {
+            values.push(hash[key]);
+          }
+        }
+        return values;
       }
     }, {
       key: 'showTab',
@@ -3389,7 +3435,8 @@ module.exports =
             _react2['default'].createElement(
               'div',
               { className: (0, _classnames2['default'])(_HomePageScss2['default'].lightsTab, _HomePageScss2['default'].tab, this.state.activeTab === 'lights' ? _HomePageScss2['default'].active : _HomePageScss2['default'].inactive) },
-              haveLights ? _react2['default'].createElement(_LightsListLightsList2['default'], { ids: this.state.lightIDs,
+              haveLights ? _react2['default'].createElement(_LightsListLightsList2['default'], { lights: this.state.lights,
+                ids: this.state.lightIDs,
                 onLightLoaded: this.onLightLoaded.bind(this)
               }) : _react2['default'].createElement(
                 'p',
@@ -3411,7 +3458,9 @@ module.exports =
             _react2['default'].createElement(
               'div',
               { className: (0, _classnames2['default'])(_HomePageScss2['default'].newGroupTab, _HomePageScss2['default'].tab, this.state.activeTab === 'new-group' ? _HomePageScss2['default'].active : _HomePageScss2['default'].inactive) },
-              _react2['default'].createElement(_NewGroupNewGroup2['default'], { lights: this.state.lights })
+              _react2['default'].createElement(_NewGroupNewGroup2['default'], { lights: this.state.lights,
+                ids: this.state.lightIDs
+              })
             )
           )
         );
@@ -3833,8 +3882,9 @@ module.exports =
     _createClass(LightsList, null, [{
       key: 'propTypes',
       value: {
-        ids: _react.PropTypes.array.isRequired,
-        onLightLoaded: _react.PropTypes.func.isRequired
+        lights: _react.PropTypes.object.isRequired,
+        onLightLoaded: _react.PropTypes.func.isRequired,
+        ids: _react.PropTypes.array.isRequired
       },
       enumerable: true
     }]);
@@ -3855,7 +3905,10 @@ module.exports =
           'ul',
           { className: _LightsListScss2['default'].lightList },
           this.props.ids.map(function (id) {
-            return _react2['default'].createElement(_LightLight2['default'], { key: id, id: id,
+            var light = _this.props.lights[id];
+            var loaded = typeof light === 'object';
+            var key = 'light-' + id + '-loaded-' + loaded;
+            return _react2['default'].createElement(_LightLight2['default'], { key: key, id: id, light: light,
               onLightLoaded: _this.props.onLightLoaded
             });
           })
@@ -3976,7 +4029,8 @@ module.exports =
       key: 'propTypes',
       value: {
         id: _react.PropTypes.string.isRequired,
-        onLightLoaded: _react.PropTypes.func.isRequired
+        onLightLoaded: _react.PropTypes.func.isRequired,
+        light: _react.PropTypes.object
       },
       enumerable: true
     }]);
@@ -3985,37 +4039,41 @@ module.exports =
       _classCallCheck(this, _Light);
   
       _get(Object.getPrototypeOf(_Light.prototype), 'constructor', this).call(this, props, context);
+      var latestColor = undefined;
+      var loaded = false;
+      if (typeof props.light === 'object') {
+        latestColor = this.getLightHex(props.light.state);
+        loaded = true;
+      }
       this.state = {
-        lights: [],
-        loaded: false,
-        showColorPicker: false
+        loaded: loaded,
+        showColorPicker: false,
+        latestColor: latestColor
       };
     }
   
     _createClass(Light, [{
       key: 'componentDidMount',
       value: function componentDidMount() {
-        this.updateLight();
+        if (!this.state.loaded) {
+          _actionsBridge2['default'].getLight(this.props.id).then(this.onLightLoaded.bind(this))['catch'](this.onLightLoadError.bind(this));
+        }
       }
     }, {
       key: 'onLightLoaded',
       value: function onLightLoaded(light) {
-        if (light.hasOwnProperty('errno')) {
-          console.error('failed to load light ' + this.props.id, light);
-          return;
-        }
         light.id = this.props.id;
-        this.setState({
-          light: light,
-          loaded: true,
-          latestColor: this.getLightHex(light.state)
-        });
         this.props.onLightLoaded(light);
+      }
+    }, {
+      key: 'onLightLoadError',
+      value: function onLightLoadError(response) {
+        console.error('failed to load light ' + this.props.id, response);
       }
     }, {
       key: 'onLightToggle',
       value: function onLightToggle() {
-        var light = this.state.light;
+        var light = this.props.light;
         if (light.state.on) {
           _actionsBridge2['default'].turnOffLight(this.props.id).then(this.onLightToggleComplete.bind(this));
         } else {
@@ -4026,7 +4084,7 @@ module.exports =
       key: 'onLightToggleComplete',
       value: function onLightToggleComplete(success) {
         if (success) {
-          var light = this.state.light;
+          var light = this.props.light;
           light.state.on = !light.state.on;
           this.setState({ light: light });
         }
@@ -4046,13 +4104,13 @@ module.exports =
       key: 'onColorChanged',
       value: function onColorChanged(success) {
         if (!success) {
-          console.error('failed to change light color', this.state.light.name);
+          console.error('failed to change light color', this.props.light.name);
         }
       }
     }, {
       key: 'getLightHex',
       value: function getLightHex(optionalLightState) {
-        var lightState = optionalLightState || this.state.light.state;
+        var lightState = optionalLightState || this.props.light.state;
         if (lightState.on) {
           var xy = lightState.xy;
           if (typeof xy === 'object') {
@@ -4067,11 +4125,6 @@ module.exports =
         var x = xy[0];
         var y = xy[1];
         _actionsBridge2['default'].setLightColor(this.props.id, x, y).then(this.onColorChanged.bind(this));
-      }
-    }, {
-      key: 'updateLight',
-      value: function updateLight() {
-        _actionsBridge2['default'].getLight(this.props.id).then(this.onLightLoaded.bind(this));
       }
     }, {
       key: 'toggleColorPicker',
@@ -4092,7 +4145,7 @@ module.exports =
         var colorPickerStyle = {
           display: this.state.showColorPicker ? 'block' : 'none'
         };
-        if (typeof this.state.light === 'object') {
+        if (typeof this.props.light === 'object') {
           if (typeof this.state.latestColor !== 'undefined') {
             colorStyle.backgroundColor = '#' + this.state.latestColor;
           }
@@ -4111,11 +4164,11 @@ module.exports =
                 { className: _LightScss2['default'].lightNameArea },
                 _react2['default'].createElement(
                   'span',
-                  { className: _LightScss2['default'].name, title: this.state.light.name },
-                  this.state.light.name
+                  { className: _LightScss2['default'].name, title: this.props.light.name },
+                  this.props.light.name
                 )
               ),
-              _react2['default'].createElement(_OnOffSwitchOnOffSwitch2['default'], { id: checkboxID, on: this.state.light.state.on,
+              _react2['default'].createElement(_OnOffSwitchOnOffSwitch2['default'], { id: checkboxID, on: this.props.light.state.on,
                 onToggle: this.onLightToggle.bind(this)
               })
             ),
@@ -4128,17 +4181,17 @@ module.exports =
                 _react2['default'].createElement(
                   'span',
                   { className: _LightScss2['default'].type },
-                  this.state.light.type
+                  this.props.light.type
                 ),
                 _react2['default'].createElement(
                   'span',
                   { className: _LightScss2['default'].manufacturer },
-                  this.state.light.manufacturername
+                  this.props.light.manufacturername
                 ),
                 _react2['default'].createElement(
                   'span',
                   { className: _LightScss2['default'].model },
-                  this.state.light.modelid
+                  this.props.light.modelid
                 )
               ),
               colorStyle.backgroundColor ? _react2['default'].createElement(
@@ -6094,7 +6147,8 @@ module.exports =
     _createClass(NewGroup, null, [{
       key: 'propTypes',
       value: {
-        lights: _react.PropTypes.object.isRequired
+        lights: _react.PropTypes.object.isRequired,
+        ids: _react.PropTypes.array.isRequired
       },
       enumerable: true
     }]);
@@ -6154,7 +6208,6 @@ module.exports =
       value: function render() {
         var _this = this;
   
-        var lightIDs = Object.keys(this.props.lights);
         var checkedLightIDs = this.state.checkedLightIDs;
         return _react2['default'].createElement(
           'form',
@@ -6175,7 +6228,7 @@ module.exports =
           _react2['default'].createElement(
             'div',
             { className: (0, _classnames2['default'])(_NewGroupScss2['default'].lightsField, _NewGroupScss2['default'].field) },
-            lightIDs.map(function (lightID) {
+            this.props.ids.map(function (lightID) {
               return _react2['default'].createElement(_LightCheckboxLightCheckbox2['default'], _extends({ key: lightID, id: lightID,
                 onToggle: _this.onLightToggled.bind(_this),
                 checked: checkedLightIDs.indexOf(lightID) > -1

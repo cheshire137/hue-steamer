@@ -22,6 +22,7 @@ class HomePage extends Component {
     this.state = {
       lights: {},
       activeTab: 'lights',
+      lightIDs: [],
     };
   }
 
@@ -74,36 +75,76 @@ class HomePage extends Component {
   }
 
   onLightLoaded(light) {
-    const lightsHash = this.state.lights;
-    lightsHash[light.id] = light;
-    const groups = this.state.groups;
-    if (typeof groups === 'object') {
-      for (let i = 0; i < groups.length; i++) {
-        const group = this.state.groups[i];
-        for (let j = 0; j < group.lights.length; j++) {
-          const lightID = group.lights[j];
-          if (lightID === light.id) {
-            group.lights[j] = light;
-            break;
-          }
-        }
+    const oldLights = this.state.lights;
+    const lightsHash = {};
+    for (const id in oldLights) {
+      if (oldLights.hasOwnProperty(id)) {
+        lightsHash[id] = oldLights[id];
       }
     }
-    const sortedLightIDs = this.sortLightIDsByName(lightsHash);
-    this.setState({ lights: lightsHash, groups, lightIDs: sortedLightIDs });
+    lightsHash[light.id] = light;
+    const lights = this.hashValues(lightsHash);
+    lights.sort(this.lightCompare);
+    this.setState({
+      lights: lightsHash,
+      groups: this.updateLightInGroups(light),
+      lightIDs: lights.map((l) => l.id),
+    });
   }
 
-  sortLightIDsByName(lightsHash) {
-    const lightsList = [];
-    for (const lightID in lightsHash) {
-      if (lightsHash.hasOwnProperty(lightID)) {
-        lightsList.push(lightsHash[lightID]);
+  updateLightInGroups(light) {
+    const groups = this.state.groups;
+    if (typeof groups !== 'object') {
+      return groups;
+    }
+    return groups.slice().map((group) => {
+      return this.updateLightInGroup(light, group);
+    });
+  }
+
+  updateLightInGroup(light, oldGroup) {
+    const group = {};
+    const lights = oldGroup.lights.slice();
+    for (let i = 0; i < lights.length; i++) {
+      const lightID = lights[i];
+      if (lightID === light.id) {
+        lights[i] = light;
+        break;
       }
     }
-    lightsList.sort((lightA, lightB) => {
-      return lightA.name.localeCompare(lightB.name);
-    });
-    return lightsList.map((light) => light.id);
+    lights.sort(this.lightCompare);
+    for (const key in oldGroup) {
+      if (oldGroup.hasOwnProperty(key)) {
+        group[key] = oldGroup[key];
+      }
+    }
+    group.lights = lights;
+    return group;
+  }
+
+  lightCompare(lightA, lightB) {
+    const isLightALoaded = typeof lightA === 'object';
+    const isLightBLoaded = typeof lightB === 'object';
+    if (!isLightALoaded && !isLightBLoaded) {
+      return 0;
+    }
+    if (!isLightALoaded) {
+      return -1;
+    }
+    if (!isLightBLoaded) {
+      return 1;
+    }
+    return lightA.name.localeCompare(lightB.name);
+  }
+
+  hashValues(hash) {
+    const values = [];
+    for (const key in hash) {
+      if (hash.hasOwnProperty(key)) {
+        values.push(hash[key]);
+      }
+    }
+    return values;
   }
 
   showTab(e, activeTab) {
@@ -154,7 +195,8 @@ class HomePage extends Component {
         <div className={s.tabs}>
           <div className={cx(s.lightsTab, s.tab, this.state.activeTab === 'lights' ? s.active : s.inactive)}>
             {haveLights ? (
-              <LightsList ids={this.state.lightIDs}
+              <LightsList lights={this.state.lights}
+                ids={this.state.lightIDs}
                 onLightLoaded={this.onLightLoaded.bind(this)}
               />
             ) : (
@@ -175,7 +217,9 @@ class HomePage extends Component {
             )}
           </div>
           <div className={cx(s.newGroupTab, s.tab, this.state.activeTab === 'new-group' ? s.active : s.inactive)}>
-            <NewGroup lights={this.state.lights} />
+            <NewGroup lights={this.state.lights}
+              ids={this.state.lightIDs}
+            />
           </div>
         </div>
       </div>
