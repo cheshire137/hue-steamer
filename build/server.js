@@ -3312,26 +3312,9 @@ module.exports =
         lightsList.sort(function (lightA, lightB) {
           return lightA.name.localeCompare(lightB.name);
         });
-        var lightIDs = this.state.lightIDs.slice();
-        lightIDs.sort(function (idA, idB) {
-          var indexA = -1;
-          var indexB = -1;
-          for (var i = 0; i < lightsList.length; i++) {
-            if (lightsList[i].id === idA) {
-              indexA = i;
-              break;
-            }
-            if (lightsList[i].id === idB) {
-              indexB = i;
-              break;
-            }
-          }
-          if (indexA < indexB) {
-            return 1;
-          }
-          return indexA > indexB ? -1 : 0;
+        return lightsList.map(function (light) {
+          return light.id;
         });
-        return lightIDs;
       }
     }, {
       key: 'showTab',

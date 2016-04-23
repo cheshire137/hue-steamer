@@ -103,26 +103,7 @@ class HomePage extends Component {
     lightsList.sort((lightA, lightB) => {
       return lightA.name.localeCompare(lightB.name);
     });
-    const lightIDs = this.state.lightIDs.slice();
-    lightIDs.sort((idA, idB) => {
-      let indexA = -1;
-      let indexB = -1;
-      for (let i = 0; i < lightsList.length; i++) {
-        if (lightsList[i].id === idA) {
-          indexA = i;
-          break;
-        }
-        if (lightsList[i].id === idB) {
-          indexB = i;
-          break;
-        }
-      }
-      if (indexA < indexB) {
-        return 1;
-      }
-      return indexA > indexB ? -1 : 0;
-    });
-    return lightIDs;
+    return lightsList.map((light) => light.id);
   }
 
   showTab(e, activeTab) {
