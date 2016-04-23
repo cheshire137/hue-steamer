@@ -3327,9 +3327,9 @@ module.exports =
   
   var _GroupsListGroupsList2 = _interopRequireDefault(_GroupsListGroupsList);
   
-  var _NewGroupNewGroup = __webpack_require__(84);
+  var _GroupFormGroupForm = __webpack_require__(92);
   
-  var _NewGroupNewGroup2 = _interopRequireDefault(_NewGroupNewGroup);
+  var _GroupFormGroupForm2 = _interopRequireDefault(_GroupFormGroupForm);
   
   var _storesLocalStorage = __webpack_require__(90);
   
@@ -3418,6 +3418,49 @@ module.exports =
         this.showGroupsTab();
       }
     }, {
+      key: 'onEditGroup',
+      value: function onEditGroup(id, name, lights) {
+        var _this = this;
+  
+        this.setState({
+          editGroupName: name,
+          editGroupID: id,
+          editGroupLightIDs: lights.map(function (l) {
+            return typeof l === 'string' ? l : l.id;
+          })
+        }, function () {
+          _this.showGroupFormTab();
+        });
+      }
+    }, {
+      key: 'onGroupUpdated',
+      value: function onGroupUpdated(group) {
+        var _this2 = this;
+  
+        console.log('updated group', group);
+        this.setState({
+          editGroupName: undefined,
+          editGroupID: undefined,
+          editGroupLightIDs: undefined
+        }, function () {
+          _this2.showGroupsTab();
+        });
+      }
+    }, {
+      key: 'onGroupCanceled',
+      value: function onGroupCanceled() {
+        var _this3 = this;
+  
+        console.log('canceled editing group');
+        this.setState({
+          editGroupName: undefined,
+          editGroupID: undefined,
+          editGroupLightIDs: undefined
+        }, function () {
+          _this3.showGroupsTab();
+        });
+      }
+    }, {
       key: 'onLightLoaded',
       value: function onLightLoaded(light) {
         var oldLights = this.state.lights;
@@ -3439,21 +3482,16 @@ module.exports =
         });
       }
     }, {
-      key: 'onEditGroup',
-      value: function onEditGroup(id, name, lights) {
-        console.log('editing group', id, name, lights);
-      }
-    }, {
       key: 'updateLightInGroups',
       value: function updateLightInGroups(light) {
-        var _this = this;
+        var _this4 = this;
   
         var groups = this.state.groups;
         if (typeof groups !== 'object') {
           return groups;
         }
         return groups.slice().map(function (group) {
-          return _this.updateLightInGroup(light, group);
+          return _this4.updateLightInGroup(light, group);
         });
       }
     }, {
@@ -3525,9 +3563,9 @@ module.exports =
         this.showTab(event, 'groups');
       }
     }, {
-      key: 'showNewGroupTab',
-      value: function showNewGroupTab(event) {
-        this.showTab(event, 'new-group');
+      key: 'showGroupFormTab',
+      value: function showGroupFormTab(event) {
+        this.showTab(event, 'group-form');
       }
     }, {
       key: 'isNight',
@@ -3566,11 +3604,17 @@ module.exports =
             ),
             _react2['default'].createElement(
               'li',
-              { className: this.state.activeTab === 'new-group' ? _HomePageScss2['default'].active : _HomePageScss2['default'].inactive },
+              { className: this.state.activeTab === 'group-form' ? _HomePageScss2['default'].active : _HomePageScss2['default'].inactive },
               _react2['default'].createElement(
                 'a',
-                { href: '#', onClick: this.showNewGroupTab.bind(this) },
-                'New Group'
+                { href: '#', onClick: this.showGroupFormTab.bind(this) },
+                typeof this.state.editGroupName === 'string' ? _react2['default'].createElement(
+                  'span',
+                  null,
+                  'Edit “',
+                  this.state.editGroupName,
+                  '”'
+                ) : 'New Group'
               )
             )
           ),
@@ -3603,10 +3647,14 @@ module.exports =
             ),
             _react2['default'].createElement(
               'div',
-              { className: (0, _classnames2['default'])(_HomePageScss2['default'].newGroupTab, _HomePageScss2['default'].tab, this.state.activeTab === 'new-group' ? _HomePageScss2['default'].active : _HomePageScss2['default'].inactive) },
-              _react2['default'].createElement(_NewGroupNewGroup2['default'], { lights: this.state.lights,
+              { className: (0, _classnames2['default'])(_HomePageScss2['default'].newGroupTab, _HomePageScss2['default'].tab, this.state.activeTab === 'group-form' ? _HomePageScss2['default'].active : _HomePageScss2['default'].inactive) },
+              _react2['default'].createElement(_GroupFormGroupForm2['default'], { lights: this.state.lights,
                 ids: this.state.lightIDs,
-                onCreated: this.onGroupCreated.bind(this)
+                onCreated: this.onGroupCreated.bind(this),
+                onUpdated: this.onGroupUpdated.bind(this),
+                onCanceled: this.onGroupCanceled.bind(this),
+                name: this.state.editGroupName, id: this.state.editGroupID,
+                checkedLightIDs: this.state.editGroupLightIDs
               })
             )
           )
@@ -4933,7 +4981,8 @@ module.exports =
           'ul',
           { className: _GroupsListScss2['default'].groupList },
           this.props.groups.map(function (group) {
-            return _react2['default'].createElement(_GroupGroup2['default'], _extends({ key: group.id }, group, {
+            var key = 'group-' + group.id;
+            return _react2['default'].createElement(_GroupGroup2['default'], _extends({ key: key }, group, {
               onLightLoaded: _this.props.onLightLoaded,
               onEdit: _this.props.onEdit
             }));
@@ -6341,249 +6390,9 @@ module.exports =
   };
 
 /***/ },
-/* 84 */
-/***/ function(module, exports, __webpack_require__) {
-
-  'use strict';
-  
-  Object.defineProperty(exports, '__esModule', {
-    value: true
-  });
-  
-  var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-  
-  var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-  
-  var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
-  
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-  
-  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-  
-  function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-  
-  var _react = __webpack_require__(4);
-  
-  var _react2 = _interopRequireDefault(_react);
-  
-  var _NewGroupScss = __webpack_require__(85);
-  
-  var _NewGroupScss2 = _interopRequireDefault(_NewGroupScss);
-  
-  var _classnames = __webpack_require__(47);
-  
-  var _classnames2 = _interopRequireDefault(_classnames);
-  
-  var _decoratorsWithStyles = __webpack_require__(24);
-  
-  var _decoratorsWithStyles2 = _interopRequireDefault(_decoratorsWithStyles);
-  
-  var _LightCheckboxLightCheckbox = __webpack_require__(87);
-  
-  var _LightCheckboxLightCheckbox2 = _interopRequireDefault(_LightCheckboxLightCheckbox);
-  
-  var _actionsBridge = __webpack_require__(48);
-  
-  var _actionsBridge2 = _interopRequireDefault(_actionsBridge);
-  
-  var NewGroup = (function (_Component) {
-    _inherits(NewGroup, _Component);
-  
-    _createClass(NewGroup, null, [{
-      key: 'propTypes',
-      value: {
-        lights: _react.PropTypes.object.isRequired,
-        ids: _react.PropTypes.array.isRequired,
-        onCreated: _react.PropTypes.func.isRequired
-      },
-      enumerable: true
-    }]);
-  
-    function NewGroup(props, context) {
-      _classCallCheck(this, _NewGroup);
-  
-      _get(Object.getPrototypeOf(_NewGroup.prototype), 'constructor', this).call(this, props, context);
-      this.state = {
-        name: '',
-        checkedLightIDs: []
-      };
-    }
-  
-    _createClass(NewGroup, [{
-      key: 'onNameChange',
-      value: function onNameChange(e) {
-        this.setState({ name: e.target.value.trim() });
-      }
-    }, {
-      key: 'onLightToggled',
-      value: function onLightToggled(id, checked) {
-        var checkedLightIDs = this.state.checkedLightIDs;
-        var index = checkedLightIDs.indexOf(id);
-        if (checked) {
-          if (index < 0) {
-            checkedLightIDs.push(id);
-          }
-        } else {
-          if (index > -1) {
-            checkedLightIDs = checkedLightIDs.slice(0, index).concat(checkedLightIDs.slice(index + 1, checkedLightIDs.length));
-          }
-        }
-        this.setState({ checkedLightIDs: checkedLightIDs });
-      }
-    }, {
-      key: 'onGroupSaved',
-      value: function onGroupSaved(name, lightIDs, group) {
-        group.name = name;
-        var lights = this.props.lights;
-        group.lights = lightIDs.map(function (id) {
-          return lights[id];
-        });
-        this.props.onCreated(group);
-        this.setState({ checkedLightIDs: [], name: '' });
-      }
-    }, {
-      key: 'onGroupSaveError',
-      value: function onGroupSaveError(name, response) {
-        console.error('failed to create group', name, response);
-      }
-    }, {
-      key: 'handleSubmit',
-      value: function handleSubmit(e) {
-        e.preventDefault();
-        if (!this.isValid()) {
-          return;
-        }
-        var name = this.state.name;
-        var lightIDs = this.state.checkedLightIDs;
-        _actionsBridge2['default'].createGroup(name, lightIDs).then(this.onGroupSaved.bind(this, name, lightIDs))['catch'](this.onGroupSaveError.bind(this, name));
-      }
-    }, {
-      key: 'isValid',
-      value: function isValid() {
-        if (this.state.name.length < 1) {
-          return false;
-        }
-        if (this.state.checkedLightIDs.length < 1) {
-          return false;
-        }
-        return true;
-      }
-    }, {
-      key: 'render',
-      value: function render() {
-        var _this = this;
-  
-        var checkedLightIDs = this.state.checkedLightIDs;
-        return _react2['default'].createElement(
-          'form',
-          { onSubmit: this.handleSubmit.bind(this) },
-          _react2['default'].createElement(
-            'p',
-            { className: _NewGroupScss2['default'].helpText },
-            'Use groups to control multiple lights at once.'
-          ),
-          _react2['default'].createElement(
-            'div',
-            { className: _NewGroupScss2['default'].field },
-            _react2['default'].createElement(
-              'label',
-              { className: _NewGroupScss2['default'].label, htmlFor: 'new-group-name' },
-              'Name:'
-            ),
-            _react2['default'].createElement('input', { type: 'text', id: 'new-group-name',
-              onChange: this.onNameChange.bind(this),
-              value: this.state.name,
-              placeholder: 'e.g., Back Bedroom',
-              className: _NewGroupScss2['default'].textField,
-              autoFocus: 'autofocus'
-            })
-          ),
-          _react2['default'].createElement(
-            'div',
-            { className: (0, _classnames2['default'])(_NewGroupScss2['default'].lightsField, _NewGroupScss2['default'].field) },
-            this.props.ids.map(function (lightID) {
-              return _react2['default'].createElement(_LightCheckboxLightCheckbox2['default'], _extends({ key: lightID, id: lightID,
-                onToggle: _this.onLightToggled.bind(_this),
-                checked: checkedLightIDs.indexOf(lightID) > -1
-              }, _this.props.lights[lightID]));
-            })
-          ),
-          _react2['default'].createElement(
-            'div',
-            { className: _NewGroupScss2['default'].formControls },
-            _react2['default'].createElement(
-              'button',
-              { type: 'submit', className: _NewGroupScss2['default'].btn, disabled: !this.isValid() },
-              'Save'
-            )
-          )
-        );
-      }
-    }]);
-  
-    var _NewGroup = NewGroup;
-    NewGroup = (0, _decoratorsWithStyles2['default'])(_NewGroupScss2['default'])(NewGroup) || NewGroup;
-    return NewGroup;
-  })(_react.Component);
-  
-  exports['default'] = NewGroup;
-  module.exports = exports['default'];
-
-/***/ },
-/* 85 */
-/***/ function(module, exports, __webpack_require__) {
-
-  
-      var content = __webpack_require__(86);
-      var insertCss = __webpack_require__(20);
-  
-      if (typeof content === 'string') {
-        content = [[module.id, content, '']];
-      }
-  
-      module.exports = content.locals || {};
-      module.exports._getCss = function() { return content.toString(); };
-      module.exports._insertCss = insertCss.bind(null, content);
-    
-      var removeCss = function() {};
-  
-      // Hot Module Replacement
-      // https://webpack.github.io/docs/hot-module-replacement
-      if (false) {
-        module.hot.accept("!!./../../../node_modules/css-loader/index.js?sourceMap&modules&localIdentName=[name]_[local]_[hash:base64:3]!./../../../node_modules/postcss-loader/index.js!./NewGroup.scss", function() {
-          var newContent = require("!!./../../../node_modules/css-loader/index.js?sourceMap&modules&localIdentName=[name]_[local]_[hash:base64:3]!./../../../node_modules/postcss-loader/index.js!./NewGroup.scss");
-          if (typeof newContent === 'string') {
-            newContent = [[module.id, content, '']];
-          }
-          removeCss = insertCss(newContent, { replace: true });
-        });
-        module.hot.dispose(function() { removeCss(); });
-      }
-    
-
-/***/ },
-/* 86 */
-/***/ function(module, exports, __webpack_require__) {
-
-  exports = module.exports = __webpack_require__(19)();
-  // imports
-  
-  
-  // module
-  exports.push([module.id, ".NewGroup_field_23N {\n  margin-bottom: 10px;\n  float: left;\n  margin-right: 2%\n}\n\n.NewGroup_field_23N.NewGroup_lightsField_3Xa {\n  width: 100%;\n  clear: left;\n  margin-right: 0;\n  float: none\n}\n\n.NewGroup_formControls_bby {\n  clear: both;\n}\n\n.NewGroup_label_RVI {\n  display: inline-block;\n  font-weight: 700;\n  font-size: 14px;\n  margin: 0 10px;\n}\n\ninput[type=\"text\"].NewGroup_textField_2sJ {\n  display: inline-block;\n  width: 20em;\n}\n\nbutton.NewGroup_btn_36n {\n  margin-left: 10px;\n}\n\n.NewGroup_helpText_ymc {\n  margin: 0 10px 10px 10px;\n}\n", "", {"version":3,"sources":["/./src/components/NewGroup/NewGroup.scss"],"names":[],"mappings":"AAAA;EACE,oBAAoB;EACpB,YAAY;EACZ,gBAAiB;CAQlB;;AANC;EACE,YAAY;EACZ,YAAY;EACZ,gBAAgB;EAChB,WAAY;CACb;;AAGH;EACE,YAAY;CACb;;AAED;EACE,sBAAsB;EACtB,iBAAiB;EACjB,gBAAgB;EAChB,eAAe;CAChB;;AAED;EACE,sBAAsB;EACtB,YAAY;CACb;;AAED;EACE,kBAAkB;CACnB;;AAED;EACE,yBAAyB;CAC1B","file":"NewGroup.scss","sourcesContent":[".field {\n  margin-bottom: 10px;\n  float: left;\n  margin-right: 2%;\n\n  &.lightsField {\n    width: 100%;\n    clear: left;\n    margin-right: 0;\n    float: none;\n  }\n}\n\n.formControls {\n  clear: both;\n}\n\n.label {\n  display: inline-block;\n  font-weight: 700;\n  font-size: 14px;\n  margin: 0 10px;\n}\n\ninput[type=\"text\"].textField {\n  display: inline-block;\n  width: 20em;\n}\n\nbutton.btn {\n  margin-left: 10px;\n}\n\n.helpText {\n  margin: 0 10px 10px 10px;\n}\n"],"sourceRoot":"webpack://"}]);
-  
-  // exports
-  exports.locals = {
-  	"field": "NewGroup_field_23N",
-  	"lightsField": "NewGroup_lightsField_3Xa",
-  	"formControls": "NewGroup_formControls_bby",
-  	"label": "NewGroup_label_RVI",
-  	"textField": "NewGroup_textField_2sJ",
-  	"btn": "NewGroup_btn_36n",
-  	"helpText": "NewGroup_helpText_ymc"
-  };
-
-/***/ },
+/* 84 */,
+/* 85 */,
+/* 86 */,
 /* 87 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -6651,7 +6460,8 @@ module.exports =
           { className: _LightCheckboxScss2['default'].label, htmlFor: id },
           _react2['default'].createElement('input', { type: 'checkbox', id: id, name: 'light',
             onChange: this.onChange.bind(this),
-            className: _LightCheckboxScss2['default'].checkbox
+            className: _LightCheckboxScss2['default'].checkbox,
+            checked: this.props.checked
           }),
           this.props.name
         );
@@ -6843,6 +6653,265 @@ module.exports =
 /***/ function(module, exports) {
 
   module.exports = require("react-cookie");
+
+/***/ },
+/* 92 */
+/***/ function(module, exports, __webpack_require__) {
+
+  'use strict';
+  
+  Object.defineProperty(exports, '__esModule', {
+    value: true
+  });
+  
+  var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+  
+  var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+  
+  var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+  
+  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  
+  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+  
+  function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+  
+  var _react = __webpack_require__(4);
+  
+  var _react2 = _interopRequireDefault(_react);
+  
+  var _GroupFormScss = __webpack_require__(93);
+  
+  var _GroupFormScss2 = _interopRequireDefault(_GroupFormScss);
+  
+  var _classnames = __webpack_require__(47);
+  
+  var _classnames2 = _interopRequireDefault(_classnames);
+  
+  var _decoratorsWithStyles = __webpack_require__(24);
+  
+  var _decoratorsWithStyles2 = _interopRequireDefault(_decoratorsWithStyles);
+  
+  var _LightCheckboxLightCheckbox = __webpack_require__(87);
+  
+  var _LightCheckboxLightCheckbox2 = _interopRequireDefault(_LightCheckboxLightCheckbox);
+  
+  var _actionsBridge = __webpack_require__(48);
+  
+  var _actionsBridge2 = _interopRequireDefault(_actionsBridge);
+  
+  var GroupForm = (function (_Component) {
+    _inherits(GroupForm, _Component);
+  
+    _createClass(GroupForm, null, [{
+      key: 'propTypes',
+      value: {
+        lights: _react.PropTypes.object.isRequired,
+        ids: _react.PropTypes.array.isRequired,
+        onCreated: _react.PropTypes.func.isRequired,
+        onUpdated: _react.PropTypes.func.isRequired,
+        onCanceled: _react.PropTypes.func.isRequired,
+        name: _react.PropTypes.string,
+        id: _react.PropTypes.string,
+        checkedLightIDs: _react.PropTypes.array
+      },
+      enumerable: true
+    }]);
+  
+    function GroupForm(props, context) {
+      _classCallCheck(this, _GroupForm);
+  
+      _get(Object.getPrototypeOf(_GroupForm.prototype), 'constructor', this).call(this, props, context);
+      this.state = { name: '', checkedLightIDs: [] };
+    }
+  
+    _createClass(GroupForm, [{
+      key: 'onNameChange',
+      value: function onNameChange(e) {
+        this.setState({ name: e.target.value.trim() });
+      }
+    }, {
+      key: 'onLightToggled',
+      value: function onLightToggled(id, checked) {
+        var checkedLightIDs = this.state.checkedLightIDs;
+        var index = checkedLightIDs.indexOf(id);
+        if (checked) {
+          if (index < 0) {
+            checkedLightIDs.push(id);
+          }
+        } else {
+          if (index > -1) {
+            checkedLightIDs = checkedLightIDs.slice(0, index).concat(checkedLightIDs.slice(index + 1, checkedLightIDs.length));
+          }
+        }
+        this.setState({ checkedLightIDs: checkedLightIDs });
+      }
+    }, {
+      key: 'onGroupSaved',
+      value: function onGroupSaved(name, lightIDs, group) {
+        group.name = name;
+        var lights = this.props.lights;
+        group.lights = lightIDs.map(function (id) {
+          return lights[id];
+        });
+        this.props.onCreated(group);
+        this.setState({ checkedLightIDs: [], name: '' });
+      }
+    }, {
+      key: 'onGroupSaveError',
+      value: function onGroupSaveError(name, response) {
+        console.error('failed to create group', name, response);
+      }
+    }, {
+      key: 'onCancel',
+      value: function onCancel(event) {
+        event.preventDefault();
+        event.target.blur();
+        this.props.onCanceled();
+      }
+    }, {
+      key: 'handleSubmit',
+      value: function handleSubmit(e) {
+        e.preventDefault();
+        if (!this.isValid()) {
+          return;
+        }
+        var name = this.state.name;
+        var lightIDs = this.state.checkedLightIDs;
+        _actionsBridge2['default'].createGroup(name, lightIDs).then(this.onGroupSaved.bind(this, name, lightIDs))['catch'](this.onGroupSaveError.bind(this, name));
+      }
+    }, {
+      key: 'isValid',
+      value: function isValid() {
+        if (this.state.name.length < 1) {
+          return false;
+        }
+        if (this.state.checkedLightIDs.length < 1) {
+          return false;
+        }
+        return true;
+      }
+    }, {
+      key: 'render',
+      value: function render() {
+        var _this = this;
+  
+        var checkedLightIDs = this.props.checkedLightIDs || this.state.checkedLightIDs;
+        return _react2['default'].createElement(
+          'form',
+          { onSubmit: this.handleSubmit.bind(this) },
+          _react2['default'].createElement(
+            'p',
+            { className: _GroupFormScss2['default'].helpText },
+            'Use groups to control multiple lights at once.'
+          ),
+          _react2['default'].createElement(
+            'div',
+            { className: _GroupFormScss2['default'].field },
+            _react2['default'].createElement(
+              'label',
+              { className: _GroupFormScss2['default'].label, htmlFor: 'new-group-name' },
+              'Name:'
+            ),
+            _react2['default'].createElement('input', { type: 'text', id: 'new-group-name',
+              onChange: this.onNameChange.bind(this),
+              value: this.state.name || this.props.name,
+              placeholder: 'e.g., Back Bedroom',
+              className: _GroupFormScss2['default'].textField,
+              autoFocus: 'autofocus'
+            })
+          ),
+          _react2['default'].createElement(
+            'div',
+            { className: (0, _classnames2['default'])(_GroupFormScss2['default'].lightsField, _GroupFormScss2['default'].field) },
+            this.props.ids.map(function (lightID) {
+              var checked = checkedLightIDs.indexOf(lightID) > -1;
+              var key = 'light-' + lightID + '-checked-' + checked;
+              return _react2['default'].createElement(_LightCheckboxLightCheckbox2['default'], _extends({ key: key, id: lightID,
+                onToggle: _this.onLightToggled.bind(_this),
+                checked: checked }, _this.props.lights[lightID]));
+            })
+          ),
+          _react2['default'].createElement(
+            'div',
+            { className: _GroupFormScss2['default'].formControls },
+            _react2['default'].createElement(
+              'button',
+              { type: 'submit', className: _GroupFormScss2['default'].btn, disabled: !this.isValid() },
+              'Save'
+            ),
+            typeof this.props.id === 'string' ? _react2['default'].createElement(
+              'a',
+              { href: '#', className: _GroupFormScss2['default'].cancelLink, onClick: this.onCancel.bind(this) },
+              'Cancel'
+            ) : ''
+          )
+        );
+      }
+    }]);
+  
+    var _GroupForm = GroupForm;
+    GroupForm = (0, _decoratorsWithStyles2['default'])(_GroupFormScss2['default'])(GroupForm) || GroupForm;
+    return GroupForm;
+  })(_react.Component);
+  
+  exports['default'] = GroupForm;
+  module.exports = exports['default'];
+
+/***/ },
+/* 93 */
+/***/ function(module, exports, __webpack_require__) {
+
+  
+      var content = __webpack_require__(94);
+      var insertCss = __webpack_require__(20);
+  
+      if (typeof content === 'string') {
+        content = [[module.id, content, '']];
+      }
+  
+      module.exports = content.locals || {};
+      module.exports._getCss = function() { return content.toString(); };
+      module.exports._insertCss = insertCss.bind(null, content);
+    
+      var removeCss = function() {};
+  
+      // Hot Module Replacement
+      // https://webpack.github.io/docs/hot-module-replacement
+      if (false) {
+        module.hot.accept("!!./../../../node_modules/css-loader/index.js?sourceMap&modules&localIdentName=[name]_[local]_[hash:base64:3]!./../../../node_modules/postcss-loader/index.js!./GroupForm.scss", function() {
+          var newContent = require("!!./../../../node_modules/css-loader/index.js?sourceMap&modules&localIdentName=[name]_[local]_[hash:base64:3]!./../../../node_modules/postcss-loader/index.js!./GroupForm.scss");
+          if (typeof newContent === 'string') {
+            newContent = [[module.id, content, '']];
+          }
+          removeCss = insertCss(newContent, { replace: true });
+        });
+        module.hot.dispose(function() { removeCss(); });
+      }
+    
+
+/***/ },
+/* 94 */
+/***/ function(module, exports, __webpack_require__) {
+
+  exports = module.exports = __webpack_require__(19)();
+  // imports
+  
+  
+  // module
+  exports.push([module.id, ".GroupForm_field_1xT {\n  margin-bottom: 10px;\n  float: left;\n  margin-right: 2%\n}\n\n.GroupForm_field_1xT.GroupForm_lightsField_1Bl {\n  width: 100%;\n  clear: left;\n  margin-right: 0;\n  float: none\n}\n\n.GroupForm_formControls_2_u {\n  clear: both;\n}\n\n.GroupForm_label_1E2 {\n  display: inline-block;\n  font-weight: 700;\n  font-size: 14px;\n  margin: 0 10px;\n}\n\ninput[type=\"text\"].GroupForm_textField_2Rg {\n  display: inline-block;\n  width: 20em;\n}\n\nbutton.GroupForm_btn_1i0 {\n  margin-left: 10px;\n}\n\n.GroupForm_helpText_YNW {\n  margin: 0 10px 10px 10px;\n}\n\n.GroupForm_cancelLink_NH6 {\n  text-decoration: none;\n  font-size: 13px;\n  display: inline-block;\n  margin-left: 10px;\n}\n", "", {"version":3,"sources":["/./src/components/GroupForm/GroupForm.scss"],"names":[],"mappings":"AAAA;EACE,oBAAoB;EACpB,YAAY;EACZ,gBAAiB;CAQlB;;AANC;EACE,YAAY;EACZ,YAAY;EACZ,gBAAgB;EAChB,WAAY;CACb;;AAGH;EACE,YAAY;CACb;;AAED;EACE,sBAAsB;EACtB,iBAAiB;EACjB,gBAAgB;EAChB,eAAe;CAChB;;AAED;EACE,sBAAsB;EACtB,YAAY;CACb;;AAED;EACE,kBAAkB;CACnB;;AAED;EACE,yBAAyB;CAC1B;;AAED;EACE,sBAAsB;EACtB,gBAAgB;EAChB,sBAAsB;EACtB,kBAAkB;CACnB","file":"GroupForm.scss","sourcesContent":[".field {\n  margin-bottom: 10px;\n  float: left;\n  margin-right: 2%;\n\n  &.lightsField {\n    width: 100%;\n    clear: left;\n    margin-right: 0;\n    float: none;\n  }\n}\n\n.formControls {\n  clear: both;\n}\n\n.label {\n  display: inline-block;\n  font-weight: 700;\n  font-size: 14px;\n  margin: 0 10px;\n}\n\ninput[type=\"text\"].textField {\n  display: inline-block;\n  width: 20em;\n}\n\nbutton.btn {\n  margin-left: 10px;\n}\n\n.helpText {\n  margin: 0 10px 10px 10px;\n}\n\n.cancelLink {\n  text-decoration: none;\n  font-size: 13px;\n  display: inline-block;\n  margin-left: 10px;\n}\n"],"sourceRoot":"webpack://"}]);
+  
+  // exports
+  exports.locals = {
+  	"field": "GroupForm_field_1xT",
+  	"lightsField": "GroupForm_lightsField_1Bl",
+  	"formControls": "GroupForm_formControls_2_u",
+  	"label": "GroupForm_label_1E2",
+  	"textField": "GroupForm_textField_2Rg",
+  	"btn": "GroupForm_btn_1i0",
+  	"helpText": "GroupForm_helpText_YNW",
+  	"cancelLink": "GroupForm_cancelLink_NH6"
+  };
 
 /***/ }
 /******/ ]);

@@ -20,8 +20,9 @@ class GroupsList extends Component {
     return (
       <ul className={s.groupList}>
         {this.props.groups.map((group) => {
+          const key = 'group-' + group.id;
           return (
-            <Group key={group.id} {...group}
+            <Group key={key} {...group}
               onLightLoaded={this.props.onLightLoaded}
               onEdit={this.props.onEdit}
             />

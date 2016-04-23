@@ -28,6 +28,7 @@ class LightCheckbox extends Component {
         <input type="checkbox" id={id} name="light"
           onChange={this.onChange.bind(this)}
           className={s.checkbox}
+          checked={this.props.checked}
         />
         {this.props.name}
       </label>

@@ -1,0 +1,6 @@
+{
+  "name": "GroupForm",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./GroupForm.js"
+}

@@ -1,24 +1,26 @@
 import React, { Component, PropTypes } from 'react';
-import s from './NewGroup.scss';
+import s from './GroupForm.scss';
 import cx from 'classnames';
 import withStyles from '../../decorators/withStyles';
 import LightCheckbox from '../LightCheckbox/LightCheckbox';
 import Bridge from '../../actions/bridge';
 
 @withStyles(s)
-class NewGroup extends Component {
+class GroupForm extends Component {
   static propTypes = {
     lights: PropTypes.object.isRequired,
     ids: PropTypes.array.isRequired,
     onCreated: PropTypes.func.isRequired,
+    onUpdated: PropTypes.func.isRequired,
+    onCanceled: PropTypes.func.isRequired,
+    name: PropTypes.string,
+    id: PropTypes.string,
+    checkedLightIDs: PropTypes.array,
   };
 
   constructor(props, context) {
     super(props, context);
-    this.state = {
-      name: '',
-      checkedLightIDs: [],
-    };
+    this.state = { name: '', checkedLightIDs: [] };
   }
 
   onNameChange(e) {
@@ -53,6 +55,12 @@ class NewGroup extends Component {
     console.error('failed to create group', name, response);
   }
 
+  onCancel(event) {
+    event.preventDefault();
+    event.target.blur();
+    this.props.onCanceled();
+  }
+
   handleSubmit(e) {
     e.preventDefault();
     if (!this.isValid()) {
@@ -76,7 +84,7 @@ class NewGroup extends Component {
   }
 
   render() {
-    const checkedLightIDs = this.state.checkedLightIDs;
+    const checkedLightIDs = this.props.checkedLightIDs || this.state.checkedLightIDs;
     return (
       <form onSubmit={this.handleSubmit.bind(this)}>
         <p className={s.helpText}>
@@ -86,7 +94,7 @@ class NewGroup extends Component {
           <label className={s.label} htmlFor="new-group-name">Name:</label>
           <input type="text" id="new-group-name"
             onChange={this.onNameChange.bind(this)}
-            value={this.state.name}
+            value={this.state.name || this.props.name }
             placeholder="e.g., Back Bedroom"
             className={s.textField}
             autoFocus="autofocus"
@@ -94,11 +102,12 @@ class NewGroup extends Component {
         </div>
         <div className={cx(s.lightsField, s.field)}>
           {this.props.ids.map((lightID) => {
+            const checked = checkedLightIDs.indexOf(lightID) > -1;
+            const key = 'light-' + lightID + '-checked-' + checked;
             return (
-              <LightCheckbox key={lightID} id={lightID}
+              <LightCheckbox key={key} id={lightID}
                 onToggle={this.onLightToggled.bind(this)}
-                checked={checkedLightIDs.indexOf(lightID) > -1}
-                {...this.props.lights[lightID]}
+                checked={checked} {...this.props.lights[lightID]}
               />
             );
           })}
@@ -107,10 +116,15 @@ class NewGroup extends Component {
           <button type="submit" className={s.btn} disabled={!this.isValid()}>
             Save
           </button>
+          {typeof this.props.id === 'string' ? (
+            <a href="#" className={s.cancelLink} onClick={this.onCancel.bind(this)}>
+              Cancel
+            </a>
+          ) : ''}
         </div>
       </form>
     );
   }
 }
 
-export default NewGroup;
+export default GroupForm;

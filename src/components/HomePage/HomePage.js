@@ -7,7 +7,7 @@ import Location from '../../core/Location';
 import Bridge from '../../actions/bridge';
 import LightsList from '../LightsList/LightsList';
 import GroupsList from '../GroupsList/GroupsList';
-import NewGroup from '../NewGroup/NewGroup';
+import GroupForm from '../GroupForm/GroupForm';
 import LocalStorage from '../../stores/localStorage';
 
 const title = 'Hue Steamer';
@@ -81,6 +81,40 @@ class HomePage extends Component {
     this.showGroupsTab();
   }
 
+  onEditGroup(id, name, lights) {
+    this.setState({
+      editGroupName: name,
+      editGroupID: id,
+      editGroupLightIDs: lights.map((l) => {
+        return typeof l === 'string' ? l : l.id;
+      }),
+    }, () => {
+      this.showGroupFormTab();
+    });
+  }
+
+  onGroupUpdated(group) {
+    console.log('updated group', group);
+    this.setState({
+      editGroupName: undefined,
+      editGroupID: undefined,
+      editGroupLightIDs: undefined,
+    }, () => {
+      this.showGroupsTab();
+    });
+  }
+
+  onGroupCanceled() {
+    console.log('canceled editing group');
+    this.setState({
+      editGroupName: undefined,
+      editGroupID: undefined,
+      editGroupLightIDs: undefined,
+    }, () => {
+      this.showGroupsTab();
+    });
+  }
+
   onLightLoaded(light) {
     const oldLights = this.state.lights;
     const lightsHash = {};
@@ -97,10 +131,6 @@ class HomePage extends Component {
       groups: this.updateLightInGroups(light),
       lightIDs: lights.map((l) => l.id),
     });
-  }
-
-  onEditGroup(id, name, lights) {
-    console.log('editing group', id, name, lights);
   }
 
   updateLightInGroups(light) {
@@ -175,8 +205,8 @@ class HomePage extends Component {
     this.showTab(event, 'groups');
   }
 
-  showNewGroupTab(event) {
-    this.showTab(event, 'new-group');
+  showGroupFormTab(event) {
+    this.showTab(event, 'group-form');
   }
 
   isNight() {
@@ -200,9 +230,11 @@ class HomePage extends Component {
               Groups
             </a>
           </li>
-          <li className={this.state.activeTab === 'new-group' ? s.active : s.inactive}>
-            <a href="#" onClick={this.showNewGroupTab.bind(this)}>
-              New Group
+          <li className={this.state.activeTab === 'group-form' ? s.active : s.inactive}>
+            <a href="#" onClick={this.showGroupFormTab.bind(this)}>
+              {typeof this.state.editGroupName === 'string' ? (
+                <span>Edit &ldquo;{this.state.editGroupName}&rdquo;</span>
+              ) : 'New Group'}
             </a>
           </li>
         </ul>
@@ -231,10 +263,14 @@ class HomePage extends Component {
               </p>
             )}
           </div>
-          <div className={cx(s.newGroupTab, s.tab, this.state.activeTab === 'new-group' ? s.active : s.inactive)}>
-            <NewGroup lights={this.state.lights}
+          <div className={cx(s.newGroupTab, s.tab, this.state.activeTab === 'group-form' ? s.active : s.inactive)}>
+            <GroupForm lights={this.state.lights}
               ids={this.state.lightIDs}
               onCreated={this.onGroupCreated.bind(this)}
+              onUpdated={this.onGroupUpdated.bind(this)}
+              onCanceled={this.onGroupCanceled.bind(this)}
+              name={this.state.editGroupName} id={this.state.editGroupID}
+              checkedLightIDs={this.state.editGroupLightIDs}
             />
           </div>
         </div>
