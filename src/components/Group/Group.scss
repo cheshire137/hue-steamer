@@ -43,7 +43,7 @@
 }
 
 .groupContents {
-  margin-left: 23px;
+  margin-left: 21px;
   margin-right: 55px;
   font-size: 13px;
 }
@@ -51,6 +51,7 @@
 .groupLights {
   list-style: none;
   padding-left: 0;
+  margin-bottom: 10px;
 }
 
 .groupLight {
@@ -65,5 +66,13 @@
     &:after {
       content: "";
     }
+  }
+}
+
+.editLink {
+  text-decoration: none;
+
+  .editIcon {
+    margin-right: 0.3em;
   }
 }

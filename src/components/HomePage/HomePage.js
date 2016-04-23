@@ -99,6 +99,10 @@ class HomePage extends Component {
     });
   }
 
+  onEditGroup(id, name, lights) {
+    console.log('editing group', id, name, lights);
+  }
+
   updateLightInGroups(light) {
     const groups = this.state.groups;
     if (typeof groups !== 'object') {
@@ -219,6 +223,7 @@ class HomePage extends Component {
             {haveGroups ? (
               <GroupsList groups={this.state.groups}
                 onLightLoaded={this.onLightLoaded.bind(this)}
+                onEdit={this.onEditGroup.bind(this)}
               />
             ) : (
               <p className={s.loading}>

@@ -3439,6 +3439,11 @@ module.exports =
         });
       }
     }, {
+      key: 'onEditGroup',
+      value: function onEditGroup(id, name, lights) {
+        console.log('editing group', id, name, lights);
+      }
+    }, {
       key: 'updateLightInGroups',
       value: function updateLightInGroups(light) {
         var _this = this;
@@ -3588,7 +3593,8 @@ module.exports =
               'div',
               { className: (0, _classnames2['default'])(_HomePageScss2['default'].groupsTab, _HomePageScss2['default'].tab, this.state.activeTab === 'groups' ? _HomePageScss2['default'].active : _HomePageScss2['default'].inactive) },
               haveGroups ? _react2['default'].createElement(_GroupsListGroupsList2['default'], { groups: this.state.groups,
-                onLightLoaded: this.onLightLoaded.bind(this)
+                onLightLoaded: this.onLightLoaded.bind(this),
+                onEdit: this.onEditGroup.bind(this)
               }) : _react2['default'].createElement(
                 'p',
                 { className: _HomePageScss2['default'].loading },
@@ -4905,7 +4911,8 @@ module.exports =
       key: 'propTypes',
       value: {
         groups: _react.PropTypes.array.isRequired,
-        onLightLoaded: _react.PropTypes.func.isRequired
+        onLightLoaded: _react.PropTypes.func.isRequired,
+        onEdit: _react.PropTypes.func.isRequired
       },
       enumerable: true
     }]);
@@ -4927,7 +4934,8 @@ module.exports =
           { className: _GroupsListScss2['default'].groupList },
           this.props.groups.map(function (group) {
             return _react2['default'].createElement(_GroupGroup2['default'], _extends({ key: group.id }, group, {
-              onLightLoaded: _this.props.onLightLoaded
+              onLightLoaded: _this.props.onLightLoaded,
+              onEdit: _this.props.onEdit
             }));
           })
         );
@@ -5048,7 +5056,8 @@ module.exports =
         name: _react.PropTypes.string,
         type: _react.PropTypes.string,
         lights: _react.PropTypes.array,
-        onLightLoaded: _react.PropTypes.func.isRequired
+        onLightLoaded: _react.PropTypes.func.isRequired,
+        onEdit: _react.PropTypes.func.isRequired
       },
       enumerable: true
     }]);
@@ -5082,6 +5091,13 @@ module.exports =
             this.props.onLightLoaded(light);
           }
         }
+      }
+    }, {
+      key: 'onEdit',
+      value: function onEdit(event) {
+        event.preventDefault();
+        event.target.blur();
+        this.props.onEdit(this.props.id, this.props.name, this.props.lights);
       }
     }, {
       key: 'isNight',
@@ -5178,6 +5194,12 @@ module.exports =
                   isString ? light : light.name
                 );
               })
+            ),
+            _react2['default'].createElement(
+              'a',
+              { href: '#', onClick: this.onEdit.bind(this), className: _GroupScss2['default'].editLink },
+              _react2['default'].createElement(_reactFontawesome2['default'], { name: 'pencil', className: _GroupScss2['default'].editIcon }),
+              'Edit'
             )
           )
         );
@@ -5233,7 +5255,7 @@ module.exports =
   
   
   // module
-  exports.push([module.id, ".Group_group_23_ {\n  width: 48%;\n  margin: 0 1% 10px;\n  display: inline-block;\n  border-width: 1px;\n  border-style: solid;\n  padding: 10px;\n  border-radius: 2px;\n  vertical-align: top\n}\n\n.Group_group_23_.Group_night_WFU {\n  border-color: #38231D\n}\n\n.Group_group_23_.Group_day_22J {\n  border-color: #ccc\n}\n\n.Group_groupHeader_g_v {\n  display: table;\n  width: 100%;\n}\n\n.Group_groupName_2Et {\n  margin-bottom: 0;\n  display: table-cell;\n  font-weight: normal;\n  font-size: 18px;\n}\n\n.Group_groupName_2Et a {\n  text-decoration: none;\n}\n\n.Group_openIndicator_2t7 {\n  margin-right: 5px;\n  font-size: 16px;\n}\n\n.Group_onOffSwitch_QKC {\n  float: right;\n}\n\n.Group_groupContents_3Z0 {\n  margin-left: 23px;\n  margin-right: 55px;\n  font-size: 13px;\n}\n\n.Group_groupLights_MkK {\n  list-style: none;\n  padding-left: 0;\n}\n\n.Group_groupLight_1rf {\n  white-space: nowrap;\n  display: inline-block\n}\n\n.Group_groupLight_1rf:after {\n  content: \",\\A0\"\n}\n\n.Group_groupLight_1rf:last-child {}\n\n.Group_groupLight_1rf:last-child:after {\n  content: \"\"\n}\n", "", {"version":3,"sources":["/./src/components/Group/Group.scss"],"names":[],"mappings":"AAAA;EACE,WAAW;EACX,kBAAkB;EAClB,sBAAsB;EACtB,kBAAkB;EAClB,oBAAoB;EACpB,cAAc;EACd,mBAAmB;EACnB,mBAAoB;CASrB;;AAPC;EACE,qBAAsB;CACvB;;AAED;EACE,kBAAmB;CACpB;;AAGH;EACE,eAAe;EACf,YAAY;CACb;;AAED;EACE,iBAAiB;EACjB,oBAAoB;EACpB,oBAAoB;EACpB,gBAAgB;CAKjB;;AAHC;EACE,sBAAsB;CACvB;;AAGH;EACE,kBAAkB;EAClB,gBAAgB;CACjB;;AAED;EACE,aAAa;CACd;;AAED;EACE,kBAAkB;EAClB,mBAAmB;EACnB,gBAAgB;CACjB;;AAED;EACE,iBAAiB;EACjB,gBAAgB;CACjB;;AAED;EACE,oBAAoB;EACpB,qBAAsB;CAWvB;;AATC;EACE,eAAgB;CACjB;;AAED,mCAIC;;AAHC;EACE,WAAY;CACb","file":"Group.scss","sourcesContent":[".group {\n  width: 48%;\n  margin: 0 1% 10px;\n  display: inline-block;\n  border-width: 1px;\n  border-style: solid;\n  padding: 10px;\n  border-radius: 2px;\n  vertical-align: top;\n\n  &.night {\n    border-color: #38231D;\n  }\n\n  &.day {\n    border-color: #ccc;\n  }\n}\n\n.groupHeader {\n  display: table;\n  width: 100%;\n}\n\n.groupName {\n  margin-bottom: 0;\n  display: table-cell;\n  font-weight: normal;\n  font-size: 18px;\n\n  a {\n    text-decoration: none;\n  }\n}\n\n.openIndicator {\n  margin-right: 5px;\n  font-size: 16px;\n}\n\n.onOffSwitch {\n  float: right;\n}\n\n.groupContents {\n  margin-left: 23px;\n  margin-right: 55px;\n  font-size: 13px;\n}\n\n.groupLights {\n  list-style: none;\n  padding-left: 0;\n}\n\n.groupLight {\n  white-space: nowrap;\n  display: inline-block;\n\n  &:after {\n    content: \",\\a0\";\n  }\n\n  &:last-child {\n    &:after {\n      content: \"\";\n    }\n  }\n}\n"],"sourceRoot":"webpack://"}]);
+  exports.push([module.id, ".Group_group_23_ {\n  width: 48%;\n  margin: 0 1% 10px;\n  display: inline-block;\n  border-width: 1px;\n  border-style: solid;\n  padding: 10px;\n  border-radius: 2px;\n  vertical-align: top\n}\n\n.Group_group_23_.Group_night_WFU {\n  border-color: #38231D\n}\n\n.Group_group_23_.Group_day_22J {\n  border-color: #ccc\n}\n\n.Group_groupHeader_g_v {\n  display: table;\n  width: 100%;\n}\n\n.Group_groupName_2Et {\n  margin-bottom: 0;\n  display: table-cell;\n  font-weight: normal;\n  font-size: 18px;\n}\n\n.Group_groupName_2Et a {\n  text-decoration: none;\n}\n\n.Group_openIndicator_2t7 {\n  margin-right: 5px;\n  font-size: 16px;\n}\n\n.Group_onOffSwitch_QKC {\n  float: right;\n}\n\n.Group_groupContents_3Z0 {\n  margin-left: 21px;\n  margin-right: 55px;\n  font-size: 13px;\n}\n\n.Group_groupLights_MkK {\n  list-style: none;\n  padding-left: 0;\n  margin-bottom: 10px;\n}\n\n.Group_groupLight_1rf {\n  white-space: nowrap;\n  display: inline-block\n}\n\n.Group_groupLight_1rf:after {\n  content: \",\\A0\"\n}\n\n.Group_groupLight_1rf:last-child {}\n\n.Group_groupLight_1rf:last-child:after {\n  content: \"\"\n}\n\n.Group_editLink_yeU {\n  text-decoration: none;\n}\n\n.Group_editLink_yeU .Group_editIcon_2BR {\n  margin-right: 0.3em;\n}\n", "", {"version":3,"sources":["/./src/components/Group/Group.scss"],"names":[],"mappings":"AAAA;EACE,WAAW;EACX,kBAAkB;EAClB,sBAAsB;EACtB,kBAAkB;EAClB,oBAAoB;EACpB,cAAc;EACd,mBAAmB;EACnB,mBAAoB;CASrB;;AAPC;EACE,qBAAsB;CACvB;;AAED;EACE,kBAAmB;CACpB;;AAGH;EACE,eAAe;EACf,YAAY;CACb;;AAED;EACE,iBAAiB;EACjB,oBAAoB;EACpB,oBAAoB;EACpB,gBAAgB;CAKjB;;AAHC;EACE,sBAAsB;CACvB;;AAGH;EACE,kBAAkB;EAClB,gBAAgB;CACjB;;AAED;EACE,aAAa;CACd;;AAED;EACE,kBAAkB;EAClB,mBAAmB;EACnB,gBAAgB;CACjB;;AAED;EACE,iBAAiB;EACjB,gBAAgB;EAChB,oBAAoB;CACrB;;AAED;EACE,oBAAoB;EACpB,qBAAsB;CAWvB;;AATC;EACE,eAAgB;CACjB;;AAED,mCAIC;;AAHC;EACE,WAAY;CACb;;AAIL;EACE,sBAAsB;CAKvB;;AAHC;EACE,oBAAoB;CACrB","file":"Group.scss","sourcesContent":[".group {\n  width: 48%;\n  margin: 0 1% 10px;\n  display: inline-block;\n  border-width: 1px;\n  border-style: solid;\n  padding: 10px;\n  border-radius: 2px;\n  vertical-align: top;\n\n  &.night {\n    border-color: #38231D;\n  }\n\n  &.day {\n    border-color: #ccc;\n  }\n}\n\n.groupHeader {\n  display: table;\n  width: 100%;\n}\n\n.groupName {\n  margin-bottom: 0;\n  display: table-cell;\n  font-weight: normal;\n  font-size: 18px;\n\n  a {\n    text-decoration: none;\n  }\n}\n\n.openIndicator {\n  margin-right: 5px;\n  font-size: 16px;\n}\n\n.onOffSwitch {\n  float: right;\n}\n\n.groupContents {\n  margin-left: 21px;\n  margin-right: 55px;\n  font-size: 13px;\n}\n\n.groupLights {\n  list-style: none;\n  padding-left: 0;\n  margin-bottom: 10px;\n}\n\n.groupLight {\n  white-space: nowrap;\n  display: inline-block;\n\n  &:after {\n    content: \",\\a0\";\n  }\n\n  &:last-child {\n    &:after {\n      content: \"\";\n    }\n  }\n}\n\n.editLink {\n  text-decoration: none;\n\n  .editIcon {\n    margin-right: 0.3em;\n  }\n}\n"],"sourceRoot":"webpack://"}]);
   
   // exports
   exports.locals = {
@@ -5246,7 +5268,9 @@ module.exports =
   	"onOffSwitch": "Group_onOffSwitch_QKC",
   	"groupContents": "Group_groupContents_3Z0",
   	"groupLights": "Group_groupLights_MkK",
-  	"groupLight": "Group_groupLight_1rf"
+  	"groupLight": "Group_groupLight_1rf",
+  	"editLink": "Group_editLink_yeU",
+  	"editIcon": "Group_editIcon_2BR"
   };
 
 /***/ },

@@ -14,6 +14,7 @@ class Group extends Component {
     type: PropTypes.string,
     lights: PropTypes.array,
     onLightLoaded: PropTypes.func.isRequired,
+    onEdit: PropTypes.func.isRequired,
   };
 
   constructor(props, context) {
@@ -42,6 +43,12 @@ class Group extends Component {
         this.props.onLightLoaded(light);
       }
     }
+  }
+
+  onEdit(event) {
+    event.preventDefault();
+    event.target.blur();
+    this.props.onEdit(this.props.id, this.props.name, this.props.lights);
   }
 
   isNight() {
@@ -127,6 +134,10 @@ class Group extends Component {
               );
             })}
           </ul>
+          <a href="#" onClick={this.onEdit.bind(this)} className={s.editLink}>
+            <FontAwesome name="pencil" className={s.editIcon} />
+            Edit
+          </a>
         </div>
       </li>
     );
