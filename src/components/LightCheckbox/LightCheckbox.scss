@@ -1,0 +1,14 @@
+.label {
+  display: inline-block;
+  white-space: nowrap;
+  padding: 0 10px;
+  font-size: 14px;
+  width: 33%;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  position: relative;
+}
+
+.checkbox {
+  margin-right: 5px;
+}

@@ -142,7 +142,7 @@ class SettingsPage extends Component {
                 </p>
                 <form onSubmit={this.handleSubmit.bind(this)}>
                   <div className={s.field}>
-                    <label htmlFor="hue_bridge_ip">Philips Hue bridge IP address:</label>
+                    <label className={s.label} htmlFor="hue_bridge_ip">Philips Hue bridge IP address:</label>
                     <input type="text" id="hue_bridge_ip"
                       value={this.state.ip}
                       onChange={this.handleIPChange.bind(this)}
@@ -150,7 +150,7 @@ class SettingsPage extends Component {
                     />
                   </div>
                   <div className={s.field}>
-                    <label htmlFor="hue_bridge_user">Philips Hue bridge user:</label>
+                    <label className={s.label} htmlFor="hue_bridge_user">Philips Hue bridge user:</label>
                     <input type="text" id="hue_bridge_user"
                       value={this.state.user}
                       onChange={this.handleUserChange.bind(this)}

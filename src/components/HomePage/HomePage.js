@@ -7,6 +7,7 @@ import Location from '../../core/Location';
 import Bridge from '../../actions/bridge';
 import LightsList from '../LightsList/LightsList';
 import GroupsList from '../GroupsList/GroupsList';
+import NewGroup from '../NewGroup/NewGroup';
 
 const title = 'Hue Steamer';
 
@@ -91,16 +92,22 @@ class HomePage extends Component {
     this.setState({ lights, groups });
   }
 
-  showLightsTab(e) {
+  showTab(e, activeTab) {
     e.preventDefault();
     e.target.blur();
-    this.setState({ activeTab: 'lights' });
+    this.setState({ activeTab });
+  }
+
+  showLightsTab(e) {
+    this.showTab(e, 'lights');
   }
 
   showGroupsTab(e) {
-    e.preventDefault();
-    e.target.blur();
-    this.setState({ activeTab: 'groups' });
+    this.showTab(e, 'groups');
+  }
+
+  showNewGroupTab(e) {
+    this.showTab(e, 'new-group');
   }
 
   isNight() {
@@ -122,6 +129,11 @@ class HomePage extends Component {
           <li className={this.state.activeTab === 'groups' ? s.active : s.inactive}>
             <a href="#" onClick={this.showGroupsTab.bind(this)}>
               Groups
+            </a>
+          </li>
+          <li className={this.state.activeTab === 'new-group' ? s.active : s.inactive}>
+            <a href="#" onClick={this.showNewGroupTab.bind(this)}>
+              New Group
             </a>
           </li>
         </ul>
@@ -147,6 +159,9 @@ class HomePage extends Component {
                 Loading groups...
               </p>
             )}
+          </div>
+          <div className={cx(s.newGroupTab, s.tab, this.state.activeTab === 'new-group' ? s.active : s.inactive)}>
+            <NewGroup lights={this.state.lights} />
           </div>
         </div>
       </div>

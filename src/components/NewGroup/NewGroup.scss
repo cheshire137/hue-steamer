@@ -1,0 +1,24 @@
+.field {
+  margin-bottom: 10px;
+  width: 47%;
+  float: left;
+  margin-right: 2%;
+
+  &.lightsField {
+    width: 100%;
+    clear: left;
+    margin-right: 0;
+    float: none;
+  }
+}
+
+.formControls {
+  clear: both;
+}
+
+.label {
+  display: block;
+  font-weight: 700;
+  margin-bottom: 5px;
+  font-size: 14px;
+}
