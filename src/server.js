@@ -165,6 +165,35 @@ server.get('/groups', async (req, res) => {
   }).done();
 });
 
+server.post('/groups', async (req, res) => {
+  let name = req.query.name;
+  if (typeof name !== 'string') {
+    res.status(400).json({ error: 'Must pass group name in name param' });
+    return;
+  }
+  name = name.trim();
+  if (name.length < 1) {
+    res.status(400).json({
+      error: 'Must pass group name at least 1 character long',
+    });
+    return;
+  }
+  let lightIDs = req.query.ids;
+  if (typeof lightIDs !== 'string') {
+    res.status(400).json({
+      error: 'Must pass comma-separated list of light IDs in ids param',
+    });
+    return;
+  }
+  lightIDs = lightIDs.split(',');
+  const api = await getHueApi(req.query.connectionID);
+  api.createGroup(name, lightIDs).then((result) => {
+    res.json(result);
+  }).fail((err) => {
+    res.status(400).json(err);
+  }).done();
+});
+
 server.get('/group/:id', async (req, res) => {
   const api = await getHueApi(req.query.connectionID);
   api.getGroup(req.params.id).then((group) => {

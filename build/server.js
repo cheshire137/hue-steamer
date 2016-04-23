@@ -429,6 +429,68 @@ module.exports =
     }, null, _this);
   });
   
+  server.post('/groups', function callee$0$0(req, res) {
+    var name, lightIDs, api;
+    return regeneratorRuntime.async(function callee$0$0$(context$1$0) {
+      while (1) switch (context$1$0.prev = context$1$0.next) {
+        case 0:
+          name = req.query.name;
+  
+          if (!(typeof name !== 'string')) {
+            context$1$0.next = 4;
+            break;
+          }
+  
+          res.status(400).json({ error: 'Must pass group name in name param' });
+          return context$1$0.abrupt('return');
+  
+        case 4:
+          name = name.trim();
+  
+          if (!(name.length < 1)) {
+            context$1$0.next = 8;
+            break;
+          }
+  
+          res.status(400).json({
+            error: 'Must pass group name at least 1 character long'
+          });
+          return context$1$0.abrupt('return');
+  
+        case 8:
+          lightIDs = req.query.ids;
+  
+          if (!(typeof lightIDs !== 'string')) {
+            context$1$0.next = 12;
+            break;
+          }
+  
+          res.status(400).json({
+            error: 'Must pass comma-separated list of light IDs in ids param'
+          });
+          return context$1$0.abrupt('return');
+  
+        case 12:
+          lightIDs = lightIDs.split(',');
+          context$1$0.next = 15;
+          return regeneratorRuntime.awrap(getHueApi(req.query.connectionID));
+  
+        case 15:
+          api = context$1$0.sent;
+  
+          api.createGroup(name, lightIDs).then(function (result) {
+            res.json(result);
+          }).fail(function (err) {
+            res.status(400).json(err);
+          }).done();
+  
+        case 17:
+        case 'end':
+          return context$1$0.stop();
+      }
+    }, null, _this);
+  });
+  
   server.get('/group/:id', function callee$0$0(req, res) {
     var api;
     return regeneratorRuntime.async(function callee$0$0$(context$1$0) {
@@ -3281,6 +3343,12 @@ module.exports =
         console.error('failed to load groups', response);
       }
     }, {
+      key: 'onGroupCreated',
+      value: function onGroupCreated(group) {
+        this.onGroupsLoaded(this.state.groups.slice().concat(group));
+        this.showGroupsTab();
+      }
+    }, {
       key: 'onLightLoaded',
       value: function onLightLoaded(light) {
         var oldLights = this.state.lights;
@@ -3364,25 +3432,27 @@ module.exports =
       }
     }, {
       key: 'showTab',
-      value: function showTab(e, activeTab) {
-        e.preventDefault();
-        e.target.blur();
+      value: function showTab(event, activeTab) {
+        if (event) {
+          event.preventDefault();
+          event.target.blur();
+        }
         this.setState({ activeTab: activeTab });
       }
     }, {
       key: 'showLightsTab',
-      value: function showLightsTab(e) {
-        this.showTab(e, 'lights');
+      value: function showLightsTab(event) {
+        this.showTab(event, 'lights');
       }
     }, {
       key: 'showGroupsTab',
-      value: function showGroupsTab(e) {
-        this.showTab(e, 'groups');
+      value: function showGroupsTab(event) {
+        this.showTab(event, 'groups');
       }
     }, {
       key: 'showNewGroupTab',
-      value: function showNewGroupTab(e) {
-        this.showTab(e, 'new-group');
+      value: function showNewGroupTab(event) {
+        this.showTab(event, 'new-group');
       }
     }, {
       key: 'isNight',
@@ -3459,7 +3529,8 @@ module.exports =
               'div',
               { className: (0, _classnames2['default'])(_HomePageScss2['default'].newGroupTab, _HomePageScss2['default'].tab, this.state.activeTab === 'new-group' ? _HomePageScss2['default'].active : _HomePageScss2['default'].inactive) },
               _react2['default'].createElement(_NewGroupNewGroup2['default'], { lights: this.state.lights,
-                ids: this.state.lightIDs
+                ids: this.state.lightIDs,
+                onCreated: this.onGroupCreated.bind(this)
               })
             )
           )
@@ -3654,6 +3725,22 @@ module.exports =
               return context$2$0.abrupt('return', this.makeRequest('/group/' + (groupID || '0')));
   
             case 1:
+            case 'end':
+              return context$2$0.stop();
+          }
+        }, null, this);
+      }
+    }, {
+      key: 'createGroup',
+      value: function createGroup(name, lightIDs) {
+        var opts;
+        return regeneratorRuntime.async(function createGroup$(context$2$0) {
+          while (1) switch (context$2$0.prev = context$2$0.next) {
+            case 0:
+              opts = { method: 'POST' };
+              return context$2$0.abrupt('return', this.makeRequest('/groups?name=' + encodeURIComponent(name) + '&ids=' + lightIDs.join(','), opts));
+  
+            case 2:
             case 'end':
               return context$2$0.stop();
           }
@@ -6141,6 +6228,10 @@ module.exports =
   
   var _LightCheckboxLightCheckbox2 = _interopRequireDefault(_LightCheckboxLightCheckbox);
   
+  var _actionsBridge = __webpack_require__(48);
+  
+  var _actionsBridge2 = _interopRequireDefault(_actionsBridge);
+  
   var NewGroup = (function (_Component) {
     _inherits(NewGroup, _Component);
   
@@ -6148,7 +6239,8 @@ module.exports =
       key: 'propTypes',
       value: {
         lights: _react.PropTypes.object.isRequired,
-        ids: _react.PropTypes.array.isRequired
+        ids: _react.PropTypes.array.isRequired,
+        onCreated: _react.PropTypes.func.isRequired
       },
       enumerable: true
     }]);
@@ -6185,12 +6277,30 @@ module.exports =
         this.setState({ checkedLightIDs: checkedLightIDs });
       }
     }, {
+      key: 'onGroupSaved',
+      value: function onGroupSaved(name, lightIDs, group) {
+        group.name = name;
+        var lights = this.props.lights;
+        group.lights = lightIDs.map(function (id) {
+          return lights[id];
+        });
+        this.props.onCreated(group);
+      }
+    }, {
+      key: 'onGroupSaveError',
+      value: function onGroupSaveError(response) {
+        console.error('failed to create group', this.state.name, response);
+      }
+    }, {
       key: 'handleSubmit',
       value: function handleSubmit(e) {
         e.preventDefault();
         if (!this.isValid()) {
           return;
         }
+        var name = this.state.name;
+        var lightIDs = this.state.checkedLightIDs;
+        _actionsBridge2['default'].createGroup(name, lightIDs).then(this.onGroupSaved.bind(this, name, lightIDs))['catch'](this.onGroupSaveError.bind(this));
       }
     }, {
       key: 'isValid',

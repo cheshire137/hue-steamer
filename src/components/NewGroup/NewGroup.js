@@ -3,12 +3,14 @@ import s from './NewGroup.scss';
 import cx from 'classnames';
 import withStyles from '../../decorators/withStyles';
 import LightCheckbox from '../LightCheckbox/LightCheckbox';
+import Bridge from '../../actions/bridge';
 
 @withStyles(s)
 class NewGroup extends Component {
   static propTypes = {
     lights: PropTypes.object.isRequired,
     ids: PropTypes.array.isRequired,
+    onCreated: PropTypes.func.isRequired,
   };
 
   constructor(props, context) {
@@ -39,11 +41,27 @@ class NewGroup extends Component {
     this.setState({ checkedLightIDs });
   }
 
+  onGroupSaved(name, lightIDs, group) {
+    group.name = name;
+    const lights = this.props.lights;
+    group.lights = lightIDs.map((id) => lights[id]);
+    this.props.onCreated(group);
+  }
+
+  onGroupSaveError(response) {
+    console.error('failed to create group', this.state.name, response);
+  }
+
   handleSubmit(e) {
     e.preventDefault();
     if (!this.isValid()) {
       return;
     }
+    const name = this.state.name;
+    const lightIDs = this.state.checkedLightIDs;
+    Bridge.createGroup(name, lightIDs).
+           then(this.onGroupSaved.bind(this, name, lightIDs)).
+           catch(this.onGroupSaveError.bind(this));
   }
 
   isValid() {

@@ -74,6 +74,11 @@ class HomePage extends Component {
     console.error('failed to load groups', response);
   }
 
+  onGroupCreated(group) {
+    this.onGroupsLoaded(this.state.groups.slice().concat(group));
+    this.showGroupsTab();
+  }
+
   onLightLoaded(light) {
     const oldLights = this.state.lights;
     const lightsHash = {};
@@ -147,22 +152,24 @@ class HomePage extends Component {
     return values;
   }
 
-  showTab(e, activeTab) {
-    e.preventDefault();
-    e.target.blur();
+  showTab(event, activeTab) {
+    if (event) {
+      event.preventDefault();
+      event.target.blur();
+    }
     this.setState({ activeTab });
   }
 
-  showLightsTab(e) {
-    this.showTab(e, 'lights');
+  showLightsTab(event) {
+    this.showTab(event, 'lights');
   }
 
-  showGroupsTab(e) {
-    this.showTab(e, 'groups');
+  showGroupsTab(event) {
+    this.showTab(event, 'groups');
   }
 
-  showNewGroupTab(e) {
-    this.showTab(e, 'new-group');
+  showNewGroupTab(event) {
+    this.showTab(event, 'new-group');
   }
 
   isNight() {
@@ -219,6 +226,7 @@ class HomePage extends Component {
           <div className={cx(s.newGroupTab, s.tab, this.state.activeTab === 'new-group' ? s.active : s.inactive)}>
             <NewGroup lights={this.state.lights}
               ids={this.state.lightIDs}
+              onCreated={this.onGroupCreated.bind(this)}
             />
           </div>
         </div>

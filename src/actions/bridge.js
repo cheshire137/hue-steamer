@@ -33,6 +33,12 @@ class Bridge {
     return this.makeRequest('/group/' + (groupID || '0'));
   }
 
+  static async createGroup(name, lightIDs) {
+    const opts = { method: 'POST' };
+    return this.makeRequest('/groups?name=' + encodeURIComponent(name) +
+                            '&ids=' + lightIDs.join(','), opts);
+  }
+
   static async getLight(lightID) {
     return this.makeRequest('/light/' + lightID);
   }
