@@ -47,13 +47,12 @@ class Light extends Component {
     console.error('failed to load light ' + this.props.id, response);
   }
 
-  onLightToggle() {
-    const light = this.props.light;
-    if (light.state.on) {
-      Bridge.turnOffLight(this.props.id).
+  onLightToggle(turnOn) {
+    if (turnOn) {
+      Bridge.turnOnLight(this.props.id).
              then(this.onLightToggleComplete.bind(this));
     } else {
-      Bridge.turnOnLight(this.props.id).
+      Bridge.turnOffLight(this.props.id).
              then(this.onLightToggleComplete.bind(this));
     }
   }
@@ -129,7 +128,7 @@ class Light extends Component {
                   {this.props.light.name}
                 </span>
               </div>
-              <OnOffSwitch id={checkboxID} on={this.props.light.state.on}
+              <OnOffSwitch id={checkboxID} state={this.props.light.state.on ? 2 : 0}
                 onToggle={this.onLightToggle.bind(this)}
               />
             </header>

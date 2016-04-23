@@ -20,6 +20,18 @@
           right: 0;
         }
       }
+
+      &.partial {
+        + .onoffswitchLabel {
+          .onoffswitchInner {
+            margin-left: 50%;
+          }
+
+          .onoffswitchSwitch {
+            right: 15px;
+          }
+        }
+      }
     }
   }
 
@@ -29,6 +41,14 @@
     cursor: pointer;
     border: 2px solid #CCCCCC;
     border-radius: 18px;
+
+    &.partial {
+      background-color: #ddd;
+    }
+
+    &.full {
+      background-color: #fff;
+    }
   }
 
   .onoffswitchInner {
@@ -63,6 +83,14 @@
       background-color: #373634;
       color: #D6D6D6;
       text-align: right;
+    }
+
+    &.partial {
+      &:before,
+      &:after {
+        content: "";
+        background-color: #ddd;
+      }
     }
   }
 

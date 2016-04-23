@@ -24,13 +24,13 @@ class Group extends Component {
     };
   }
 
-  onLightsToggle() {
-    if (this.areAllLightsOn()) {
-      Bridge.turnOffGroup(this.props.id).
-             then(this.onLightsToggleComplete.bind(this, false));
-    } else {
+  onLightsToggle(turnOn) {
+    if (turnOn) {
       Bridge.turnOnGroup(this.props.id).
              then(this.onLightsToggleComplete.bind(this, true));
+    } else {
+      Bridge.turnOffGroup(this.props.id).
+             then(this.onLightsToggleComplete.bind(this, false));
     }
   }
 
@@ -69,13 +69,21 @@ class Group extends Component {
     return true;
   }
 
-  render() {
-    const lightNames = this.props.lights.map((l) => {
-      if (typeof l === 'string') {
-        return l;
+  areSomeLightsOn() {
+    for (let i = 0; i < this.props.lights.length; i++) {
+      const light = this.props.lights[i];
+      if (typeof light === 'string') {
+        // Light not fully loaded, just have its ID
+        return false;
       }
-      return l.name;
-    }).join(', ');
+      if (light.state.on) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  render() {
     const groupStyle = {};
     if (this.state.open) {
       groupStyle.display = 'block';
@@ -83,6 +91,13 @@ class Group extends Component {
       groupStyle.display = 'none';
     }
     const checkboxID = 'group-' + this.props.id + '-toggle';
+    let switchState = 0;
+    if (this.areSomeLightsOn()) {
+      switchState = 1;
+    }
+    if (this.areAllLightsOn()) {
+      switchState = 2;
+    }
     return (
       <li className={cx(s.group, this.isNight() ? s.night : s.day)}>
         <header className={s.groupHeader}>
@@ -96,7 +111,7 @@ class Group extends Component {
               {this.props.name}
             </a>
           </h3>
-          <OnOffSwitch id={checkboxID} on={this.areAllLightsOn()}
+          <OnOffSwitch id={checkboxID} state={switchState}
             onToggle={this.onLightsToggle.bind(this)}
           />
         </header>

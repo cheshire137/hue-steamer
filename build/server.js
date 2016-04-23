@@ -4168,12 +4168,11 @@ module.exports =
       }
     }, {
       key: 'onLightToggle',
-      value: function onLightToggle() {
-        var light = this.props.light;
-        if (light.state.on) {
-          _actionsBridge2['default'].turnOffLight(this.props.id).then(this.onLightToggleComplete.bind(this));
-        } else {
+      value: function onLightToggle(turnOn) {
+        if (turnOn) {
           _actionsBridge2['default'].turnOnLight(this.props.id).then(this.onLightToggleComplete.bind(this));
+        } else {
+          _actionsBridge2['default'].turnOffLight(this.props.id).then(this.onLightToggleComplete.bind(this));
         }
       }
     }, {
@@ -4264,7 +4263,7 @@ module.exports =
                   this.props.light.name
                 )
               ),
-              _react2['default'].createElement(_OnOffSwitchOnOffSwitch2['default'], { id: checkboxID, on: this.props.light.state.on,
+              _react2['default'].createElement(_OnOffSwitchOnOffSwitch2['default'], { id: checkboxID, state: this.props.light.state.on ? 2 : 0,
                 onToggle: this.onLightToggle.bind(this)
               })
             ),
@@ -4988,11 +4987,11 @@ module.exports =
   
     _createClass(Group, [{
       key: 'onLightsToggle',
-      value: function onLightsToggle() {
-        if (this.areAllLightsOn()) {
-          _actionsBridge2['default'].turnOffGroup(this.props.id).then(this.onLightsToggleComplete.bind(this, false));
-        } else {
+      value: function onLightsToggle(turnOn) {
+        if (turnOn) {
           _actionsBridge2['default'].turnOnGroup(this.props.id).then(this.onLightsToggleComplete.bind(this, true));
+        } else {
+          _actionsBridge2['default'].turnOffGroup(this.props.id).then(this.onLightsToggleComplete.bind(this, false));
         }
       }
     }, {
@@ -5035,14 +5034,23 @@ module.exports =
         return true;
       }
     }, {
+      key: 'areSomeLightsOn',
+      value: function areSomeLightsOn() {
+        for (var i = 0; i < this.props.lights.length; i++) {
+          var light = this.props.lights[i];
+          if (typeof light === 'string') {
+            // Light not fully loaded, just have its ID
+            return false;
+          }
+          if (light.state.on) {
+            return true;
+          }
+        }
+        return false;
+      }
+    }, {
       key: 'render',
       value: function render() {
-        var lightNames = this.props.lights.map(function (l) {
-          if (typeof l === 'string') {
-            return l;
-          }
-          return l.name;
-        }).join(', ');
         var groupStyle = {};
         if (this.state.open) {
           groupStyle.display = 'block';
@@ -5050,6 +5058,13 @@ module.exports =
           groupStyle.display = 'none';
         }
         var checkboxID = 'group-' + this.props.id + '-toggle';
+        var switchState = 0;
+        if (this.areSomeLightsOn()) {
+          switchState = 1;
+        }
+        if (this.areAllLightsOn()) {
+          switchState = 2;
+        }
         return _react2['default'].createElement(
           'li',
           { className: (0, _classnames2['default'])(_GroupScss2['default'].group, this.isNight() ? _GroupScss2['default'].night : _GroupScss2['default'].day) },
@@ -5066,7 +5081,7 @@ module.exports =
                 this.props.name
               )
             ),
-            _react2['default'].createElement(_OnOffSwitchOnOffSwitch2['default'], { id: checkboxID, on: this.areAllLightsOn(),
+            _react2['default'].createElement(_OnOffSwitchOnOffSwitch2['default'], { id: checkboxID, state: switchState,
               onToggle: this.onLightsToggle.bind(this)
             })
           ),
@@ -6109,6 +6124,10 @@ module.exports =
   
   var _decoratorsWithStyles2 = _interopRequireDefault(_decoratorsWithStyles);
   
+  var _classnames = __webpack_require__(47);
+  
+  var _classnames2 = _interopRequireDefault(_classnames);
+  
   var OnOffSwitch = (function (_Component) {
     _inherits(OnOffSwitch, _Component);
   
@@ -6116,7 +6135,7 @@ module.exports =
       key: 'propTypes',
       value: {
         id: _react.PropTypes.string.isRequired,
-        on: _react.PropTypes.bool.isRequired,
+        state: _react.PropTypes.number.isRequired,
         onToggle: _react.PropTypes.func.isRequired
       },
       enumerable: true
@@ -6130,20 +6149,27 @@ module.exports =
     }
   
     _createClass(OnOffSwitch, [{
+      key: 'onToggle',
+      value: function onToggle() {
+        var on = this.props.state > 0;
+        this.props.onToggle(!on);
+      }
+    }, {
       key: 'render',
       value: function render() {
+        var stateClass = this.props.state === 1 ? _OnOffSwitchScss2['default'].partial : _OnOffSwitchScss2['default'].full;
         return _react2['default'].createElement(
           'div',
           { className: _OnOffSwitchScss2['default'].onoffswitch },
           _react2['default'].createElement('input', { type: 'checkbox', name: 'onoffswitch',
-            className: _OnOffSwitchScss2['default'].onoffswitchCheckbox, id: this.props.id,
-            checked: this.props.on,
-            onChange: this.props.onToggle.bind(this)
+            className: (0, _classnames2['default'])(_OnOffSwitchScss2['default'].onoffswitchCheckbox, stateClass), id: this.props.id,
+            checked: this.props.state > 0,
+            onChange: this.onToggle.bind(this)
           }),
           _react2['default'].createElement(
             'label',
-            { className: _OnOffSwitchScss2['default'].onoffswitchLabel, htmlFor: this.props.id },
-            _react2['default'].createElement('span', { className: _OnOffSwitchScss2['default'].onoffswitchInner }),
+            { className: (0, _classnames2['default'])(_OnOffSwitchScss2['default'].onoffswitchLabel, stateClass), htmlFor: this.props.id },
+            _react2['default'].createElement('span', { className: (0, _classnames2['default'])(_OnOffSwitchScss2['default'].onoffswitchInner, stateClass) }),
             _react2['default'].createElement('span', { className: _OnOffSwitchScss2['default'].onoffswitchSwitch })
           )
         );
@@ -6199,7 +6225,7 @@ module.exports =
   
   
   // module
-  exports.push([module.id, ".OnOffSwitch_onoffswitch_3aL {\n  position: relative;\n  display: table-cell;\n  vertical-align: middle;\n  width: 50px;\n  -webkit-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n}\n.OnOffSwitch_onoffswitch_3aL .OnOffSwitch_onoffswitchCheckbox_3ON {\n  display: none\n}\n.OnOffSwitch_onoffswitch_3aL .OnOffSwitch_onoffswitchCheckbox_3ON:checked + .OnOffSwitch_onoffswitchLabel_1z- .OnOffSwitch_onoffswitchInner_suM {\n  margin-left: 0;\n}\n.OnOffSwitch_onoffswitch_3aL .OnOffSwitch_onoffswitchCheckbox_3ON:checked + .OnOffSwitch_onoffswitchLabel_1z- .OnOffSwitch_onoffswitchSwitch_1-K {\n  right: 0;\n}\n.OnOffSwitch_onoffswitch_3aL .OnOffSwitch_onoffswitchLabel_1z- {\n  display: block;\n  overflow: hidden;\n  cursor: pointer;\n  border: 2px solid #CCCCCC;\n  border-radius: 18px;\n}\n.OnOffSwitch_onoffswitch_3aL .OnOffSwitch_onoffswitchInner_suM {\n  display: block;\n  width: 200%;\n  margin-left: -100%;\n  -webkit-transition: margin 0.3s ease-in 0s;\n  -o-transition: margin 0.3s ease-in 0s;\n  transition: margin 0.3s ease-in 0s\n}\n.OnOffSwitch_onoffswitch_3aL .OnOffSwitch_onoffswitchInner_suM:before, .OnOffSwitch_onoffswitch_3aL .OnOffSwitch_onoffswitchInner_suM:after {\n  display: block;\n  float: left;\n  width: 50%;\n  height: 18px;\n  padding: 0;\n  line-height: 18px;\n  font-size: 12px;\n  color: white;\n  font-weight: 700;\n  -webkit-box-sizing: border-box;\n          box-sizing: border-box;\n}\n.OnOffSwitch_onoffswitch_3aL .OnOffSwitch_onoffswitchInner_suM:before {\n  content: \"on\";\n  padding-left: 10px;\n  background-color: #FFF7C2;\n  color: #474029;\n}\n.OnOffSwitch_onoffswitch_3aL .OnOffSwitch_onoffswitchInner_suM:after {\n  content: \"off\";\n  padding-right: 10px;\n  background-color: #373634;\n  color: #D6D6D6;\n  text-align: right;\n}\n.OnOffSwitch_onoffswitch_3aL .OnOffSwitch_onoffswitchSwitch_1-K {\n  display: block;\n  width: 18px;\n  margin: 0px;\n  background: #FFFFFF;\n  position: absolute;\n  top: 0;\n  bottom: 0;\n  right: 32px;\n  border: 2px solid #CCCCCC;\n  border-radius: 18px;\n  -webkit-transition: all 0.3s ease-in 0s;\n  -o-transition: all 0.3s ease-in 0s;\n  transition: all 0.3s ease-in 0s;\n}\n", "", {"version":3,"sources":["/./src/components/OnOffSwitch/OnOffSwitch.scss"],"names":[],"mappings":"AAAA;EACE,mBAAmB;EACnB,oBAAoB;EACpB,uBAAuB;EACvB,YAAY;EACZ,0BAA0B;EAC1B,uBAAuB;EACvB,sBAAsB;CA0EvB;AAxEC;EACE,aAAc;CAaf;AATK;EACE,eAAe;CAChB;AAED;EACE,SAAS;CACV;AAKP;EACE,eAAe;EACf,iBAAiB;EACjB,gBAAgB;EAChB,0BAA0B;EAC1B,oBAAoB;CACrB;AAED;EACE,eAAe;EACf,YAAY;EACZ,mBAAmB;EACnB,2CAAmC;EAAnC,sCAAmC;EAAnC,kCAAmC;CA6BpC;AA3BC;EACE,eAAe;EACf,YAAY;EACZ,WAAW;EACX,aAAa;EACb,WAAW;EACX,kBAAkB;EAClB,gBAAgB;EAChB,aAAa;EACb,iBAAiB;EACjB,+BAAuB;UAAvB,uBAAuB;CACxB;AAED;EACE,cAAc;EACd,mBAAmB;EACnB,0BAA0B;EAC1B,eAAe;CAChB;AAED;EACE,eAAe;EACf,oBAAoB;EACpB,0BAA0B;EAC1B,eAAe;EACf,kBAAkB;CACnB;AAGH;EACE,eAAe;EACf,YAAY;EACZ,YAAY;EACZ,oBAAoB;EACpB,mBAAmB;EACnB,OAAO;EACP,UAAU;EACV,YAAY;EACZ,0BAA0B;EAC1B,oBAAoB;EACpB,wCAAgC;EAAhC,mCAAgC;EAAhC,gCAAgC;CACjC","file":"OnOffSwitch.scss","sourcesContent":[".onoffswitch {\n  position: relative;\n  display: table-cell;\n  vertical-align: middle;\n  width: 50px;\n  -webkit-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n\n  .onoffswitchCheckbox {\n    display: none;\n\n    &:checked {\n      + .onoffswitchLabel {\n        .onoffswitchInner {\n          margin-left: 0;\n        }\n\n        .onoffswitchSwitch {\n          right: 0;\n        }\n      }\n    }\n  }\n\n  .onoffswitchLabel {\n    display: block;\n    overflow: hidden;\n    cursor: pointer;\n    border: 2px solid #CCCCCC;\n    border-radius: 18px;\n  }\n\n  .onoffswitchInner {\n    display: block;\n    width: 200%;\n    margin-left: -100%;\n    transition: margin 0.3s ease-in 0s;\n\n    &:before, &:after {\n      display: block;\n      float: left;\n      width: 50%;\n      height: 18px;\n      padding: 0;\n      line-height: 18px;\n      font-size: 12px;\n      color: white;\n      font-weight: 700;\n      box-sizing: border-box;\n    }\n\n    &:before {\n      content: \"on\";\n      padding-left: 10px;\n      background-color: #FFF7C2;\n      color: #474029;\n    }\n\n    &:after {\n      content: \"off\";\n      padding-right: 10px;\n      background-color: #373634;\n      color: #D6D6D6;\n      text-align: right;\n    }\n  }\n\n  .onoffswitchSwitch {\n    display: block;\n    width: 18px;\n    margin: 0px;\n    background: #FFFFFF;\n    position: absolute;\n    top: 0;\n    bottom: 0;\n    right: 32px;\n    border: 2px solid #CCCCCC;\n    border-radius: 18px;\n    transition: all 0.3s ease-in 0s;\n  }\n}\n"],"sourceRoot":"webpack://"}]);
+  exports.push([module.id, ".OnOffSwitch_onoffswitch_3aL {\n  position: relative;\n  display: table-cell;\n  vertical-align: middle;\n  width: 50px;\n  -webkit-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n}\n.OnOffSwitch_onoffswitch_3aL .OnOffSwitch_onoffswitchCheckbox_3ON {\n  display: none\n}\n.OnOffSwitch_onoffswitch_3aL .OnOffSwitch_onoffswitchCheckbox_3ON:checked + .OnOffSwitch_onoffswitchLabel_1z- .OnOffSwitch_onoffswitchInner_suM {\n  margin-left: 0;\n}\n.OnOffSwitch_onoffswitch_3aL .OnOffSwitch_onoffswitchCheckbox_3ON:checked + .OnOffSwitch_onoffswitchLabel_1z- .OnOffSwitch_onoffswitchSwitch_1-K {\n  right: 0;\n}\n.OnOffSwitch_onoffswitch_3aL .OnOffSwitch_onoffswitchCheckbox_3ON:checked.OnOffSwitch_partial_2dt + .OnOffSwitch_onoffswitchLabel_1z- .OnOffSwitch_onoffswitchInner_suM {\n  margin-left: 50%;\n}\n.OnOffSwitch_onoffswitch_3aL .OnOffSwitch_onoffswitchCheckbox_3ON:checked.OnOffSwitch_partial_2dt + .OnOffSwitch_onoffswitchLabel_1z- .OnOffSwitch_onoffswitchSwitch_1-K {\n  right: 15px;\n}\n.OnOffSwitch_onoffswitch_3aL .OnOffSwitch_onoffswitchLabel_1z- {\n  display: block;\n  overflow: hidden;\n  cursor: pointer;\n  border: 2px solid #CCCCCC;\n  border-radius: 18px\n}\n.OnOffSwitch_onoffswitch_3aL .OnOffSwitch_onoffswitchLabel_1z-.OnOffSwitch_partial_2dt {\n  background-color: #ddd;\n}\n.OnOffSwitch_onoffswitch_3aL .OnOffSwitch_onoffswitchLabel_1z-.OnOffSwitch_full_3lp {\n  background-color: #fff;\n}\n.OnOffSwitch_onoffswitch_3aL .OnOffSwitch_onoffswitchInner_suM {\n  display: block;\n  width: 200%;\n  margin-left: -100%;\n  -webkit-transition: margin 0.3s ease-in 0s;\n  -o-transition: margin 0.3s ease-in 0s;\n  transition: margin 0.3s ease-in 0s\n}\n.OnOffSwitch_onoffswitch_3aL .OnOffSwitch_onoffswitchInner_suM:before, .OnOffSwitch_onoffswitch_3aL .OnOffSwitch_onoffswitchInner_suM:after {\n  display: block;\n  float: left;\n  width: 50%;\n  height: 18px;\n  padding: 0;\n  line-height: 18px;\n  font-size: 12px;\n  color: white;\n  font-weight: 700;\n  -webkit-box-sizing: border-box;\n          box-sizing: border-box;\n}\n.OnOffSwitch_onoffswitch_3aL .OnOffSwitch_onoffswitchInner_suM:before {\n  content: \"on\";\n  padding-left: 10px;\n  background-color: #FFF7C2;\n  color: #474029;\n}\n.OnOffSwitch_onoffswitch_3aL .OnOffSwitch_onoffswitchInner_suM:after {\n  content: \"off\";\n  padding-right: 10px;\n  background-color: #373634;\n  color: #D6D6D6;\n  text-align: right;\n}\n.OnOffSwitch_onoffswitch_3aL .OnOffSwitch_onoffswitchInner_suM.OnOffSwitch_partial_2dt {}\n.OnOffSwitch_onoffswitch_3aL .OnOffSwitch_onoffswitchInner_suM.OnOffSwitch_partial_2dt:before, .OnOffSwitch_onoffswitch_3aL .OnOffSwitch_onoffswitchInner_suM.OnOffSwitch_partial_2dt:after {\n  content: \"\";\n  background-color: #ddd;\n}\n.OnOffSwitch_onoffswitch_3aL .OnOffSwitch_onoffswitchSwitch_1-K {\n  display: block;\n  width: 18px;\n  margin: 0px;\n  background: #FFFFFF;\n  position: absolute;\n  top: 0;\n  bottom: 0;\n  right: 32px;\n  border: 2px solid #CCCCCC;\n  border-radius: 18px;\n  -webkit-transition: all 0.3s ease-in 0s;\n  -o-transition: all 0.3s ease-in 0s;\n  transition: all 0.3s ease-in 0s;\n}\n", "", {"version":3,"sources":["/./src/components/OnOffSwitch/OnOffSwitch.scss"],"names":[],"mappings":"AAAA;EACE,mBAAmB;EACnB,oBAAoB;EACpB,uBAAuB;EACvB,YAAY;EACZ,0BAA0B;EAC1B,uBAAuB;EACvB,sBAAsB;CAsGvB;AApGC;EACE,aAAc;CAyBf;AArBK;EACE,eAAe;CAChB;AAED;EACE,SAAS;CACV;AAKC;EACE,iBAAiB;CAClB;AAED;EACE,YAAY;CACb;AAMT;EACE,eAAe;EACf,iBAAiB;EACjB,gBAAgB;EAChB,0BAA0B;EAC1B,mBAAoB;CASrB;AAPC;EACE,uBAAuB;CACxB;AAED;EACE,uBAAuB;CACxB;AAGH;EACE,eAAe;EACf,YAAY;EACZ,mBAAmB;EACnB,2CAAmC;EAAnC,sCAAmC;EAAnC,kCAAmC;CAqCpC;AAnCC;EACE,eAAe;EACf,YAAY;EACZ,WAAW;EACX,aAAa;EACb,WAAW;EACX,kBAAkB;EAClB,gBAAgB;EAChB,aAAa;EACb,iBAAiB;EACjB,+BAAuB;UAAvB,uBAAuB;CACxB;AAED;EACE,cAAc;EACd,mBAAmB;EACnB,0BAA0B;EAC1B,eAAe;CAChB;AAED;EACE,eAAe;EACf,oBAAoB;EACpB,0BAA0B;EAC1B,eAAe;EACf,kBAAkB;CACnB;AAED,yFAMC;AALC;EAEE,YAAY;EACZ,uBAAuB;CACxB;AAIL;EACE,eAAe;EACf,YAAY;EACZ,YAAY;EACZ,oBAAoB;EACpB,mBAAmB;EACnB,OAAO;EACP,UAAU;EACV,YAAY;EACZ,0BAA0B;EAC1B,oBAAoB;EACpB,wCAAgC;EAAhC,mCAAgC;EAAhC,gCAAgC;CACjC","file":"OnOffSwitch.scss","sourcesContent":[".onoffswitch {\n  position: relative;\n  display: table-cell;\n  vertical-align: middle;\n  width: 50px;\n  -webkit-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n\n  .onoffswitchCheckbox {\n    display: none;\n\n    &:checked {\n      + .onoffswitchLabel {\n        .onoffswitchInner {\n          margin-left: 0;\n        }\n\n        .onoffswitchSwitch {\n          right: 0;\n        }\n      }\n\n      &.partial {\n        + .onoffswitchLabel {\n          .onoffswitchInner {\n            margin-left: 50%;\n          }\n\n          .onoffswitchSwitch {\n            right: 15px;\n          }\n        }\n      }\n    }\n  }\n\n  .onoffswitchLabel {\n    display: block;\n    overflow: hidden;\n    cursor: pointer;\n    border: 2px solid #CCCCCC;\n    border-radius: 18px;\n\n    &.partial {\n      background-color: #ddd;\n    }\n\n    &.full {\n      background-color: #fff;\n    }\n  }\n\n  .onoffswitchInner {\n    display: block;\n    width: 200%;\n    margin-left: -100%;\n    transition: margin 0.3s ease-in 0s;\n\n    &:before, &:after {\n      display: block;\n      float: left;\n      width: 50%;\n      height: 18px;\n      padding: 0;\n      line-height: 18px;\n      font-size: 12px;\n      color: white;\n      font-weight: 700;\n      box-sizing: border-box;\n    }\n\n    &:before {\n      content: \"on\";\n      padding-left: 10px;\n      background-color: #FFF7C2;\n      color: #474029;\n    }\n\n    &:after {\n      content: \"off\";\n      padding-right: 10px;\n      background-color: #373634;\n      color: #D6D6D6;\n      text-align: right;\n    }\n\n    &.partial {\n      &:before,\n      &:after {\n        content: \"\";\n        background-color: #ddd;\n      }\n    }\n  }\n\n  .onoffswitchSwitch {\n    display: block;\n    width: 18px;\n    margin: 0px;\n    background: #FFFFFF;\n    position: absolute;\n    top: 0;\n    bottom: 0;\n    right: 32px;\n    border: 2px solid #CCCCCC;\n    border-radius: 18px;\n    transition: all 0.3s ease-in 0s;\n  }\n}\n"],"sourceRoot":"webpack://"}]);
   
   // exports
   exports.locals = {
@@ -6207,7 +6233,9 @@ module.exports =
   	"onoffswitchCheckbox": "OnOffSwitch_onoffswitchCheckbox_3ON",
   	"onoffswitchLabel": "OnOffSwitch_onoffswitchLabel_1z-",
   	"onoffswitchInner": "OnOffSwitch_onoffswitchInner_suM",
-  	"onoffswitchSwitch": "OnOffSwitch_onoffswitchSwitch_1-K"
+  	"onoffswitchSwitch": "OnOffSwitch_onoffswitchSwitch_1-K",
+  	"partial": "OnOffSwitch_partial_2dt",
+  	"full": "OnOffSwitch_full_3lp"
   };
 
 /***/ },
