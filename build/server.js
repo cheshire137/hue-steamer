@@ -4117,6 +4117,8 @@ module.exports =
   
   function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
   
+  function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) arr2[i] = arr[i]; return arr2; } else { return Array.from(arr); } }
+  
   function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
   
   function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
@@ -4185,33 +4187,66 @@ module.exports =
         });
       }
     }, {
+      key: 'onModelChange',
+      value: function onModelChange(event) {
+        var _this3 = this;
+  
+        var model = event.target.value;
+        if (model.length === 0) {
+          model = undefined;
+        }
+        this.setState({ model: model }, function () {
+          _this3.handleSubmit();
+        });
+      }
+    }, {
       key: 'getFilteredLightIDs',
       value: function getFilteredLightIDs() {
-        var _this3 = this;
+        var _this4 = this;
   
         var filteredIDs = this.props.ids;
         if (typeof this.state.filter !== 'undefined') {
           filteredIDs = filteredIDs.filter(function (id) {
-            var light = _this3.props.lights[id];
+            var light = _this4.props.lights[id];
             if (typeof light !== 'object') {
               return true;
             }
-            return light.name.toLowerCase().indexOf(_this3.state.filter) > -1;
+            return light.name.toLowerCase().indexOf(_this4.state.filter) > -1;
           });
         }
         if (typeof this.state.lightState !== 'undefined') {
           filteredIDs = filteredIDs.filter(function (id) {
-            var light = _this3.props.lights[id];
+            var light = _this4.props.lights[id];
             if (typeof light !== 'object') {
               return true;
             }
-            if (light.state.on && _this3.state.lightState === 'on') {
+            if (light.state.on && _this4.state.lightState === 'on') {
               return true;
             }
-            return !light.state.on && _this3.state.lightState === 'off';
+            return !light.state.on && _this4.state.lightState === 'off';
+          });
+        }
+        if (typeof this.state.model !== 'undefined') {
+          filteredIDs = filteredIDs.filter(function (id) {
+            var light = _this4.props.lights[id];
+            if (typeof light !== 'object') {
+              return true;
+            }
+            return light.modelid === _this4.state.model;
           });
         }
         return filteredIDs;
+      }
+    }, {
+      key: 'getModels',
+      value: function getModels() {
+        var _this5 = this;
+  
+        var models = this.props.ids.map(function (id) {
+          var light = _this5.props.lights[id];
+          return light.modelid;
+        });
+        return [].concat(_toConsumableArray(new Set(models)));
       }
     }, {
       key: 'handleSubmit',
@@ -4226,15 +4261,19 @@ module.exports =
         if (typeof this.state.lightState === 'string') {
           filters.push(this.state.lightState);
         }
+        if (typeof this.state.model === 'string') {
+          filters.push(this.state.model);
+        }
         var filterName = filters.length > 0 ? filters.join(', ') : undefined;
         this.props.onFiltered(filterName, this.getFilteredLightIDs());
       }
     }, {
       key: 'render',
       value: function render() {
-        var _this4 = this;
+        var _this6 = this;
   
         var filteredIDs = this.getFilteredLightIDs();
+        var models = this.getModels();
         return _react2['default'].createElement(
           'div',
           { className: _LightsListScss2['default'].lightListContainer },
@@ -4269,17 +4308,38 @@ module.exports =
                 { value: 'off' },
                 'Off'
               )
+            ),
+            _react2['default'].createElement(
+              'label',
+              { className: _LightsListScss2['default'].label },
+              'Model:'
+            ),
+            _react2['default'].createElement(
+              'select',
+              { className: _LightsListScss2['default'].modelFilter, onChange: this.onModelChange.bind(this) },
+              _react2['default'].createElement(
+                'option',
+                { value: '' },
+                'Any'
+              ),
+              models.map(function (model) {
+                return _react2['default'].createElement(
+                  'option',
+                  { value: model, key: model },
+                  model
+                );
+              })
             )
           ),
           _react2['default'].createElement(
             'ul',
             { className: _LightsListScss2['default'].lightList },
             filteredIDs.map(function (id) {
-              var light = _this4.props.lights[id];
+              var light = _this6.props.lights[id];
               var loaded = typeof light === 'object';
               var key = 'light-' + id + '-loaded-' + loaded;
               return _react2['default'].createElement(_LightLight2['default'], { key: key, id: id, light: light,
-                onLightLoaded: _this4.props.onLightLoaded
+                onLightLoaded: _this6.props.onLightLoaded
               });
             })
           )
@@ -4336,13 +4396,14 @@ module.exports =
   
   
   // module
-  exports.push([module.id, ".LightsList_lightList_14S {\n  list-style: none;\n  padding-left: 0;\n}\n\ninput[type=\"search\"].LightsList_lightFilter_1Kc, select.LightsList_stateFilter_RUq, .LightsList_label_3a5 {\n  display: inline-block;\n}\n\ninput[type=\"search\"].LightsList_lightFilter_1Kc {\n  width: 50%;\n}\n\nselect.LightsList_stateFilter_RUq {\n  width: 5em;\n}\n\n.LightsList_label_3a5 {\n  margin: 0 5px 0 30px;\n}\n", "", {"version":3,"sources":["/./src/components/LightsList/LightsList.scss"],"names":[],"mappings":"AAAA;EACE,iBAAiB;EACjB,gBAAgB;CACjB;;AAED;EAGE,sBAAsB;CACvB;;AAED;EACE,WAAW;CACZ;;AAED;EACE,WAAW;CACZ;;AAED;EACE,qBAAqB;CACtB","file":"LightsList.scss","sourcesContent":[".lightList {\n  list-style: none;\n  padding-left: 0;\n}\n\ninput[type=\"search\"].lightFilter,\nselect.stateFilter,\n.label {\n  display: inline-block;\n}\n\ninput[type=\"search\"].lightFilter {\n  width: 50%;\n}\n\nselect.stateFilter {\n  width: 5em;\n}\n\n.label {\n  margin: 0 5px 0 30px;\n}\n"],"sourceRoot":"webpack://"}]);
+  exports.push([module.id, ".LightsList_lightList_14S {\n  list-style: none;\n  padding-left: 0;\n}\n\ninput[type=\"search\"].LightsList_lightFilter_1Kc, select.LightsList_stateFilter_RUq, select.LightsList_modelFilter_3-H, .LightsList_label_3a5 {\n  display: inline-block;\n}\n\ninput[type=\"search\"].LightsList_lightFilter_1Kc {\n  width: 12em;\n}\n\nselect.LightsList_stateFilter_RUq {\n  width: 5em;\n}\n\nselect.LightsList_modelFilter_3-H {\n  width: 10em;\n}\n\n.LightsList_label_3a5 {\n  margin: 0 5px 0 30px;\n}\n", "", {"version":3,"sources":["/./src/components/LightsList/LightsList.scss"],"names":[],"mappings":"AAAA;EACE,iBAAiB;EACjB,gBAAgB;CACjB;;AAED;EAIE,sBAAsB;CACvB;;AAED;EACE,YAAY;CACb;;AAED;EACE,WAAW;CACZ;;AAED;EACE,YAAY;CACb;;AAED;EACE,qBAAqB;CACtB","file":"LightsList.scss","sourcesContent":[".lightList {\n  list-style: none;\n  padding-left: 0;\n}\n\ninput[type=\"search\"].lightFilter,\nselect.stateFilter,\nselect.modelFilter,\n.label {\n  display: inline-block;\n}\n\ninput[type=\"search\"].lightFilter {\n  width: 12em;\n}\n\nselect.stateFilter {\n  width: 5em;\n}\n\nselect.modelFilter {\n  width: 10em;\n}\n\n.label {\n  margin: 0 5px 0 30px;\n}\n"],"sourceRoot":"webpack://"}]);
   
   // exports
   exports.locals = {
   	"lightList": "LightsList_lightList_14S",
   	"lightFilter": "LightsList_lightFilter_1Kc",
   	"stateFilter": "LightsList_stateFilter_RUq",
+  	"modelFilter": "LightsList_modelFilter_3-H",
   	"label": "LightsList_label_3a5"
   };
 

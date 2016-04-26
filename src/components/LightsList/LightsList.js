@@ -37,6 +37,16 @@ class LightsList extends Component {
     });
   }
 
+  onModelChange(event) {
+    let model = event.target.value;
+    if (model.length === 0) {
+      model = undefined;
+    }
+    this.setState({ model }, () => {
+      this.handleSubmit();
+    });
+  }
+
   getFilteredLightIDs() {
     let filteredIDs = this.props.ids;
     if (typeof this.state.filter !== 'undefined') {
@@ -60,7 +70,24 @@ class LightsList extends Component {
         return !light.state.on && this.state.lightState === 'off';
       });
     }
+    if (typeof this.state.model !== 'undefined') {
+      filteredIDs = filteredIDs.filter((id) => {
+        const light = this.props.lights[id];
+        if (typeof light !== 'object') {
+          return true;
+        }
+        return light.modelid === this.state.model;
+      });
+    }
     return filteredIDs;
+  }
+
+  getModels() {
+    const models = this.props.ids.map((id) => {
+      const light = this.props.lights[id];
+      return light.modelid;
+    });
+    return [...new Set(models)];
   }
 
   handleSubmit(event) {
@@ -74,12 +101,16 @@ class LightsList extends Component {
     if (typeof this.state.lightState === 'string') {
       filters.push(this.state.lightState);
     }
+    if (typeof this.state.model === 'string') {
+      filters.push(this.state.model);
+    }
     const filterName = filters.length > 0 ? filters.join(', ') : undefined;
     this.props.onFiltered(filterName, this.getFilteredLightIDs());
   }
 
   render() {
     const filteredIDs = this.getFilteredLightIDs();
+    const models = this.getModels();
     return (
       <div className={s.lightListContainer}>
         <form onSubmit={this.handleSubmit.bind(this)}>
@@ -93,6 +124,15 @@ class LightsList extends Component {
             <option value="">Any</option>
             <option value="on">On</option>
             <option value="off">Off</option>
+          </select>
+          <label className={s.label}>Model:</label>
+          <select className={s.modelFilter} onChange={this.onModelChange.bind(this)}>
+            <option value="">Any</option>
+            {models.map((model) => {
+              return (
+                <option value={model} key={model}>{model}</option>
+              );
+            })}
           </select>
         </form>
         <ul className={s.lightList}>
