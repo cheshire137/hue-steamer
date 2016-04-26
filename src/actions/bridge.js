@@ -80,6 +80,12 @@ class Bridge {
                             '?x=' + x + '&y=' + y, opts);
   }
 
+  static async setGroupColor(id, x, y) {
+    const opts = { method: 'POST' };
+    return this.makeRequest('/group/' + id + '/color' +
+                            '?x=' + x + '&y=' + y, opts);
+  }
+
   static async makeRequest(path, optionalOptions) {
     const options = optionalOptions || {};
     const url = Config[process.env.NODE_ENV].serverUri + path;

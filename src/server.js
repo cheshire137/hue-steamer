@@ -282,6 +282,22 @@ server.post('/light/:id/color', async (req, res) => {
   setLightState(api, req.params.id, state, res);
 });
 
+server.post('/group/:id/color', async (req, res) => {
+  const x = req.query.x;
+  const y = req.query.y;
+  if (typeof x !== 'string') {
+    res.status(400).send('{"error": "Must provide x color in x param"}');
+    return;
+  }
+  if (typeof y !== 'string') {
+    res.status(400).send('{"error": "Must provide y color in y param"}');
+    return;
+  }
+  const api = await getHueApi(req.query.connectionID);
+  const state = hue.lightState.create().on().xy(x, y);
+  setGroupLightState(api, req.params.id, state, res);
+});
+
 //
 // Register server-side rendering middleware
 // -----------------------------------------------------------------------------
