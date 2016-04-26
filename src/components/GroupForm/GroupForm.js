@@ -116,6 +116,8 @@ class GroupForm extends Component {
       checkedLightIDs = this.state.checkedLightIDs;
     }
     const name = typeof this.state.name === 'string' ? this.state.name : (this.props.name || '');
+    const showCancelLink = typeof this.props.id === 'string' ||
+        typeof this.props.name === 'string';
     return (
       <form onSubmit={this.handleSubmit.bind(this)}>
         <p className={s.helpText}>
@@ -147,7 +149,7 @@ class GroupForm extends Component {
           <button type="submit" className={s.btn} disabled={!this.isValid()}>
             Save
           </button>
-          {typeof this.props.id === 'string' ? (
+          {showCancelLink ? (
             <a href="#" className={s.cancelLink} onClick={this.onCancel.bind(this)}>
               Cancel
             </a>

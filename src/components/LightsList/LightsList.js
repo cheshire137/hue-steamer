@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import s from './LightsList.scss';
 import Light from '../Light/Light';
 import withStyles from '../../decorators/withStyles';
+import TimerMixin from 'react-timer-mixin';
 
 @withStyles(s)
 class LightsList extends Component {
@@ -9,32 +10,44 @@ class LightsList extends Component {
     lights: PropTypes.object.isRequired,
     onLightLoaded: PropTypes.func.isRequired,
     ids: PropTypes.array.isRequired,
+    onFiltered: PropTypes.func.isRequired,
   };
 
   constructor(props, context) {
     super(props, context);
-    this.state = { filter: undefined };
+    this.state = {};
   }
 
-  filterLights(event) {
-    let filter = event.target.value.toLowerCase().trim();
-    if (filter.length < 1) {
-      filter = undefined;
-    }
-    this.setState({ filter });
-  }
-
-  render() {
+  getFilteredLightIDs(filter) {
     let filteredIDs = this.props.ids;
-    if (typeof this.state.filter !== 'undefined') {
-      filteredIDs = this.props.ids.filter((id) => {
+    if (typeof filter !== 'undefined') {
+      filteredIDs = filteredIDs.filter((id) => {
         const light = this.props.lights[id];
         if (typeof light !== 'object') {
           return true;
         }
-        return light.name.toLowerCase().indexOf(this.state.filter) > -1;
+        return light.name.toLowerCase().indexOf(filter) > -1;
       });
     }
+    return filteredIDs;
+  }
+
+  filterLights(event) {
+    const callback = () => {
+      let filter = event.target.value.toLowerCase().trim();
+      if (filter.length < 1) {
+        filter = undefined;
+      }
+      if (this.state.filter !== filter) {
+        this.setState({ filter });
+        this.props.onFiltered(filter, this.getFilteredLightIDs(filter));
+      }
+    };
+    TimerMixin.setTimeout(callback, 750);
+  }
+
+  render() {
+    const filteredIDs = this.getFilteredLightIDs(this.state.filter);
     return (
       <div className={s.lightListContainer}>
         <input type="search" placeholder="Filter lights"

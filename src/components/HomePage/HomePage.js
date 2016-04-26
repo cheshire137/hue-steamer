@@ -120,12 +120,19 @@ class HomePage extends Component {
   }
 
   onGroupCanceled() {
+    const wasEditing = typeof this.state.editGroupID !== 'undefined';
     this.setState({
       editGroupName: undefined,
       editGroupID: undefined,
       editGroupLightIDs: undefined,
+      newGroupName: undefined,
+      newGroupLightIDs: undefined,
     }, () => {
-      this.showGroupsTab();
+      if (wasEditing) {
+        this.showGroupsTab();
+      } else {
+        this.showLightsTab();
+      }
     });
   }
 
@@ -145,6 +152,14 @@ class HomePage extends Component {
       groups: this.updateLightInGroups(light),
       lightIDs: lights.map((l) => l.id),
     });
+  }
+
+  onLightsFiltered(filter, lightIDs) {
+    if (typeof filter === 'string') {
+      this.setState({ newGroupLightIDs: lightIDs, newGroupName: filter });
+    } else {
+      this.setState({ newGroupLightIDs: undefined, newGroupName: undefined });
+    }
   }
 
   updateLightInGroups(light) {
@@ -258,6 +273,7 @@ class HomePage extends Component {
               <LightsList lights={this.state.lights}
                 ids={this.state.lightIDs}
                 onLightLoaded={this.onLightLoaded.bind(this)}
+                onFiltered={this.onLightsFiltered.bind(this)}
               />
             ) : (
               <p className={s.loading}>
@@ -283,8 +299,9 @@ class HomePage extends Component {
               onCreated={this.onGroupCreated.bind(this)}
               onUpdated={this.onGroupUpdated.bind(this)}
               onCanceled={this.onGroupCanceled.bind(this)}
-              name={this.state.editGroupName} id={this.state.editGroupID}
-              checkedLightIDs={this.state.editGroupLightIDs}
+              name={this.state.editGroupName || this.state.newGroupName}
+              id={this.state.editGroupID}
+              checkedLightIDs={this.state.editGroupLightIDs || this.state.newGroupLightIDs}
             />
           </div>
         </div>

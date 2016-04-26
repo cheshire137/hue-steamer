@@ -3467,12 +3467,19 @@ module.exports =
       value: function onGroupCanceled() {
         var _this3 = this;
   
+        var wasEditing = typeof this.state.editGroupID !== 'undefined';
         this.setState({
           editGroupName: undefined,
           editGroupID: undefined,
-          editGroupLightIDs: undefined
+          editGroupLightIDs: undefined,
+          newGroupName: undefined,
+          newGroupLightIDs: undefined
         }, function () {
-          _this3.showGroupsTab();
+          if (wasEditing) {
+            _this3.showGroupsTab();
+          } else {
+            _this3.showLightsTab();
+          }
         });
       }
     }, {
@@ -3495,6 +3502,15 @@ module.exports =
             return l.id;
           })
         });
+      }
+    }, {
+      key: 'onLightsFiltered',
+      value: function onLightsFiltered(filter, lightIDs) {
+        if (typeof filter === 'string') {
+          this.setState({ newGroupLightIDs: lightIDs, newGroupName: filter });
+        } else {
+          this.setState({ newGroupLightIDs: undefined, newGroupName: undefined });
+        }
       }
     }, {
       key: 'updateLightInGroups',
@@ -3641,7 +3657,8 @@ module.exports =
               { className: (0, _classnames2['default'])(_HomePageScss2['default'].lightsTab, _HomePageScss2['default'].tab, this.state.activeTab === 'lights' ? _HomePageScss2['default'].active : _HomePageScss2['default'].inactive) },
               haveLights ? _react2['default'].createElement(_LightsListLightsList2['default'], { lights: this.state.lights,
                 ids: this.state.lightIDs,
-                onLightLoaded: this.onLightLoaded.bind(this)
+                onLightLoaded: this.onLightLoaded.bind(this),
+                onFiltered: this.onLightsFiltered.bind(this)
               }) : _react2['default'].createElement(
                 'p',
                 { className: _HomePageScss2['default'].loading },
@@ -3668,8 +3685,9 @@ module.exports =
                 onCreated: this.onGroupCreated.bind(this),
                 onUpdated: this.onGroupUpdated.bind(this),
                 onCanceled: this.onGroupCanceled.bind(this),
-                name: this.state.editGroupName, id: this.state.editGroupID,
-                checkedLightIDs: this.state.editGroupLightIDs
+                name: this.state.editGroupName || this.state.newGroupName,
+                id: this.state.editGroupID,
+                checkedLightIDs: this.state.editGroupLightIDs || this.state.newGroupLightIDs
               })
             )
           )
@@ -4119,6 +4137,10 @@ module.exports =
   
   var _decoratorsWithStyles2 = _interopRequireDefault(_decoratorsWithStyles);
   
+  var _reactTimerMixin = __webpack_require__(92);
+  
+  var _reactTimerMixin2 = _interopRequireDefault(_reactTimerMixin);
+  
   var LightsList = (function (_Component) {
     _inherits(LightsList, _Component);
   
@@ -4127,7 +4149,8 @@ module.exports =
       value: {
         lights: _react.PropTypes.object.isRequired,
         onLightLoaded: _react.PropTypes.func.isRequired,
-        ids: _react.PropTypes.array.isRequired
+        ids: _react.PropTypes.array.isRequired,
+        onFiltered: _react.PropTypes.func.isRequired
       },
       enumerable: true
     }]);
@@ -4136,33 +4159,49 @@ module.exports =
       _classCallCheck(this, _LightsList);
   
       _get(Object.getPrototypeOf(_LightsList.prototype), 'constructor', this).call(this, props, context);
-      this.state = { filter: undefined };
+      this.state = {};
     }
   
     _createClass(LightsList, [{
-      key: 'filterLights',
-      value: function filterLights(event) {
-        var filter = event.target.value.toLowerCase().trim();
-        if (filter.length < 1) {
-          filter = undefined;
-        }
-        this.setState({ filter: filter });
-      }
-    }, {
-      key: 'render',
-      value: function render() {
+      key: 'getFilteredLightIDs',
+      value: function getFilteredLightIDs(filter) {
         var _this = this;
   
         var filteredIDs = this.props.ids;
-        if (typeof this.state.filter !== 'undefined') {
-          filteredIDs = this.props.ids.filter(function (id) {
+        if (typeof filter !== 'undefined') {
+          filteredIDs = filteredIDs.filter(function (id) {
             var light = _this.props.lights[id];
             if (typeof light !== 'object') {
               return true;
             }
-            return light.name.toLowerCase().indexOf(_this.state.filter) > -1;
+            return light.name.toLowerCase().indexOf(filter) > -1;
           });
         }
+        return filteredIDs;
+      }
+    }, {
+      key: 'filterLights',
+      value: function filterLights(event) {
+        var _this2 = this;
+  
+        var callback = function callback() {
+          var filter = event.target.value.toLowerCase().trim();
+          if (filter.length < 1) {
+            filter = undefined;
+          }
+          if (_this2.state.filter !== filter) {
+            _this2.setState({ filter: filter });
+            _this2.props.onFiltered(filter, _this2.getFilteredLightIDs(filter));
+          }
+        };
+        _reactTimerMixin2['default'].setTimeout(callback, 750);
+      }
+    }, {
+      key: 'render',
+      value: function render() {
+        var _this3 = this;
+  
+        var filteredIDs = this.getFilteredLightIDs(this.state.filter);
         return _react2['default'].createElement(
           'div',
           { className: _LightsListScss2['default'].lightListContainer },
@@ -4175,11 +4214,11 @@ module.exports =
             'ul',
             { className: _LightsListScss2['default'].lightList },
             filteredIDs.map(function (id) {
-              var light = _this.props.lights[id];
+              var light = _this3.props.lights[id];
               var loaded = typeof light === 'object';
               var key = 'light-' + id + '-loaded-' + loaded;
               return _react2['default'].createElement(_LightLight2['default'], { key: key, id: id, light: light,
-                onLightLoaded: _this.props.onLightLoaded
+                onLightLoaded: _this3.props.onLightLoaded
               });
             })
           )
@@ -5694,6 +5733,7 @@ module.exports =
           checkedLightIDs = this.state.checkedLightIDs;
         }
         var name = typeof this.state.name === 'string' ? this.state.name : this.props.name || '';
+        var showCancelLink = typeof this.props.id === 'string' || typeof this.props.name === 'string';
         return _react2['default'].createElement(
           'form',
           { onSubmit: this.handleSubmit.bind(this) },
@@ -5737,7 +5777,7 @@ module.exports =
               { type: 'submit', className: _GroupFormScss2['default'].btn, disabled: !this.isValid() },
               'Save'
             ),
-            typeof this.props.id === 'string' ? _react2['default'].createElement(
+            showCancelLink ? _react2['default'].createElement(
               'a',
               { href: '#', className: _GroupFormScss2['default'].cancelLink, onClick: this.onCancel.bind(this) },
               'Cancel'
@@ -6986,6 +7026,12 @@ module.exports =
 /***/ function(module, exports) {
 
   module.exports = require("front-matter");
+
+/***/ },
+/* 92 */
+/***/ function(module, exports) {
+
+  module.exports = require("react-timer-mixin");
 
 /***/ }
 /******/ ]);
