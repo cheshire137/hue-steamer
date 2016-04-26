@@ -4398,7 +4398,7 @@ module.exports =
             filteredIDs.map(function (id) {
               var light = _this6.props.lights[id];
               var loaded = typeof light === 'object';
-              var key = 'light-' + id + '-loaded-' + loaded;
+              var key = 'light-' + id + '-loaded-' + loaded + '-on-' + (loaded ? light.state.on : 'na') + '-xy-' + (loaded ? light.state.xy.join(',') : 'na');
               return _react2['default'].createElement(_LightLight2['default'], { key: key, id: id, light: light,
                 onLightLoaded: _this6.props.onLightLoaded
               });
@@ -5409,7 +5409,8 @@ module.exports =
             group.lights.forEach(function (light) {
               loaded = loaded && typeof light === 'object';
             });
-            var key = 'group-' + group.id + '-loaded-' + loaded;
+            var action = (group.action.on ? 'on' : 'off') + '.' + group.action.hue;
+            var key = 'group-' + group.id + '-loaded-' + loaded + '-action-' + action;
             return _react2['default'].createElement(_GroupGroup2['default'], _extends({ key: key }, group, {
               onLightLoaded: _this.props.onLightLoaded,
               onEdit: _this.props.onEdit
@@ -5612,9 +5613,18 @@ module.exports =
     }, {
       key: 'onColorChanged',
       value: function onColorChanged(success) {
-        if (!success) {
+        if (success) {
+          for (var i = 0; i < this.props.lights.length; i++) {
+            _actionsBridge2['default'].getLight(this.props.lights[i].id).then(this.props.onLightLoaded.bind(this))['catch'](this.onLightLoadError.bind(this));
+          }
+        } else {
           console.error('failed to change group color', this.props.name);
         }
+      }
+    }, {
+      key: 'onLightLoadError',
+      value: function onLightLoadError(response) {
+        console.error('failed to load light ' + this.props.id, response);
       }
     }, {
       key: 'getColorsFromLights',
@@ -5715,12 +5725,12 @@ module.exports =
           switchState = 2;
         }
         var nightDayClass = this.isNight() ? _GroupScss2['default'].night : _GroupScss2['default'].day;
-        var colorStyle = {};
         var colorPickerStyle = {
           display: this.state.showColorPicker ? 'block' : 'none'
         };
+        var pickerColor = undefined;
         if (typeof this.state.latestColor !== 'undefined') {
-          colorStyle.backgroundColor = '#' + this.state.latestColor;
+          pickerColor = '#' + this.state.latestColor;
         }
         return _react2['default'].createElement(
           'li',
@@ -5747,14 +5757,14 @@ module.exports =
               _react2['default'].createElement(
                 'button',
                 { type: 'button', onClick: this.toggleColorPicker.bind(this),
-                  className: (0, _classnames2['default'])(_GroupScss2['default'].colorBlock, nightDayClass), style: colorStyle
+                  className: (0, _classnames2['default'])(_GroupScss2['default'].colorBlock, nightDayClass)
                 },
-                colorStyle.backgroundColor ? '' : 'Set Color'
+                'Set Color'
               ),
               _react2['default'].createElement(
                 'div',
                 { style: colorPickerStyle, className: (0, _classnames2['default'])(_GroupScss2['default'].colorPickerWrapper, nightDayClass) },
-                _react2['default'].createElement(_reactColor.SliderPicker, { color: colorStyle.backgroundColor,
+                _react2['default'].createElement(_reactColor.SliderPicker, { color: pickerColor,
                   onChangeComplete: this.onColorPickerChange.bind(this)
                 })
               )

@@ -77,9 +77,19 @@ class Group extends Component {
   }
 
   onColorChanged(success) {
-    if (!success) {
+    if (success) {
+      for (let i = 0; i < this.props.lights.length; i++) {
+        Bridge.getLight(this.props.lights[i].id).
+               then(this.props.onLightLoaded.bind(this)).
+               catch(this.onLightLoadError.bind(this));
+      }
+    } else {
       console.error('failed to change group color', this.props.name);
     }
+  }
+
+  onLightLoadError(response) {
+    console.error('failed to load light ' + this.props.id, response);
   }
 
   getColorsFromLights(lights) {
@@ -168,12 +178,12 @@ class Group extends Component {
       switchState = 2;
     }
     const nightDayClass = this.isNight() ? s.night : s.day;
-    const colorStyle = {};
     const colorPickerStyle = {
       display: this.state.showColorPicker ? 'block' : 'none',
     };
+    let pickerColor = undefined;
     if (typeof this.state.latestColor !== 'undefined') {
-      colorStyle.backgroundColor = '#' + this.state.latestColor;
+      pickerColor = '#' + this.state.latestColor;
     }
     return (
       <li className={cx(s.group, nightDayClass)}>
@@ -194,12 +204,12 @@ class Group extends Component {
           {this.state.canSetColor ? (
             <div className={s.colorBlockAndPicker}>
               <button type="button" onClick={this.toggleColorPicker.bind(this)}
-                className={cx(s.colorBlock, nightDayClass)} style={colorStyle}
+                className={cx(s.colorBlock, nightDayClass)}
               >
-                {colorStyle.backgroundColor ? '' : 'Set Color'}
+                Set Color
               </button>
               <div style={colorPickerStyle} className={cx(s.colorPickerWrapper, nightDayClass)}>
-                <SliderPicker color={colorStyle.backgroundColor}
+                <SliderPicker color={pickerColor}
                   onChangeComplete={this.onColorPickerChange.bind(this)}
                 />
               </div>

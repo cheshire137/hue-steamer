@@ -24,7 +24,8 @@ class GroupsList extends Component {
           group.lights.forEach((light) => {
             loaded = loaded && typeof light === 'object';
           });
-          const key = 'group-' + group.id + '-loaded-' + loaded;
+          const action = (group.action.on ? 'on' : 'off') + '.' + group.action.hue;
+          const key = 'group-' + group.id + '-loaded-' + loaded + '-action-' + action;
           return (
             <Group key={key} {...group}
               onLightLoaded={this.props.onLightLoaded}

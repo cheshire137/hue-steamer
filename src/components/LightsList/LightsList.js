@@ -142,7 +142,9 @@ class LightsList extends Component {
           {filteredIDs.map((id) => {
             const light = this.props.lights[id];
             const loaded = typeof light === 'object';
-            const key = 'light-' + id + '-loaded-' + loaded;
+            const key = 'light-' + id + '-loaded-' + loaded +
+                '-on-' + (loaded ? light.state.on : 'na') +
+                '-xy-' + (loaded ? light.state.xy.join(',') : 'na');
             return (
               <Light key={key} id={id} light={light}
                 onLightLoaded={this.props.onLightLoaded}
