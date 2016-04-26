@@ -85,6 +85,9 @@ class LightsList extends Component {
   getModels() {
     const models = this.props.ids.map((id) => {
       const light = this.props.lights[id];
+      if (typeof light !== 'object') {
+        return undefined;
+      }
       return light.modelid;
     });
     return [...new Set(models)];

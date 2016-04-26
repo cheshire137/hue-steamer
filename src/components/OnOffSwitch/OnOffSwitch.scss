@@ -39,15 +39,28 @@
     display: block;
     overflow: hidden;
     cursor: pointer;
-    border: 2px solid #CCCCCC;
+    border-width: 2px;
+    border-style: solid;
     border-radius: 18px;
-
-    &.partial {
-      background-color: #ddd;
-    }
 
     &.full {
       background-color: #fff;
+    }
+
+    &.day {
+      border-color: #ccc;
+
+      &.partial {
+        background-color: #ddd;
+      }
+    }
+
+    &.night {
+      border-color: #97918A;
+
+      &.partial {
+        background-color: #97918A;
+      }
     }
   }
 
@@ -89,7 +102,20 @@
       &:before,
       &:after {
         content: "";
-        background-color: #ddd;
+      }
+
+      &.day {
+        &:before,
+        &:after {
+          background-color: #ddd;
+        }
+      }
+
+      &.night {
+        &:before,
+        &:after {
+          background-color: #97918A;
+        }
       }
     }
   }
@@ -98,13 +124,23 @@
     display: block;
     width: 18px;
     margin: 0px;
-    background: #FFFFFF;
     position: absolute;
     top: 0;
     bottom: 0;
     right: 32px;
-    border: 2px solid #CCCCCC;
+    border-width: 2px;
+    border-style: solid;
     border-radius: 18px;
     transition: all 0.3s ease-in 0s;
+
+    &.day {
+      border-color: #ccc;
+      background-color: #fff;
+    }
+
+    &.night {
+      border-color: #101010;
+      background-color: #E5E4E1;
+    }
   }
 }

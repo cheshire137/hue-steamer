@@ -21,8 +21,14 @@ class OnOffSwitch extends Component {
     this.props.onToggle(!on);
   }
 
+  isNight() {
+    const curTime = new Date();
+    return curTime.getHours() >= 20;
+  }
+
   render() {
     const stateClass = this.props.state === 1 ? s.partial : s.full;
+    const nightDayClass = this.isNight() ? s.night : s.day;
     return (
       <div className={s.onoffswitch}>
         <input type="checkbox" name="onoffswitch"
@@ -30,9 +36,9 @@ class OnOffSwitch extends Component {
           checked={this.props.state > 0}
           onChange={this.onToggle.bind(this)}
         />
-        <label className={cx(s.onoffswitchLabel, stateClass)} htmlFor={this.props.id}>
-          <span className={cx(s.onoffswitchInner, stateClass)}></span>
-          <span className={s.onoffswitchSwitch}></span>
+        <label className={cx(s.onoffswitchLabel, stateClass, nightDayClass)} htmlFor={this.props.id}>
+          <span className={cx(s.onoffswitchInner, stateClass, nightDayClass)}></span>
+          <span className={cx(s.onoffswitchSwitch, nightDayClass)}></span>
         </label>
       </div>
     );
