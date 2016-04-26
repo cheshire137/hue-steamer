@@ -94,7 +94,22 @@ class HomePage extends Component {
   }
 
   onGroupUpdated(group) {
-    console.log('updated group', group);
+    const newGroups = this.state.groups.slice();
+    for (let i = 0; i < newGroups.length; i++) {
+      if (newGroups[i].id === group.id) {
+        const oldGroup = newGroups[i];
+        for (const key in oldGroup) {
+          if (oldGroup.hasOwnProperty(key)) {
+            if (typeof group[key] === 'undefined') {
+              group[key] = oldGroup[key];
+            }
+          }
+        }
+        newGroups[i] = group;
+        break;
+      }
+    }
+    this.onGroupsLoaded(newGroups);
     this.setState({
       editGroupName: undefined,
       editGroupID: undefined,
@@ -105,7 +120,6 @@ class HomePage extends Component {
   }
 
   onGroupCanceled() {
-    console.log('canceled editing group');
     this.setState({
       editGroupName: undefined,
       editGroupID: undefined,

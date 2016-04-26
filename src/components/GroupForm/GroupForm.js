@@ -14,31 +14,30 @@ class GroupForm extends Component {
     onUpdated: PropTypes.func.isRequired,
     onCanceled: PropTypes.func.isRequired,
     name: PropTypes.string,
+    action: PropTypes.object,
+    recycle: PropTypes.bool,
+    type: PropTypes.string,
     id: PropTypes.string,
     checkedLightIDs: PropTypes.array,
   };
 
   constructor(props, context) {
     super(props, context);
-    this.state = { name: '', checkedLightIDs: [] };
+    this.state = { name: undefined, checkedLightIDs: undefined };
   }
 
   onNameChange(e) {
-    this.setState({ name: e.target.value.trim() });
+    this.setState({ name: e.target.value });
   }
 
   onLightToggled(id, checked) {
     let checkedLightIDs = this.state.checkedLightIDs;
     const index = checkedLightIDs.indexOf(id);
-    if (checked) {
-      if (index < 0) {
-        checkedLightIDs.push(id);
-      }
-    } else {
-      if (index > -1) {
-        checkedLightIDs = checkedLightIDs.slice(0, index).
-            concat(checkedLightIDs.slice(index + 1, checkedLightIDs.length));
-      }
+    if (checked && index < 0) {
+      checkedLightIDs.push(id);
+    } else if (!checked && index > -1) {
+      checkedLightIDs = checkedLightIDs.slice(0, index).
+          concat(checkedLightIDs.slice(index + 1, checkedLightIDs.length));
     }
     this.setState({ checkedLightIDs });
   }
@@ -47,18 +46,32 @@ class GroupForm extends Component {
     group.name = name;
     const lights = this.props.lights;
     group.lights = lightIDs.map((id) => lights[id]);
-    this.props.onCreated(group);
-    this.setState({ checkedLightIDs: [], name: '' });
+    if (typeof this.props.id === 'string') {
+      this.props.onUpdated(group);
+    } else {
+      this.props.onCreated(group);
+    }
+    this.setState({ checkedLightIDs: undefined, name: undefined });
+  }
+
+  onGroupUpdated(name, lightIDs, success) {
+    if (success) {
+      const group = { id: this.props.id };
+      this.onGroupSaved(name, lightIDs, group);
+    }
   }
 
   onGroupSaveError(name, response) {
-    console.error('failed to create group', name, response);
+    const action = typeof this.props.id === 'string' ? 'update' : 'create';
+    console.error('failed to ' + action + ' group', name, response);
   }
 
   onCancel(event) {
     event.preventDefault();
     event.target.blur();
-    this.props.onCanceled();
+    this.setState({ name: undefined, checkedLightIDs: undefined }, () => {
+      this.props.onCanceled();
+    });
   }
 
   handleSubmit(e) {
@@ -66,25 +79,43 @@ class GroupForm extends Component {
     if (!this.isValid()) {
       return;
     }
-    const name = this.state.name;
-    const lightIDs = this.state.checkedLightIDs;
-    Bridge.createGroup(name, lightIDs).
-           then(this.onGroupSaved.bind(this, name, lightIDs)).
-           catch(this.onGroupSaveError.bind(this, name));
+    let name = this.props.name;
+    if (typeof this.state.name === 'string') {
+      name = this.state.name;
+    }
+    let lightIDs = this.props.checkedLightIDs;
+    if (typeof this.state.checkedLightIDs === 'object') {
+      lightIDs = this.state.checkedLightIDs;
+    }
+    if (typeof this.props.id === 'string') {
+      Bridge.updateGroup(this.props.id, name, lightIDs).
+             then(this.onGroupUpdated.bind(this, name, lightIDs)).
+             catch(this.onGroupSaveError.bind(this, name));
+    } else {
+      Bridge.createGroup(name, lightIDs).
+             then(this.onGroupSaved.bind(this, name, lightIDs)).
+             catch(this.onGroupSaveError.bind(this, name));
+    }
   }
 
   isValid() {
-    if (this.state.name.length < 1) {
+    if (typeof this.state.name === 'string' && this.state.name.trim().length < 1) {
       return false;
     }
-    if (this.state.checkedLightIDs.length < 1) {
+    if (typeof this.state.checkedLightIDs === 'object' && this.state.checkedLightIDs.length < 1) {
       return false;
     }
     return true;
   }
 
   render() {
-    const checkedLightIDs = this.props.checkedLightIDs || this.state.checkedLightIDs;
+    let checkedLightIDs = [];
+    if (typeof this.state.checkedLightIDs === 'undefined') {
+      checkedLightIDs = this.props.checkedLightIDs || [];
+    } else {
+      checkedLightIDs = this.state.checkedLightIDs;
+    }
+    const name = typeof this.state.name === 'string' ? this.state.name : (this.props.name || '');
     return (
       <form onSubmit={this.handleSubmit.bind(this)}>
         <p className={s.helpText}>
@@ -94,7 +125,7 @@ class GroupForm extends Component {
           <label className={s.label} htmlFor="new-group-name">Name:</label>
           <input type="text" id="new-group-name"
             onChange={this.onNameChange.bind(this)}
-            value={this.state.name || this.props.name }
+            value={name}
             placeholder="e.g., Back Bedroom"
             className={s.textField}
             autoFocus="autofocus"

@@ -83,11 +83,11 @@ module.exports =
   
   var _routes2 = _interopRequireDefault(_routes);
   
-  var _componentsHtml = __webpack_require__(72);
+  var _componentsHtml = __webpack_require__(83);
   
   var _componentsHtml2 = _interopRequireDefault(_componentsHtml);
   
-  var _assets = __webpack_require__(73);
+  var _assets = __webpack_require__(84);
   
   var _assets2 = _interopRequireDefault(_assets);
   
@@ -97,11 +97,11 @@ module.exports =
   
   var _configJson2 = _interopRequireDefault(_configJson);
   
-  var _sqlite = __webpack_require__(74);
+  var _sqlite = __webpack_require__(85);
   
   var _sqlite2 = _interopRequireDefault(_sqlite);
   
-  var hue = __webpack_require__(75);
+  var hue = __webpack_require__(86);
   var server = global.server = (0, _express2['default'])();
   
   function getBridge(id) {
@@ -234,12 +234,13 @@ module.exports =
   //
   // Register API middleware
   // -----------------------------------------------------------------------------
-  server.use('/api/content', __webpack_require__(76));
+  server.use('/api/content', __webpack_require__(87));
   
   server.all('*', function (req, res, next) {
     res.header('Access-Control-Allow-Origin', _configJson2['default'][("development")].clientUri);
     res.header('Access-Control-Allow-Headers', 'X-Requested-With');
     res.header('Access-Control-Allow-Headers', 'Content-Type');
+    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
     next();
   });
   
@@ -894,7 +895,7 @@ module.exports =
   
   var _componentsHomePage2 = _interopRequireDefault(_componentsHomePage);
   
-  var _componentsSettingsPage = __webpack_require__(67);
+  var _componentsSettingsPage = __webpack_require__(78);
   
   var _componentsSettingsPage2 = _interopRequireDefault(_componentsSettingsPage);
   
@@ -3323,15 +3324,15 @@ module.exports =
   
   var _LightsListLightsList2 = _interopRequireDefault(_LightsListLightsList);
   
-  var _GroupsListGroupsList = __webpack_require__(60);
+  var _GroupsListGroupsList = __webpack_require__(63);
   
   var _GroupsListGroupsList2 = _interopRequireDefault(_GroupsListGroupsList);
   
-  var _GroupFormGroupForm = __webpack_require__(92);
+  var _GroupFormGroupForm = __webpack_require__(70);
   
   var _GroupFormGroupForm2 = _interopRequireDefault(_GroupFormGroupForm);
   
-  var _storesLocalStorage = __webpack_require__(90);
+  var _storesLocalStorage = __webpack_require__(76);
   
   var _storesLocalStorage2 = _interopRequireDefault(_storesLocalStorage);
   
@@ -3437,7 +3438,22 @@ module.exports =
       value: function onGroupUpdated(group) {
         var _this2 = this;
   
-        console.log('updated group', group);
+        var newGroups = this.state.groups.slice();
+        for (var i = 0; i < newGroups.length; i++) {
+          if (newGroups[i].id === group.id) {
+            var oldGroup = newGroups[i];
+            for (var key in oldGroup) {
+              if (oldGroup.hasOwnProperty(key)) {
+                if (typeof group[key] === 'undefined') {
+                  group[key] = oldGroup[key];
+                }
+              }
+            }
+            newGroups[i] = group;
+            break;
+          }
+        }
+        this.onGroupsLoaded(newGroups);
         this.setState({
           editGroupName: undefined,
           editGroupID: undefined,
@@ -3451,7 +3467,6 @@ module.exports =
       value: function onGroupCanceled() {
         var _this3 = this;
   
-        console.log('canceled editing group');
         this.setState({
           editGroupName: undefined,
           editGroupID: undefined,
@@ -4246,7 +4261,7 @@ module.exports =
   
   var _decoratorsWithStyles2 = _interopRequireDefault(_decoratorsWithStyles);
   
-  var _OnOffSwitchOnOffSwitch = __webpack_require__(81);
+  var _OnOffSwitchOnOffSwitch = __webpack_require__(60);
   
   var _OnOffSwitchOnOffSwitch2 = _interopRequireDefault(_OnOffSwitchOnOffSwitch);
   
@@ -4924,6 +4939,152 @@ module.exports =
     value: true
   });
   
+  var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+  
+  var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+  
+  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  
+  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+  
+  function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+  
+  var _react = __webpack_require__(4);
+  
+  var _react2 = _interopRequireDefault(_react);
+  
+  var _OnOffSwitchScss = __webpack_require__(61);
+  
+  var _OnOffSwitchScss2 = _interopRequireDefault(_OnOffSwitchScss);
+  
+  var _decoratorsWithStyles = __webpack_require__(24);
+  
+  var _decoratorsWithStyles2 = _interopRequireDefault(_decoratorsWithStyles);
+  
+  var _classnames = __webpack_require__(47);
+  
+  var _classnames2 = _interopRequireDefault(_classnames);
+  
+  var OnOffSwitch = (function (_Component) {
+    _inherits(OnOffSwitch, _Component);
+  
+    _createClass(OnOffSwitch, null, [{
+      key: 'propTypes',
+      value: {
+        id: _react.PropTypes.string.isRequired,
+        state: _react.PropTypes.number.isRequired,
+        onToggle: _react.PropTypes.func.isRequired
+      },
+      enumerable: true
+    }]);
+  
+    function OnOffSwitch(props, context) {
+      _classCallCheck(this, _OnOffSwitch);
+  
+      _get(Object.getPrototypeOf(_OnOffSwitch.prototype), 'constructor', this).call(this, props, context);
+      this.state = {};
+    }
+  
+    _createClass(OnOffSwitch, [{
+      key: 'onToggle',
+      value: function onToggle() {
+        var on = this.props.state > 0;
+        this.props.onToggle(!on);
+      }
+    }, {
+      key: 'render',
+      value: function render() {
+        var stateClass = this.props.state === 1 ? _OnOffSwitchScss2['default'].partial : _OnOffSwitchScss2['default'].full;
+        return _react2['default'].createElement(
+          'div',
+          { className: _OnOffSwitchScss2['default'].onoffswitch },
+          _react2['default'].createElement('input', { type: 'checkbox', name: 'onoffswitch',
+            className: (0, _classnames2['default'])(_OnOffSwitchScss2['default'].onoffswitchCheckbox, stateClass), id: this.props.id,
+            checked: this.props.state > 0,
+            onChange: this.onToggle.bind(this)
+          }),
+          _react2['default'].createElement(
+            'label',
+            { className: (0, _classnames2['default'])(_OnOffSwitchScss2['default'].onoffswitchLabel, stateClass), htmlFor: this.props.id },
+            _react2['default'].createElement('span', { className: (0, _classnames2['default'])(_OnOffSwitchScss2['default'].onoffswitchInner, stateClass) }),
+            _react2['default'].createElement('span', { className: _OnOffSwitchScss2['default'].onoffswitchSwitch })
+          )
+        );
+      }
+    }]);
+  
+    var _OnOffSwitch = OnOffSwitch;
+    OnOffSwitch = (0, _decoratorsWithStyles2['default'])(_OnOffSwitchScss2['default'])(OnOffSwitch) || OnOffSwitch;
+    return OnOffSwitch;
+  })(_react.Component);
+  
+  exports['default'] = OnOffSwitch;
+  module.exports = exports['default'];
+
+/***/ },
+/* 61 */
+/***/ function(module, exports, __webpack_require__) {
+
+  
+      var content = __webpack_require__(62);
+      var insertCss = __webpack_require__(20);
+  
+      if (typeof content === 'string') {
+        content = [[module.id, content, '']];
+      }
+  
+      module.exports = content.locals || {};
+      module.exports._getCss = function() { return content.toString(); };
+      module.exports._insertCss = insertCss.bind(null, content);
+    
+      var removeCss = function() {};
+  
+      // Hot Module Replacement
+      // https://webpack.github.io/docs/hot-module-replacement
+      if (false) {
+        module.hot.accept("!!./../../../node_modules/css-loader/index.js?sourceMap&modules&localIdentName=[name]_[local]_[hash:base64:3]!./../../../node_modules/postcss-loader/index.js!./OnOffSwitch.scss", function() {
+          var newContent = require("!!./../../../node_modules/css-loader/index.js?sourceMap&modules&localIdentName=[name]_[local]_[hash:base64:3]!./../../../node_modules/postcss-loader/index.js!./OnOffSwitch.scss");
+          if (typeof newContent === 'string') {
+            newContent = [[module.id, content, '']];
+          }
+          removeCss = insertCss(newContent, { replace: true });
+        });
+        module.hot.dispose(function() { removeCss(); });
+      }
+    
+
+/***/ },
+/* 62 */
+/***/ function(module, exports, __webpack_require__) {
+
+  exports = module.exports = __webpack_require__(19)();
+  // imports
+  
+  
+  // module
+  exports.push([module.id, ".OnOffSwitch_onoffswitch_3aL {\n  position: relative;\n  display: table-cell;\n  vertical-align: middle;\n  width: 50px;\n  -webkit-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n}\n.OnOffSwitch_onoffswitch_3aL .OnOffSwitch_onoffswitchCheckbox_3ON {\n  display: none\n}\n.OnOffSwitch_onoffswitch_3aL .OnOffSwitch_onoffswitchCheckbox_3ON:checked + .OnOffSwitch_onoffswitchLabel_1z- .OnOffSwitch_onoffswitchInner_suM {\n  margin-left: 0;\n}\n.OnOffSwitch_onoffswitch_3aL .OnOffSwitch_onoffswitchCheckbox_3ON:checked + .OnOffSwitch_onoffswitchLabel_1z- .OnOffSwitch_onoffswitchSwitch_1-K {\n  right: 0;\n}\n.OnOffSwitch_onoffswitch_3aL .OnOffSwitch_onoffswitchCheckbox_3ON:checked.OnOffSwitch_partial_2dt + .OnOffSwitch_onoffswitchLabel_1z- .OnOffSwitch_onoffswitchInner_suM {\n  margin-left: 50%;\n}\n.OnOffSwitch_onoffswitch_3aL .OnOffSwitch_onoffswitchCheckbox_3ON:checked.OnOffSwitch_partial_2dt + .OnOffSwitch_onoffswitchLabel_1z- .OnOffSwitch_onoffswitchSwitch_1-K {\n  right: 15px;\n}\n.OnOffSwitch_onoffswitch_3aL .OnOffSwitch_onoffswitchLabel_1z- {\n  display: block;\n  overflow: hidden;\n  cursor: pointer;\n  border: 2px solid #CCCCCC;\n  border-radius: 18px\n}\n.OnOffSwitch_onoffswitch_3aL .OnOffSwitch_onoffswitchLabel_1z-.OnOffSwitch_partial_2dt {\n  background-color: #ddd;\n}\n.OnOffSwitch_onoffswitch_3aL .OnOffSwitch_onoffswitchLabel_1z-.OnOffSwitch_full_3lp {\n  background-color: #fff;\n}\n.OnOffSwitch_onoffswitch_3aL .OnOffSwitch_onoffswitchInner_suM {\n  display: block;\n  width: 200%;\n  margin-left: -100%;\n  -webkit-transition: margin 0.3s ease-in 0s;\n  -o-transition: margin 0.3s ease-in 0s;\n  transition: margin 0.3s ease-in 0s\n}\n.OnOffSwitch_onoffswitch_3aL .OnOffSwitch_onoffswitchInner_suM:before, .OnOffSwitch_onoffswitch_3aL .OnOffSwitch_onoffswitchInner_suM:after {\n  display: block;\n  float: left;\n  width: 50%;\n  height: 18px;\n  padding: 0;\n  line-height: 18px;\n  font-size: 12px;\n  color: white;\n  font-weight: 700;\n  -webkit-box-sizing: border-box;\n          box-sizing: border-box;\n}\n.OnOffSwitch_onoffswitch_3aL .OnOffSwitch_onoffswitchInner_suM:before {\n  content: \"on\";\n  padding-left: 10px;\n  background-color: #FFF7C2;\n  color: #474029;\n}\n.OnOffSwitch_onoffswitch_3aL .OnOffSwitch_onoffswitchInner_suM:after {\n  content: \"off\";\n  padding-right: 10px;\n  background-color: #373634;\n  color: #D6D6D6;\n  text-align: right;\n}\n.OnOffSwitch_onoffswitch_3aL .OnOffSwitch_onoffswitchInner_suM.OnOffSwitch_partial_2dt {}\n.OnOffSwitch_onoffswitch_3aL .OnOffSwitch_onoffswitchInner_suM.OnOffSwitch_partial_2dt:before, .OnOffSwitch_onoffswitch_3aL .OnOffSwitch_onoffswitchInner_suM.OnOffSwitch_partial_2dt:after {\n  content: \"\";\n  background-color: #ddd;\n}\n.OnOffSwitch_onoffswitch_3aL .OnOffSwitch_onoffswitchSwitch_1-K {\n  display: block;\n  width: 18px;\n  margin: 0px;\n  background: #FFFFFF;\n  position: absolute;\n  top: 0;\n  bottom: 0;\n  right: 32px;\n  border: 2px solid #CCCCCC;\n  border-radius: 18px;\n  -webkit-transition: all 0.3s ease-in 0s;\n  -o-transition: all 0.3s ease-in 0s;\n  transition: all 0.3s ease-in 0s;\n}\n", "", {"version":3,"sources":["/./src/components/OnOffSwitch/OnOffSwitch.scss"],"names":[],"mappings":"AAAA;EACE,mBAAmB;EACnB,oBAAoB;EACpB,uBAAuB;EACvB,YAAY;EACZ,0BAA0B;EAC1B,uBAAuB;EACvB,sBAAsB;CAsGvB;AApGC;EACE,aAAc;CAyBf;AArBK;EACE,eAAe;CAChB;AAED;EACE,SAAS;CACV;AAKC;EACE,iBAAiB;CAClB;AAED;EACE,YAAY;CACb;AAMT;EACE,eAAe;EACf,iBAAiB;EACjB,gBAAgB;EAChB,0BAA0B;EAC1B,mBAAoB;CASrB;AAPC;EACE,uBAAuB;CACxB;AAED;EACE,uBAAuB;CACxB;AAGH;EACE,eAAe;EACf,YAAY;EACZ,mBAAmB;EACnB,2CAAmC;EAAnC,sCAAmC;EAAnC,kCAAmC;CAqCpC;AAnCC;EACE,eAAe;EACf,YAAY;EACZ,WAAW;EACX,aAAa;EACb,WAAW;EACX,kBAAkB;EAClB,gBAAgB;EAChB,aAAa;EACb,iBAAiB;EACjB,+BAAuB;UAAvB,uBAAuB;CACxB;AAED;EACE,cAAc;EACd,mBAAmB;EACnB,0BAA0B;EAC1B,eAAe;CAChB;AAED;EACE,eAAe;EACf,oBAAoB;EACpB,0BAA0B;EAC1B,eAAe;EACf,kBAAkB;CACnB;AAED,yFAMC;AALC;EAEE,YAAY;EACZ,uBAAuB;CACxB;AAIL;EACE,eAAe;EACf,YAAY;EACZ,YAAY;EACZ,oBAAoB;EACpB,mBAAmB;EACnB,OAAO;EACP,UAAU;EACV,YAAY;EACZ,0BAA0B;EAC1B,oBAAoB;EACpB,wCAAgC;EAAhC,mCAAgC;EAAhC,gCAAgC;CACjC","file":"OnOffSwitch.scss","sourcesContent":[".onoffswitch {\n  position: relative;\n  display: table-cell;\n  vertical-align: middle;\n  width: 50px;\n  -webkit-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n\n  .onoffswitchCheckbox {\n    display: none;\n\n    &:checked {\n      + .onoffswitchLabel {\n        .onoffswitchInner {\n          margin-left: 0;\n        }\n\n        .onoffswitchSwitch {\n          right: 0;\n        }\n      }\n\n      &.partial {\n        + .onoffswitchLabel {\n          .onoffswitchInner {\n            margin-left: 50%;\n          }\n\n          .onoffswitchSwitch {\n            right: 15px;\n          }\n        }\n      }\n    }\n  }\n\n  .onoffswitchLabel {\n    display: block;\n    overflow: hidden;\n    cursor: pointer;\n    border: 2px solid #CCCCCC;\n    border-radius: 18px;\n\n    &.partial {\n      background-color: #ddd;\n    }\n\n    &.full {\n      background-color: #fff;\n    }\n  }\n\n  .onoffswitchInner {\n    display: block;\n    width: 200%;\n    margin-left: -100%;\n    transition: margin 0.3s ease-in 0s;\n\n    &:before, &:after {\n      display: block;\n      float: left;\n      width: 50%;\n      height: 18px;\n      padding: 0;\n      line-height: 18px;\n      font-size: 12px;\n      color: white;\n      font-weight: 700;\n      box-sizing: border-box;\n    }\n\n    &:before {\n      content: \"on\";\n      padding-left: 10px;\n      background-color: #FFF7C2;\n      color: #474029;\n    }\n\n    &:after {\n      content: \"off\";\n      padding-right: 10px;\n      background-color: #373634;\n      color: #D6D6D6;\n      text-align: right;\n    }\n\n    &.partial {\n      &:before,\n      &:after {\n        content: \"\";\n        background-color: #ddd;\n      }\n    }\n  }\n\n  .onoffswitchSwitch {\n    display: block;\n    width: 18px;\n    margin: 0px;\n    background: #FFFFFF;\n    position: absolute;\n    top: 0;\n    bottom: 0;\n    right: 32px;\n    border: 2px solid #CCCCCC;\n    border-radius: 18px;\n    transition: all 0.3s ease-in 0s;\n  }\n}\n"],"sourceRoot":"webpack://"}]);
+  
+  // exports
+  exports.locals = {
+  	"onoffswitch": "OnOffSwitch_onoffswitch_3aL",
+  	"onoffswitchCheckbox": "OnOffSwitch_onoffswitchCheckbox_3ON",
+  	"onoffswitchLabel": "OnOffSwitch_onoffswitchLabel_1z-",
+  	"onoffswitchInner": "OnOffSwitch_onoffswitchInner_suM",
+  	"onoffswitchSwitch": "OnOffSwitch_onoffswitchSwitch_1-K",
+  	"partial": "OnOffSwitch_partial_2dt",
+  	"full": "OnOffSwitch_full_3lp"
+  };
+
+/***/ },
+/* 63 */
+/***/ function(module, exports, __webpack_require__) {
+
+  'use strict';
+  
+  Object.defineProperty(exports, '__esModule', {
+    value: true
+  });
+  
   var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
   
   var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
@@ -4940,11 +5101,11 @@ module.exports =
   
   var _react2 = _interopRequireDefault(_react);
   
-  var _GroupsListScss = __webpack_require__(61);
+  var _GroupsListScss = __webpack_require__(64);
   
   var _GroupsListScss2 = _interopRequireDefault(_GroupsListScss);
   
-  var _GroupGroup = __webpack_require__(63);
+  var _GroupGroup = __webpack_require__(66);
   
   var _GroupGroup2 = _interopRequireDefault(_GroupGroup);
   
@@ -5000,11 +5161,11 @@ module.exports =
   module.exports = exports['default'];
 
 /***/ },
-/* 61 */
+/* 64 */
 /***/ function(module, exports, __webpack_require__) {
 
   
-      var content = __webpack_require__(62);
+      var content = __webpack_require__(65);
       var insertCss = __webpack_require__(20);
   
       if (typeof content === 'string') {
@@ -5032,7 +5193,7 @@ module.exports =
     
 
 /***/ },
-/* 62 */
+/* 65 */
 /***/ function(module, exports, __webpack_require__) {
 
   exports = module.exports = __webpack_require__(19)();
@@ -5048,7 +5209,7 @@ module.exports =
   };
 
 /***/ },
-/* 63 */
+/* 66 */
 /***/ function(module, exports, __webpack_require__) {
 
   'use strict';
@@ -5071,7 +5232,7 @@ module.exports =
   
   var _react2 = _interopRequireDefault(_react);
   
-  var _GroupScss = __webpack_require__(64);
+  var _GroupScss = __webpack_require__(67);
   
   var _GroupScss2 = _interopRequireDefault(_GroupScss);
   
@@ -5083,11 +5244,11 @@ module.exports =
   
   var _decoratorsWithStyles2 = _interopRequireDefault(_decoratorsWithStyles);
   
-  var _reactFontawesome = __webpack_require__(66);
+  var _reactFontawesome = __webpack_require__(69);
   
   var _reactFontawesome2 = _interopRequireDefault(_reactFontawesome);
   
-  var _OnOffSwitchOnOffSwitch = __webpack_require__(81);
+  var _OnOffSwitchOnOffSwitch = __webpack_require__(60);
   
   var _OnOffSwitchOnOffSwitch2 = _interopRequireDefault(_OnOffSwitchOnOffSwitch);
   
@@ -5264,11 +5425,11 @@ module.exports =
   module.exports = exports['default'];
 
 /***/ },
-/* 64 */
+/* 67 */
 /***/ function(module, exports, __webpack_require__) {
 
   
-      var content = __webpack_require__(65);
+      var content = __webpack_require__(68);
       var insertCss = __webpack_require__(20);
   
       if (typeof content === 'string') {
@@ -5296,7 +5457,7 @@ module.exports =
     
 
 /***/ },
-/* 65 */
+/* 68 */
 /***/ function(module, exports, __webpack_require__) {
 
   exports = module.exports = __webpack_require__(19)();
@@ -5323,13 +5484,13 @@ module.exports =
   };
 
 /***/ },
-/* 66 */
+/* 69 */
 /***/ function(module, exports) {
 
   module.exports = require("react-fontawesome");
 
 /***/ },
-/* 67 */
+/* 70 */
 /***/ function(module, exports, __webpack_require__) {
 
   'use strict';
@@ -5354,7 +5515,560 @@ module.exports =
   
   var _react2 = _interopRequireDefault(_react);
   
-  var _SettingsPageScss = __webpack_require__(68);
+  var _GroupFormScss = __webpack_require__(71);
+  
+  var _GroupFormScss2 = _interopRequireDefault(_GroupFormScss);
+  
+  var _classnames = __webpack_require__(47);
+  
+  var _classnames2 = _interopRequireDefault(_classnames);
+  
+  var _decoratorsWithStyles = __webpack_require__(24);
+  
+  var _decoratorsWithStyles2 = _interopRequireDefault(_decoratorsWithStyles);
+  
+  var _LightCheckboxLightCheckbox = __webpack_require__(73);
+  
+  var _LightCheckboxLightCheckbox2 = _interopRequireDefault(_LightCheckboxLightCheckbox);
+  
+  var _actionsBridge = __webpack_require__(48);
+  
+  var _actionsBridge2 = _interopRequireDefault(_actionsBridge);
+  
+  var GroupForm = (function (_Component) {
+    _inherits(GroupForm, _Component);
+  
+    _createClass(GroupForm, null, [{
+      key: 'propTypes',
+      value: {
+        lights: _react.PropTypes.object.isRequired,
+        ids: _react.PropTypes.array.isRequired,
+        onCreated: _react.PropTypes.func.isRequired,
+        onUpdated: _react.PropTypes.func.isRequired,
+        onCanceled: _react.PropTypes.func.isRequired,
+        name: _react.PropTypes.string,
+        action: _react.PropTypes.object,
+        recycle: _react.PropTypes.bool,
+        type: _react.PropTypes.string,
+        id: _react.PropTypes.string,
+        checkedLightIDs: _react.PropTypes.array
+      },
+      enumerable: true
+    }]);
+  
+    function GroupForm(props, context) {
+      _classCallCheck(this, _GroupForm);
+  
+      _get(Object.getPrototypeOf(_GroupForm.prototype), 'constructor', this).call(this, props, context);
+      this.state = { name: undefined, checkedLightIDs: undefined };
+    }
+  
+    _createClass(GroupForm, [{
+      key: 'onNameChange',
+      value: function onNameChange(e) {
+        this.setState({ name: e.target.value });
+      }
+    }, {
+      key: 'onLightToggled',
+      value: function onLightToggled(id, checked) {
+        var checkedLightIDs = this.state.checkedLightIDs;
+        var index = checkedLightIDs.indexOf(id);
+        if (checked && index < 0) {
+          checkedLightIDs.push(id);
+        } else if (!checked && index > -1) {
+          checkedLightIDs = checkedLightIDs.slice(0, index).concat(checkedLightIDs.slice(index + 1, checkedLightIDs.length));
+        }
+        this.setState({ checkedLightIDs: checkedLightIDs });
+      }
+    }, {
+      key: 'onGroupSaved',
+      value: function onGroupSaved(name, lightIDs, group) {
+        group.name = name;
+        var lights = this.props.lights;
+        group.lights = lightIDs.map(function (id) {
+          return lights[id];
+        });
+        if (typeof this.props.id === 'string') {
+          this.props.onUpdated(group);
+        } else {
+          this.props.onCreated(group);
+        }
+        this.setState({ checkedLightIDs: undefined, name: undefined });
+      }
+    }, {
+      key: 'onGroupUpdated',
+      value: function onGroupUpdated(name, lightIDs, success) {
+        if (success) {
+          var group = { id: this.props.id };
+          this.onGroupSaved(name, lightIDs, group);
+        }
+      }
+    }, {
+      key: 'onGroupSaveError',
+      value: function onGroupSaveError(name, response) {
+        var action = typeof this.props.id === 'string' ? 'update' : 'create';
+        console.error('failed to ' + action + ' group', name, response);
+      }
+    }, {
+      key: 'onCancel',
+      value: function onCancel(event) {
+        var _this = this;
+  
+        event.preventDefault();
+        event.target.blur();
+        this.setState({ name: undefined, checkedLightIDs: undefined }, function () {
+          _this.props.onCanceled();
+        });
+      }
+    }, {
+      key: 'handleSubmit',
+      value: function handleSubmit(e) {
+        e.preventDefault();
+        if (!this.isValid()) {
+          return;
+        }
+        var name = this.props.name;
+        if (typeof this.state.name === 'string') {
+          name = this.state.name;
+        }
+        var lightIDs = this.props.checkedLightIDs;
+        if (typeof this.state.checkedLightIDs === 'object') {
+          lightIDs = this.state.checkedLightIDs;
+        }
+        if (typeof this.props.id === 'string') {
+          _actionsBridge2['default'].updateGroup(this.props.id, name, lightIDs).then(this.onGroupUpdated.bind(this, name, lightIDs))['catch'](this.onGroupSaveError.bind(this, name));
+        } else {
+          _actionsBridge2['default'].createGroup(name, lightIDs).then(this.onGroupSaved.bind(this, name, lightIDs))['catch'](this.onGroupSaveError.bind(this, name));
+        }
+      }
+    }, {
+      key: 'isValid',
+      value: function isValid() {
+        if (typeof this.state.name === 'string' && this.state.name.trim().length < 1) {
+          return false;
+        }
+        if (typeof this.state.checkedLightIDs === 'object' && this.state.checkedLightIDs.length < 1) {
+          return false;
+        }
+        return true;
+      }
+    }, {
+      key: 'render',
+      value: function render() {
+        var _this2 = this;
+  
+        var checkedLightIDs = [];
+        if (typeof this.state.checkedLightIDs === 'undefined') {
+          checkedLightIDs = this.props.checkedLightIDs || [];
+        } else {
+          checkedLightIDs = this.state.checkedLightIDs;
+        }
+        var name = typeof this.state.name === 'string' ? this.state.name : this.props.name || '';
+        return _react2['default'].createElement(
+          'form',
+          { onSubmit: this.handleSubmit.bind(this) },
+          _react2['default'].createElement(
+            'p',
+            { className: _GroupFormScss2['default'].helpText },
+            'Use groups to control multiple lights at once.'
+          ),
+          _react2['default'].createElement(
+            'div',
+            { className: _GroupFormScss2['default'].field },
+            _react2['default'].createElement(
+              'label',
+              { className: _GroupFormScss2['default'].label, htmlFor: 'new-group-name' },
+              'Name:'
+            ),
+            _react2['default'].createElement('input', { type: 'text', id: 'new-group-name',
+              onChange: this.onNameChange.bind(this),
+              value: name,
+              placeholder: 'e.g., Back Bedroom',
+              className: _GroupFormScss2['default'].textField,
+              autoFocus: 'autofocus'
+            })
+          ),
+          _react2['default'].createElement(
+            'div',
+            { className: (0, _classnames2['default'])(_GroupFormScss2['default'].lightsField, _GroupFormScss2['default'].field) },
+            this.props.ids.map(function (lightID) {
+              var checked = checkedLightIDs.indexOf(lightID) > -1;
+              var key = 'light-' + lightID + '-checked-' + checked;
+              return _react2['default'].createElement(_LightCheckboxLightCheckbox2['default'], _extends({ key: key, id: lightID,
+                onToggle: _this2.onLightToggled.bind(_this2),
+                checked: checked }, _this2.props.lights[lightID]));
+            })
+          ),
+          _react2['default'].createElement(
+            'div',
+            { className: _GroupFormScss2['default'].formControls },
+            _react2['default'].createElement(
+              'button',
+              { type: 'submit', className: _GroupFormScss2['default'].btn, disabled: !this.isValid() },
+              'Save'
+            ),
+            typeof this.props.id === 'string' ? _react2['default'].createElement(
+              'a',
+              { href: '#', className: _GroupFormScss2['default'].cancelLink, onClick: this.onCancel.bind(this) },
+              'Cancel'
+            ) : ''
+          )
+        );
+      }
+    }]);
+  
+    var _GroupForm = GroupForm;
+    GroupForm = (0, _decoratorsWithStyles2['default'])(_GroupFormScss2['default'])(GroupForm) || GroupForm;
+    return GroupForm;
+  })(_react.Component);
+  
+  exports['default'] = GroupForm;
+  module.exports = exports['default'];
+
+/***/ },
+/* 71 */
+/***/ function(module, exports, __webpack_require__) {
+
+  
+      var content = __webpack_require__(72);
+      var insertCss = __webpack_require__(20);
+  
+      if (typeof content === 'string') {
+        content = [[module.id, content, '']];
+      }
+  
+      module.exports = content.locals || {};
+      module.exports._getCss = function() { return content.toString(); };
+      module.exports._insertCss = insertCss.bind(null, content);
+    
+      var removeCss = function() {};
+  
+      // Hot Module Replacement
+      // https://webpack.github.io/docs/hot-module-replacement
+      if (false) {
+        module.hot.accept("!!./../../../node_modules/css-loader/index.js?sourceMap&modules&localIdentName=[name]_[local]_[hash:base64:3]!./../../../node_modules/postcss-loader/index.js!./GroupForm.scss", function() {
+          var newContent = require("!!./../../../node_modules/css-loader/index.js?sourceMap&modules&localIdentName=[name]_[local]_[hash:base64:3]!./../../../node_modules/postcss-loader/index.js!./GroupForm.scss");
+          if (typeof newContent === 'string') {
+            newContent = [[module.id, content, '']];
+          }
+          removeCss = insertCss(newContent, { replace: true });
+        });
+        module.hot.dispose(function() { removeCss(); });
+      }
+    
+
+/***/ },
+/* 72 */
+/***/ function(module, exports, __webpack_require__) {
+
+  exports = module.exports = __webpack_require__(19)();
+  // imports
+  
+  
+  // module
+  exports.push([module.id, ".GroupForm_field_1xT {\n  margin-bottom: 10px;\n  float: left;\n  margin-right: 2%\n}\n\n.GroupForm_field_1xT.GroupForm_lightsField_1Bl {\n  width: 100%;\n  clear: left;\n  margin-right: 0;\n  float: none\n}\n\n.GroupForm_formControls_2_u {\n  clear: both;\n}\n\n.GroupForm_label_1E2 {\n  display: inline-block;\n  font-weight: 700;\n  font-size: 14px;\n  margin: 0 10px;\n}\n\ninput[type=\"text\"].GroupForm_textField_2Rg {\n  display: inline-block;\n  width: 20em;\n}\n\nbutton.GroupForm_btn_1i0 {\n  margin-left: 10px;\n}\n\n.GroupForm_helpText_YNW {\n  margin: 0 10px 10px 10px;\n}\n\n.GroupForm_cancelLink_NH6 {\n  text-decoration: none;\n  font-size: 13px;\n  display: inline-block;\n  margin-left: 10px;\n}\n", "", {"version":3,"sources":["/./src/components/GroupForm/GroupForm.scss"],"names":[],"mappings":"AAAA;EACE,oBAAoB;EACpB,YAAY;EACZ,gBAAiB;CAQlB;;AANC;EACE,YAAY;EACZ,YAAY;EACZ,gBAAgB;EAChB,WAAY;CACb;;AAGH;EACE,YAAY;CACb;;AAED;EACE,sBAAsB;EACtB,iBAAiB;EACjB,gBAAgB;EAChB,eAAe;CAChB;;AAED;EACE,sBAAsB;EACtB,YAAY;CACb;;AAED;EACE,kBAAkB;CACnB;;AAED;EACE,yBAAyB;CAC1B;;AAED;EACE,sBAAsB;EACtB,gBAAgB;EAChB,sBAAsB;EACtB,kBAAkB;CACnB","file":"GroupForm.scss","sourcesContent":[".field {\n  margin-bottom: 10px;\n  float: left;\n  margin-right: 2%;\n\n  &.lightsField {\n    width: 100%;\n    clear: left;\n    margin-right: 0;\n    float: none;\n  }\n}\n\n.formControls {\n  clear: both;\n}\n\n.label {\n  display: inline-block;\n  font-weight: 700;\n  font-size: 14px;\n  margin: 0 10px;\n}\n\ninput[type=\"text\"].textField {\n  display: inline-block;\n  width: 20em;\n}\n\nbutton.btn {\n  margin-left: 10px;\n}\n\n.helpText {\n  margin: 0 10px 10px 10px;\n}\n\n.cancelLink {\n  text-decoration: none;\n  font-size: 13px;\n  display: inline-block;\n  margin-left: 10px;\n}\n"],"sourceRoot":"webpack://"}]);
+  
+  // exports
+  exports.locals = {
+  	"field": "GroupForm_field_1xT",
+  	"lightsField": "GroupForm_lightsField_1Bl",
+  	"formControls": "GroupForm_formControls_2_u",
+  	"label": "GroupForm_label_1E2",
+  	"textField": "GroupForm_textField_2Rg",
+  	"btn": "GroupForm_btn_1i0",
+  	"helpText": "GroupForm_helpText_YNW",
+  	"cancelLink": "GroupForm_cancelLink_NH6"
+  };
+
+/***/ },
+/* 73 */
+/***/ function(module, exports, __webpack_require__) {
+
+  'use strict';
+  
+  Object.defineProperty(exports, '__esModule', {
+    value: true
+  });
+  
+  var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+  
+  var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+  
+  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  
+  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+  
+  function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+  
+  var _react = __webpack_require__(4);
+  
+  var _react2 = _interopRequireDefault(_react);
+  
+  var _LightCheckboxScss = __webpack_require__(74);
+  
+  var _LightCheckboxScss2 = _interopRequireDefault(_LightCheckboxScss);
+  
+  var _decoratorsWithStyles = __webpack_require__(24);
+  
+  var _decoratorsWithStyles2 = _interopRequireDefault(_decoratorsWithStyles);
+  
+  var LightCheckbox = (function (_Component) {
+    _inherits(LightCheckbox, _Component);
+  
+    _createClass(LightCheckbox, null, [{
+      key: 'propTypes',
+      value: {
+        checked: _react.PropTypes.bool.isRequired,
+        id: _react.PropTypes.string.isRequired,
+        onToggle: _react.PropTypes.func.isRequired,
+        name: _react.PropTypes.string
+      },
+      enumerable: true
+    }]);
+  
+    function LightCheckbox(props, context) {
+      _classCallCheck(this, _LightCheckbox);
+  
+      _get(Object.getPrototypeOf(_LightCheckbox.prototype), 'constructor', this).call(this, props, context);
+      this.state = {};
+    }
+  
+    _createClass(LightCheckbox, [{
+      key: 'onChange',
+      value: function onChange(e) {
+        e.target.blur();
+        this.props.onToggle(this.props.id, !this.props.checked);
+      }
+    }, {
+      key: 'render',
+      value: function render() {
+        var id = 'light-checkbox-' + this.props.id;
+        return _react2['default'].createElement(
+          'label',
+          { className: _LightCheckboxScss2['default'].label, htmlFor: id },
+          _react2['default'].createElement('input', { type: 'checkbox', id: id, name: 'light',
+            onChange: this.onChange.bind(this),
+            className: _LightCheckboxScss2['default'].checkbox,
+            checked: this.props.checked
+          }),
+          this.props.name
+        );
+      }
+    }]);
+  
+    var _LightCheckbox = LightCheckbox;
+    LightCheckbox = (0, _decoratorsWithStyles2['default'])(_LightCheckboxScss2['default'])(LightCheckbox) || LightCheckbox;
+    return LightCheckbox;
+  })(_react.Component);
+  
+  exports['default'] = LightCheckbox;
+  module.exports = exports['default'];
+
+/***/ },
+/* 74 */
+/***/ function(module, exports, __webpack_require__) {
+
+  
+      var content = __webpack_require__(75);
+      var insertCss = __webpack_require__(20);
+  
+      if (typeof content === 'string') {
+        content = [[module.id, content, '']];
+      }
+  
+      module.exports = content.locals || {};
+      module.exports._getCss = function() { return content.toString(); };
+      module.exports._insertCss = insertCss.bind(null, content);
+    
+      var removeCss = function() {};
+  
+      // Hot Module Replacement
+      // https://webpack.github.io/docs/hot-module-replacement
+      if (false) {
+        module.hot.accept("!!./../../../node_modules/css-loader/index.js?sourceMap&modules&localIdentName=[name]_[local]_[hash:base64:3]!./../../../node_modules/postcss-loader/index.js!./LightCheckbox.scss", function() {
+          var newContent = require("!!./../../../node_modules/css-loader/index.js?sourceMap&modules&localIdentName=[name]_[local]_[hash:base64:3]!./../../../node_modules/postcss-loader/index.js!./LightCheckbox.scss");
+          if (typeof newContent === 'string') {
+            newContent = [[module.id, content, '']];
+          }
+          removeCss = insertCss(newContent, { replace: true });
+        });
+        module.hot.dispose(function() { removeCss(); });
+      }
+    
+
+/***/ },
+/* 75 */
+/***/ function(module, exports, __webpack_require__) {
+
+  exports = module.exports = __webpack_require__(19)();
+  // imports
+  
+  
+  // module
+  exports.push([module.id, ".LightCheckbox_label_3Di {\n  display: inline-block;\n  white-space: nowrap;\n  padding: 0 10px;\n  font-size: 14px;\n  width: 33%;\n  text-overflow: ellipsis;\n  overflow: hidden;\n  position: relative;\n}\n\n.LightCheckbox_checkbox_2sa {\n  margin-right: 5px;\n}\n", "", {"version":3,"sources":["/./src/components/LightCheckbox/LightCheckbox.scss"],"names":[],"mappings":"AAAA;EACE,sBAAsB;EACtB,oBAAoB;EACpB,gBAAgB;EAChB,gBAAgB;EAChB,WAAW;EACX,wBAAwB;EACxB,iBAAiB;EACjB,mBAAmB;CACpB;;AAED;EACE,kBAAkB;CACnB","file":"LightCheckbox.scss","sourcesContent":[".label {\n  display: inline-block;\n  white-space: nowrap;\n  padding: 0 10px;\n  font-size: 14px;\n  width: 33%;\n  text-overflow: ellipsis;\n  overflow: hidden;\n  position: relative;\n}\n\n.checkbox {\n  margin-right: 5px;\n}\n"],"sourceRoot":"webpack://"}]);
+  
+  // exports
+  exports.locals = {
+  	"label": "LightCheckbox_label_3Di",
+  	"checkbox": "LightCheckbox_checkbox_2sa"
+  };
+
+/***/ },
+/* 76 */
+/***/ function(module, exports, __webpack_require__) {
+
+  'use strict';
+  
+  Object.defineProperty(exports, '__esModule', {
+    value: true
+  });
+  
+  var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+  
+  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  
+  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+  
+  var _configJson = __webpack_require__(49);
+  
+  var _configJson2 = _interopRequireDefault(_configJson);
+  
+  var _reactCookie = __webpack_require__(77);
+  
+  var _reactCookie2 = _interopRequireDefault(_reactCookie);
+  
+  var CookieAndLocalStorage = (function () {
+    function CookieAndLocalStorage() {
+      _classCallCheck(this, CookieAndLocalStorage);
+    }
+  
+    _createClass(CookieAndLocalStorage, [{
+      key: 'getItem',
+      value: function getItem(key) {
+        if (typeof window !== 'undefined') {
+          if (window.localStorage) {
+            return window.localStorage.getItem(key);
+          }
+          console.error('browser does not support local storage');
+        }
+        return _reactCookie2['default'].load(key);
+      }
+    }, {
+      key: 'setItem',
+      value: function setItem(key, value) {
+        if (typeof window !== 'undefined' && window.localStorage) {
+          window.localStorage.setItem(key, value);
+        }
+        _reactCookie2['default'].save(key, value, { path: '/' });
+      }
+    }]);
+  
+    return CookieAndLocalStorage;
+  })();
+  
+  var LocalStorage = (function () {
+    function LocalStorage() {
+      _classCallCheck(this, LocalStorage);
+    }
+  
+    _createClass(LocalStorage, null, [{
+      key: 'getStore',
+      value: function getStore() {
+        if (typeof this.store === 'undefined') {
+          this.store = new CookieAndLocalStorage();
+        }
+        return this.store;
+      }
+    }, {
+      key: 'getJSON',
+      value: function getJSON() {
+        var store = this.getStore();
+        var appData = store.getItem(_configJson2['default'][("development")].localStorageKey) || '{}';
+        return JSON.parse(appData);
+      }
+    }, {
+      key: 'get',
+      value: function get(key) {
+        var appData = this.getJSON();
+        return appData[key];
+      }
+    }, {
+      key: 'set',
+      value: function set(key, value) {
+        var appData = this.getJSON();
+        appData[key] = value;
+        this.writeHash(appData);
+      }
+    }, {
+      key: 'setMany',
+      value: function setMany(data) {
+        var appData = this.getJSON();
+        for (var key in data) {
+          if (data.hasOwnProperty(key)) {
+            var value = data[key];
+            if (typeof value === 'undefined') {
+              delete appData[key];
+            } else {
+              appData[key] = value;
+            }
+          }
+        }
+        this.writeHash(appData);
+      }
+    }, {
+      key: 'writeHash',
+      value: function writeHash(appData) {
+        var store = this.getStore();
+        store.setItem(_configJson2['default'][("development")].localStorageKey, JSON.stringify(appData));
+      }
+    }, {
+      key: 'delete',
+      value: function _delete(key) {
+        var appData = this.getJSON();
+        delete appData[key];
+        this.writeHash(appData);
+      }
+    }]);
+  
+    return LocalStorage;
+  })();
+  
+  exports['default'] = LocalStorage;
+  module.exports = exports['default'];
+
+/***/ },
+/* 77 */
+/***/ function(module, exports) {
+
+  module.exports = require("react-cookie");
+
+/***/ },
+/* 78 */
+/***/ function(module, exports, __webpack_require__) {
+
+  'use strict';
+  
+  Object.defineProperty(exports, '__esModule', {
+    value: true
+  });
+  
+  var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+  
+  var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+  
+  var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+  
+  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  
+  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+  
+  function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+  
+  var _react = __webpack_require__(4);
+  
+  var _react2 = _interopRequireDefault(_react);
+  
+  var _SettingsPageScss = __webpack_require__(79);
   
   var _SettingsPageScss2 = _interopRequireDefault(_SettingsPageScss);
   
@@ -5366,11 +6080,11 @@ module.exports =
   
   var _actionsBridge2 = _interopRequireDefault(_actionsBridge);
   
-  var _BridgeDisplay = __webpack_require__(70);
+  var _BridgeDisplay = __webpack_require__(81);
   
   var _BridgeDisplay2 = _interopRequireDefault(_BridgeDisplay);
   
-  var _UserForm = __webpack_require__(71);
+  var _UserForm = __webpack_require__(82);
   
   var _UserForm2 = _interopRequireDefault(_UserForm);
   
@@ -5608,11 +6322,11 @@ module.exports =
   module.exports = exports['default'];
 
 /***/ },
-/* 68 */
+/* 79 */
 /***/ function(module, exports, __webpack_require__) {
 
   
-      var content = __webpack_require__(69);
+      var content = __webpack_require__(80);
       var insertCss = __webpack_require__(20);
   
       if (typeof content === 'string') {
@@ -5640,7 +6354,7 @@ module.exports =
     
 
 /***/ },
-/* 69 */
+/* 80 */
 /***/ function(module, exports, __webpack_require__) {
 
   exports = module.exports = __webpack_require__(19)();
@@ -5662,7 +6376,7 @@ module.exports =
   };
 
 /***/ },
-/* 70 */
+/* 81 */
 /***/ function(module, exports, __webpack_require__) {
 
   'use strict';
@@ -5685,7 +6399,7 @@ module.exports =
   
   var _react2 = _interopRequireDefault(_react);
   
-  var _SettingsPageScss = __webpack_require__(68);
+  var _SettingsPageScss = __webpack_require__(79);
   
   var _SettingsPageScss2 = _interopRequireDefault(_SettingsPageScss);
   
@@ -5814,7 +6528,7 @@ module.exports =
   module.exports = exports['default'];
 
 /***/ },
-/* 71 */
+/* 82 */
 /***/ function(module, exports, __webpack_require__) {
 
   'use strict';
@@ -5837,7 +6551,7 @@ module.exports =
   
   var _react2 = _interopRequireDefault(_react);
   
-  var _SettingsPageScss = __webpack_require__(68);
+  var _SettingsPageScss = __webpack_require__(79);
   
   var _SettingsPageScss2 = _interopRequireDefault(_SettingsPageScss);
   
@@ -5961,7 +6675,7 @@ module.exports =
   module.exports = exports['default'];
 
 /***/ },
-/* 72 */
+/* 83 */
 /***/ function(module, exports, __webpack_require__) {
 
   /**
@@ -6067,25 +6781,25 @@ module.exports =
   module.exports = exports['default'];
 
 /***/ },
-/* 73 */
+/* 84 */
 /***/ function(module, exports) {
 
   module.exports = require("./assets");
 
 /***/ },
-/* 74 */
+/* 85 */
 /***/ function(module, exports) {
 
   module.exports = require("sqlite");
 
 /***/ },
-/* 75 */
+/* 86 */
 /***/ function(module, exports) {
 
   module.exports = require("node-hue-api");
 
 /***/ },
-/* 76 */
+/* 87 */
 /***/ function(module, exports, __webpack_require__) {
 
   /**
@@ -6107,7 +6821,7 @@ module.exports =
   
   function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
   
-  var _fs = __webpack_require__(77);
+  var _fs = __webpack_require__(88);
   
   var _fs2 = _interopRequireDefault(_fs);
   
@@ -6115,15 +6829,15 @@ module.exports =
   
   var _express = __webpack_require__(3);
   
-  var _bluebird = __webpack_require__(78);
+  var _bluebird = __webpack_require__(89);
   
   var _bluebird2 = _interopRequireDefault(_bluebird);
   
-  var _jade = __webpack_require__(79);
+  var _jade = __webpack_require__(90);
   
   var _jade2 = _interopRequireDefault(_jade);
   
-  var _frontMatter = __webpack_require__(80);
+  var _frontMatter = __webpack_require__(91);
   
   var _frontMatter2 = _interopRequireDefault(_frontMatter);
   
@@ -6220,698 +6934,28 @@ module.exports =
   module.exports = exports['default'];
 
 /***/ },
-/* 77 */
+/* 88 */
 /***/ function(module, exports) {
 
   module.exports = require("fs");
 
 /***/ },
-/* 78 */
+/* 89 */
 /***/ function(module, exports) {
 
   module.exports = require("bluebird");
 
 /***/ },
-/* 79 */
+/* 90 */
 /***/ function(module, exports) {
 
   module.exports = require("jade");
 
 /***/ },
-/* 80 */
-/***/ function(module, exports) {
-
-  module.exports = require("front-matter");
-
-/***/ },
-/* 81 */
-/***/ function(module, exports, __webpack_require__) {
-
-  'use strict';
-  
-  Object.defineProperty(exports, '__esModule', {
-    value: true
-  });
-  
-  var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-  
-  var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
-  
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-  
-  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-  
-  function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-  
-  var _react = __webpack_require__(4);
-  
-  var _react2 = _interopRequireDefault(_react);
-  
-  var _OnOffSwitchScss = __webpack_require__(82);
-  
-  var _OnOffSwitchScss2 = _interopRequireDefault(_OnOffSwitchScss);
-  
-  var _decoratorsWithStyles = __webpack_require__(24);
-  
-  var _decoratorsWithStyles2 = _interopRequireDefault(_decoratorsWithStyles);
-  
-  var _classnames = __webpack_require__(47);
-  
-  var _classnames2 = _interopRequireDefault(_classnames);
-  
-  var OnOffSwitch = (function (_Component) {
-    _inherits(OnOffSwitch, _Component);
-  
-    _createClass(OnOffSwitch, null, [{
-      key: 'propTypes',
-      value: {
-        id: _react.PropTypes.string.isRequired,
-        state: _react.PropTypes.number.isRequired,
-        onToggle: _react.PropTypes.func.isRequired
-      },
-      enumerable: true
-    }]);
-  
-    function OnOffSwitch(props, context) {
-      _classCallCheck(this, _OnOffSwitch);
-  
-      _get(Object.getPrototypeOf(_OnOffSwitch.prototype), 'constructor', this).call(this, props, context);
-      this.state = {};
-    }
-  
-    _createClass(OnOffSwitch, [{
-      key: 'onToggle',
-      value: function onToggle() {
-        var on = this.props.state > 0;
-        this.props.onToggle(!on);
-      }
-    }, {
-      key: 'render',
-      value: function render() {
-        var stateClass = this.props.state === 1 ? _OnOffSwitchScss2['default'].partial : _OnOffSwitchScss2['default'].full;
-        return _react2['default'].createElement(
-          'div',
-          { className: _OnOffSwitchScss2['default'].onoffswitch },
-          _react2['default'].createElement('input', { type: 'checkbox', name: 'onoffswitch',
-            className: (0, _classnames2['default'])(_OnOffSwitchScss2['default'].onoffswitchCheckbox, stateClass), id: this.props.id,
-            checked: this.props.state > 0,
-            onChange: this.onToggle.bind(this)
-          }),
-          _react2['default'].createElement(
-            'label',
-            { className: (0, _classnames2['default'])(_OnOffSwitchScss2['default'].onoffswitchLabel, stateClass), htmlFor: this.props.id },
-            _react2['default'].createElement('span', { className: (0, _classnames2['default'])(_OnOffSwitchScss2['default'].onoffswitchInner, stateClass) }),
-            _react2['default'].createElement('span', { className: _OnOffSwitchScss2['default'].onoffswitchSwitch })
-          )
-        );
-      }
-    }]);
-  
-    var _OnOffSwitch = OnOffSwitch;
-    OnOffSwitch = (0, _decoratorsWithStyles2['default'])(_OnOffSwitchScss2['default'])(OnOffSwitch) || OnOffSwitch;
-    return OnOffSwitch;
-  })(_react.Component);
-  
-  exports['default'] = OnOffSwitch;
-  module.exports = exports['default'];
-
-/***/ },
-/* 82 */
-/***/ function(module, exports, __webpack_require__) {
-
-  
-      var content = __webpack_require__(83);
-      var insertCss = __webpack_require__(20);
-  
-      if (typeof content === 'string') {
-        content = [[module.id, content, '']];
-      }
-  
-      module.exports = content.locals || {};
-      module.exports._getCss = function() { return content.toString(); };
-      module.exports._insertCss = insertCss.bind(null, content);
-    
-      var removeCss = function() {};
-  
-      // Hot Module Replacement
-      // https://webpack.github.io/docs/hot-module-replacement
-      if (false) {
-        module.hot.accept("!!./../../../node_modules/css-loader/index.js?sourceMap&modules&localIdentName=[name]_[local]_[hash:base64:3]!./../../../node_modules/postcss-loader/index.js!./OnOffSwitch.scss", function() {
-          var newContent = require("!!./../../../node_modules/css-loader/index.js?sourceMap&modules&localIdentName=[name]_[local]_[hash:base64:3]!./../../../node_modules/postcss-loader/index.js!./OnOffSwitch.scss");
-          if (typeof newContent === 'string') {
-            newContent = [[module.id, content, '']];
-          }
-          removeCss = insertCss(newContent, { replace: true });
-        });
-        module.hot.dispose(function() { removeCss(); });
-      }
-    
-
-/***/ },
-/* 83 */
-/***/ function(module, exports, __webpack_require__) {
-
-  exports = module.exports = __webpack_require__(19)();
-  // imports
-  
-  
-  // module
-  exports.push([module.id, ".OnOffSwitch_onoffswitch_3aL {\n  position: relative;\n  display: table-cell;\n  vertical-align: middle;\n  width: 50px;\n  -webkit-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n}\n.OnOffSwitch_onoffswitch_3aL .OnOffSwitch_onoffswitchCheckbox_3ON {\n  display: none\n}\n.OnOffSwitch_onoffswitch_3aL .OnOffSwitch_onoffswitchCheckbox_3ON:checked + .OnOffSwitch_onoffswitchLabel_1z- .OnOffSwitch_onoffswitchInner_suM {\n  margin-left: 0;\n}\n.OnOffSwitch_onoffswitch_3aL .OnOffSwitch_onoffswitchCheckbox_3ON:checked + .OnOffSwitch_onoffswitchLabel_1z- .OnOffSwitch_onoffswitchSwitch_1-K {\n  right: 0;\n}\n.OnOffSwitch_onoffswitch_3aL .OnOffSwitch_onoffswitchCheckbox_3ON:checked.OnOffSwitch_partial_2dt + .OnOffSwitch_onoffswitchLabel_1z- .OnOffSwitch_onoffswitchInner_suM {\n  margin-left: 50%;\n}\n.OnOffSwitch_onoffswitch_3aL .OnOffSwitch_onoffswitchCheckbox_3ON:checked.OnOffSwitch_partial_2dt + .OnOffSwitch_onoffswitchLabel_1z- .OnOffSwitch_onoffswitchSwitch_1-K {\n  right: 15px;\n}\n.OnOffSwitch_onoffswitch_3aL .OnOffSwitch_onoffswitchLabel_1z- {\n  display: block;\n  overflow: hidden;\n  cursor: pointer;\n  border: 2px solid #CCCCCC;\n  border-radius: 18px\n}\n.OnOffSwitch_onoffswitch_3aL .OnOffSwitch_onoffswitchLabel_1z-.OnOffSwitch_partial_2dt {\n  background-color: #ddd;\n}\n.OnOffSwitch_onoffswitch_3aL .OnOffSwitch_onoffswitchLabel_1z-.OnOffSwitch_full_3lp {\n  background-color: #fff;\n}\n.OnOffSwitch_onoffswitch_3aL .OnOffSwitch_onoffswitchInner_suM {\n  display: block;\n  width: 200%;\n  margin-left: -100%;\n  -webkit-transition: margin 0.3s ease-in 0s;\n  -o-transition: margin 0.3s ease-in 0s;\n  transition: margin 0.3s ease-in 0s\n}\n.OnOffSwitch_onoffswitch_3aL .OnOffSwitch_onoffswitchInner_suM:before, .OnOffSwitch_onoffswitch_3aL .OnOffSwitch_onoffswitchInner_suM:after {\n  display: block;\n  float: left;\n  width: 50%;\n  height: 18px;\n  padding: 0;\n  line-height: 18px;\n  font-size: 12px;\n  color: white;\n  font-weight: 700;\n  -webkit-box-sizing: border-box;\n          box-sizing: border-box;\n}\n.OnOffSwitch_onoffswitch_3aL .OnOffSwitch_onoffswitchInner_suM:before {\n  content: \"on\";\n  padding-left: 10px;\n  background-color: #FFF7C2;\n  color: #474029;\n}\n.OnOffSwitch_onoffswitch_3aL .OnOffSwitch_onoffswitchInner_suM:after {\n  content: \"off\";\n  padding-right: 10px;\n  background-color: #373634;\n  color: #D6D6D6;\n  text-align: right;\n}\n.OnOffSwitch_onoffswitch_3aL .OnOffSwitch_onoffswitchInner_suM.OnOffSwitch_partial_2dt {}\n.OnOffSwitch_onoffswitch_3aL .OnOffSwitch_onoffswitchInner_suM.OnOffSwitch_partial_2dt:before, .OnOffSwitch_onoffswitch_3aL .OnOffSwitch_onoffswitchInner_suM.OnOffSwitch_partial_2dt:after {\n  content: \"\";\n  background-color: #ddd;\n}\n.OnOffSwitch_onoffswitch_3aL .OnOffSwitch_onoffswitchSwitch_1-K {\n  display: block;\n  width: 18px;\n  margin: 0px;\n  background: #FFFFFF;\n  position: absolute;\n  top: 0;\n  bottom: 0;\n  right: 32px;\n  border: 2px solid #CCCCCC;\n  border-radius: 18px;\n  -webkit-transition: all 0.3s ease-in 0s;\n  -o-transition: all 0.3s ease-in 0s;\n  transition: all 0.3s ease-in 0s;\n}\n", "", {"version":3,"sources":["/./src/components/OnOffSwitch/OnOffSwitch.scss"],"names":[],"mappings":"AAAA;EACE,mBAAmB;EACnB,oBAAoB;EACpB,uBAAuB;EACvB,YAAY;EACZ,0BAA0B;EAC1B,uBAAuB;EACvB,sBAAsB;CAsGvB;AApGC;EACE,aAAc;CAyBf;AArBK;EACE,eAAe;CAChB;AAED;EACE,SAAS;CACV;AAKC;EACE,iBAAiB;CAClB;AAED;EACE,YAAY;CACb;AAMT;EACE,eAAe;EACf,iBAAiB;EACjB,gBAAgB;EAChB,0BAA0B;EAC1B,mBAAoB;CASrB;AAPC;EACE,uBAAuB;CACxB;AAED;EACE,uBAAuB;CACxB;AAGH;EACE,eAAe;EACf,YAAY;EACZ,mBAAmB;EACnB,2CAAmC;EAAnC,sCAAmC;EAAnC,kCAAmC;CAqCpC;AAnCC;EACE,eAAe;EACf,YAAY;EACZ,WAAW;EACX,aAAa;EACb,WAAW;EACX,kBAAkB;EAClB,gBAAgB;EAChB,aAAa;EACb,iBAAiB;EACjB,+BAAuB;UAAvB,uBAAuB;CACxB;AAED;EACE,cAAc;EACd,mBAAmB;EACnB,0BAA0B;EAC1B,eAAe;CAChB;AAED;EACE,eAAe;EACf,oBAAoB;EACpB,0BAA0B;EAC1B,eAAe;EACf,kBAAkB;CACnB;AAED,yFAMC;AALC;EAEE,YAAY;EACZ,uBAAuB;CACxB;AAIL;EACE,eAAe;EACf,YAAY;EACZ,YAAY;EACZ,oBAAoB;EACpB,mBAAmB;EACnB,OAAO;EACP,UAAU;EACV,YAAY;EACZ,0BAA0B;EAC1B,oBAAoB;EACpB,wCAAgC;EAAhC,mCAAgC;EAAhC,gCAAgC;CACjC","file":"OnOffSwitch.scss","sourcesContent":[".onoffswitch {\n  position: relative;\n  display: table-cell;\n  vertical-align: middle;\n  width: 50px;\n  -webkit-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n\n  .onoffswitchCheckbox {\n    display: none;\n\n    &:checked {\n      + .onoffswitchLabel {\n        .onoffswitchInner {\n          margin-left: 0;\n        }\n\n        .onoffswitchSwitch {\n          right: 0;\n        }\n      }\n\n      &.partial {\n        + .onoffswitchLabel {\n          .onoffswitchInner {\n            margin-left: 50%;\n          }\n\n          .onoffswitchSwitch {\n            right: 15px;\n          }\n        }\n      }\n    }\n  }\n\n  .onoffswitchLabel {\n    display: block;\n    overflow: hidden;\n    cursor: pointer;\n    border: 2px solid #CCCCCC;\n    border-radius: 18px;\n\n    &.partial {\n      background-color: #ddd;\n    }\n\n    &.full {\n      background-color: #fff;\n    }\n  }\n\n  .onoffswitchInner {\n    display: block;\n    width: 200%;\n    margin-left: -100%;\n    transition: margin 0.3s ease-in 0s;\n\n    &:before, &:after {\n      display: block;\n      float: left;\n      width: 50%;\n      height: 18px;\n      padding: 0;\n      line-height: 18px;\n      font-size: 12px;\n      color: white;\n      font-weight: 700;\n      box-sizing: border-box;\n    }\n\n    &:before {\n      content: \"on\";\n      padding-left: 10px;\n      background-color: #FFF7C2;\n      color: #474029;\n    }\n\n    &:after {\n      content: \"off\";\n      padding-right: 10px;\n      background-color: #373634;\n      color: #D6D6D6;\n      text-align: right;\n    }\n\n    &.partial {\n      &:before,\n      &:after {\n        content: \"\";\n        background-color: #ddd;\n      }\n    }\n  }\n\n  .onoffswitchSwitch {\n    display: block;\n    width: 18px;\n    margin: 0px;\n    background: #FFFFFF;\n    position: absolute;\n    top: 0;\n    bottom: 0;\n    right: 32px;\n    border: 2px solid #CCCCCC;\n    border-radius: 18px;\n    transition: all 0.3s ease-in 0s;\n  }\n}\n"],"sourceRoot":"webpack://"}]);
-  
-  // exports
-  exports.locals = {
-  	"onoffswitch": "OnOffSwitch_onoffswitch_3aL",
-  	"onoffswitchCheckbox": "OnOffSwitch_onoffswitchCheckbox_3ON",
-  	"onoffswitchLabel": "OnOffSwitch_onoffswitchLabel_1z-",
-  	"onoffswitchInner": "OnOffSwitch_onoffswitchInner_suM",
-  	"onoffswitchSwitch": "OnOffSwitch_onoffswitchSwitch_1-K",
-  	"partial": "OnOffSwitch_partial_2dt",
-  	"full": "OnOffSwitch_full_3lp"
-  };
-
-/***/ },
-/* 84 */,
-/* 85 */,
-/* 86 */,
-/* 87 */
-/***/ function(module, exports, __webpack_require__) {
-
-  'use strict';
-  
-  Object.defineProperty(exports, '__esModule', {
-    value: true
-  });
-  
-  var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-  
-  var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
-  
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-  
-  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-  
-  function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-  
-  var _react = __webpack_require__(4);
-  
-  var _react2 = _interopRequireDefault(_react);
-  
-  var _LightCheckboxScss = __webpack_require__(88);
-  
-  var _LightCheckboxScss2 = _interopRequireDefault(_LightCheckboxScss);
-  
-  var _decoratorsWithStyles = __webpack_require__(24);
-  
-  var _decoratorsWithStyles2 = _interopRequireDefault(_decoratorsWithStyles);
-  
-  var LightCheckbox = (function (_Component) {
-    _inherits(LightCheckbox, _Component);
-  
-    _createClass(LightCheckbox, null, [{
-      key: 'propTypes',
-      value: {
-        checked: _react.PropTypes.bool.isRequired,
-        id: _react.PropTypes.string.isRequired,
-        onToggle: _react.PropTypes.func.isRequired,
-        name: _react.PropTypes.string
-      },
-      enumerable: true
-    }]);
-  
-    function LightCheckbox(props, context) {
-      _classCallCheck(this, _LightCheckbox);
-  
-      _get(Object.getPrototypeOf(_LightCheckbox.prototype), 'constructor', this).call(this, props, context);
-      this.state = {};
-    }
-  
-    _createClass(LightCheckbox, [{
-      key: 'onChange',
-      value: function onChange(e) {
-        e.target.blur();
-        this.props.onToggle(this.props.id, !this.props.checked);
-      }
-    }, {
-      key: 'render',
-      value: function render() {
-        var id = 'light-checkbox-' + this.props.id;
-        return _react2['default'].createElement(
-          'label',
-          { className: _LightCheckboxScss2['default'].label, htmlFor: id },
-          _react2['default'].createElement('input', { type: 'checkbox', id: id, name: 'light',
-            onChange: this.onChange.bind(this),
-            className: _LightCheckboxScss2['default'].checkbox,
-            checked: this.props.checked
-          }),
-          this.props.name
-        );
-      }
-    }]);
-  
-    var _LightCheckbox = LightCheckbox;
-    LightCheckbox = (0, _decoratorsWithStyles2['default'])(_LightCheckboxScss2['default'])(LightCheckbox) || LightCheckbox;
-    return LightCheckbox;
-  })(_react.Component);
-  
-  exports['default'] = LightCheckbox;
-  module.exports = exports['default'];
-
-/***/ },
-/* 88 */
-/***/ function(module, exports, __webpack_require__) {
-
-  
-      var content = __webpack_require__(89);
-      var insertCss = __webpack_require__(20);
-  
-      if (typeof content === 'string') {
-        content = [[module.id, content, '']];
-      }
-  
-      module.exports = content.locals || {};
-      module.exports._getCss = function() { return content.toString(); };
-      module.exports._insertCss = insertCss.bind(null, content);
-    
-      var removeCss = function() {};
-  
-      // Hot Module Replacement
-      // https://webpack.github.io/docs/hot-module-replacement
-      if (false) {
-        module.hot.accept("!!./../../../node_modules/css-loader/index.js?sourceMap&modules&localIdentName=[name]_[local]_[hash:base64:3]!./../../../node_modules/postcss-loader/index.js!./LightCheckbox.scss", function() {
-          var newContent = require("!!./../../../node_modules/css-loader/index.js?sourceMap&modules&localIdentName=[name]_[local]_[hash:base64:3]!./../../../node_modules/postcss-loader/index.js!./LightCheckbox.scss");
-          if (typeof newContent === 'string') {
-            newContent = [[module.id, content, '']];
-          }
-          removeCss = insertCss(newContent, { replace: true });
-        });
-        module.hot.dispose(function() { removeCss(); });
-      }
-    
-
-/***/ },
-/* 89 */
-/***/ function(module, exports, __webpack_require__) {
-
-  exports = module.exports = __webpack_require__(19)();
-  // imports
-  
-  
-  // module
-  exports.push([module.id, ".LightCheckbox_label_3Di {\n  display: inline-block;\n  white-space: nowrap;\n  padding: 0 10px;\n  font-size: 14px;\n  width: 33%;\n  text-overflow: ellipsis;\n  overflow: hidden;\n  position: relative;\n}\n\n.LightCheckbox_checkbox_2sa {\n  margin-right: 5px;\n}\n", "", {"version":3,"sources":["/./src/components/LightCheckbox/LightCheckbox.scss"],"names":[],"mappings":"AAAA;EACE,sBAAsB;EACtB,oBAAoB;EACpB,gBAAgB;EAChB,gBAAgB;EAChB,WAAW;EACX,wBAAwB;EACxB,iBAAiB;EACjB,mBAAmB;CACpB;;AAED;EACE,kBAAkB;CACnB","file":"LightCheckbox.scss","sourcesContent":[".label {\n  display: inline-block;\n  white-space: nowrap;\n  padding: 0 10px;\n  font-size: 14px;\n  width: 33%;\n  text-overflow: ellipsis;\n  overflow: hidden;\n  position: relative;\n}\n\n.checkbox {\n  margin-right: 5px;\n}\n"],"sourceRoot":"webpack://"}]);
-  
-  // exports
-  exports.locals = {
-  	"label": "LightCheckbox_label_3Di",
-  	"checkbox": "LightCheckbox_checkbox_2sa"
-  };
-
-/***/ },
-/* 90 */
-/***/ function(module, exports, __webpack_require__) {
-
-  'use strict';
-  
-  Object.defineProperty(exports, '__esModule', {
-    value: true
-  });
-  
-  var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-  
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-  
-  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-  
-  var _configJson = __webpack_require__(49);
-  
-  var _configJson2 = _interopRequireDefault(_configJson);
-  
-  var _reactCookie = __webpack_require__(91);
-  
-  var _reactCookie2 = _interopRequireDefault(_reactCookie);
-  
-  var CookieAndLocalStorage = (function () {
-    function CookieAndLocalStorage() {
-      _classCallCheck(this, CookieAndLocalStorage);
-    }
-  
-    _createClass(CookieAndLocalStorage, [{
-      key: 'getItem',
-      value: function getItem(key) {
-        if (typeof window !== 'undefined') {
-          if (window.localStorage) {
-            return window.localStorage.getItem(key);
-          }
-          console.error('browser does not support local storage');
-        }
-        return _reactCookie2['default'].load(key);
-      }
-    }, {
-      key: 'setItem',
-      value: function setItem(key, value) {
-        if (typeof window !== 'undefined' && window.localStorage) {
-          window.localStorage.setItem(key, value);
-        }
-        _reactCookie2['default'].save(key, value, { path: '/' });
-      }
-    }]);
-  
-    return CookieAndLocalStorage;
-  })();
-  
-  var LocalStorage = (function () {
-    function LocalStorage() {
-      _classCallCheck(this, LocalStorage);
-    }
-  
-    _createClass(LocalStorage, null, [{
-      key: 'getStore',
-      value: function getStore() {
-        if (typeof this.store === 'undefined') {
-          this.store = new CookieAndLocalStorage();
-        }
-        return this.store;
-      }
-    }, {
-      key: 'getJSON',
-      value: function getJSON() {
-        var store = this.getStore();
-        var appData = store.getItem(_configJson2['default'][("development")].localStorageKey) || '{}';
-        return JSON.parse(appData);
-      }
-    }, {
-      key: 'get',
-      value: function get(key) {
-        var appData = this.getJSON();
-        return appData[key];
-      }
-    }, {
-      key: 'set',
-      value: function set(key, value) {
-        var appData = this.getJSON();
-        appData[key] = value;
-        this.writeHash(appData);
-      }
-    }, {
-      key: 'setMany',
-      value: function setMany(data) {
-        var appData = this.getJSON();
-        for (var key in data) {
-          if (data.hasOwnProperty(key)) {
-            var value = data[key];
-            if (typeof value === 'undefined') {
-              delete appData[key];
-            } else {
-              appData[key] = value;
-            }
-          }
-        }
-        this.writeHash(appData);
-      }
-    }, {
-      key: 'writeHash',
-      value: function writeHash(appData) {
-        var store = this.getStore();
-        store.setItem(_configJson2['default'][("development")].localStorageKey, JSON.stringify(appData));
-      }
-    }, {
-      key: 'delete',
-      value: function _delete(key) {
-        var appData = this.getJSON();
-        delete appData[key];
-        this.writeHash(appData);
-      }
-    }]);
-  
-    return LocalStorage;
-  })();
-  
-  exports['default'] = LocalStorage;
-  module.exports = exports['default'];
-
-/***/ },
 /* 91 */
 /***/ function(module, exports) {
 
-  module.exports = require("react-cookie");
-
-/***/ },
-/* 92 */
-/***/ function(module, exports, __webpack_require__) {
-
-  'use strict';
-  
-  Object.defineProperty(exports, '__esModule', {
-    value: true
-  });
-  
-  var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-  
-  var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-  
-  var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
-  
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-  
-  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-  
-  function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-  
-  var _react = __webpack_require__(4);
-  
-  var _react2 = _interopRequireDefault(_react);
-  
-  var _GroupFormScss = __webpack_require__(93);
-  
-  var _GroupFormScss2 = _interopRequireDefault(_GroupFormScss);
-  
-  var _classnames = __webpack_require__(47);
-  
-  var _classnames2 = _interopRequireDefault(_classnames);
-  
-  var _decoratorsWithStyles = __webpack_require__(24);
-  
-  var _decoratorsWithStyles2 = _interopRequireDefault(_decoratorsWithStyles);
-  
-  var _LightCheckboxLightCheckbox = __webpack_require__(87);
-  
-  var _LightCheckboxLightCheckbox2 = _interopRequireDefault(_LightCheckboxLightCheckbox);
-  
-  var _actionsBridge = __webpack_require__(48);
-  
-  var _actionsBridge2 = _interopRequireDefault(_actionsBridge);
-  
-  var GroupForm = (function (_Component) {
-    _inherits(GroupForm, _Component);
-  
-    _createClass(GroupForm, null, [{
-      key: 'propTypes',
-      value: {
-        lights: _react.PropTypes.object.isRequired,
-        ids: _react.PropTypes.array.isRequired,
-        onCreated: _react.PropTypes.func.isRequired,
-        onUpdated: _react.PropTypes.func.isRequired,
-        onCanceled: _react.PropTypes.func.isRequired,
-        name: _react.PropTypes.string,
-        id: _react.PropTypes.string,
-        checkedLightIDs: _react.PropTypes.array
-      },
-      enumerable: true
-    }]);
-  
-    function GroupForm(props, context) {
-      _classCallCheck(this, _GroupForm);
-  
-      _get(Object.getPrototypeOf(_GroupForm.prototype), 'constructor', this).call(this, props, context);
-      this.state = { name: '', checkedLightIDs: [] };
-    }
-  
-    _createClass(GroupForm, [{
-      key: 'onNameChange',
-      value: function onNameChange(e) {
-        this.setState({ name: e.target.value.trim() });
-      }
-    }, {
-      key: 'onLightToggled',
-      value: function onLightToggled(id, checked) {
-        var checkedLightIDs = this.state.checkedLightIDs;
-        var index = checkedLightIDs.indexOf(id);
-        if (checked) {
-          if (index < 0) {
-            checkedLightIDs.push(id);
-          }
-        } else {
-          if (index > -1) {
-            checkedLightIDs = checkedLightIDs.slice(0, index).concat(checkedLightIDs.slice(index + 1, checkedLightIDs.length));
-          }
-        }
-        this.setState({ checkedLightIDs: checkedLightIDs });
-      }
-    }, {
-      key: 'onGroupSaved',
-      value: function onGroupSaved(name, lightIDs, group) {
-        group.name = name;
-        var lights = this.props.lights;
-        group.lights = lightIDs.map(function (id) {
-          return lights[id];
-        });
-        this.props.onCreated(group);
-        this.setState({ checkedLightIDs: [], name: '' });
-      }
-    }, {
-      key: 'onGroupSaveError',
-      value: function onGroupSaveError(name, response) {
-        console.error('failed to create group', name, response);
-      }
-    }, {
-      key: 'onCancel',
-      value: function onCancel(event) {
-        event.preventDefault();
-        event.target.blur();
-        this.props.onCanceled();
-      }
-    }, {
-      key: 'handleSubmit',
-      value: function handleSubmit(e) {
-        e.preventDefault();
-        if (!this.isValid()) {
-          return;
-        }
-        var name = this.state.name;
-        var lightIDs = this.state.checkedLightIDs;
-        _actionsBridge2['default'].createGroup(name, lightIDs).then(this.onGroupSaved.bind(this, name, lightIDs))['catch'](this.onGroupSaveError.bind(this, name));
-      }
-    }, {
-      key: 'isValid',
-      value: function isValid() {
-        if (this.state.name.length < 1) {
-          return false;
-        }
-        if (this.state.checkedLightIDs.length < 1) {
-          return false;
-        }
-        return true;
-      }
-    }, {
-      key: 'render',
-      value: function render() {
-        var _this = this;
-  
-        var checkedLightIDs = this.props.checkedLightIDs || this.state.checkedLightIDs;
-        return _react2['default'].createElement(
-          'form',
-          { onSubmit: this.handleSubmit.bind(this) },
-          _react2['default'].createElement(
-            'p',
-            { className: _GroupFormScss2['default'].helpText },
-            'Use groups to control multiple lights at once.'
-          ),
-          _react2['default'].createElement(
-            'div',
-            { className: _GroupFormScss2['default'].field },
-            _react2['default'].createElement(
-              'label',
-              { className: _GroupFormScss2['default'].label, htmlFor: 'new-group-name' },
-              'Name:'
-            ),
-            _react2['default'].createElement('input', { type: 'text', id: 'new-group-name',
-              onChange: this.onNameChange.bind(this),
-              value: this.state.name || this.props.name,
-              placeholder: 'e.g., Back Bedroom',
-              className: _GroupFormScss2['default'].textField,
-              autoFocus: 'autofocus'
-            })
-          ),
-          _react2['default'].createElement(
-            'div',
-            { className: (0, _classnames2['default'])(_GroupFormScss2['default'].lightsField, _GroupFormScss2['default'].field) },
-            this.props.ids.map(function (lightID) {
-              var checked = checkedLightIDs.indexOf(lightID) > -1;
-              var key = 'light-' + lightID + '-checked-' + checked;
-              return _react2['default'].createElement(_LightCheckboxLightCheckbox2['default'], _extends({ key: key, id: lightID,
-                onToggle: _this.onLightToggled.bind(_this),
-                checked: checked }, _this.props.lights[lightID]));
-            })
-          ),
-          _react2['default'].createElement(
-            'div',
-            { className: _GroupFormScss2['default'].formControls },
-            _react2['default'].createElement(
-              'button',
-              { type: 'submit', className: _GroupFormScss2['default'].btn, disabled: !this.isValid() },
-              'Save'
-            ),
-            typeof this.props.id === 'string' ? _react2['default'].createElement(
-              'a',
-              { href: '#', className: _GroupFormScss2['default'].cancelLink, onClick: this.onCancel.bind(this) },
-              'Cancel'
-            ) : ''
-          )
-        );
-      }
-    }]);
-  
-    var _GroupForm = GroupForm;
-    GroupForm = (0, _decoratorsWithStyles2['default'])(_GroupFormScss2['default'])(GroupForm) || GroupForm;
-    return GroupForm;
-  })(_react.Component);
-  
-  exports['default'] = GroupForm;
-  module.exports = exports['default'];
-
-/***/ },
-/* 93 */
-/***/ function(module, exports, __webpack_require__) {
-
-  
-      var content = __webpack_require__(94);
-      var insertCss = __webpack_require__(20);
-  
-      if (typeof content === 'string') {
-        content = [[module.id, content, '']];
-      }
-  
-      module.exports = content.locals || {};
-      module.exports._getCss = function() { return content.toString(); };
-      module.exports._insertCss = insertCss.bind(null, content);
-    
-      var removeCss = function() {};
-  
-      // Hot Module Replacement
-      // https://webpack.github.io/docs/hot-module-replacement
-      if (false) {
-        module.hot.accept("!!./../../../node_modules/css-loader/index.js?sourceMap&modules&localIdentName=[name]_[local]_[hash:base64:3]!./../../../node_modules/postcss-loader/index.js!./GroupForm.scss", function() {
-          var newContent = require("!!./../../../node_modules/css-loader/index.js?sourceMap&modules&localIdentName=[name]_[local]_[hash:base64:3]!./../../../node_modules/postcss-loader/index.js!./GroupForm.scss");
-          if (typeof newContent === 'string') {
-            newContent = [[module.id, content, '']];
-          }
-          removeCss = insertCss(newContent, { replace: true });
-        });
-        module.hot.dispose(function() { removeCss(); });
-      }
-    
-
-/***/ },
-/* 94 */
-/***/ function(module, exports, __webpack_require__) {
-
-  exports = module.exports = __webpack_require__(19)();
-  // imports
-  
-  
-  // module
-  exports.push([module.id, ".GroupForm_field_1xT {\n  margin-bottom: 10px;\n  float: left;\n  margin-right: 2%\n}\n\n.GroupForm_field_1xT.GroupForm_lightsField_1Bl {\n  width: 100%;\n  clear: left;\n  margin-right: 0;\n  float: none\n}\n\n.GroupForm_formControls_2_u {\n  clear: both;\n}\n\n.GroupForm_label_1E2 {\n  display: inline-block;\n  font-weight: 700;\n  font-size: 14px;\n  margin: 0 10px;\n}\n\ninput[type=\"text\"].GroupForm_textField_2Rg {\n  display: inline-block;\n  width: 20em;\n}\n\nbutton.GroupForm_btn_1i0 {\n  margin-left: 10px;\n}\n\n.GroupForm_helpText_YNW {\n  margin: 0 10px 10px 10px;\n}\n\n.GroupForm_cancelLink_NH6 {\n  text-decoration: none;\n  font-size: 13px;\n  display: inline-block;\n  margin-left: 10px;\n}\n", "", {"version":3,"sources":["/./src/components/GroupForm/GroupForm.scss"],"names":[],"mappings":"AAAA;EACE,oBAAoB;EACpB,YAAY;EACZ,gBAAiB;CAQlB;;AANC;EACE,YAAY;EACZ,YAAY;EACZ,gBAAgB;EAChB,WAAY;CACb;;AAGH;EACE,YAAY;CACb;;AAED;EACE,sBAAsB;EACtB,iBAAiB;EACjB,gBAAgB;EAChB,eAAe;CAChB;;AAED;EACE,sBAAsB;EACtB,YAAY;CACb;;AAED;EACE,kBAAkB;CACnB;;AAED;EACE,yBAAyB;CAC1B;;AAED;EACE,sBAAsB;EACtB,gBAAgB;EAChB,sBAAsB;EACtB,kBAAkB;CACnB","file":"GroupForm.scss","sourcesContent":[".field {\n  margin-bottom: 10px;\n  float: left;\n  margin-right: 2%;\n\n  &.lightsField {\n    width: 100%;\n    clear: left;\n    margin-right: 0;\n    float: none;\n  }\n}\n\n.formControls {\n  clear: both;\n}\n\n.label {\n  display: inline-block;\n  font-weight: 700;\n  font-size: 14px;\n  margin: 0 10px;\n}\n\ninput[type=\"text\"].textField {\n  display: inline-block;\n  width: 20em;\n}\n\nbutton.btn {\n  margin-left: 10px;\n}\n\n.helpText {\n  margin: 0 10px 10px 10px;\n}\n\n.cancelLink {\n  text-decoration: none;\n  font-size: 13px;\n  display: inline-block;\n  margin-left: 10px;\n}\n"],"sourceRoot":"webpack://"}]);
-  
-  // exports
-  exports.locals = {
-  	"field": "GroupForm_field_1xT",
-  	"lightsField": "GroupForm_lightsField_1Bl",
-  	"formControls": "GroupForm_formControls_2_u",
-  	"label": "GroupForm_label_1E2",
-  	"textField": "GroupForm_textField_2Rg",
-  	"btn": "GroupForm_btn_1i0",
-  	"helpText": "GroupForm_helpText_YNW",
-  	"cancelLink": "GroupForm_cancelLink_NH6"
-  };
+  module.exports = require("front-matter");
 
 /***/ }
 /******/ ]);
