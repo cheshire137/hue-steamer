@@ -2,7 +2,6 @@ import React, { Component, PropTypes } from 'react';
 import s from './LightsList.scss';
 import Light from '../Light/Light';
 import withStyles from '../../decorators/withStyles';
-import TimerMixin from 'react-timer-mixin';
 
 @withStyles(s)
 class LightsList extends Component {
@@ -15,46 +14,87 @@ class LightsList extends Component {
 
   constructor(props, context) {
     super(props, context);
-    this.state = {};
+    this.state = { filter: undefined, lightState: undefined };
   }
 
-  getFilteredLightIDs(filter) {
+  onFilterChange(event) {
+    let filter = event.target.value.toLowerCase().trim();
+    if (filter.length < 1) {
+      filter = undefined;
+    }
+    this.setState({ filter }, () => {
+      this.handleSubmit();
+    });
+  }
+
+  onStateChange(event) {
+    let lightState = event.target.value;
+    if (lightState.length === 0) {
+      lightState = undefined;
+    }
+    this.setState({ lightState }, () => {
+      this.handleSubmit();
+    });
+  }
+
+  getFilteredLightIDs() {
     let filteredIDs = this.props.ids;
-    if (typeof filter !== 'undefined') {
+    if (typeof this.state.filter !== 'undefined') {
       filteredIDs = filteredIDs.filter((id) => {
         const light = this.props.lights[id];
         if (typeof light !== 'object') {
           return true;
         }
-        return light.name.toLowerCase().indexOf(filter) > -1;
+        return light.name.toLowerCase().indexOf(this.state.filter) > -1;
+      });
+    }
+    if (typeof this.state.lightState !== 'undefined') {
+      filteredIDs = filteredIDs.filter((id) => {
+        const light = this.props.lights[id];
+        if (typeof light !== 'object') {
+          return true;
+        }
+        if (light.state.on && this.state.lightState === 'on') {
+          return true;
+        }
+        return !light.state.on && this.state.lightState === 'off';
       });
     }
     return filteredIDs;
   }
 
-  filterLights(event) {
-    const callback = () => {
-      let filter = event.target.value.toLowerCase().trim();
-      if (filter.length < 1) {
-        filter = undefined;
-      }
-      if (this.state.filter !== filter) {
-        this.setState({ filter });
-        this.props.onFiltered(filter, this.getFilteredLightIDs(filter));
-      }
-    };
-    TimerMixin.setTimeout(callback, 750);
+  handleSubmit(event) {
+    if (event) {
+      event.preventDefault();
+    }
+    const filters = [];
+    if (typeof this.state.filter === 'string') {
+      filters.push(this.state.filter);
+    }
+    if (typeof this.state.lightState === 'string') {
+      filters.push(this.state.lightState);
+    }
+    const filterName = filters.length > 0 ? filters.join(', ') : undefined;
+    this.props.onFiltered(filterName, this.getFilteredLightIDs());
   }
 
   render() {
-    const filteredIDs = this.getFilteredLightIDs(this.state.filter);
+    const filteredIDs = this.getFilteredLightIDs();
     return (
       <div className={s.lightListContainer}>
-        <input type="search" placeholder="Filter lights"
-          className={s.lightFilter}
-          onChange={this.filterLights.bind(this)}
-          autoFocus="autofocus"
-        />
+        <form onSubmit={this.handleSubmit.bind(this)}>
+          <input type="search" placeholder="Filter lights..."
+            className={s.lightFilter}
+            onChange={this.onFilterChange.bind(this)}
+            autoFocus="autofocus"
+          />
+          <label className={s.label}>State:</label>
+          <select className={s.stateFilter} onChange={this.onStateChange.bind(this)}>
+            <option value="">Any</option>
+            <option value="on">On</option>
+            <option value="off">Off</option>
+          </select>
+        </form>
         <ul className={s.lightList}>
           {filteredIDs.map((id) => {
             const light = this.props.lights[id];

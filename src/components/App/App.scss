@@ -87,7 +87,8 @@ textarea {
 }
 
 input[type="text"],
-input[type="search"] {
+input[type="search"],
+select {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
   display: block;
@@ -112,6 +113,10 @@ input[type="search"] {
     -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(225,108,81,.6);
     box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(225,108,81,.6);
   }
+}
+
+select {
+  height: 34px;
 }
 
 input[type="search"]::-webkit-search-cancel-button {

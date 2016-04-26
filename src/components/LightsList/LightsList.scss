@@ -3,5 +3,20 @@
   padding-left: 0;
 }
 
-input[type="text"].lightFilter {
+input[type="search"].lightFilter,
+select.stateFilter,
+.label {
+  display: inline-block;
+}
+
+input[type="search"].lightFilter {
+  width: 50%;
+}
+
+select.stateFilter {
+  width: 5em;
+}
+
+.label {
+  margin: 0 5px 0 30px;
 }
