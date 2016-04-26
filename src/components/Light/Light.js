@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import s from './Light.scss';
 import Bridge from '../../actions/bridge';
 import Converter from '../../api/converter';
-import { SketchPicker } from 'react-color';
+import { SliderPicker } from 'react-color';
 import cx from 'classnames';
 import withStyles from '../../decorators/withStyles';
 import OnOffSwitch from '../OnOffSwitch/OnOffSwitch';
@@ -118,8 +118,9 @@ class Light extends Component {
         colorStyle.backgroundColor = '#' + this.state.latestColor;
       }
     }
+    const nightDayClass = this.isNight() ? s.night : s.day;
     return (
-      <li className={cx(s.light, this.isNight() ? s.night : s.day)}>
+      <li className={cx(s.light, nightDayClass)}>
         {this.state.loaded ? (
           <div>
             <header className={s.lightHeader}>
@@ -145,8 +146,8 @@ class Light extends Component {
                   <button type="button" onClick={this.toggleColorPicker.bind(this)}
                     className={s.colorBlock} style={colorStyle}
                   ></button>
-                  <div style={colorPickerStyle} className={s.colorPickerWrapper}>
-                    <SketchPicker color={colorStyle.backgroundColor}
+                  <div style={colorPickerStyle} className={cx(s.colorPickerWrapper, nightDayClass)}>
+                    <SliderPicker color={colorStyle.backgroundColor}
                       onChangeComplete={this.onColorPickerChange.bind(this)}
                     />
                   </div>

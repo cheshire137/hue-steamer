@@ -73,6 +73,24 @@
   .colorPickerWrapper {
     z-index: 99;
     position: absolute;
+    width: 400px;
+    border-width: 1px;
+    border-style: solid;
+    border-radius: 4px;
+    padding: 10px;
+    left: -175px;
+    -webkit-box-shadow: 0 0 5px 0 rgba(0,0,0,0.3);
+    box-shadow: 0 0 5px 0 rgba(0,0,0,0.3);
+
+    &.night {
+      border-color: #38231D;
+      background-color: #101010;
+    }
+
+    &.day {
+      border-color: #ccc;
+      background-color: #fff;
+    }
   }
 }
 
