@@ -31,7 +31,8 @@ class GroupForm extends Component {
   }
 
   onLightToggled(id, checked) {
-    let checkedLightIDs = this.state.checkedLightIDs;
+    let checkedLightIDs = this.state.checkedLightIDs ||
+        this.props.checkedLightIDs || [];
     const index = checkedLightIDs.indexOf(id);
     if (checked && index < 0) {
       checkedLightIDs.push(id);

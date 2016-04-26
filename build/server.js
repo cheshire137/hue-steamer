@@ -5945,7 +5945,7 @@ module.exports =
     }, {
       key: 'onLightToggled',
       value: function onLightToggled(id, checked) {
-        var checkedLightIDs = this.state.checkedLightIDs;
+        var checkedLightIDs = this.state.checkedLightIDs || this.props.checkedLightIDs || [];
         var index = checkedLightIDs.indexOf(id);
         if (checked && index < 0) {
           checkedLightIDs.push(id);
@@ -6205,26 +6205,35 @@ module.exports =
       _classCallCheck(this, _LightCheckbox);
   
       _get(Object.getPrototypeOf(_LightCheckbox.prototype), 'constructor', this).call(this, props, context);
-      this.state = {};
+      this.state = { checked: undefined };
     }
   
     _createClass(LightCheckbox, [{
       key: 'onChange',
       value: function onChange(e) {
+        var _this = this;
+  
         e.target.blur();
-        this.props.onToggle(this.props.id, !this.props.checked);
+        this.setState({ checked: e.target.checked }, function () {
+          _this.props.onToggle(_this.props.id, _this.state.checked);
+        });
       }
     }, {
       key: 'render',
       value: function render() {
         var id = 'light-checkbox-' + this.props.id;
+        var checked = false;
+        if (typeof this.state.checked === 'undefined') {
+          checked = this.props.checked;
+        } else {
+          checked = this.state.checked;
+        }
         return _react2['default'].createElement(
           'label',
           { className: _LightCheckboxScss2['default'].label, htmlFor: id },
           _react2['default'].createElement('input', { type: 'checkbox', id: id, name: 'light',
             onChange: this.onChange.bind(this),
-            className: _LightCheckboxScss2['default'].checkbox,
-            checked: this.props.checked
+            className: _LightCheckboxScss2['default'].checkbox, checked: checked
           }),
           this.props.name
         );
