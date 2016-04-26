@@ -20,7 +20,11 @@ class GroupsList extends Component {
     return (
       <ul className={s.groupList}>
         {this.props.groups.map((group) => {
-          const key = 'group-' + group.id;
+          let loaded = true;
+          group.lights.forEach((light) => {
+            loaded = loaded && typeof light === 'object';
+          });
+          const key = 'group-' + group.id + '-loaded-' + loaded;
           return (
             <Group key={key} {...group}
               onLightLoaded={this.props.onLightLoaded}

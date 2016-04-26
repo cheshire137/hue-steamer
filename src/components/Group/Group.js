@@ -5,6 +5,8 @@ import withStyles from '../../decorators/withStyles';
 import FontAwesome from 'react-fontawesome';
 import OnOffSwitch from '../OnOffSwitch/OnOffSwitch';
 import Bridge from '../../actions/bridge';
+import { SliderPicker } from 'react-color';
+import Converter from '../../api/converter';
 
 @withStyles(s)
 class Group extends Component {
@@ -19,9 +21,17 @@ class Group extends Component {
 
   constructor(props, context) {
     super(props, context);
+    let latestColor = undefined;
+    const colors = this.getColorsFromLights(props.lights);
+    if (colors.length === 1) {
+      latestColor = colors[0];
+    }
     this.state = {
       open: false,
       on: false,
+      showColorPicker: false,
+      latestColor,
+      canSetColor: colors.length > 0,
     };
   }
 
@@ -37,11 +47,17 @@ class Group extends Component {
 
   onLightsToggleComplete(on, success) {
     if (success) {
-      for (let j = 0; j < this.props.lights.length; j++) {
-        const light = this.props.lights[j];
+      for (let i = 0; i < this.props.lights.length; i++) {
+        const light = this.props.lights[i];
         light.state.on = on;
         this.props.onLightLoaded(light);
       }
+      const colors = this.getColorsFromLights(this.props.lights);
+      let latestColor = undefined;
+      if (colors.length === 1) {
+        latestColor = colors[0];
+      }
+      this.setState({ latestColor, canSetColor: colors.length > 0 });
     }
   }
 
@@ -49,6 +65,48 @@ class Group extends Component {
     event.preventDefault();
     event.target.blur();
     this.props.onEdit(this.props.id, this.props.name, this.props.lights);
+  }
+
+  onColorPickerChange(color) {
+    this.setState({ latestColor: color.hex });
+    this.changeColor(color.hex);
+  }
+
+  onColorPickerCancel() {
+    this.setState({ showColorPicker: false });
+  }
+
+  onColorChanged(success) {
+    if (!success) {
+      console.error('failed to change group color', this.props.name);
+    }
+  }
+
+  getColorsFromLights(lights) {
+    const colors = [];
+    lights.forEach((light) => {
+      if (typeof light === 'object') {
+        colors.push(this.getLightHex(light.state));
+      }
+    });
+    return [...new Set(colors)].filter((c) => typeof c === 'string');
+  }
+
+  getLightHex(lightState) {
+    if (lightState.on) {
+      const xy = lightState.xy;
+      if (typeof xy === 'object') {
+        return Converter.cie1931ToHex(xy[0], xy[1], lightState.bri);
+      }
+    }
+  }
+
+  changeColor(color) {
+    const xy = Converter.hexToCIE1931(color);
+    const x = xy[0];
+    const y = xy[1];
+    Bridge.setGroupColor(this.props.id, x, y).
+           then(this.onColorChanged.bind(this));
   }
 
   isNight() {
@@ -90,6 +148,10 @@ class Group extends Component {
     return false;
   }
 
+  toggleColorPicker() {
+    this.setState({ showColorPicker: !this.state.showColorPicker });
+  }
+
   render() {
     const groupStyle = {};
     if (this.state.open) {
@@ -105,8 +167,16 @@ class Group extends Component {
     if (this.areAllLightsOn()) {
       switchState = 2;
     }
+    const nightDayClass = this.isNight() ? s.night : s.day;
+    const colorStyle = {};
+    const colorPickerStyle = {
+      display: this.state.showColorPicker ? 'block' : 'none',
+    };
+    if (typeof this.state.latestColor !== 'undefined') {
+      colorStyle.backgroundColor = '#' + this.state.latestColor;
+    }
     return (
-      <li className={cx(s.group, this.isNight() ? s.night : s.day)}>
+      <li className={cx(s.group, nightDayClass)}>
         <header className={s.groupHeader}>
           <h3 className={s.groupName}>
             <a href="#" onClick={this.toggleGroupOpen.bind(this)}>
@@ -121,6 +191,20 @@ class Group extends Component {
           <OnOffSwitch id={checkboxID} state={switchState}
             onToggle={this.onLightsToggle.bind(this)}
           />
+          {this.state.canSetColor ? (
+            <div className={s.colorBlockAndPicker}>
+              <button type="button" onClick={this.toggleColorPicker.bind(this)}
+                className={cx(s.colorBlock, nightDayClass)} style={colorStyle}
+              >
+                {colorStyle.backgroundColor ? '' : 'Set Color'}
+              </button>
+              <div style={colorPickerStyle} className={cx(s.colorPickerWrapper, nightDayClass)}>
+                <SliderPicker color={colorStyle.backgroundColor}
+                  onChangeComplete={this.onColorPickerChange.bind(this)}
+                />
+              </div>
+            </div>
+          ) : ''}
         </header>
         <div className={s.groupContents} style={groupStyle}>
           <ul className={s.groupLights}>

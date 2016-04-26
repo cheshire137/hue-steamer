@@ -728,6 +728,48 @@ module.exports =
     }, null, _this);
   });
   
+  server.post('/group/:id/color', function callee$0$0(req, res) {
+    var x, y, api, state;
+    return regeneratorRuntime.async(function callee$0$0$(context$1$0) {
+      while (1) switch (context$1$0.prev = context$1$0.next) {
+        case 0:
+          x = req.query.x;
+          y = req.query.y;
+  
+          if (!(typeof x !== 'string')) {
+            context$1$0.next = 5;
+            break;
+          }
+  
+          res.status(400).send('{"error": "Must provide x color in x param"}');
+          return context$1$0.abrupt('return');
+  
+        case 5:
+          if (!(typeof y !== 'string')) {
+            context$1$0.next = 8;
+            break;
+          }
+  
+          res.status(400).send('{"error": "Must provide y color in y param"}');
+          return context$1$0.abrupt('return');
+  
+        case 8:
+          context$1$0.next = 10;
+          return regeneratorRuntime.awrap(getHueApi(req.query.connectionID));
+  
+        case 10:
+          api = context$1$0.sent;
+          state = hue.lightState.create().on().xy(x, y);
+  
+          setGroupLightState(api, req.params.id, state, res);
+  
+        case 13:
+        case 'end':
+          return context$1$0.stop();
+      }
+    }, null, _this);
+  });
+  
   //
   // Register server-side rendering middleware
   // -----------------------------------------------------------------------------
@@ -4029,6 +4071,22 @@ module.exports =
         }, null, this);
       }
     }, {
+      key: 'setGroupColor',
+      value: function setGroupColor(id, x, y) {
+        var opts;
+        return regeneratorRuntime.async(function setGroupColor$(context$2$0) {
+          while (1) switch (context$2$0.prev = context$2$0.next) {
+            case 0:
+              opts = { method: 'POST' };
+              return context$2$0.abrupt('return', this.makeRequest('/group/' + id + '/color' + '?x=' + x + '&y=' + y, opts));
+  
+            case 2:
+            case 'end':
+              return context$2$0.stop();
+          }
+        }, null, this);
+      }
+    }, {
       key: 'makeRequest',
       value: function makeRequest(path, optionalOptions) {
         var options, url, response, json;
@@ -5347,7 +5405,11 @@ module.exports =
           'ul',
           { className: _GroupsListScss2['default'].groupList },
           this.props.groups.map(function (group) {
-            var key = 'group-' + group.id;
+            var loaded = true;
+            group.lights.forEach(function (light) {
+              loaded = loaded && typeof light === 'object';
+            });
+            var key = 'group-' + group.id + '-loaded-' + loaded;
             return _react2['default'].createElement(_GroupGroup2['default'], _extends({ key: key }, group, {
               onLightLoaded: _this.props.onLightLoaded,
               onEdit: _this.props.onEdit
@@ -5429,6 +5491,8 @@ module.exports =
   
   function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
   
+  function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) arr2[i] = arr[i]; return arr2; } else { return Array.from(arr); } }
+  
   function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
   
   function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
@@ -5461,6 +5525,12 @@ module.exports =
   
   var _actionsBridge2 = _interopRequireDefault(_actionsBridge);
   
+  var _reactColor = __webpack_require__(59);
+  
+  var _apiConverter = __webpack_require__(56);
+  
+  var _apiConverter2 = _interopRequireDefault(_apiConverter);
+  
   var Group = (function (_Component) {
     _inherits(Group, _Component);
   
@@ -5481,9 +5551,17 @@ module.exports =
       _classCallCheck(this, _Group);
   
       _get(Object.getPrototypeOf(_Group.prototype), 'constructor', this).call(this, props, context);
+      var latestColor = undefined;
+      var colors = this.getColorsFromLights(props.lights);
+      if (colors.length === 1) {
+        latestColor = colors[0];
+      }
       this.state = {
         open: false,
-        on: false
+        on: false,
+        showColorPicker: false,
+        latestColor: latestColor,
+        canSetColor: colors.length > 0
       };
     }
   
@@ -5500,11 +5578,17 @@ module.exports =
       key: 'onLightsToggleComplete',
       value: function onLightsToggleComplete(on, success) {
         if (success) {
-          for (var j = 0; j < this.props.lights.length; j++) {
-            var light = this.props.lights[j];
+          for (var i = 0; i < this.props.lights.length; i++) {
+            var light = this.props.lights[i];
             light.state.on = on;
             this.props.onLightLoaded(light);
           }
+          var colors = this.getColorsFromLights(this.props.lights);
+          var latestColor = undefined;
+          if (colors.length === 1) {
+            latestColor = colors[0];
+          }
+          this.setState({ latestColor: latestColor, canSetColor: colors.length > 0 });
         }
       }
     }, {
@@ -5513,6 +5597,57 @@ module.exports =
         event.preventDefault();
         event.target.blur();
         this.props.onEdit(this.props.id, this.props.name, this.props.lights);
+      }
+    }, {
+      key: 'onColorPickerChange',
+      value: function onColorPickerChange(color) {
+        this.setState({ latestColor: color.hex });
+        this.changeColor(color.hex);
+      }
+    }, {
+      key: 'onColorPickerCancel',
+      value: function onColorPickerCancel() {
+        this.setState({ showColorPicker: false });
+      }
+    }, {
+      key: 'onColorChanged',
+      value: function onColorChanged(success) {
+        if (!success) {
+          console.error('failed to change group color', this.props.name);
+        }
+      }
+    }, {
+      key: 'getColorsFromLights',
+      value: function getColorsFromLights(lights) {
+        var _this = this;
+  
+        var colors = [];
+        lights.forEach(function (light) {
+          if (typeof light === 'object') {
+            colors.push(_this.getLightHex(light.state));
+          }
+        });
+        return [].concat(_toConsumableArray(new Set(colors))).filter(function (c) {
+          return typeof c === 'string';
+        });
+      }
+    }, {
+      key: 'getLightHex',
+      value: function getLightHex(lightState) {
+        if (lightState.on) {
+          var xy = lightState.xy;
+          if (typeof xy === 'object') {
+            return _apiConverter2['default'].cie1931ToHex(xy[0], xy[1], lightState.bri);
+          }
+        }
+      }
+    }, {
+      key: 'changeColor',
+      value: function changeColor(color) {
+        var xy = _apiConverter2['default'].hexToCIE1931(color);
+        var x = xy[0];
+        var y = xy[1];
+        _actionsBridge2['default'].setGroupColor(this.props.id, x, y).then(this.onColorChanged.bind(this));
       }
     }, {
       key: 'isNight',
@@ -5558,6 +5693,11 @@ module.exports =
         return false;
       }
     }, {
+      key: 'toggleColorPicker',
+      value: function toggleColorPicker() {
+        this.setState({ showColorPicker: !this.state.showColorPicker });
+      }
+    }, {
       key: 'render',
       value: function render() {
         var groupStyle = {};
@@ -5574,9 +5714,17 @@ module.exports =
         if (this.areAllLightsOn()) {
           switchState = 2;
         }
+        var nightDayClass = this.isNight() ? _GroupScss2['default'].night : _GroupScss2['default'].day;
+        var colorStyle = {};
+        var colorPickerStyle = {
+          display: this.state.showColorPicker ? 'block' : 'none'
+        };
+        if (typeof this.state.latestColor !== 'undefined') {
+          colorStyle.backgroundColor = '#' + this.state.latestColor;
+        }
         return _react2['default'].createElement(
           'li',
-          { className: (0, _classnames2['default'])(_GroupScss2['default'].group, this.isNight() ? _GroupScss2['default'].night : _GroupScss2['default'].day) },
+          { className: (0, _classnames2['default'])(_GroupScss2['default'].group, nightDayClass) },
           _react2['default'].createElement(
             'header',
             { className: _GroupScss2['default'].groupHeader },
@@ -5592,7 +5740,25 @@ module.exports =
             ),
             _react2['default'].createElement(_OnOffSwitchOnOffSwitch2['default'], { id: checkboxID, state: switchState,
               onToggle: this.onLightsToggle.bind(this)
-            })
+            }),
+            this.state.canSetColor ? _react2['default'].createElement(
+              'div',
+              { className: _GroupScss2['default'].colorBlockAndPicker },
+              _react2['default'].createElement(
+                'button',
+                { type: 'button', onClick: this.toggleColorPicker.bind(this),
+                  className: (0, _classnames2['default'])(_GroupScss2['default'].colorBlock, nightDayClass), style: colorStyle
+                },
+                colorStyle.backgroundColor ? '' : 'Set Color'
+              ),
+              _react2['default'].createElement(
+                'div',
+                { style: colorPickerStyle, className: (0, _classnames2['default'])(_GroupScss2['default'].colorPickerWrapper, nightDayClass) },
+                _react2['default'].createElement(_reactColor.SliderPicker, { color: colorStyle.backgroundColor,
+                  onChangeComplete: this.onColorPickerChange.bind(this)
+                })
+              )
+            ) : ''
           ),
           _react2['default'].createElement(
             'div',
@@ -5670,7 +5836,7 @@ module.exports =
   
   
   // module
-  exports.push([module.id, ".Group_group_23_ {\n  width: 48%;\n  margin: 0 1% 10px;\n  display: inline-block;\n  border-width: 1px;\n  border-style: solid;\n  padding: 10px;\n  border-radius: 2px;\n  vertical-align: top\n}\n\n.Group_group_23_.Group_night_WFU {\n  border-color: #38231D\n}\n\n.Group_group_23_.Group_day_22J {\n  border-color: #ccc\n}\n\n.Group_groupHeader_g_v {\n  display: table;\n  width: 100%;\n}\n\n.Group_groupName_2Et {\n  margin-bottom: 0;\n  display: table-cell;\n  font-weight: normal;\n  font-size: 18px;\n}\n\n.Group_groupName_2Et a {\n  text-decoration: none;\n}\n\n.Group_openIndicator_2t7 {\n  margin-right: 5px;\n  font-size: 16px;\n}\n\n.Group_onOffSwitch_QKC {\n  float: right;\n}\n\n.Group_groupContents_3Z0 {\n  margin-left: 21px;\n  margin-right: 55px;\n  font-size: 13px;\n}\n\n.Group_groupLights_MkK {\n  list-style: none;\n  padding-left: 0;\n  margin-bottom: 10px;\n}\n\n.Group_groupLight_1rf {\n  white-space: nowrap;\n  display: inline-block\n}\n\n.Group_groupLight_1rf:after {\n  content: \",\\A0\"\n}\n\n.Group_groupLight_1rf:last-child {}\n\n.Group_groupLight_1rf:last-child:after {\n  content: \"\"\n}\n\n.Group_editLink_yeU {\n  text-decoration: none;\n}\n\n.Group_editLink_yeU .Group_editIcon_2BR {\n  margin-right: 0.3em;\n}\n", "", {"version":3,"sources":["/./src/components/Group/Group.scss"],"names":[],"mappings":"AAAA;EACE,WAAW;EACX,kBAAkB;EAClB,sBAAsB;EACtB,kBAAkB;EAClB,oBAAoB;EACpB,cAAc;EACd,mBAAmB;EACnB,mBAAoB;CASrB;;AAPC;EACE,qBAAsB;CACvB;;AAED;EACE,kBAAmB;CACpB;;AAGH;EACE,eAAe;EACf,YAAY;CACb;;AAED;EACE,iBAAiB;EACjB,oBAAoB;EACpB,oBAAoB;EACpB,gBAAgB;CAKjB;;AAHC;EACE,sBAAsB;CACvB;;AAGH;EACE,kBAAkB;EAClB,gBAAgB;CACjB;;AAED;EACE,aAAa;CACd;;AAED;EACE,kBAAkB;EAClB,mBAAmB;EACnB,gBAAgB;CACjB;;AAED;EACE,iBAAiB;EACjB,gBAAgB;EAChB,oBAAoB;CACrB;;AAED;EACE,oBAAoB;EACpB,qBAAsB;CAWvB;;AATC;EACE,eAAgB;CACjB;;AAED,mCAIC;;AAHC;EACE,WAAY;CACb;;AAIL;EACE,sBAAsB;CAKvB;;AAHC;EACE,oBAAoB;CACrB","file":"Group.scss","sourcesContent":[".group {\n  width: 48%;\n  margin: 0 1% 10px;\n  display: inline-block;\n  border-width: 1px;\n  border-style: solid;\n  padding: 10px;\n  border-radius: 2px;\n  vertical-align: top;\n\n  &.night {\n    border-color: #38231D;\n  }\n\n  &.day {\n    border-color: #ccc;\n  }\n}\n\n.groupHeader {\n  display: table;\n  width: 100%;\n}\n\n.groupName {\n  margin-bottom: 0;\n  display: table-cell;\n  font-weight: normal;\n  font-size: 18px;\n\n  a {\n    text-decoration: none;\n  }\n}\n\n.openIndicator {\n  margin-right: 5px;\n  font-size: 16px;\n}\n\n.onOffSwitch {\n  float: right;\n}\n\n.groupContents {\n  margin-left: 21px;\n  margin-right: 55px;\n  font-size: 13px;\n}\n\n.groupLights {\n  list-style: none;\n  padding-left: 0;\n  margin-bottom: 10px;\n}\n\n.groupLight {\n  white-space: nowrap;\n  display: inline-block;\n\n  &:after {\n    content: \",\\a0\";\n  }\n\n  &:last-child {\n    &:after {\n      content: \"\";\n    }\n  }\n}\n\n.editLink {\n  text-decoration: none;\n\n  .editIcon {\n    margin-right: 0.3em;\n  }\n}\n"],"sourceRoot":"webpack://"}]);
+  exports.push([module.id, ".Group_group_23_ {\n  width: 48%;\n  margin: 0 1% 10px;\n  display: inline-block;\n  border-width: 1px;\n  border-style: solid;\n  padding: 10px;\n  border-radius: 2px;\n  vertical-align: top\n}\n\n.Group_group_23_.Group_night_WFU {\n  border-color: #38231D\n}\n\n.Group_group_23_.Group_day_22J {\n  border-color: #ccc\n}\n\n.Group_groupHeader_g_v {\n  display: table;\n  width: 100%;\n}\n\n.Group_groupName_2Et {\n  margin-bottom: 0;\n  display: table-cell;\n  font-weight: normal;\n  font-size: 18px;\n}\n\n.Group_groupName_2Et a {\n  text-decoration: none;\n}\n\n.Group_colorBlockAndPicker_36H {\n  display: table-cell;\n  vertical-align: middle;\n}\n\n.Group_colorBlockAndPicker_36H {\n  width: 6.5em;\n  font-size: 12px;\n  position: relative;\n}\n\n.Group_colorBlockAndPicker_36H button.Group_colorBlock_1rp {\n  border-radius: 4px;\n  border: none;\n  width: 100%;\n  height: 24px;\n  line-height: 24px;\n  font-size: inherit;\n  padding: 0;\n  margin-left: 5px\n}\n\n.Group_colorBlockAndPicker_36H button.Group_colorBlock_1rp:focus {\n  outline: 0\n}\n\n.Group_colorBlockAndPicker_36H button.Group_colorBlock_1rp.Group_night_WFU {\n  background-color: #97918A;\n  color: #fff\n}\n\n.Group_colorBlockAndPicker_36H .Group_colorPickerWrapper_3su {\n  z-index: 99;\n  position: absolute;\n  width: 400px;\n  border-width: 1px;\n  border-style: solid;\n  border-radius: 4px;\n  padding: 10px;\n  left: -175px;\n  -webkit-box-shadow: 0 0 5px 0 rgba(0,0,0,0.3);\n  box-shadow: 0 0 5px 0 rgba(0,0,0,0.3)\n}\n\n.Group_colorBlockAndPicker_36H .Group_colorPickerWrapper_3su.Group_night_WFU {\n  border-color: #38231D;\n  background-color: #101010\n}\n\n.Group_colorBlockAndPicker_36H .Group_colorPickerWrapper_3su.Group_day_22J {\n  border-color: #ccc;\n  background-color: #fff\n}\n\n.Group_openIndicator_2t7 {\n  margin-right: 5px;\n  font-size: 16px;\n}\n\n.Group_onOffSwitch_QKC {\n  float: right;\n}\n\n.Group_groupContents_3Z0 {\n  margin-left: 21px;\n  margin-right: 55px;\n  font-size: 13px;\n}\n\n.Group_groupLights_MkK {\n  list-style: none;\n  padding-left: 0;\n  margin-bottom: 10px;\n}\n\n.Group_groupLight_1rf {\n  white-space: nowrap;\n  display: inline-block\n}\n\n.Group_groupLight_1rf:after {\n  content: \",\\A0\"\n}\n\n.Group_groupLight_1rf:last-child {\n\n}\n\n.Group_groupLight_1rf:last-child:after {\n  content: \"\"\n}\n\n.Group_editLink_yeU {\n  text-decoration: none;\n}\n\n.Group_editLink_yeU .Group_editIcon_2BR {\n  margin-right: 0.3em;\n}\n\n.Group_colorBlockAndPicker_36H {\n\n}\n\n.Group_colorBlock_1rp {\n\n}\n\n.Group_colorPickerWrapper_3su {\n\n}\n", "", {"version":3,"sources":["/./src/components/Group/Group.scss"],"names":[],"mappings":"AAAA;EACE,WAAW;EACX,kBAAkB;EAClB,sBAAsB;EACtB,kBAAkB;EAClB,oBAAoB;EACpB,cAAc;EACd,mBAAmB;EACnB,mBAAoB;CASrB;;AAPC;EACE,qBAAsB;CACvB;;AAED;EACE,kBAAmB;CACpB;;AAGH;EACE,eAAe;EACf,YAAY;CACb;;AAED;EACE,iBAAiB;EACjB,oBAAoB;EACpB,oBAAoB;EACpB,gBAAgB;CAKjB;;AAHC;EACE,sBAAsB;CACvB;;AAGH;EACE,oBAAoB;EACpB,uBAAuB;CACxB;;AAED;EACE,aAAa;EACb,gBAAgB;EAChB,mBAAmB;CA4CpB;;AA1CC;EACE,mBAAmB;EACnB,aAAa;EACb,YAAY;EACZ,aAAa;EACb,kBAAkB;EAClB,mBAAmB;EACnB,WAAW;EACX,gBAAiB;CAUlB;;AARC;EACE,UAAW;CACZ;;AAED;EACE,0BAA0B;EAC1B,WAAY;CACb;;AAGH;EACE,YAAY;EACZ,mBAAmB;EACnB,aAAa;EACb,kBAAkB;EAClB,oBAAoB;EACpB,mBAAmB;EACnB,cAAc;EACd,aAAa;EACb,8CAA8C;EAC9C,qCAAsC;CAWvC;;AATC;EACE,sBAAsB;EACtB,yBAA0B;CAC3B;;AAED;EACE,mBAAmB;EACnB,sBAAuB;CACxB;;AAIL;EACE,kBAAkB;EAClB,gBAAgB;CACjB;;AAED;EACE,aAAa;CACd;;AAED;EACE,kBAAkB;EAClB,mBAAmB;EACnB,gBAAgB;CACjB;;AAED;EACE,iBAAiB;EACjB,gBAAgB;EAChB,oBAAoB;CACrB;;AAED;EACE,oBAAoB;EACpB,qBAAsB;CAWvB;;AATC;EACE,eAAgB;CACjB;;AAED;;CAIC;;AAHC;EACE,WAAY;CACb;;AAIL;EACE,sBAAsB;CAKvB;;AAHC;EACE,oBAAoB;CACrB;;AAGH;;CAEC;;AAED;;CAEC;;AAED;;CAEC","file":"Group.scss","sourcesContent":[".group {\n  width: 48%;\n  margin: 0 1% 10px;\n  display: inline-block;\n  border-width: 1px;\n  border-style: solid;\n  padding: 10px;\n  border-radius: 2px;\n  vertical-align: top;\n\n  &.night {\n    border-color: #38231D;\n  }\n\n  &.day {\n    border-color: #ccc;\n  }\n}\n\n.groupHeader {\n  display: table;\n  width: 100%;\n}\n\n.groupName {\n  margin-bottom: 0;\n  display: table-cell;\n  font-weight: normal;\n  font-size: 18px;\n\n  a {\n    text-decoration: none;\n  }\n}\n\n.colorBlockAndPicker {\n  display: table-cell;\n  vertical-align: middle;\n}\n\n.colorBlockAndPicker {\n  width: 6.5em;\n  font-size: 12px;\n  position: relative;\n\n  button.colorBlock {\n    border-radius: 4px;\n    border: none;\n    width: 100%;\n    height: 24px;\n    line-height: 24px;\n    font-size: inherit;\n    padding: 0;\n    margin-left: 5px;\n\n    &:focus {\n      outline: 0;\n    }\n\n    &.night {\n      background-color: #97918A;\n      color: #fff;\n    }\n  }\n\n  .colorPickerWrapper {\n    z-index: 99;\n    position: absolute;\n    width: 400px;\n    border-width: 1px;\n    border-style: solid;\n    border-radius: 4px;\n    padding: 10px;\n    left: -175px;\n    -webkit-box-shadow: 0 0 5px 0 rgba(0,0,0,0.3);\n    box-shadow: 0 0 5px 0 rgba(0,0,0,0.3);\n\n    &.night {\n      border-color: #38231D;\n      background-color: #101010;\n    }\n\n    &.day {\n      border-color: #ccc;\n      background-color: #fff;\n    }\n  }\n}\n\n.openIndicator {\n  margin-right: 5px;\n  font-size: 16px;\n}\n\n.onOffSwitch {\n  float: right;\n}\n\n.groupContents {\n  margin-left: 21px;\n  margin-right: 55px;\n  font-size: 13px;\n}\n\n.groupLights {\n  list-style: none;\n  padding-left: 0;\n  margin-bottom: 10px;\n}\n\n.groupLight {\n  white-space: nowrap;\n  display: inline-block;\n\n  &:after {\n    content: \",\\a0\";\n  }\n\n  &:last-child {\n    &:after {\n      content: \"\";\n    }\n  }\n}\n\n.editLink {\n  text-decoration: none;\n\n  .editIcon {\n    margin-right: 0.3em;\n  }\n}\n\n.colorBlockAndPicker {\n\n}\n\n.colorBlock {\n\n}\n\n.colorPickerWrapper {\n\n}\n"],"sourceRoot":"webpack://"}]);
   
   // exports
   exports.locals = {
@@ -5679,6 +5845,9 @@ module.exports =
   	"day": "Group_day_22J",
   	"groupHeader": "Group_groupHeader_g_v",
   	"groupName": "Group_groupName_2Et",
+  	"colorBlockAndPicker": "Group_colorBlockAndPicker_36H",
+  	"colorBlock": "Group_colorBlock_1rp",
+  	"colorPickerWrapper": "Group_colorPickerWrapper_3su",
   	"openIndicator": "Group_openIndicator_2t7",
   	"onOffSwitch": "Group_onOffSwitch_QKC",
   	"groupContents": "Group_groupContents_3Z0",
