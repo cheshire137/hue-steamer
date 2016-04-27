@@ -2,12 +2,12 @@ import React, { Component, PropTypes } from 'react';
 import s from './LightsList.scss';
 import Light from '../Light/Light';
 import withStyles from '../../decorators/withStyles';
+import cx from 'classnames';
 
 @withStyles(s)
 class LightsList extends Component {
   static propTypes = {
     lights: PropTypes.object.isRequired,
-    onLightLoaded: PropTypes.func.isRequired,
     ids: PropTypes.array.isRequired,
     onFiltered: PropTypes.func.isRequired,
   };
@@ -45,6 +45,11 @@ class LightsList extends Component {
     this.setState({ model }, () => {
       this.handleSubmit();
     });
+  }
+
+  isNight() {
+    const curTime = new Date();
+    return curTime.getHours() >= 20;
   }
 
   getFilteredLightIDs() {
@@ -114,6 +119,7 @@ class LightsList extends Component {
   render() {
     const filteredIDs = this.getFilteredLightIDs();
     const models = this.getModels();
+    const nightDayClass = this.isNight() ? s.night : s.day;
     return (
       <div className={s.lightListContainer}>
         <form onSubmit={this.handleSubmit.bind(this)}>
@@ -142,13 +148,20 @@ class LightsList extends Component {
           {filteredIDs.map((id) => {
             const light = this.props.lights[id];
             const loaded = typeof light === 'object';
+            let xy = 'na';
+            if (loaded) {
+              xy = typeof light.state.xy === 'object' ? light.state.xy.join(',') : 'none';
+            }
             const key = 'light-' + id + '-loaded-' + loaded +
-                '-on-' + (loaded ? light.state.on : 'na') +
-                '-xy-' + (loaded ? light.state.xy.join(',') : 'na');
+                '-on-' + (loaded ? light.state.on : 'na') + '-xy-' + xy;
             return (
-              <Light key={key} id={id} light={light}
-                onLightLoaded={this.props.onLightLoaded}
-              />
+              <li key={key} className={cx(s.light, nightDayClass)}>
+                {loaded ? (
+                  <Light id={id} light={light} />
+                ) : (
+                  <span>Loading light {id}...</span>
+                )}
+              </li>
             );
           })}
         </ul>

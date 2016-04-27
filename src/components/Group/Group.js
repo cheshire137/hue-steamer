@@ -76,12 +76,14 @@ class Group extends Component {
     this.setState({ showColorPicker: false });
   }
 
-  onColorChanged(success) {
+  onColorChanged(x, y, success) {
     if (success) {
       for (let i = 0; i < this.props.lights.length; i++) {
-        Bridge.getLight(this.props.lights[i].id).
-               then(this.props.onLightLoaded.bind(this)).
-               catch(this.onLightLoadError.bind(this));
+        const light = this.props.lights[i];
+        if (light.state.on && typeof light.state.xy === 'object') {
+          light.state.xy = [x, y];
+          this.props.onLightLoaded(light);
+        }
       }
     } else {
       console.error('failed to change group color', this.props.name);
@@ -116,7 +118,7 @@ class Group extends Component {
     const x = xy[0];
     const y = xy[1];
     Bridge.setGroupColor(this.props.id, x, y).
-           then(this.onColorChanged.bind(this));
+           then(this.onColorChanged.bind(this, x, y));
   }
 
   isNight() {
@@ -181,9 +183,11 @@ class Group extends Component {
     const colorPickerStyle = {
       display: this.state.showColorPicker ? 'block' : 'none',
     };
+    const buttonStyle = {};
     let pickerColor = undefined;
-    if (typeof this.state.latestColor !== 'undefined') {
+    if (typeof this.state.latestColor === 'string') {
       pickerColor = '#' + this.state.latestColor;
+      buttonStyle.backgroundColor = '#' + this.state.latestColor;
     }
     return (
       <li className={cx(s.group, nightDayClass)}>
@@ -205,6 +209,7 @@ class Group extends Component {
             <div className={s.colorBlockAndPicker}>
               <button type="button" onClick={this.toggleColorPicker.bind(this)}
                 className={cx(s.colorBlock, nightDayClass)}
+                style={buttonStyle}
               >
                 Set Color
               </button>

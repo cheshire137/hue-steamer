@@ -54,7 +54,14 @@ class HomePage extends Component {
   }
 
   onAllLightsLoaded(group) {
-    this.setState({ lightIDs: group.lights });
+    this.setState({ lightIDs: group.lights }, () => {
+      group.lights.forEach((id) => {
+        Bridge.getLight(id).then((light) => {
+          light.id = id;
+          this.onLightLoaded(light);
+        }).catch(this.onLightLoadError.bind(this, id));
+      });
+    });
   }
 
   onAllLightsLoadError(response) {
@@ -152,6 +159,10 @@ class HomePage extends Component {
       groups: this.updateLightInGroups(light),
       lightIDs: lights.map((l) => l.id),
     });
+  }
+
+  onLightLoadError(id, response) {
+    console.error('failed to load light ' + id, response);
   }
 
   onLightsFiltered(filter, lightIDs) {
@@ -272,7 +283,6 @@ class HomePage extends Component {
             {haveLights ? (
               <LightsList lights={this.state.lights}
                 ids={this.state.lightIDs}
-                onLightLoaded={this.onLightLoaded.bind(this)}
                 onFiltered={this.onLightsFiltered.bind(this)}
               />
             ) : (

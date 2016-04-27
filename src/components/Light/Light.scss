@@ -1,25 +1,11 @@
 .light {
-  width: 223px;
-  display: inline-block;
-  margin: 0 5px 12px 5px;
-  padding: 6px;
-  border-radius: 2px;
-  border-width: 1px;
-  border-style: solid;
-
   &.night {
-    border-color: #38231D;
-    color: #E5E4E1;
-    background-color: #231511;
-
     .metadata {
       color: #97918A;
     }
   }
 
   &.day {
-    border-color: #ccc;
-
     .metadata {
       color: #797979;
     }

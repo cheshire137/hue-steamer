@@ -3,6 +3,26 @@
   padding-left: 0;
 }
 
+.light {
+  width: 223px;
+  display: inline-block;
+  margin: 0 5px 12px 5px;
+  padding: 6px;
+  border-radius: 2px;
+  border-width: 1px;
+  border-style: solid;
+
+  &.night {
+    border-color: #38231D;
+    color: #E5E4E1;
+    background-color: #231511;
+  }
+
+  &.day {
+    border-color: #ccc;
+  }
+}
+
 input[type="search"].lightFilter,
 select.stateFilter,
 select.modelFilter,

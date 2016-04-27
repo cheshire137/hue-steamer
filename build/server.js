@@ -3428,7 +3428,16 @@ module.exports =
     }, {
       key: 'onAllLightsLoaded',
       value: function onAllLightsLoaded(group) {
-        this.setState({ lightIDs: group.lights });
+        var _this = this;
+  
+        this.setState({ lightIDs: group.lights }, function () {
+          group.lights.forEach(function (id) {
+            _actionsBridge2['default'].getLight(id).then(function (light) {
+              light.id = id;
+              _this.onLightLoaded(light);
+            })['catch'](_this.onLightLoadError.bind(_this, id));
+          });
+        });
       }
     }, {
       key: 'onAllLightsLoadError',
@@ -3463,7 +3472,7 @@ module.exports =
     }, {
       key: 'onEditGroup',
       value: function onEditGroup(id, name, lights) {
-        var _this = this;
+        var _this2 = this;
   
         this.setState({
           editGroupName: name,
@@ -3472,13 +3481,13 @@ module.exports =
             return typeof l === 'string' ? l : l.id;
           })
         }, function () {
-          _this.showGroupFormTab();
+          _this2.showGroupFormTab();
         });
       }
     }, {
       key: 'onGroupUpdated',
       value: function onGroupUpdated(group) {
-        var _this2 = this;
+        var _this3 = this;
   
         var newGroups = this.state.groups.slice();
         for (var i = 0; i < newGroups.length; i++) {
@@ -3501,13 +3510,13 @@ module.exports =
           editGroupID: undefined,
           editGroupLightIDs: undefined
         }, function () {
-          _this2.showGroupsTab();
+          _this3.showGroupsTab();
         });
       }
     }, {
       key: 'onGroupCanceled',
       value: function onGroupCanceled() {
-        var _this3 = this;
+        var _this4 = this;
   
         var wasEditing = typeof this.state.editGroupID !== 'undefined';
         this.setState({
@@ -3518,9 +3527,9 @@ module.exports =
           newGroupLightIDs: undefined
         }, function () {
           if (wasEditing) {
-            _this3.showGroupsTab();
+            _this4.showGroupsTab();
           } else {
-            _this3.showLightsTab();
+            _this4.showLightsTab();
           }
         });
       }
@@ -3546,6 +3555,11 @@ module.exports =
         });
       }
     }, {
+      key: 'onLightLoadError',
+      value: function onLightLoadError(id, response) {
+        console.error('failed to load light ' + id, response);
+      }
+    }, {
       key: 'onLightsFiltered',
       value: function onLightsFiltered(filter, lightIDs) {
         if (typeof filter === 'string') {
@@ -3557,14 +3571,14 @@ module.exports =
     }, {
       key: 'updateLightInGroups',
       value: function updateLightInGroups(light) {
-        var _this4 = this;
+        var _this5 = this;
   
         var groups = this.state.groups;
         if (typeof groups !== 'object') {
           return groups;
         }
         return groups.slice().map(function (group) {
-          return _this4.updateLightInGroup(light, group);
+          return _this5.updateLightInGroup(light, group);
         });
       }
     }, {
@@ -3699,7 +3713,6 @@ module.exports =
               { className: (0, _classnames2['default'])(_HomePageScss2['default'].lightsTab, _HomePageScss2['default'].tab, this.state.activeTab === 'lights' ? _HomePageScss2['default'].active : _HomePageScss2['default'].inactive) },
               haveLights ? _react2['default'].createElement(_LightsListLightsList2['default'], { lights: this.state.lights,
                 ids: this.state.lightIDs,
-                onLightLoaded: this.onLightLoaded.bind(this),
                 onFiltered: this.onLightsFiltered.bind(this)
               }) : _react2['default'].createElement(
                 'p',
@@ -4197,6 +4210,10 @@ module.exports =
   
   var _decoratorsWithStyles2 = _interopRequireDefault(_decoratorsWithStyles);
   
+  var _classnames = __webpack_require__(47);
+  
+  var _classnames2 = _interopRequireDefault(_classnames);
+  
   var LightsList = (function (_Component) {
     _inherits(LightsList, _Component);
   
@@ -4204,7 +4221,6 @@ module.exports =
       key: 'propTypes',
       value: {
         lights: _react.PropTypes.object.isRequired,
-        onLightLoaded: _react.PropTypes.func.isRequired,
         ids: _react.PropTypes.array.isRequired,
         onFiltered: _react.PropTypes.func.isRequired
       },
@@ -4256,6 +4272,12 @@ module.exports =
         this.setState({ model: model }, function () {
           _this3.handleSubmit();
         });
+      }
+    }, {
+      key: 'isNight',
+      value: function isNight() {
+        var curTime = new Date();
+        return curTime.getHours() >= 20;
       }
     }, {
       key: 'getFilteredLightIDs',
@@ -4335,6 +4357,7 @@ module.exports =
   
         var filteredIDs = this.getFilteredLightIDs();
         var models = this.getModels();
+        var nightDayClass = this.isNight() ? _LightsListScss2['default'].night : _LightsListScss2['default'].day;
         return _react2['default'].createElement(
           'div',
           { className: _LightsListScss2['default'].lightListContainer },
@@ -4398,10 +4421,22 @@ module.exports =
             filteredIDs.map(function (id) {
               var light = _this6.props.lights[id];
               var loaded = typeof light === 'object';
-              var key = 'light-' + id + '-loaded-' + loaded + '-on-' + (loaded ? light.state.on : 'na') + '-xy-' + (loaded ? light.state.xy.join(',') : 'na');
-              return _react2['default'].createElement(_LightLight2['default'], { key: key, id: id, light: light,
-                onLightLoaded: _this6.props.onLightLoaded
-              });
+              var xy = 'na';
+              if (loaded) {
+                xy = typeof light.state.xy === 'object' ? light.state.xy.join(',') : 'none';
+              }
+              var key = 'light-' + id + '-loaded-' + loaded + '-on-' + (loaded ? light.state.on : 'na') + '-xy-' + xy;
+              return _react2['default'].createElement(
+                'li',
+                { key: key, className: (0, _classnames2['default'])(_LightsListScss2['default'].light, nightDayClass) },
+                loaded ? _react2['default'].createElement(_LightLight2['default'], { id: id, light: light }) : _react2['default'].createElement(
+                  'span',
+                  null,
+                  'Loading light ',
+                  id,
+                  '...'
+                )
+              );
             })
           )
         );
@@ -4457,11 +4492,14 @@ module.exports =
   
   
   // module
-  exports.push([module.id, ".LightsList_lightList_14S {\n  list-style: none;\n  padding-left: 0;\n}\n\ninput[type=\"search\"].LightsList_lightFilter_1Kc, select.LightsList_stateFilter_RUq, select.LightsList_modelFilter_3-H, .LightsList_label_3a5 {\n  display: inline-block;\n}\n\ninput[type=\"search\"].LightsList_lightFilter_1Kc {\n  width: 12em;\n}\n\nselect.LightsList_stateFilter_RUq {\n  width: 5em;\n}\n\nselect.LightsList_modelFilter_3-H {\n  width: 10em;\n}\n\n.LightsList_label_3a5 {\n  margin: 0 5px 0 30px;\n}\n", "", {"version":3,"sources":["/./src/components/LightsList/LightsList.scss"],"names":[],"mappings":"AAAA;EACE,iBAAiB;EACjB,gBAAgB;CACjB;;AAED;EAIE,sBAAsB;CACvB;;AAED;EACE,YAAY;CACb;;AAED;EACE,WAAW;CACZ;;AAED;EACE,YAAY;CACb;;AAED;EACE,qBAAqB;CACtB","file":"LightsList.scss","sourcesContent":[".lightList {\n  list-style: none;\n  padding-left: 0;\n}\n\ninput[type=\"search\"].lightFilter,\nselect.stateFilter,\nselect.modelFilter,\n.label {\n  display: inline-block;\n}\n\ninput[type=\"search\"].lightFilter {\n  width: 12em;\n}\n\nselect.stateFilter {\n  width: 5em;\n}\n\nselect.modelFilter {\n  width: 10em;\n}\n\n.label {\n  margin: 0 5px 0 30px;\n}\n"],"sourceRoot":"webpack://"}]);
+  exports.push([module.id, ".LightsList_lightList_14S {\n  list-style: none;\n  padding-left: 0;\n}\n\n.LightsList_light_3Ms {\n  width: 223px;\n  display: inline-block;\n  margin: 0 5px 12px 5px;\n  padding: 6px;\n  border-radius: 2px;\n  border-width: 1px;\n  border-style: solid\n}\n\n.LightsList_light_3Ms.LightsList_night_2nv {\n  border-color: #38231D;\n  color: #E5E4E1;\n  background-color: #231511;\n}\n\n.LightsList_light_3Ms.LightsList_day_3hZ {\n  border-color: #ccc;\n}\n\ninput[type=\"search\"].LightsList_lightFilter_1Kc, select.LightsList_stateFilter_RUq, select.LightsList_modelFilter_3-H, .LightsList_label_3a5 {\n  display: inline-block;\n}\n\ninput[type=\"search\"].LightsList_lightFilter_1Kc {\n  width: 12em;\n}\n\nselect.LightsList_stateFilter_RUq {\n  width: 5em;\n}\n\nselect.LightsList_modelFilter_3-H {\n  width: 10em;\n}\n\n.LightsList_label_3a5 {\n  margin: 0 5px 0 30px;\n}\n", "", {"version":3,"sources":["/./src/components/LightsList/LightsList.scss"],"names":[],"mappings":"AAAA;EACE,iBAAiB;EACjB,gBAAgB;CACjB;;AAED;EACE,aAAa;EACb,sBAAsB;EACtB,uBAAuB;EACvB,aAAa;EACb,mBAAmB;EACnB,kBAAkB;EAClB,mBAAoB;CAWrB;;AATC;EACE,sBAAsB;EACtB,eAAe;EACf,0BAA0B;CAC3B;;AAED;EACE,mBAAmB;CACpB;;AAGH;EAIE,sBAAsB;CACvB;;AAED;EACE,YAAY;CACb;;AAED;EACE,WAAW;CACZ;;AAED;EACE,YAAY;CACb;;AAED;EACE,qBAAqB;CACtB","file":"LightsList.scss","sourcesContent":[".lightList {\n  list-style: none;\n  padding-left: 0;\n}\n\n.light {\n  width: 223px;\n  display: inline-block;\n  margin: 0 5px 12px 5px;\n  padding: 6px;\n  border-radius: 2px;\n  border-width: 1px;\n  border-style: solid;\n\n  &.night {\n    border-color: #38231D;\n    color: #E5E4E1;\n    background-color: #231511;\n  }\n\n  &.day {\n    border-color: #ccc;\n  }\n}\n\ninput[type=\"search\"].lightFilter,\nselect.stateFilter,\nselect.modelFilter,\n.label {\n  display: inline-block;\n}\n\ninput[type=\"search\"].lightFilter {\n  width: 12em;\n}\n\nselect.stateFilter {\n  width: 5em;\n}\n\nselect.modelFilter {\n  width: 10em;\n}\n\n.label {\n  margin: 0 5px 0 30px;\n}\n"],"sourceRoot":"webpack://"}]);
   
   // exports
   exports.locals = {
   	"lightList": "LightsList_lightList_14S",
+  	"light": "LightsList_light_3Ms",
+  	"night": "LightsList_night_2nv",
+  	"day": "LightsList_day_3hZ",
   	"lightFilter": "LightsList_lightFilter_1Kc",
   	"stateFilter": "LightsList_stateFilter_RUq",
   	"modelFilter": "LightsList_modelFilter_3-H",
@@ -4525,8 +4563,7 @@ module.exports =
       key: 'propTypes',
       value: {
         id: _react.PropTypes.string.isRequired,
-        onLightLoaded: _react.PropTypes.func.isRequired,
-        light: _react.PropTypes.object
+        light: _react.PropTypes.object.isRequired
       },
       enumerable: true
     }]);
@@ -4535,38 +4572,10 @@ module.exports =
       _classCallCheck(this, _Light);
   
       _get(Object.getPrototypeOf(_Light.prototype), 'constructor', this).call(this, props, context);
-      var latestColor = undefined;
-      var loaded = false;
-      if (typeof props.light === 'object') {
-        latestColor = this.getLightHex(props.light.state);
-        loaded = true;
-      }
-      this.state = {
-        loaded: loaded,
-        showColorPicker: false,
-        latestColor: latestColor
-      };
+      this.state = { showColorPicker: false };
     }
   
     _createClass(Light, [{
-      key: 'componentDidMount',
-      value: function componentDidMount() {
-        if (!this.state.loaded) {
-          _actionsBridge2['default'].getLight(this.props.id).then(this.onLightLoaded.bind(this))['catch'](this.onLightLoadError.bind(this));
-        }
-      }
-    }, {
-      key: 'onLightLoaded',
-      value: function onLightLoaded(light) {
-        light.id = this.props.id;
-        this.props.onLightLoaded(light);
-      }
-    }, {
-      key: 'onLightLoadError',
-      value: function onLightLoadError(response) {
-        console.error('failed to load light ' + this.props.id, response);
-      }
-    }, {
       key: 'onLightToggle',
       value: function onLightToggle(turnOn) {
         if (turnOn) {
@@ -4640,77 +4649,70 @@ module.exports =
         var colorPickerStyle = {
           display: this.state.showColorPicker ? 'block' : 'none'
         };
-        if (typeof this.props.light === 'object') {
-          if (typeof this.state.latestColor !== 'undefined') {
-            colorStyle.backgroundColor = '#' + this.state.latestColor;
+        if (typeof this.state.latestColor === 'string') {
+          colorStyle.backgroundColor = '#' + this.state.latestColor;
+        } else {
+          var color = this.getLightHex();
+          if (typeof color === 'string') {
+            colorStyle.backgroundColor = '#' + color;
           }
         }
         var nightDayClass = this.isNight() ? _LightScss2['default'].night : _LightScss2['default'].day;
         return _react2['default'].createElement(
-          'li',
+          'div',
           { className: (0, _classnames2['default'])(_LightScss2['default'].light, nightDayClass) },
-          this.state.loaded ? _react2['default'].createElement(
-            'div',
-            null,
+          _react2['default'].createElement(
+            'header',
+            { className: _LightScss2['default'].lightHeader },
             _react2['default'].createElement(
-              'header',
-              { className: _LightScss2['default'].lightHeader },
+              'div',
+              { className: _LightScss2['default'].lightNameArea },
               _react2['default'].createElement(
-                'div',
-                { className: _LightScss2['default'].lightNameArea },
-                _react2['default'].createElement(
-                  'span',
-                  { className: _LightScss2['default'].name, title: this.props.light.name },
-                  this.props.light.name
-                )
-              ),
-              _react2['default'].createElement(_OnOffSwitchOnOffSwitch2['default'], { id: checkboxID, state: this.props.light.state.on ? 2 : 0,
-                onToggle: this.onLightToggle.bind(this)
-              })
+                'span',
+                { className: _LightScss2['default'].name, title: this.props.light.name },
+                this.props.light.name
+              )
             ),
+            _react2['default'].createElement(_OnOffSwitchOnOffSwitch2['default'], { id: checkboxID, state: this.props.light.state.on ? 2 : 0,
+              onToggle: this.onLightToggle.bind(this)
+            })
+          ),
+          _react2['default'].createElement(
+            'footer',
+            { className: _LightScss2['default'].lightFooter },
             _react2['default'].createElement(
-              'footer',
-              { className: _LightScss2['default'].lightFooter },
+              'div',
+              { className: _LightScss2['default'].metadata },
+              _react2['default'].createElement(
+                'span',
+                { className: _LightScss2['default'].type },
+                this.props.light.type
+              ),
+              _react2['default'].createElement(
+                'span',
+                { className: _LightScss2['default'].manufacturer },
+                this.props.light.manufacturername
+              ),
+              _react2['default'].createElement(
+                'span',
+                { className: _LightScss2['default'].model },
+                this.props.light.modelid
+              )
+            ),
+            colorStyle.backgroundColor ? _react2['default'].createElement(
+              'div',
+              { className: _LightScss2['default'].colorBlockAndPicker },
+              _react2['default'].createElement('button', { type: 'button', onClick: this.toggleColorPicker.bind(this),
+                className: _LightScss2['default'].colorBlock, style: colorStyle
+              }),
               _react2['default'].createElement(
                 'div',
-                { className: _LightScss2['default'].metadata },
-                _react2['default'].createElement(
-                  'span',
-                  { className: _LightScss2['default'].type },
-                  this.props.light.type
-                ),
-                _react2['default'].createElement(
-                  'span',
-                  { className: _LightScss2['default'].manufacturer },
-                  this.props.light.manufacturername
-                ),
-                _react2['default'].createElement(
-                  'span',
-                  { className: _LightScss2['default'].model },
-                  this.props.light.modelid
-                )
-              ),
-              colorStyle.backgroundColor ? _react2['default'].createElement(
-                'div',
-                { className: _LightScss2['default'].colorBlockAndPicker },
-                _react2['default'].createElement('button', { type: 'button', onClick: this.toggleColorPicker.bind(this),
-                  className: _LightScss2['default'].colorBlock, style: colorStyle
-                }),
-                _react2['default'].createElement(
-                  'div',
-                  { style: colorPickerStyle, className: (0, _classnames2['default'])(_LightScss2['default'].colorPickerWrapper, nightDayClass) },
-                  _react2['default'].createElement(_reactColor.SliderPicker, { color: colorStyle.backgroundColor,
-                    onChangeComplete: this.onColorPickerChange.bind(this)
-                  })
-                )
-              ) : ''
-            )
-          ) : _react2['default'].createElement(
-            'span',
-            null,
-            'Loading light ',
-            this.props.id,
-            '...'
+                { style: colorPickerStyle, className: (0, _classnames2['default'])(_LightScss2['default'].colorPickerWrapper, nightDayClass) },
+                _react2['default'].createElement(_reactColor.SliderPicker, { color: colorStyle.backgroundColor,
+                  onChangeComplete: this.onColorPickerChange.bind(this)
+                })
+              )
+            ) : ''
           )
         );
       }
@@ -4765,7 +4767,7 @@ module.exports =
   
   
   // module
-  exports.push([module.id, ".Light_light_31m {\n  width: 223px;\n  display: inline-block;\n  margin: 0 5px 12px 5px;\n  padding: 6px;\n  border-radius: 2px;\n  border-width: 1px;\n  border-style: solid\n}\n\n.Light_light_31m.Light_night_UWr {\n  border-color: #38231D;\n  color: #E5E4E1;\n  background-color: #231511;\n}\n\n.Light_light_31m.Light_night_UWr .Light_metadata_3mh {\n  color: #97918A\n}\n\n.Light_light_31m.Light_day_3-K {\n  border-color: #ccc;\n}\n\n.Light_light_31m.Light_day_3-K .Light_metadata_3mh {\n  color: #797979\n}\n\n.Light_lightHeader_Cjv, .Light_lightFooter_2ji {\n  display: table;\n  width: 100%;\n}\n\n.Light_lightFooter_2ji {\n  margin-top: 5px;\n}\n\n.Light_lightNameArea_1fg, .Light_metadata_3mh, .Light_colorBlockAndPicker_16B {\n  display: table-cell;\n  vertical-align: middle;\n}\n\n.Light_name_kaw {\n  white-space: nowrap;\n  text-overflow: ellipsis;\n  overflow: hidden;\n  width: 151px;\n  display: block;\n}\n\n.Light_metadata_3mh {\n  font-size: 13px;\n}\n\n.Light_colorBlockAndPicker_16B {\n  width: 50px;\n  position: relative;\n}\n\n.Light_colorBlockAndPicker_16B .Light_colorBlock_3S8 {\n  border-radius: 4px;\n  border: none;\n  width: 100%;\n  height: 100%\n}\n\n.Light_colorBlockAndPicker_16B .Light_colorBlock_3S8:focus {\n  outline: 0\n}\n\n.Light_colorBlockAndPicker_16B .Light_colorPickerWrapper_N1C {\n  z-index: 99;\n  position: absolute;\n  width: 400px;\n  border-width: 1px;\n  border-style: solid;\n  border-radius: 4px;\n  padding: 10px;\n  left: -175px;\n  -webkit-box-shadow: 0 0 5px 0 rgba(0,0,0,0.3);\n  box-shadow: 0 0 5px 0 rgba(0,0,0,0.3)\n}\n\n.Light_colorBlockAndPicker_16B .Light_colorPickerWrapper_N1C.Light_night_UWr {\n  border-color: #38231D;\n  background-color: #101010\n}\n\n.Light_colorBlockAndPicker_16B .Light_colorPickerWrapper_N1C.Light_day_3-K {\n  border-color: #ccc;\n  background-color: #fff\n}\n\n.Light_type_49F {\n  display: block;\n}\n\n.Light_manufacturer_3j2 {\n  padding: 0 0.3em 0 0;\n}\n\n.Light_model_3h3 {\n}\n", "", {"version":3,"sources":["/./src/components/Light/Light.scss"],"names":[],"mappings":"AAAA;EACE,aAAa;EACb,sBAAsB;EACtB,uBAAuB;EACvB,aAAa;EACb,mBAAmB;EACnB,kBAAkB;EAClB,mBAAoB;CAmBrB;;AAjBC;EACE,sBAAsB;EACtB,eAAe;EACf,0BAA0B;CAK3B;;AAHC;EACE,cAAe;CAChB;;AAGH;EACE,mBAAmB;CAKpB;;AAHC;EACE,cAAe;CAChB;;AAIL;EAEE,eAAe;EACf,YAAY;CACb;;AAED;EACE,gBAAgB;CACjB;;AAED;EAGE,oBAAoB;EACpB,uBAAuB;CACxB;;AAED;EACE,oBAAoB;EACpB,wBAAwB;EACxB,iBAAiB;EACjB,aAAa;EACb,eAAe;CAChB;;AAED;EACE,gBAAgB;CACjB;;AAED;EACE,YAAY;EACZ,mBAAmB;CAmCpB;;AAjCC;EACE,mBAAmB;EACnB,aAAa;EACb,YAAY;EACZ,YAAa;CAKd;;AAHC;EACE,UAAW;CACZ;;AAGH;EACE,YAAY;EACZ,mBAAmB;EACnB,aAAa;EACb,kBAAkB;EAClB,oBAAoB;EACpB,mBAAmB;EACnB,cAAc;EACd,aAAa;EACb,8CAA8C;EAC9C,qCAAsC;CAWvC;;AATC;EACE,sBAAsB;EACtB,yBAA0B;CAC3B;;AAED;EACE,mBAAmB;EACnB,sBAAuB;CACxB;;AAIL;EACE,eAAe;CAChB;;AAED;EACE,qBAAqB;CACtB;;AAED;CACC","file":"Light.scss","sourcesContent":[".light {\n  width: 223px;\n  display: inline-block;\n  margin: 0 5px 12px 5px;\n  padding: 6px;\n  border-radius: 2px;\n  border-width: 1px;\n  border-style: solid;\n\n  &.night {\n    border-color: #38231D;\n    color: #E5E4E1;\n    background-color: #231511;\n\n    .metadata {\n      color: #97918A;\n    }\n  }\n\n  &.day {\n    border-color: #ccc;\n\n    .metadata {\n      color: #797979;\n    }\n  }\n}\n\n.lightHeader,\n.lightFooter {\n  display: table;\n  width: 100%;\n}\n\n.lightFooter {\n  margin-top: 5px;\n}\n\n.lightNameArea,\n.metadata,\n.colorBlockAndPicker {\n  display: table-cell;\n  vertical-align: middle;\n}\n\n.name {\n  white-space: nowrap;\n  text-overflow: ellipsis;\n  overflow: hidden;\n  width: 151px;\n  display: block;\n}\n\n.metadata {\n  font-size: 13px;\n}\n\n.colorBlockAndPicker {\n  width: 50px;\n  position: relative;\n\n  .colorBlock {\n    border-radius: 4px;\n    border: none;\n    width: 100%;\n    height: 100%;\n\n    &:focus {\n      outline: 0;\n    }\n  }\n\n  .colorPickerWrapper {\n    z-index: 99;\n    position: absolute;\n    width: 400px;\n    border-width: 1px;\n    border-style: solid;\n    border-radius: 4px;\n    padding: 10px;\n    left: -175px;\n    -webkit-box-shadow: 0 0 5px 0 rgba(0,0,0,0.3);\n    box-shadow: 0 0 5px 0 rgba(0,0,0,0.3);\n\n    &.night {\n      border-color: #38231D;\n      background-color: #101010;\n    }\n\n    &.day {\n      border-color: #ccc;\n      background-color: #fff;\n    }\n  }\n}\n\n.type {\n  display: block;\n}\n\n.manufacturer {\n  padding: 0 0.3em 0 0;\n}\n\n.model {\n}\n"],"sourceRoot":"webpack://"}]);
+  exports.push([module.id, ".Light_light_31m {\n}\n\n.Light_light_31m.Light_night_UWr .Light_metadata_3mh {\n  color: #97918A;\n}\n\n.Light_light_31m.Light_day_3-K .Light_metadata_3mh {\n  color: #797979;\n}\n\n.Light_lightHeader_Cjv, .Light_lightFooter_2ji {\n  display: table;\n  width: 100%;\n}\n\n.Light_lightFooter_2ji {\n  margin-top: 5px;\n}\n\n.Light_lightNameArea_1fg, .Light_metadata_3mh, .Light_colorBlockAndPicker_16B {\n  display: table-cell;\n  vertical-align: middle;\n}\n\n.Light_name_kaw {\n  white-space: nowrap;\n  text-overflow: ellipsis;\n  overflow: hidden;\n  width: 151px;\n  display: block;\n}\n\n.Light_metadata_3mh {\n  font-size: 13px;\n}\n\n.Light_colorBlockAndPicker_16B {\n  width: 50px;\n  position: relative;\n}\n\n.Light_colorBlockAndPicker_16B .Light_colorBlock_3S8 {\n  border-radius: 4px;\n  border: none;\n  width: 100%;\n  height: 100%\n}\n\n.Light_colorBlockAndPicker_16B .Light_colorBlock_3S8:focus {\n  outline: 0;\n}\n\n.Light_colorBlockAndPicker_16B .Light_colorPickerWrapper_N1C {\n  z-index: 99;\n  position: absolute;\n  width: 400px;\n  border-width: 1px;\n  border-style: solid;\n  border-radius: 4px;\n  padding: 10px;\n  left: -175px;\n  -webkit-box-shadow: 0 0 5px 0 rgba(0,0,0,0.3);\n  box-shadow: 0 0 5px 0 rgba(0,0,0,0.3)\n}\n\n.Light_colorBlockAndPicker_16B .Light_colorPickerWrapper_N1C.Light_night_UWr {\n  border-color: #38231D;\n  background-color: #101010;\n}\n\n.Light_colorBlockAndPicker_16B .Light_colorPickerWrapper_N1C.Light_day_3-K {\n  border-color: #ccc;\n  background-color: #fff;\n}\n\n.Light_type_49F {\n  display: block;\n}\n\n.Light_manufacturer_3j2 {\n  padding: 0 0.3em 0 0;\n}\n\n.Light_model_3h3 {\n}\n", "", {"version":3,"sources":["/./src/components/Light/Light.scss"],"names":[],"mappings":"AAAA;CAYC;;AAVG;EACE,eAAe;CAChB;;AAID;EACE,eAAe;CAChB;;AAIL;EAEE,eAAe;EACf,YAAY;CACb;;AAED;EACE,gBAAgB;CACjB;;AAED;EAGE,oBAAoB;EACpB,uBAAuB;CACxB;;AAED;EACE,oBAAoB;EACpB,wBAAwB;EACxB,iBAAiB;EACjB,aAAa;EACb,eAAe;CAChB;;AAED;EACE,gBAAgB;CACjB;;AAED;EACE,YAAY;EACZ,mBAAmB;CAmCpB;;AAjCC;EACE,mBAAmB;EACnB,aAAa;EACb,YAAY;EACZ,YAAa;CAKd;;AAHC;EACE,WAAW;CACZ;;AAGH;EACE,YAAY;EACZ,mBAAmB;EACnB,aAAa;EACb,kBAAkB;EAClB,oBAAoB;EACpB,mBAAmB;EACnB,cAAc;EACd,aAAa;EACb,8CAA8C;EAC9C,qCAAsC;CAWvC;;AATC;EACE,sBAAsB;EACtB,0BAA0B;CAC3B;;AAED;EACE,mBAAmB;EACnB,uBAAuB;CACxB;;AAIL;EACE,eAAe;CAChB;;AAED;EACE,qBAAqB;CACtB;;AAED;CACC","file":"Light.scss","sourcesContent":[".light {\n  &.night {\n    .metadata {\n      color: #97918A;\n    }\n  }\n\n  &.day {\n    .metadata {\n      color: #797979;\n    }\n  }\n}\n\n.lightHeader,\n.lightFooter {\n  display: table;\n  width: 100%;\n}\n\n.lightFooter {\n  margin-top: 5px;\n}\n\n.lightNameArea,\n.metadata,\n.colorBlockAndPicker {\n  display: table-cell;\n  vertical-align: middle;\n}\n\n.name {\n  white-space: nowrap;\n  text-overflow: ellipsis;\n  overflow: hidden;\n  width: 151px;\n  display: block;\n}\n\n.metadata {\n  font-size: 13px;\n}\n\n.colorBlockAndPicker {\n  width: 50px;\n  position: relative;\n\n  .colorBlock {\n    border-radius: 4px;\n    border: none;\n    width: 100%;\n    height: 100%;\n\n    &:focus {\n      outline: 0;\n    }\n  }\n\n  .colorPickerWrapper {\n    z-index: 99;\n    position: absolute;\n    width: 400px;\n    border-width: 1px;\n    border-style: solid;\n    border-radius: 4px;\n    padding: 10px;\n    left: -175px;\n    -webkit-box-shadow: 0 0 5px 0 rgba(0,0,0,0.3);\n    box-shadow: 0 0 5px 0 rgba(0,0,0,0.3);\n\n    &.night {\n      border-color: #38231D;\n      background-color: #101010;\n    }\n\n    &.day {\n      border-color: #ccc;\n      background-color: #fff;\n    }\n  }\n}\n\n.type {\n  display: block;\n}\n\n.manufacturer {\n  padding: 0 0.3em 0 0;\n}\n\n.model {\n}\n"],"sourceRoot":"webpack://"}]);
   
   // exports
   exports.locals = {
@@ -5612,10 +5614,14 @@ module.exports =
       }
     }, {
       key: 'onColorChanged',
-      value: function onColorChanged(success) {
+      value: function onColorChanged(x, y, success) {
         if (success) {
           for (var i = 0; i < this.props.lights.length; i++) {
-            _actionsBridge2['default'].getLight(this.props.lights[i].id).then(this.props.onLightLoaded.bind(this))['catch'](this.onLightLoadError.bind(this));
+            var light = this.props.lights[i];
+            if (light.state.on && typeof light.state.xy === 'object') {
+              light.state.xy = [x, y];
+              this.props.onLightLoaded(light);
+            }
           }
         } else {
           console.error('failed to change group color', this.props.name);
@@ -5657,7 +5663,7 @@ module.exports =
         var xy = _apiConverter2['default'].hexToCIE1931(color);
         var x = xy[0];
         var y = xy[1];
-        _actionsBridge2['default'].setGroupColor(this.props.id, x, y).then(this.onColorChanged.bind(this));
+        _actionsBridge2['default'].setGroupColor(this.props.id, x, y).then(this.onColorChanged.bind(this, x, y));
       }
     }, {
       key: 'isNight',
@@ -5728,9 +5734,11 @@ module.exports =
         var colorPickerStyle = {
           display: this.state.showColorPicker ? 'block' : 'none'
         };
+        var buttonStyle = {};
         var pickerColor = undefined;
-        if (typeof this.state.latestColor !== 'undefined') {
+        if (typeof this.state.latestColor === 'string') {
           pickerColor = '#' + this.state.latestColor;
+          buttonStyle.backgroundColor = '#' + this.state.latestColor;
         }
         return _react2['default'].createElement(
           'li',
@@ -5757,7 +5765,8 @@ module.exports =
               _react2['default'].createElement(
                 'button',
                 { type: 'button', onClick: this.toggleColorPicker.bind(this),
-                  className: (0, _classnames2['default'])(_GroupScss2['default'].colorBlock, nightDayClass)
+                  className: (0, _classnames2['default'])(_GroupScss2['default'].colorBlock, nightDayClass),
+                  style: buttonStyle
                 },
                 'Set Color'
               ),

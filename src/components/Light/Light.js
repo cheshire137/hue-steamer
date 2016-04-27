@@ -11,40 +11,12 @@ import OnOffSwitch from '../OnOffSwitch/OnOffSwitch';
 class Light extends Component {
   static propTypes = {
     id: PropTypes.string.isRequired,
-    onLightLoaded: PropTypes.func.isRequired,
-    light: PropTypes.object,
+    light: PropTypes.object.isRequired,
   };
 
   constructor(props, context) {
     super(props, context);
-    let latestColor = undefined;
-    let loaded = false;
-    if (typeof props.light === 'object') {
-      latestColor = this.getLightHex(props.light.state);
-      loaded = true;
-    }
-    this.state = {
-      loaded,
-      showColorPicker: false,
-      latestColor,
-    };
-  }
-
-  componentDidMount() {
-    if (!this.state.loaded) {
-      Bridge.getLight(this.props.id).
-             then(this.onLightLoaded.bind(this)).
-             catch(this.onLightLoadError.bind(this));
-    }
-  }
-
-  onLightLoaded(light) {
-    light.id = this.props.id;
-    this.props.onLightLoaded(light);
-  }
-
-  onLightLoadError(response) {
-    console.error('failed to load light ' + this.props.id, response);
+    this.state = { showColorPicker: false };
   }
 
   onLightToggle(turnOn) {
@@ -113,52 +85,49 @@ class Light extends Component {
     const colorPickerStyle = {
       display: this.state.showColorPicker ? 'block' : 'none',
     };
-    if (typeof this.props.light === 'object') {
-      if (typeof this.state.latestColor !== 'undefined') {
-        colorStyle.backgroundColor = '#' + this.state.latestColor;
+    if (typeof this.state.latestColor === 'string') {
+      colorStyle.backgroundColor = '#' + this.state.latestColor;
+    } else {
+      const color = this.getLightHex();
+      if (typeof color === 'string') {
+        colorStyle.backgroundColor = '#' + color;
       }
     }
     const nightDayClass = this.isNight() ? s.night : s.day;
     return (
-      <li className={cx(s.light, nightDayClass)}>
-        {this.state.loaded ? (
-          <div>
-            <header className={s.lightHeader}>
-              <div className={s.lightNameArea}>
-                <span className={s.name} title={this.props.light.name}>
-                  {this.props.light.name}
-                </span>
-              </div>
-              <OnOffSwitch id={checkboxID} state={this.props.light.state.on ? 2 : 0}
-                onToggle={this.onLightToggle.bind(this)}
-              />
-            </header>
-            <footer className={s.lightFooter}>
-              <div className={s.metadata}>
-                <span className={s.type}>{this.props.light.type}</span>
-                <span className={s.manufacturer}>
-                  {this.props.light.manufacturername}
-                </span>
-                <span className={s.model}>{this.props.light.modelid}</span>
-              </div>
-              {colorStyle.backgroundColor ? (
-                <div className={s.colorBlockAndPicker}>
-                  <button type="button" onClick={this.toggleColorPicker.bind(this)}
-                    className={s.colorBlock} style={colorStyle}
-                  ></button>
-                  <div style={colorPickerStyle} className={cx(s.colorPickerWrapper, nightDayClass)}>
-                    <SliderPicker color={colorStyle.backgroundColor}
-                      onChangeComplete={this.onColorPickerChange.bind(this)}
-                    />
-                  </div>
-                </div>
-              ) : ''}
-            </footer>
+      <div className={cx(s.light, nightDayClass)}>
+        <header className={s.lightHeader}>
+          <div className={s.lightNameArea}>
+            <span className={s.name} title={this.props.light.name}>
+              {this.props.light.name}
+            </span>
           </div>
-        ) : (
-          <span>Loading light {this.props.id}...</span>
-        )}
-      </li>
+          <OnOffSwitch id={checkboxID} state={this.props.light.state.on ? 2 : 0}
+            onToggle={this.onLightToggle.bind(this)}
+          />
+        </header>
+        <footer className={s.lightFooter}>
+          <div className={s.metadata}>
+            <span className={s.type}>{this.props.light.type}</span>
+            <span className={s.manufacturer}>
+              {this.props.light.manufacturername}
+            </span>
+            <span className={s.model}>{this.props.light.modelid}</span>
+          </div>
+          {colorStyle.backgroundColor ? (
+            <div className={s.colorBlockAndPicker}>
+              <button type="button" onClick={this.toggleColorPicker.bind(this)}
+                className={s.colorBlock} style={colorStyle}
+              ></button>
+              <div style={colorPickerStyle} className={cx(s.colorPickerWrapper, nightDayClass)}>
+                <SliderPicker color={colorStyle.backgroundColor}
+                  onChangeComplete={this.onColorPickerChange.bind(this)}
+                />
+              </div>
+            </div>
+          ) : ''}
+        </footer>
+      </div>
     );
   }
 }
