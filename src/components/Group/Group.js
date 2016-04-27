@@ -183,11 +183,9 @@ class Group extends Component {
     const colorPickerStyle = {
       display: this.state.showColorPicker ? 'block' : 'none',
     };
-    const buttonStyle = {};
     let pickerColor = undefined;
     if (typeof this.state.latestColor === 'string') {
       pickerColor = '#' + this.state.latestColor;
-      buttonStyle.backgroundColor = '#' + this.state.latestColor;
     }
     return (
       <li className={cx(s.group, nightDayClass)}>
@@ -209,7 +207,6 @@ class Group extends Component {
             <div className={s.colorBlockAndPicker}>
               <button type="button" onClick={this.toggleColorPicker.bind(this)}
                 className={cx(s.colorBlock, nightDayClass)}
-                style={buttonStyle}
               >
                 Set Color
               </button>

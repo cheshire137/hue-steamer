@@ -46,7 +46,7 @@ class Light extends Component {
     this.setState({ showColorPicker: false });
   }
 
-  onColorChanged(success) {
+  onColorChanged(x, y, success) {
     if (!success) {
       console.error('failed to change light color', this.props.light.name);
     }
@@ -67,7 +67,7 @@ class Light extends Component {
     const x = xy[0];
     const y = xy[1];
     Bridge.setLightColor(this.props.id, x, y).
-           then(this.onColorChanged.bind(this));
+           then(this.onColorChanged.bind(this, x, y));
   }
 
   toggleColorPicker() {

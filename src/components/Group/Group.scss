@@ -58,8 +58,18 @@
     }
 
     &.night {
-      background-color: #97918A;
-      color: #fff;
+      background-color: #101010;
+      color: #97918A;
+
+      &:hover {
+        background-color: #231511;
+        color: #E5E4E1;
+      }
+    }
+
+    &.day {
+      background-color: #fff;
+      color: #333;
     }
   }
 
