@@ -2,7 +2,9 @@
 
 This is a web application you run locally to manipulate your Philips Hue lights.
 
-![Screenshot](https://raw.githubusercontent.com/cheshire137/hue-steamer/master/screenshot1.png)
+![Screenshot of lights tab](https://raw.githubusercontent.com/cheshire137/hue-steamer/master/screenshot1.png)
+
+![Screenshot of groups tab](https://raw.githubusercontent.com/cheshire137/hue-steamer/master/screenshot2.png)
 
 If you just want a JavaScript library for converting hex and RGB color codes to
 the Philips Hue CIE 1931 color space, or vice versa, look at
