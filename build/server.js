@@ -7849,8 +7849,64 @@ module.exports =
         return days;
       }
     }, {
+      key: 'localtimeToTime',
+      value: function localtimeToTime() {
+        var parts = this.props.localtime.split('/');
+        var fullTime = parts[1].slice(1); // 24hr timestamp like 20:00:00
+        var timeParts = fullTime.split(':').map(function (t) {
+          return parseInt(t, 10);
+        });
+        var hour = timeParts[0];
+        var minute = timeParts[1];
+        var time = '';
+        var amPm = 'am';
+        if (hour > 12) {
+          time = String(hour - 12);
+          amPm = 'pm';
+        } else {
+          time = String(hour);
+          if (hour === 12) {
+            amPm = 'pm';
+          }
+        }
+        time += ':';
+        if (minute < 10) {
+          time += '0';
+        }
+        time += String(minute);
+        return time + ' ' + amPm;
+      }
+    }, {
+      key: 'summarizeDays',
+      value: function summarizeDays(days) {
+        if (days.length === 7) {
+          return 'Every day';
+        }
+        var weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
+        if (days.length === weekdays.length) {
+          var includesWeekday = days.map(function (d) {
+            return weekdays.indexOf(d) > -1;
+          });
+          if (includesWeekday.indexOf(false) < 0) {
+            return 'Weekdays';
+          }
+        }
+        var weekends = ['Saturday', 'Sunday'];
+        if (days.length === weekends.length) {
+          var includesWeekend = days.map(function (d) {
+            return weekends.indexOf(d) > -1;
+          });
+          if (includesWeekend.indexOf(false) < 0) {
+            return 'Weekends';
+          }
+        }
+        return days.join(', ');
+      }
+    }, {
       key: 'render',
       value: function render() {
+        var days = this.localtimeToDays();
+        var time = this.localtimeToTime();
         return _react2['default'].createElement(
           'li',
           { className: _ScheduleScss2['default'].schedule },
@@ -7859,13 +7915,9 @@ module.exports =
             { className: _ScheduleScss2['default'].name },
             this.props.name
           ),
-          this.props.localtime,
-          _react2['default'].createElement(
-            'span',
-            null,
-            ' — '
-          ),
-          this.localtimeToDays().join(', ')
+          this.summarizeDays(days),
+          ' at ',
+          time
         );
       }
     }]);

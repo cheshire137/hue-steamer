@@ -56,13 +56,59 @@ class Schedule extends Component {
     return days;
   }
 
+  localtimeToTime() {
+    const parts = this.props.localtime.split('/');
+    const fullTime = parts[1].slice(1); // 24hr timestamp like 20:00:00
+    const timeParts = fullTime.split(':').map((t) => parseInt(t, 10));
+    const hour = timeParts[0];
+    const minute = timeParts[1];
+    let time = '';
+    let amPm = 'am';
+    if (hour > 12) {
+      time = String(hour - 12);
+      amPm = 'pm';
+    } else {
+      time = String(hour);
+      if (hour === 12) {
+        amPm = 'pm';
+      }
+    }
+    time += ':';
+    if (minute < 10) {
+      time += '0';
+    }
+    time += String(minute);
+    return time + ' ' + amPm;
+  }
+
+  summarizeDays(days) {
+    if (days.length === 7) {
+      return 'Every day';
+    }
+    const weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
+    if (days.length === weekdays.length) {
+      const includesWeekday = days.map((d) => weekdays.indexOf(d) > -1);
+      if (includesWeekday.indexOf(false) < 0) {
+        return 'Weekdays';
+      }
+    }
+    const weekends = ['Saturday', 'Sunday'];
+    if (days.length === weekends.length) {
+      const includesWeekend = days.map((d) => weekends.indexOf(d) > -1);
+      if (includesWeekend.indexOf(false) < 0) {
+        return 'Weekends';
+      }
+    }
+    return days.join(', ');
+  }
+
   render() {
+    const days = this.localtimeToDays();
+    const time = this.localtimeToTime();
     return (
       <li className={s.schedule}>
         <h3 className={s.name}>{this.props.name}</h3>
-        {this.props.localtime}
-        <span> &mdash; </span>
-        {this.localtimeToDays().join(', ')}
+        {this.summarizeDays(days)} at {time}
       </li>
     );
   }
