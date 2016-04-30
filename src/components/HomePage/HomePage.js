@@ -38,7 +38,11 @@ class HomePage extends Component {
   }
 
   onBridgeLoaded(bridge) {
-    this.setState({ bridgeConnectionID: bridge.connection.id });
+    this.setState({ bridgeConnectionID: bridge.connection.id }, () => {
+      if (this.state.activeTab === 'schedules') {
+        this.getSchedules();
+      }
+    });
     Bridge.getAllLights(bridge.connection.id).
            then(this.onAllLightsLoaded.bind(this)).
            catch(this.onAllLightsLoadError.bind(this));
@@ -262,10 +266,14 @@ class HomePage extends Component {
   showSchedulesTab(event) {
     this.showTab(event, 'schedules');
     if (typeof this.state.schedules !== 'object') {
-      Bridge.getSchedules().
-             then(this.onSchedulesLoaded.bind(this)).
-             catch(this.onSchedulesLoadError.bind(this));
+      this.getSchedules();
     }
+  }
+
+  getSchedules() {
+    Bridge.getSchedules().
+           then(this.onSchedulesLoaded.bind(this)).
+           catch(this.onSchedulesLoadError.bind(this));
   }
 
   isNight() {

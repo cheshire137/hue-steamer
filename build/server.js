@@ -3443,7 +3443,13 @@ module.exports =
     }, {
       key: 'onBridgeLoaded',
       value: function onBridgeLoaded(bridge) {
-        this.setState({ bridgeConnectionID: bridge.connection.id });
+        var _this = this;
+  
+        this.setState({ bridgeConnectionID: bridge.connection.id }, function () {
+          if (_this.state.activeTab === 'schedules') {
+            _this.getSchedules();
+          }
+        });
         _actionsBridge2['default'].getAllLights(bridge.connection.id).then(this.onAllLightsLoaded.bind(this))['catch'](this.onAllLightsLoadError.bind(this));
         _actionsBridge2['default'].getGroups().then(this.onGroupsLoaded.bind(this))['catch'](this.onGroupsLoadError.bind(this));
       }
@@ -3461,14 +3467,14 @@ module.exports =
     }, {
       key: 'onAllLightsLoaded',
       value: function onAllLightsLoaded(group) {
-        var _this = this;
+        var _this2 = this;
   
         this.setState({ lightIDs: group.lights }, function () {
           group.lights.forEach(function (id) {
             _actionsBridge2['default'].getLight(id).then(function (light) {
               light.id = id;
-              _this.onLightLoaded(light);
-            })['catch'](_this.onLightLoadError.bind(_this, id));
+              _this2.onLightLoaded(light);
+            })['catch'](_this2.onLightLoadError.bind(_this2, id));
           });
         });
       }
@@ -3511,7 +3517,7 @@ module.exports =
     }, {
       key: 'onEditGroup',
       value: function onEditGroup(id, name, lights) {
-        var _this2 = this;
+        var _this3 = this;
   
         this.setState({
           editGroupName: name,
@@ -3520,13 +3526,13 @@ module.exports =
             return typeof l === 'string' ? l : l.id;
           })
         }, function () {
-          _this2.showGroupFormTab();
+          _this3.showGroupFormTab();
         });
       }
     }, {
       key: 'onGroupUpdated',
       value: function onGroupUpdated(group) {
-        var _this3 = this;
+        var _this4 = this;
   
         var newGroups = this.state.groups.slice();
         for (var i = 0; i < newGroups.length; i++) {
@@ -3549,13 +3555,13 @@ module.exports =
           editGroupID: undefined,
           editGroupLightIDs: undefined
         }, function () {
-          _this3.showGroupsTab();
+          _this4.showGroupsTab();
         });
       }
     }, {
       key: 'onGroupCanceled',
       value: function onGroupCanceled() {
-        var _this4 = this;
+        var _this5 = this;
   
         var wasEditing = typeof this.state.editGroupID !== 'undefined';
         this.setState({
@@ -3566,9 +3572,9 @@ module.exports =
           newGroupLightIDs: undefined
         }, function () {
           if (wasEditing) {
-            _this4.showGroupsTab();
+            _this5.showGroupsTab();
           } else {
-            _this4.showLightsTab();
+            _this5.showLightsTab();
           }
         });
       }
@@ -3610,14 +3616,14 @@ module.exports =
     }, {
       key: 'updateLightInGroups',
       value: function updateLightInGroups(light) {
-        var _this5 = this;
+        var _this6 = this;
   
         var groups = this.state.groups;
         if (typeof groups !== 'object') {
           return groups;
         }
         return groups.slice().map(function (group) {
-          return _this5.updateLightInGroup(light, group);
+          return _this6.updateLightInGroup(light, group);
         });
       }
     }, {
@@ -3698,8 +3704,13 @@ module.exports =
       value: function showSchedulesTab(event) {
         this.showTab(event, 'schedules');
         if (typeof this.state.schedules !== 'object') {
-          _actionsBridge2['default'].getSchedules().then(this.onSchedulesLoaded.bind(this))['catch'](this.onSchedulesLoadError.bind(this));
+          this.getSchedules();
         }
+      }
+    }, {
+      key: 'getSchedules',
+      value: function getSchedules() {
+        _actionsBridge2['default'].getSchedules().then(this.onSchedulesLoaded.bind(this))['catch'](this.onSchedulesLoadError.bind(this));
       }
     }, {
       key: 'isNight',
@@ -7627,6 +7638,8 @@ module.exports =
     value: true
   });
   
+  var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+  
   var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
   
   var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
@@ -7644,6 +7657,10 @@ module.exports =
   var _SchedulesListScss = __webpack_require__(96);
   
   var _SchedulesListScss2 = _interopRequireDefault(_SchedulesListScss);
+  
+  var _ScheduleSchedule = __webpack_require__(98);
+  
+  var _ScheduleSchedule2 = _interopRequireDefault(_ScheduleSchedule);
   
   var _decoratorsWithStyles = __webpack_require__(24);
   
@@ -7675,12 +7692,7 @@ module.exports =
           { className: _SchedulesListScss2['default'].schedulesList },
           this.props.schedules.map(function (schedule) {
             var key = 'schedule-' + schedule.id;
-            return _react2['default'].createElement(
-              'li',
-              { key: key },
-              'schedule ',
-              schedule.id
-            );
+            return _react2['default'].createElement(_ScheduleSchedule2['default'], _extends({ key: key }, schedule));
           })
         );
       }
@@ -7735,10 +7747,185 @@ module.exports =
   
   
   // module
-  exports.push([module.id, "", "", {"version":3,"sources":[],"names":[],"mappings":"","file":"SchedulesList.scss","sourceRoot":"webpack://"}]);
+  exports.push([module.id, ".SchedulesList_schedulesList_2h3 {\n  padding-left: 0;\n}\n", "", {"version":3,"sources":["/./src/components/SchedulesList/SchedulesList.scss"],"names":[],"mappings":"AAAA;EACE,gBAAgB;CACjB","file":"SchedulesList.scss","sourcesContent":[".schedulesList {\n  padding-left: 0;\n}\n"],"sourceRoot":"webpack://"}]);
   
   // exports
+  exports.locals = {
+  	"schedulesList": "SchedulesList_schedulesList_2h3"
+  };
 
+/***/ },
+/* 98 */
+/***/ function(module, exports, __webpack_require__) {
+
+  'use strict';
+  
+  Object.defineProperty(exports, '__esModule', {
+    value: true
+  });
+  
+  var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+  
+  var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+  
+  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  
+  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+  
+  function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+  
+  var _react = __webpack_require__(4);
+  
+  var _react2 = _interopRequireDefault(_react);
+  
+  var _ScheduleScss = __webpack_require__(99);
+  
+  var _ScheduleScss2 = _interopRequireDefault(_ScheduleScss);
+  
+  var _decoratorsWithStyles = __webpack_require__(24);
+  
+  var _decoratorsWithStyles2 = _interopRequireDefault(_decoratorsWithStyles);
+  
+  var Schedule = (function (_Component) {
+    _inherits(Schedule, _Component);
+  
+    _createClass(Schedule, null, [{
+      key: 'propTypes',
+      value: {
+        id: _react.PropTypes.string.isRequired,
+        description: _react.PropTypes.string.isRequired,
+        name: _react.PropTypes.string.isRequired,
+        localtime: _react.PropTypes.string.isRequired,
+        time: _react.PropTypes.string.isRequired,
+        created: _react.PropTypes.string.isRequired,
+        recycle: _react.PropTypes.bool.isRequired,
+        status: _react.PropTypes.string.isRequired,
+        command: _react.PropTypes.object.isRequired
+      },
+      enumerable: true
+    }]);
+  
+    function Schedule(props, context) {
+      _classCallCheck(this, _Schedule);
+  
+      _get(Object.getPrototypeOf(_Schedule.prototype), 'constructor', this).call(this, props, context);
+      this.state = {};
+    }
+  
+    _createClass(Schedule, [{
+      key: 'localtimeToDays',
+      value: function localtimeToDays() {
+        var parts = this.props.localtime.split('/');
+        var days = [];
+        var listOfDays = parts[0].slice(1); // number up to 127
+        var sunday = 1;
+        var monday = 64;
+        var tuesday = 32;
+        var wednesday = 16;
+        var thursday = 8;
+        var friday = 4;
+        var saturday = 2;
+        if (listOfDays & sunday) {
+          days.push('Sunday');
+        }
+        if (listOfDays & monday) {
+          days.push('Monday');
+        }
+        if (listOfDays & tuesday) {
+          days.push('Tuesday');
+        }
+        if (listOfDays & wednesday) {
+          days.push('Wednesday');
+        }
+        if (listOfDays & thursday) {
+          days.push('Thursday');
+        }
+        if (listOfDays & friday) {
+          days.push('Friday');
+        }
+        if (listOfDays & saturday) {
+          days.push('Saturday');
+        }
+        return days;
+      }
+    }, {
+      key: 'render',
+      value: function render() {
+        return _react2['default'].createElement(
+          'li',
+          { className: _ScheduleScss2['default'].schedule },
+          _react2['default'].createElement(
+            'h3',
+            { className: _ScheduleScss2['default'].name },
+            this.props.name
+          ),
+          this.props.localtime,
+          _react2['default'].createElement(
+            'span',
+            null,
+            ' — '
+          ),
+          this.localtimeToDays().join(', ')
+        );
+      }
+    }]);
+  
+    var _Schedule = Schedule;
+    Schedule = (0, _decoratorsWithStyles2['default'])(_ScheduleScss2['default'])(Schedule) || Schedule;
+    return Schedule;
+  })(_react.Component);
+  
+  exports['default'] = Schedule;
+  module.exports = exports['default'];
+
+/***/ },
+/* 99 */
+/***/ function(module, exports, __webpack_require__) {
+
+  
+      var content = __webpack_require__(100);
+      var insertCss = __webpack_require__(20);
+  
+      if (typeof content === 'string') {
+        content = [[module.id, content, '']];
+      }
+  
+      module.exports = content.locals || {};
+      module.exports._getCss = function() { return content.toString(); };
+      module.exports._insertCss = insertCss.bind(null, content);
+    
+      var removeCss = function() {};
+  
+      // Hot Module Replacement
+      // https://webpack.github.io/docs/hot-module-replacement
+      if (false) {
+        module.hot.accept("!!./../../../node_modules/css-loader/index.js?sourceMap&modules&localIdentName=[name]_[local]_[hash:base64:3]!./../../../node_modules/postcss-loader/index.js!./Schedule.scss", function() {
+          var newContent = require("!!./../../../node_modules/css-loader/index.js?sourceMap&modules&localIdentName=[name]_[local]_[hash:base64:3]!./../../../node_modules/postcss-loader/index.js!./Schedule.scss");
+          if (typeof newContent === 'string') {
+            newContent = [[module.id, content, '']];
+          }
+          removeCss = insertCss(newContent, { replace: true });
+        });
+        module.hot.dispose(function() { removeCss(); });
+      }
+    
+
+/***/ },
+/* 100 */
+/***/ function(module, exports, __webpack_require__) {
+
+  exports = module.exports = __webpack_require__(19)();
+  // imports
+  
+  
+  // module
+  exports.push([module.id, ".Schedule_schedule_2-Z {\n  list-style: none;\n}\n\n.Schedule_schedule_2-Z + .Schedule_schedule_2-Z {\n  margin-top: 15px;\n}\n\n.Schedule_name_XTc {\n  margin-top: 0;\n  margin-bottom: 5px;\n}\n", "", {"version":3,"sources":["/./src/components/Schedule/Schedule.scss"],"names":[],"mappings":"AAAA;EACE,iBAAiB;CAKlB;;AAHC;EACE,iBAAiB;CAClB;;AAGH;EACE,cAAc;EACd,mBAAmB;CACpB","file":"Schedule.scss","sourcesContent":[".schedule {\n  list-style: none;\n\n  + .schedule {\n    margin-top: 15px;\n  }\n}\n\n.name {\n  margin-top: 0;\n  margin-bottom: 5px;\n}\n"],"sourceRoot":"webpack://"}]);
+  
+  // exports
+  exports.locals = {
+  	"schedule": "Schedule_schedule_2-Z",
+  	"name": "Schedule_name_XTc"
+  };
 
 /***/ }
 /******/ ]);
