@@ -7,6 +7,7 @@ import Location from '../../core/Location';
 import Bridge from '../../actions/bridge';
 import LightsList from '../LightsList/LightsList';
 import GroupsList from '../GroupsList/GroupsList';
+import SchedulesList from '../SchedulesList/SchedulesList';
 import GroupForm from '../GroupForm/GroupForm';
 import LocalStorage from '../../stores/localStorage';
 
@@ -340,7 +341,7 @@ class HomePage extends Component {
           </div>
           <div className={cx(s.schedulesTab, s.tab, this.state.activeTab === 'schedules' ? s.active : s.inactive)}>
             {haveSchedules ? (
-              <span>schedules</span>
+              <SchedulesList schedules={this.state.schedules} />
             ) : (
               <p className={s.loading}>
                 Loading schedules...
