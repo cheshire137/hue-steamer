@@ -70,7 +70,7 @@
     "redbox-react": "^1.2.0",
     "replace": "^0.3.0",
     "url-loader": "^0.5.7",
-    "webpack": "^1.12.9",
+    "webpack": "^1.12.14",
     "webpack-hot-middleware": "^2.6.0",
     "webpack-middleware": "^1.4.0"
   },
