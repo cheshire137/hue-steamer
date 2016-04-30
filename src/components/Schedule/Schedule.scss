@@ -10,3 +10,21 @@
   margin-top: 0;
   margin-bottom: 5px;
 }
+
+.enabled,
+.disabled {
+  padding: 1px 0.3em;
+  border-radius: 2px;
+  display: inline-block;
+  margin-left: 10px;
+}
+
+.enabled {
+  background-color: #dff0d8;
+  color: #3c763d;
+}
+
+.disabled {
+  background-color: #f7f7f9;
+  color: #767676;
+}

@@ -109,6 +109,11 @@ class Schedule extends Component {
       <li className={s.schedule}>
         <h3 className={s.name}>{this.props.name}</h3>
         {this.summarizeDays(days)} at {time}
+        {this.props.status === 'enabled' ? (
+          <span className={s.enabled}>Enabled</span>
+        ) : (
+          <span className={s.disabled}>Disabled</span>
+        )}
       </li>
     );
   }

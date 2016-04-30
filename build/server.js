@@ -7917,7 +7917,16 @@ module.exports =
           ),
           this.summarizeDays(days),
           ' at ',
-          time
+          time,
+          this.props.status === 'enabled' ? _react2['default'].createElement(
+            'span',
+            { className: _ScheduleScss2['default'].enabled },
+            'Enabled'
+          ) : _react2['default'].createElement(
+            'span',
+            { className: _ScheduleScss2['default'].disabled },
+            'Disabled'
+          )
         );
       }
     }]);
@@ -7971,12 +7980,14 @@ module.exports =
   
   
   // module
-  exports.push([module.id, ".Schedule_schedule_2-Z {\n  list-style: none;\n}\n\n.Schedule_schedule_2-Z + .Schedule_schedule_2-Z {\n  margin-top: 15px;\n}\n\n.Schedule_name_XTc {\n  margin-top: 0;\n  margin-bottom: 5px;\n}\n", "", {"version":3,"sources":["/./src/components/Schedule/Schedule.scss"],"names":[],"mappings":"AAAA;EACE,iBAAiB;CAKlB;;AAHC;EACE,iBAAiB;CAClB;;AAGH;EACE,cAAc;EACd,mBAAmB;CACpB","file":"Schedule.scss","sourcesContent":[".schedule {\n  list-style: none;\n\n  + .schedule {\n    margin-top: 15px;\n  }\n}\n\n.name {\n  margin-top: 0;\n  margin-bottom: 5px;\n}\n"],"sourceRoot":"webpack://"}]);
+  exports.push([module.id, ".Schedule_schedule_2-Z {\n  list-style: none;\n}\n\n.Schedule_schedule_2-Z + .Schedule_schedule_2-Z {\n  margin-top: 15px;\n}\n\n.Schedule_name_XTc {\n  margin-top: 0;\n  margin-bottom: 5px;\n}\n\n.Schedule_enabled_3aQ, .Schedule_disabled_2oR {\n  padding: 1px 0.3em;\n  border-radius: 2px;\n  display: inline-block;\n  margin-left: 10px;\n}\n\n.Schedule_enabled_3aQ {\n  background-color: #dff0d8;\n  color: #3c763d;\n}\n\n.Schedule_disabled_2oR {\n  background-color: #f7f7f9;\n  color: #767676;\n}\n", "", {"version":3,"sources":["/./src/components/Schedule/Schedule.scss"],"names":[],"mappings":"AAAA;EACE,iBAAiB;CAKlB;;AAHC;EACE,iBAAiB;CAClB;;AAGH;EACE,cAAc;EACd,mBAAmB;CACpB;;AAED;EAEE,mBAAmB;EACnB,mBAAmB;EACnB,sBAAsB;EACtB,kBAAkB;CACnB;;AAED;EACE,0BAA0B;EAC1B,eAAe;CAChB;;AAED;EACE,0BAA0B;EAC1B,eAAe;CAChB","file":"Schedule.scss","sourcesContent":[".schedule {\n  list-style: none;\n\n  + .schedule {\n    margin-top: 15px;\n  }\n}\n\n.name {\n  margin-top: 0;\n  margin-bottom: 5px;\n}\n\n.enabled,\n.disabled {\n  padding: 1px 0.3em;\n  border-radius: 2px;\n  display: inline-block;\n  margin-left: 10px;\n}\n\n.enabled {\n  background-color: #dff0d8;\n  color: #3c763d;\n}\n\n.disabled {\n  background-color: #f7f7f9;\n  color: #767676;\n}\n"],"sourceRoot":"webpack://"}]);
   
   // exports
   exports.locals = {
   	"schedule": "Schedule_schedule_2-Z",
-  	"name": "Schedule_name_XTc"
+  	"name": "Schedule_name_XTc",
+  	"enabled": "Schedule_enabled_3aQ",
+  	"disabled": "Schedule_disabled_2oR"
   };
 
 /***/ }
