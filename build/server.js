@@ -406,6 +406,30 @@ module.exports =
     }, null, _this);
   });
   
+  server.get('/schedules', function callee$0$0(req, res) {
+    var api;
+    return regeneratorRuntime.async(function callee$0$0$(context$1$0) {
+      while (1) switch (context$1$0.prev = context$1$0.next) {
+        case 0:
+          context$1$0.next = 2;
+          return regeneratorRuntime.awrap(getHueApi(req.query.connectionID));
+  
+        case 2:
+          api = context$1$0.sent;
+  
+          api.schedules().then(function (result) {
+            res.json(result);
+          }).fail(function (err) {
+            res.status(400).json(err);
+          }).done();
+  
+        case 4:
+        case 'end':
+          return context$1$0.stop();
+      }
+    }, null, _this);
+  });
+  
   server.get('/groups', function callee$0$0(req, res) {
     var api;
     return regeneratorRuntime.async(function callee$0$0$(context$1$0) {
@@ -3426,6 +3450,11 @@ module.exports =
         _coreLocation2['default'].push(_extends({}, (0, _historyLibParsePath2['default'])('/settings')));
       }
     }, {
+      key: 'onSchedulesLoadError',
+      value: function onSchedulesLoadError(response) {
+        console.error('failed to load schedules', response);
+      }
+    }, {
       key: 'onAllLightsLoaded',
       value: function onAllLightsLoaded(group) {
         var _this = this;
@@ -3462,6 +3491,12 @@ module.exports =
       key: 'onGroupsLoadError',
       value: function onGroupsLoadError(response) {
         console.error('failed to load groups', response);
+      }
+    }, {
+      key: 'onSchedulesLoaded',
+      value: function onSchedulesLoaded(schedules) {
+        console.log(schedules);
+        this.setState({ schedules: schedules });
       }
     }, {
       key: 'onGroupCreated',
@@ -3655,6 +3690,14 @@ module.exports =
         this.showTab(event, 'group-form');
       }
     }, {
+      key: 'showSchedulesTab',
+      value: function showSchedulesTab(event) {
+        this.showTab(event, 'schedules');
+        if (typeof this.state.schedules !== 'object') {
+          _actionsBridge2['default'].getSchedules().then(this.onSchedulesLoaded.bind(this))['catch'](this.onSchedulesLoadError.bind(this));
+        }
+      }
+    }, {
       key: 'isNight',
       value: function isNight() {
         var curTime = new Date();
@@ -3665,6 +3708,7 @@ module.exports =
       value: function render() {
         var haveLights = typeof this.state.lightIDs === 'object';
         var haveGroups = typeof this.state.groups === 'object';
+        var haveSchedules = typeof this.state.schedules === 'object';
         return _react2['default'].createElement(
           'div',
           { className: this.isNight() ? _HomePageScss2['default'].night : _HomePageScss2['default'].day },
@@ -3702,6 +3746,15 @@ module.exports =
                   this.state.editGroupName,
                   '”'
                 ) : 'New Group'
+              )
+            ),
+            _react2['default'].createElement(
+              'li',
+              { className: this.state.activeTab === 'schedules' ? _HomePageScss2['default'].active : _HomePageScss2['default'].inactive },
+              _react2['default'].createElement(
+                'a',
+                { href: '#', onClick: this.showSchedulesTab.bind(this) },
+                'Schedules'
               )
             )
           ),
@@ -3744,6 +3797,19 @@ module.exports =
                 id: this.state.editGroupID,
                 checkedLightIDs: this.state.editGroupLightIDs || this.state.newGroupLightIDs
               })
+            ),
+            _react2['default'].createElement(
+              'div',
+              { className: (0, _classnames2['default'])(_HomePageScss2['default'].schedulesTab, _HomePageScss2['default'].tab, this.state.activeTab === 'schedules' ? _HomePageScss2['default'].active : _HomePageScss2['default'].inactive) },
+              haveSchedules ? _react2['default'].createElement(
+                'span',
+                null,
+                'schedules'
+              ) : _react2['default'].createElement(
+                'p',
+                { className: _HomePageScss2['default'].loading },
+                'Loading schedules...'
+              )
             )
           )
         );
@@ -3922,6 +3988,20 @@ module.exports =
           while (1) switch (context$2$0.prev = context$2$0.next) {
             case 0:
               return context$2$0.abrupt('return', this.makeRequest('/groups'));
+  
+            case 1:
+            case 'end':
+              return context$2$0.stop();
+          }
+        }, null, this);
+      }
+    }, {
+      key: 'getSchedules',
+      value: function getSchedules() {
+        return regeneratorRuntime.async(function getSchedules$(context$2$0) {
+          while (1) switch (context$2$0.prev = context$2$0.next) {
+            case 0:
+              return context$2$0.abrupt('return', this.makeRequest('/schedules'));
   
             case 1:
             case 'end':

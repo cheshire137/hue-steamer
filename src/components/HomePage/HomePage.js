@@ -53,6 +53,10 @@ class HomePage extends Component {
     });
   }
 
+  onSchedulesLoadError(response) {
+    console.error('failed to load schedules', response);
+  }
+
   onAllLightsLoaded(group) {
     this.setState({ lightIDs: group.lights }, () => {
       group.lights.forEach((id) => {
@@ -81,6 +85,11 @@ class HomePage extends Component {
 
   onGroupsLoadError(response) {
     console.error('failed to load groups', response);
+  }
+
+  onSchedulesLoaded(schedules) {
+    console.log(schedules);
+    this.setState({ schedules });
   }
 
   onGroupCreated(group) {
@@ -249,6 +258,15 @@ class HomePage extends Component {
     this.showTab(event, 'group-form');
   }
 
+  showSchedulesTab(event) {
+    this.showTab(event, 'schedules');
+    if (typeof this.state.schedules !== 'object') {
+      Bridge.getSchedules().
+             then(this.onSchedulesLoaded.bind(this)).
+             catch(this.onSchedulesLoadError.bind(this));
+    }
+  }
+
   isNight() {
     const curTime = new Date();
     return curTime.getHours() >= 20;
@@ -257,6 +275,7 @@ class HomePage extends Component {
   render() {
     const haveLights = typeof this.state.lightIDs === 'object';
     const haveGroups = typeof this.state.groups === 'object';
+    const haveSchedules = typeof this.state.schedules === 'object';
     return (
       <div className={this.isNight() ? s.night : s.day}>
         <ul className={s.tabList}>
@@ -275,6 +294,11 @@ class HomePage extends Component {
               {typeof this.state.editGroupName === 'string' ? (
                 <span>Edit &ldquo;{this.state.editGroupName}&rdquo;</span>
               ) : 'New Group'}
+            </a>
+          </li>
+          <li className={this.state.activeTab === 'schedules' ? s.active : s.inactive}>
+            <a href="#" onClick={this.showSchedulesTab.bind(this)}>
+              Schedules
             </a>
           </li>
         </ul>
@@ -313,6 +337,15 @@ class HomePage extends Component {
               id={this.state.editGroupID}
               checkedLightIDs={this.state.editGroupLightIDs || this.state.newGroupLightIDs}
             />
+          </div>
+          <div className={cx(s.schedulesTab, s.tab, this.state.activeTab === 'schedules' ? s.active : s.inactive)}>
+            {haveSchedules ? (
+              <span>schedules</span>
+            ) : (
+              <p className={s.loading}>
+                Loading schedules...
+              </p>
+            )}
           </div>
         </div>
       </div>
