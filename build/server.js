@@ -4188,8 +4188,6 @@ module.exports =
   
   function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
   
-  function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) arr2[i] = arr[i]; return arr2; } else { return Array.from(arr); } }
-  
   function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
   
   function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
@@ -4214,6 +4212,10 @@ module.exports =
   
   var _classnames2 = _interopRequireDefault(_classnames);
   
+  var _LightFilterFormLightFilterForm = __webpack_require__(92);
+  
+  var _LightFilterFormLightFilterForm2 = _interopRequireDefault(_LightFilterFormLightFilterForm);
+  
   var LightsList = (function (_Component) {
     _inherits(LightsList, _Component);
   
@@ -4231,47 +4233,14 @@ module.exports =
       _classCallCheck(this, _LightsList);
   
       _get(Object.getPrototypeOf(_LightsList.prototype), 'constructor', this).call(this, props, context);
-      this.state = { filter: undefined, lightState: undefined };
+      this.state = { filteredIDs: undefined };
     }
   
     _createClass(LightsList, [{
-      key: 'onFilterChange',
-      value: function onFilterChange(event) {
-        var _this = this;
-  
-        var filter = event.target.value.toLowerCase().trim();
-        if (filter.length < 1) {
-          filter = undefined;
-        }
-        this.setState({ filter: filter }, function () {
-          _this.handleSubmit();
-        });
-      }
-    }, {
-      key: 'onStateChange',
-      value: function onStateChange(event) {
-        var _this2 = this;
-  
-        var lightState = event.target.value;
-        if (lightState.length === 0) {
-          lightState = undefined;
-        }
-        this.setState({ lightState: lightState }, function () {
-          _this2.handleSubmit();
-        });
-      }
-    }, {
-      key: 'onModelChange',
-      value: function onModelChange(event) {
-        var _this3 = this;
-  
-        var model = event.target.value;
-        if (model.length === 0) {
-          model = undefined;
-        }
-        this.setState({ model: model }, function () {
-          _this3.handleSubmit();
-        });
+      key: 'onFiltered',
+      value: function onFiltered(filterName, filteredIDs) {
+        this.setState({ filteredIDs: filteredIDs });
+        this.props.onFiltered(filterName, filteredIDs);
       }
     }, {
       key: 'isNight',
@@ -4280,150 +4249,33 @@ module.exports =
         return curTime.getHours() >= 20;
       }
     }, {
-      key: 'getFilteredLightIDs',
-      value: function getFilteredLightIDs() {
-        var _this4 = this;
-  
-        var filteredIDs = this.props.ids;
-        if (typeof this.state.filter !== 'undefined') {
-          filteredIDs = filteredIDs.filter(function (id) {
-            var light = _this4.props.lights[id];
-            if (typeof light !== 'object') {
-              return true;
-            }
-            return light.name.toLowerCase().indexOf(_this4.state.filter) > -1;
-          });
-        }
-        if (typeof this.state.lightState !== 'undefined') {
-          filteredIDs = filteredIDs.filter(function (id) {
-            var light = _this4.props.lights[id];
-            if (typeof light !== 'object') {
-              return true;
-            }
-            if (light.state.on && _this4.state.lightState === 'on') {
-              return true;
-            }
-            return !light.state.on && _this4.state.lightState === 'off';
-          });
-        }
-        if (typeof this.state.model !== 'undefined') {
-          filteredIDs = filteredIDs.filter(function (id) {
-            var light = _this4.props.lights[id];
-            if (typeof light !== 'object') {
-              return true;
-            }
-            return light.modelid === _this4.state.model;
-          });
-        }
-        return filteredIDs;
-      }
-    }, {
-      key: 'getModels',
-      value: function getModels() {
-        var _this5 = this;
-  
-        var models = this.props.ids.map(function (id) {
-          var light = _this5.props.lights[id];
-          if (typeof light !== 'object') {
-            return undefined;
-          }
-          return light.modelid;
-        });
-        return [].concat(_toConsumableArray(new Set(models)));
-      }
-    }, {
-      key: 'handleSubmit',
-      value: function handleSubmit(event) {
-        if (event) {
-          event.preventDefault();
-        }
-        var filters = [];
-        if (typeof this.state.filter === 'string') {
-          filters.push(this.state.filter);
-        }
-        if (typeof this.state.lightState === 'string') {
-          filters.push(this.state.lightState);
-        }
-        if (typeof this.state.model === 'string') {
-          filters.push(this.state.model);
-        }
-        var filterName = filters.length > 0 ? filters.join(', ') : undefined;
-        this.props.onFiltered(filterName, this.getFilteredLightIDs());
-      }
-    }, {
       key: 'render',
       value: function render() {
-        var _this6 = this;
+        var _this = this;
   
-        var filteredIDs = this.getFilteredLightIDs();
-        var models = this.getModels();
+        var filteredIDs = this.props.ids;
+        if (typeof this.state.filteredIDs === 'object') {
+          filteredIDs = this.state.filteredIDs;
+        }
         var nightDayClass = this.isNight() ? _LightsListScss2['default'].night : _LightsListScss2['default'].day;
         return _react2['default'].createElement(
           'div',
           { className: _LightsListScss2['default'].lightListContainer },
-          _react2['default'].createElement(
-            'form',
-            { onSubmit: this.handleSubmit.bind(this) },
-            _react2['default'].createElement('input', { type: 'search', placeholder: 'Filter lights...',
-              className: _LightsListScss2['default'].lightFilter,
-              onChange: this.onFilterChange.bind(this),
-              autoFocus: 'autofocus'
-            }),
-            _react2['default'].createElement(
-              'label',
-              { className: _LightsListScss2['default'].label },
-              'State:'
-            ),
-            _react2['default'].createElement(
-              'select',
-              { className: _LightsListScss2['default'].stateFilter, onChange: this.onStateChange.bind(this) },
-              _react2['default'].createElement(
-                'option',
-                { value: '' },
-                'Any'
-              ),
-              _react2['default'].createElement(
-                'option',
-                { value: 'on' },
-                'On'
-              ),
-              _react2['default'].createElement(
-                'option',
-                { value: 'off' },
-                'Off'
-              )
-            ),
-            _react2['default'].createElement(
-              'label',
-              { className: _LightsListScss2['default'].label },
-              'Model:'
-            ),
-            _react2['default'].createElement(
-              'select',
-              { className: _LightsListScss2['default'].modelFilter, onChange: this.onModelChange.bind(this) },
-              _react2['default'].createElement(
-                'option',
-                { value: '' },
-                'Any'
-              ),
-              models.map(function (model) {
-                return _react2['default'].createElement(
-                  'option',
-                  { value: model, key: model },
-                  model
-                );
-              })
-            )
-          ),
+          _react2['default'].createElement(_LightFilterFormLightFilterForm2['default'], { ids: this.props.ids, lights: this.props.lights,
+            onFiltered: this.onFiltered.bind(this)
+          }),
           _react2['default'].createElement(
             'ul',
             { className: _LightsListScss2['default'].lightList },
             filteredIDs.map(function (id) {
-              var light = _this6.props.lights[id];
+              var light = _this.props.lights[id];
               var loaded = typeof light === 'object';
               var xy = 'na';
               if (loaded) {
-                xy = typeof light.state.xy === 'object' ? light.state.xy.join(',') : 'none';
+                xy = 'none';
+                if (typeof light.state.xy === 'object') {
+                  xy = light.state.xy.join(',');
+                }
               }
               var key = 'light-' + id + '-loaded-' + loaded + '-on-' + (loaded ? light.state.on : 'na') + '-xy-' + xy;
               return _react2['default'].createElement(
@@ -4492,18 +4344,14 @@ module.exports =
   
   
   // module
-  exports.push([module.id, ".LightsList_lightList_14S {\n  list-style: none;\n  padding-left: 0;\n}\n\n.LightsList_light_3Ms {\n  width: 223px;\n  display: inline-block;\n  margin: 0 5px 12px 5px;\n  padding: 6px;\n  border-radius: 2px;\n  border-width: 1px;\n  border-style: solid\n}\n\n.LightsList_light_3Ms.LightsList_night_2nv {\n  border-color: #38231D;\n  color: #E5E4E1;\n  background-color: #231511;\n}\n\n.LightsList_light_3Ms.LightsList_day_3hZ {\n  border-color: #ccc;\n}\n\ninput[type=\"search\"].LightsList_lightFilter_1Kc, select.LightsList_stateFilter_RUq, select.LightsList_modelFilter_3-H, .LightsList_label_3a5 {\n  display: inline-block;\n}\n\ninput[type=\"search\"].LightsList_lightFilter_1Kc {\n  width: 12em;\n}\n\nselect.LightsList_stateFilter_RUq {\n  width: 5em;\n}\n\nselect.LightsList_modelFilter_3-H {\n  width: 10em;\n}\n\n.LightsList_label_3a5 {\n  margin: 0 5px 0 30px;\n}\n", "", {"version":3,"sources":["/./src/components/LightsList/LightsList.scss"],"names":[],"mappings":"AAAA;EACE,iBAAiB;EACjB,gBAAgB;CACjB;;AAED;EACE,aAAa;EACb,sBAAsB;EACtB,uBAAuB;EACvB,aAAa;EACb,mBAAmB;EACnB,kBAAkB;EAClB,mBAAoB;CAWrB;;AATC;EACE,sBAAsB;EACtB,eAAe;EACf,0BAA0B;CAC3B;;AAED;EACE,mBAAmB;CACpB;;AAGH;EAIE,sBAAsB;CACvB;;AAED;EACE,YAAY;CACb;;AAED;EACE,WAAW;CACZ;;AAED;EACE,YAAY;CACb;;AAED;EACE,qBAAqB;CACtB","file":"LightsList.scss","sourcesContent":[".lightList {\n  list-style: none;\n  padding-left: 0;\n}\n\n.light {\n  width: 223px;\n  display: inline-block;\n  margin: 0 5px 12px 5px;\n  padding: 6px;\n  border-radius: 2px;\n  border-width: 1px;\n  border-style: solid;\n\n  &.night {\n    border-color: #38231D;\n    color: #E5E4E1;\n    background-color: #231511;\n  }\n\n  &.day {\n    border-color: #ccc;\n  }\n}\n\ninput[type=\"search\"].lightFilter,\nselect.stateFilter,\nselect.modelFilter,\n.label {\n  display: inline-block;\n}\n\ninput[type=\"search\"].lightFilter {\n  width: 12em;\n}\n\nselect.stateFilter {\n  width: 5em;\n}\n\nselect.modelFilter {\n  width: 10em;\n}\n\n.label {\n  margin: 0 5px 0 30px;\n}\n"],"sourceRoot":"webpack://"}]);
+  exports.push([module.id, ".LightsList_lightList_14S {\n  list-style: none;\n  padding-left: 0;\n}\n\n.LightsList_light_3Ms {\n  width: 223px;\n  display: inline-block;\n  margin: 0 5px 12px 5px;\n  padding: 6px;\n  border-radius: 2px;\n  border-width: 1px;\n  border-style: solid\n}\n\n.LightsList_light_3Ms.LightsList_night_2nv {\n  border-color: #38231D;\n  color: #E5E4E1;\n  background-color: #231511;\n}\n\n.LightsList_light_3Ms.LightsList_day_3hZ {\n  border-color: #ccc;\n}\n", "", {"version":3,"sources":["/./src/components/LightsList/LightsList.scss"],"names":[],"mappings":"AAAA;EACE,iBAAiB;EACjB,gBAAgB;CACjB;;AAED;EACE,aAAa;EACb,sBAAsB;EACtB,uBAAuB;EACvB,aAAa;EACb,mBAAmB;EACnB,kBAAkB;EAClB,mBAAoB;CAWrB;;AATC;EACE,sBAAsB;EACtB,eAAe;EACf,0BAA0B;CAC3B;;AAED;EACE,mBAAmB;CACpB","file":"LightsList.scss","sourcesContent":[".lightList {\n  list-style: none;\n  padding-left: 0;\n}\n\n.light {\n  width: 223px;\n  display: inline-block;\n  margin: 0 5px 12px 5px;\n  padding: 6px;\n  border-radius: 2px;\n  border-width: 1px;\n  border-style: solid;\n\n  &.night {\n    border-color: #38231D;\n    color: #E5E4E1;\n    background-color: #231511;\n  }\n\n  &.day {\n    border-color: #ccc;\n  }\n}\n"],"sourceRoot":"webpack://"}]);
   
   // exports
   exports.locals = {
   	"lightList": "LightsList_lightList_14S",
   	"light": "LightsList_light_3Ms",
   	"night": "LightsList_night_2nv",
-  	"day": "LightsList_day_3hZ",
-  	"lightFilter": "LightsList_lightFilter_1Kc",
-  	"stateFilter": "LightsList_stateFilter_RUq",
-  	"modelFilter": "LightsList_modelFilter_3-H",
-  	"label": "LightsList_label_3a5"
+  	"day": "LightsList_day_3hZ"
   };
 
 /***/ },
@@ -7356,6 +7204,338 @@ module.exports =
 /***/ function(module, exports) {
 
   module.exports = require("front-matter");
+
+/***/ },
+/* 92 */
+/***/ function(module, exports, __webpack_require__) {
+
+  'use strict';
+  
+  Object.defineProperty(exports, '__esModule', {
+    value: true
+  });
+  
+  var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+  
+  var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+  
+  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  
+  function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) arr2[i] = arr[i]; return arr2; } else { return Array.from(arr); } }
+  
+  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+  
+  function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+  
+  var _react = __webpack_require__(4);
+  
+  var _react2 = _interopRequireDefault(_react);
+  
+  var _LightFilterFormScss = __webpack_require__(93);
+  
+  var _LightFilterFormScss2 = _interopRequireDefault(_LightFilterFormScss);
+  
+  var _LightLight = __webpack_require__(53);
+  
+  var _LightLight2 = _interopRequireDefault(_LightLight);
+  
+  var _decoratorsWithStyles = __webpack_require__(24);
+  
+  var _decoratorsWithStyles2 = _interopRequireDefault(_decoratorsWithStyles);
+  
+  var _classnames = __webpack_require__(47);
+  
+  var _classnames2 = _interopRequireDefault(_classnames);
+  
+  var LightFilterForm = (function (_Component) {
+    _inherits(LightFilterForm, _Component);
+  
+    _createClass(LightFilterForm, null, [{
+      key: 'propTypes',
+      value: {
+        lights: _react.PropTypes.object.isRequired,
+        ids: _react.PropTypes.array.isRequired,
+        onFiltered: _react.PropTypes.func.isRequired
+      },
+      enumerable: true
+    }]);
+  
+    function LightFilterForm(props, context) {
+      _classCallCheck(this, _LightFilterForm);
+  
+      _get(Object.getPrototypeOf(_LightFilterForm.prototype), 'constructor', this).call(this, props, context);
+      this.state = {
+        filter: undefined,
+        lightState: undefined,
+        model: undefined
+      };
+    }
+  
+    _createClass(LightFilterForm, [{
+      key: 'onFilterChange',
+      value: function onFilterChange(event) {
+        var _this = this;
+  
+        var filter = event.target.value.toLowerCase().trim();
+        if (filter.length < 1) {
+          filter = undefined;
+        }
+        this.setState({ filter: filter }, function () {
+          _this.handleSubmit();
+        });
+      }
+    }, {
+      key: 'onStateChange',
+      value: function onStateChange(event) {
+        var _this2 = this;
+  
+        var lightState = event.target.value;
+        if (lightState.length < 1) {
+          lightState = undefined;
+        }
+        this.setState({ lightState: lightState }, function () {
+          _this2.handleSubmit();
+        });
+      }
+    }, {
+      key: 'onModelChange',
+      value: function onModelChange(event) {
+        var _this3 = this;
+  
+        var model = event.target.value;
+        if (model.length < 1) {
+          model = undefined;
+        }
+        this.setState({ model: model }, function () {
+          _this3.handleSubmit();
+        });
+      }
+    }, {
+      key: 'getFilteredLightIDs',
+      value: function getFilteredLightIDs() {
+        var _this4 = this;
+  
+        var filteredIDs = this.props.ids;
+        if (typeof this.state.filter !== 'undefined') {
+          filteredIDs = filteredIDs.filter(function (id) {
+            var light = _this4.props.lights[id];
+            if (typeof light !== 'object') {
+              return true;
+            }
+            return light.name.toLowerCase().indexOf(_this4.state.filter) > -1;
+          });
+        }
+        if (typeof this.state.lightState !== 'undefined') {
+          filteredIDs = filteredIDs.filter(function (id) {
+            var light = _this4.props.lights[id];
+            if (typeof light !== 'object') {
+              return true;
+            }
+            if (light.state.on && _this4.state.lightState === 'on') {
+              return true;
+            }
+            return !light.state.on && _this4.state.lightState === 'off';
+          });
+        }
+        if (typeof this.state.model !== 'undefined') {
+          filteredIDs = filteredIDs.filter(function (id) {
+            var light = _this4.props.lights[id];
+            if (typeof light !== 'object') {
+              return true;
+            }
+            return light.modelid === _this4.state.model;
+          });
+        }
+        return filteredIDs;
+      }
+    }, {
+      key: 'getModels',
+      value: function getModels() {
+        var _this5 = this;
+  
+        var models = this.props.ids.map(function (id) {
+          var light = _this5.props.lights[id];
+          if (typeof light !== 'object') {
+            return undefined;
+          }
+          return light.modelid;
+        });
+        return [].concat(_toConsumableArray(new Set(models)));
+      }
+    }, {
+      key: 'isFiltered',
+      value: function isFiltered() {
+        var props = [this.state.filter, this.state.lightState, this.state.model];
+        var types = props.map(function (prop) {
+          return typeof prop;
+        });
+        return types.indexOf('string') > -1;
+      }
+    }, {
+      key: 'isNight',
+      value: function isNight() {
+        var curTime = new Date();
+        return curTime.getHours() >= 20;
+      }
+    }, {
+      key: 'clearFilter',
+      value: function clearFilter(event) {
+        var _this6 = this;
+  
+        event.preventDefault();
+        this.setState({
+          filter: undefined,
+          model: undefined,
+          lightState: undefined
+        }, function () {
+          _this6.handleSubmit();
+        });
+      }
+    }, {
+      key: 'handleSubmit',
+      value: function handleSubmit(event) {
+        if (event) {
+          event.preventDefault();
+        }
+        var props = [this.state.filter, this.state.lightState, this.state.model];
+        var filters = props.map(function (prop) {
+          if (typeof prop === 'string') {
+            return prop;
+          }
+        });
+        var filterName = filters.length > 0 ? filters.join(', ') : undefined;
+        this.props.onFiltered(filterName, this.getFilteredLightIDs());
+      }
+    }, {
+      key: 'render',
+      value: function render() {
+        var models = this.getModels();
+        return _react2['default'].createElement(
+          'form',
+          { onSubmit: this.handleSubmit.bind(this) },
+          _react2['default'].createElement('input', { type: 'search', placeholder: 'Filter lights...',
+            className: _LightFilterFormScss2['default'].lightFilter,
+            onChange: this.onFilterChange.bind(this),
+            value: this.state.filter,
+            autoFocus: 'autofocus'
+          }),
+          _react2['default'].createElement(
+            'label',
+            { className: _LightFilterFormScss2['default'].label },
+            'State:'
+          ),
+          _react2['default'].createElement(
+            'select',
+            { className: _LightFilterFormScss2['default'].stateFilter,
+              onChange: this.onStateChange.bind(this)
+            },
+            _react2['default'].createElement(
+              'option',
+              { value: '', selected: typeof this.state.lightState === 'undefined' },
+              'Any'
+            ),
+            _react2['default'].createElement(
+              'option',
+              { value: 'on' },
+              'On'
+            ),
+            _react2['default'].createElement(
+              'option',
+              { value: 'off' },
+              'Off'
+            )
+          ),
+          _react2['default'].createElement(
+            'label',
+            { className: _LightFilterFormScss2['default'].label },
+            'Model:'
+          ),
+          _react2['default'].createElement(
+            'select',
+            { className: _LightFilterFormScss2['default'].modelFilter,
+              onChange: this.onModelChange.bind(this)
+            },
+            _react2['default'].createElement(
+              'option',
+              { value: '', selected: typeof this.state.model === 'undefined' },
+              'Any'
+            ),
+            models.map(function (model) {
+              return _react2['default'].createElement(
+                'option',
+                { value: model, key: model },
+                model
+              );
+            })
+          ),
+          this.isFiltered() ? _react2['default'].createElement(
+            'a',
+            { href: '#', className: _LightFilterFormScss2['default'].clear, onClick: this.clearFilter.bind(this) },
+            'Clear'
+          ) : ''
+        );
+      }
+    }]);
+  
+    var _LightFilterForm = LightFilterForm;
+    LightFilterForm = (0, _decoratorsWithStyles2['default'])(_LightFilterFormScss2['default'])(LightFilterForm) || LightFilterForm;
+    return LightFilterForm;
+  })(_react.Component);
+  
+  exports['default'] = LightFilterForm;
+  module.exports = exports['default'];
+
+/***/ },
+/* 93 */
+/***/ function(module, exports, __webpack_require__) {
+
+  
+      var content = __webpack_require__(94);
+      var insertCss = __webpack_require__(20);
+  
+      if (typeof content === 'string') {
+        content = [[module.id, content, '']];
+      }
+  
+      module.exports = content.locals || {};
+      module.exports._getCss = function() { return content.toString(); };
+      module.exports._insertCss = insertCss.bind(null, content);
+    
+      var removeCss = function() {};
+  
+      // Hot Module Replacement
+      // https://webpack.github.io/docs/hot-module-replacement
+      if (false) {
+        module.hot.accept("!!./../../../node_modules/css-loader/index.js?sourceMap&modules&localIdentName=[name]_[local]_[hash:base64:3]!./../../../node_modules/postcss-loader/index.js!./LightFilterForm.scss", function() {
+          var newContent = require("!!./../../../node_modules/css-loader/index.js?sourceMap&modules&localIdentName=[name]_[local]_[hash:base64:3]!./../../../node_modules/postcss-loader/index.js!./LightFilterForm.scss");
+          if (typeof newContent === 'string') {
+            newContent = [[module.id, content, '']];
+          }
+          removeCss = insertCss(newContent, { replace: true });
+        });
+        module.hot.dispose(function() { removeCss(); });
+      }
+    
+
+/***/ },
+/* 94 */
+/***/ function(module, exports, __webpack_require__) {
+
+  exports = module.exports = __webpack_require__(19)();
+  // imports
+  
+  
+  // module
+  exports.push([module.id, "input[type=\"search\"].LightFilterForm_lightFilter_2eF, select.LightFilterForm_stateFilter_3sK, select.LightFilterForm_modelFilter_2R5, .LightFilterForm_label_1bv {\n  display: inline-block;\n}\n\ninput[type=\"search\"].LightFilterForm_lightFilter_2eF {\n  width: 12em;\n}\n\nselect.LightFilterForm_stateFilter_3sK {\n  width: 5em;\n}\n\nselect.LightFilterForm_modelFilter_2R5 {\n  width: 10em;\n}\n\n.LightFilterForm_label_1bv {\n  margin: 0 5px 0 30px;\n}\n\n.LightFilterForm_clear_T4R {\n  text-decoration: none;\n  padding-left: 10px;\n  font-size: 13px;\n}\n", "", {"version":3,"sources":["/./src/components/LightFilterForm/LightFilterForm.scss"],"names":[],"mappings":"AAAA;EAIE,sBAAsB;CACvB;;AAED;EACE,YAAY;CACb;;AAED;EACE,WAAW;CACZ;;AAED;EACE,YAAY;CACb;;AAED;EACE,qBAAqB;CACtB;;AAED;EACE,sBAAsB;EACtB,mBAAmB;EACnB,gBAAgB;CACjB","file":"LightFilterForm.scss","sourcesContent":["input[type=\"search\"].lightFilter,\nselect.stateFilter,\nselect.modelFilter,\n.label {\n  display: inline-block;\n}\n\ninput[type=\"search\"].lightFilter {\n  width: 12em;\n}\n\nselect.stateFilter {\n  width: 5em;\n}\n\nselect.modelFilter {\n  width: 10em;\n}\n\n.label {\n  margin: 0 5px 0 30px;\n}\n\n.clear {\n  text-decoration: none;\n  padding-left: 10px;\n  font-size: 13px;\n}\n"],"sourceRoot":"webpack://"}]);
+  
+  // exports
+  exports.locals = {
+  	"lightFilter": "LightFilterForm_lightFilter_2eF",
+  	"stateFilter": "LightFilterForm_stateFilter_3sK",
+  	"modelFilter": "LightFilterForm_modelFilter_2R5",
+  	"label": "LightFilterForm_label_1bv",
+  	"clear": "LightFilterForm_clear_T4R"
+  };
 
 /***/ }
 /******/ ]);

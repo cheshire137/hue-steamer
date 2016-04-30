@@ -1,0 +1,28 @@
+input[type="search"].lightFilter,
+select.stateFilter,
+select.modelFilter,
+.label {
+  display: inline-block;
+}
+
+input[type="search"].lightFilter {
+  width: 12em;
+}
+
+select.stateFilter {
+  width: 5em;
+}
+
+select.modelFilter {
+  width: 10em;
+}
+
+.label {
+  margin: 0 5px 0 30px;
+}
+
+.clear {
+  text-decoration: none;
+  padding-left: 10px;
+  font-size: 13px;
+}
