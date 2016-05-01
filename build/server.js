@@ -425,6 +425,30 @@ module.exports =
     }, null, _this);
   });
   
+  server.get('/scenes', function callee$0$0(req, res) {
+    var api;
+    return regeneratorRuntime.async(function callee$0$0$(context$1$0) {
+      while (1) switch (context$1$0.prev = context$1$0.next) {
+        case 0:
+          context$1$0.next = 2;
+          return regeneratorRuntime.awrap(getHueApi(req.query.connectionID));
+  
+        case 2:
+          api = context$1$0.sent;
+  
+          api.scenes().then(function (result) {
+            res.json(result);
+          }).fail(function (err) {
+            res.status(400).json(err);
+          }).done();
+  
+        case 4:
+        case 'end':
+          return context$1$0.stop();
+      }
+    }, null, _this);
+  });
+  
   server.get('/groups', function callee$0$0(req, res) {
     var api;
     return regeneratorRuntime.async(function callee$0$0$(context$1$0) {
@@ -3206,6 +3230,10 @@ module.exports =
   
   var _SchedulesListSchedulesList2 = _interopRequireDefault(_SchedulesListSchedulesList);
   
+  var _ScenesListScenesList = __webpack_require__(106);
+  
+  var _ScenesListScenesList2 = _interopRequireDefault(_ScenesListScenesList);
+  
   var _GroupFormGroupForm = __webpack_require__(70);
   
   var _GroupFormGroupForm2 = _interopRequireDefault(_GroupFormGroupForm);
@@ -3260,6 +3288,8 @@ module.exports =
         this.setState({ bridgeConnectionID: bridge.connection.id }, function () {
           if (_this.state.activeTab === 'schedules') {
             _this.getSchedules();
+          } else if (_this.state.activeTab === 'scenes') {
+            _this.getScenes();
           }
         });
         _apiBridge2['default'].getAllLights(bridge.connection.id).then(this.onAllLightsLoaded.bind(this))['catch'](this.onAllLightsLoadError.bind(this));
@@ -3275,6 +3305,11 @@ module.exports =
       key: 'onSchedulesLoadError',
       value: function onSchedulesLoadError(response) {
         console.error('failed to load schedules', response);
+      }
+    }, {
+      key: 'onScenesLoadError',
+      value: function onScenesLoadError(response) {
+        console.error('failed to load scenes', response);
       }
     }, {
       key: 'onAllLightsLoaded',
@@ -3317,8 +3352,13 @@ module.exports =
     }, {
       key: 'onSchedulesLoaded',
       value: function onSchedulesLoaded(schedules) {
-        console.log(schedules);
         this.setState({ schedules: schedules });
+      }
+    }, {
+      key: 'onScenesLoaded',
+      value: function onScenesLoaded(scenes) {
+        console.log(scenes);
+        this.setState({ scenes: scenes });
       }
     }, {
       key: 'onGroupCreated',
@@ -3426,19 +3466,6 @@ module.exports =
         }
       }
     }, {
-      key: 'updateLightInGroups',
-      value: function updateLightInGroups(light) {
-        var _this6 = this;
-  
-        var groups = this.state.groups;
-        if (typeof groups !== 'object') {
-          return groups;
-        }
-        return groups.slice().map(function (group) {
-          return _this6.updateLightInGroup(light, group);
-        });
-      }
-    }, {
       key: 'updateLightInGroup',
       value: function updateLightInGroup(light, oldGroup) {
         var group = {};
@@ -3474,6 +3501,29 @@ module.exports =
           return 1;
         }
         return lightA.name.localeCompare(lightB.name);
+      }
+    }, {
+      key: 'getSchedules',
+      value: function getSchedules() {
+        _apiBridge2['default'].getSchedules().then(this.onSchedulesLoaded.bind(this))['catch'](this.onSchedulesLoadError.bind(this));
+      }
+    }, {
+      key: 'getScenes',
+      value: function getScenes() {
+        _apiBridge2['default'].getScenes().then(this.onScenesLoaded.bind(this))['catch'](this.onScenesLoadError.bind(this));
+      }
+    }, {
+      key: 'updateLightInGroups',
+      value: function updateLightInGroups(light) {
+        var _this6 = this;
+  
+        var groups = this.state.groups;
+        if (typeof groups !== 'object') {
+          return groups;
+        }
+        return groups.slice().map(function (group) {
+          return _this6.updateLightInGroup(light, group);
+        });
       }
     }, {
       key: 'hashValues',
@@ -3520,9 +3570,12 @@ module.exports =
         }
       }
     }, {
-      key: 'getSchedules',
-      value: function getSchedules() {
-        _apiBridge2['default'].getSchedules().then(this.onSchedulesLoaded.bind(this))['catch'](this.onSchedulesLoadError.bind(this));
+      key: 'showScenesTab',
+      value: function showScenesTab(event) {
+        this.showTab(event, 'scenes');
+        if (typeof this.state.scenes !== 'object') {
+          this.getScenes();
+        }
       }
     }, {
       key: 'render',
@@ -3530,6 +3583,7 @@ module.exports =
         var haveLights = typeof this.state.lightIDs === 'object';
         var haveGroups = typeof this.state.groups === 'object';
         var haveSchedules = typeof this.state.schedules === 'object';
+        var haveScenes = typeof this.state.scenes === 'object';
         return _react2['default'].createElement(
           'div',
           { className: _modelsDaytime2['default'].isNight() ? _HomePageScss2['default'].night : _HomePageScss2['default'].day },
@@ -3576,6 +3630,15 @@ module.exports =
                 'a',
                 { href: '#', onClick: this.showSchedulesTab.bind(this) },
                 'Schedules'
+              )
+            ),
+            _react2['default'].createElement(
+              'li',
+              { className: this.state.activeTab === 'scenes' ? _HomePageScss2['default'].active : _HomePageScss2['default'].inactive },
+              _react2['default'].createElement(
+                'a',
+                { href: '#', onClick: this.showScenesTab.bind(this) },
+                'Scenes'
               )
             )
           ),
@@ -3626,6 +3689,15 @@ module.exports =
                 'p',
                 { className: _HomePageScss2['default'].loading },
                 'Loading schedules...'
+              )
+            ),
+            _react2['default'].createElement(
+              'div',
+              { className: (0, _classnames2['default'])(_HomePageScss2['default'].scenesTab, _HomePageScss2['default'].tab, this.state.activeTab === 'scenes' ? _HomePageScss2['default'].active : _HomePageScss2['default'].inactive) },
+              haveScenes ? _react2['default'].createElement(_ScenesListScenesList2['default'], { scenes: this.state.scenes }) : _react2['default'].createElement(
+                'p',
+                { className: _HomePageScss2['default'].loading },
+                'Loading scenes...'
               )
             )
           )
@@ -7022,6 +7094,20 @@ module.exports =
         }, null, this);
       }
     }, {
+      key: 'getScenes',
+      value: function getScenes() {
+        return regeneratorRuntime.async(function getScenes$(context$2$0) {
+          while (1) switch (context$2$0.prev = context$2$0.next) {
+            case 0:
+              return context$2$0.abrupt('return', this.makeRequest('/scenes'));
+  
+            case 1:
+            case 'end':
+              return context$2$0.stop();
+          }
+        }, null, this);
+      }
+    }, {
       key: 'getGroup',
       value: function getGroup(groupID) {
         return regeneratorRuntime.async(function getGroup$(context$2$0) {
@@ -7675,6 +7761,281 @@ module.exports =
   
   exports["default"] = Daytime;
   module.exports = exports["default"];
+
+/***/ },
+/* 106 */
+/***/ function(module, exports, __webpack_require__) {
+
+  'use strict';
+  
+  Object.defineProperty(exports, '__esModule', {
+    value: true
+  });
+  
+  var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+  
+  var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+  
+  var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+  
+  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  
+  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+  
+  function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+  
+  var _react = __webpack_require__(4);
+  
+  var _react2 = _interopRequireDefault(_react);
+  
+  var _ScenesListScss = __webpack_require__(107);
+  
+  var _ScenesListScss2 = _interopRequireDefault(_ScenesListScss);
+  
+  var _decoratorsWithStyles = __webpack_require__(24);
+  
+  var _decoratorsWithStyles2 = _interopRequireDefault(_decoratorsWithStyles);
+  
+  var _SceneScene = __webpack_require__(109);
+  
+  var _SceneScene2 = _interopRequireDefault(_SceneScene);
+  
+  var ScenesList = (function (_Component) {
+    _inherits(ScenesList, _Component);
+  
+    _createClass(ScenesList, null, [{
+      key: 'propTypes',
+      value: {
+        scenes: _react.PropTypes.array.isRequired
+      },
+      enumerable: true
+    }]);
+  
+    function ScenesList(props, context) {
+      _classCallCheck(this, _ScenesList);
+  
+      _get(Object.getPrototypeOf(_ScenesList.prototype), 'constructor', this).call(this, props, context);
+      this.state = {};
+    }
+  
+    _createClass(ScenesList, [{
+      key: 'sceneSort',
+      value: function sceneSort(a, b) {
+        var aName = a.name.toLowerCase();
+        var bName = b.name.toLowerCase();
+        return aName.localeCompare(bName);
+      }
+    }, {
+      key: 'render',
+      value: function render() {
+        var orderedScenes = this.props.scenes.sort(this.sceneSort);
+        return _react2['default'].createElement(
+          'ul',
+          { className: _ScenesListScss2['default'].scenesList },
+          orderedScenes.map(function (scene) {
+            var key = 'scene-' + scene.id;
+            return _react2['default'].createElement(_SceneScene2['default'], _extends({ key: key }, scene));
+          })
+        );
+      }
+    }]);
+  
+    var _ScenesList = ScenesList;
+    ScenesList = (0, _decoratorsWithStyles2['default'])(_ScenesListScss2['default'])(ScenesList) || ScenesList;
+    return ScenesList;
+  })(_react.Component);
+  
+  exports['default'] = ScenesList;
+  module.exports = exports['default'];
+
+/***/ },
+/* 107 */
+/***/ function(module, exports, __webpack_require__) {
+
+  
+      var content = __webpack_require__(108);
+      var insertCss = __webpack_require__(20);
+  
+      if (typeof content === 'string') {
+        content = [[module.id, content, '']];
+      }
+  
+      module.exports = content.locals || {};
+      module.exports._getCss = function() { return content.toString(); };
+      module.exports._insertCss = insertCss.bind(null, content);
+    
+      var removeCss = function() {};
+  
+      // Hot Module Replacement
+      // https://webpack.github.io/docs/hot-module-replacement
+      if (false) {
+        module.hot.accept("!!./../../../node_modules/css-loader/index.js?sourceMap&modules&localIdentName=[name]_[local]_[hash:base64:3]!./../../../node_modules/postcss-loader/index.js!./ScenesList.scss", function() {
+          var newContent = require("!!./../../../node_modules/css-loader/index.js?sourceMap&modules&localIdentName=[name]_[local]_[hash:base64:3]!./../../../node_modules/postcss-loader/index.js!./ScenesList.scss");
+          if (typeof newContent === 'string') {
+            newContent = [[module.id, content, '']];
+          }
+          removeCss = insertCss(newContent, { replace: true });
+        });
+        module.hot.dispose(function() { removeCss(); });
+      }
+    
+
+/***/ },
+/* 108 */
+/***/ function(module, exports, __webpack_require__) {
+
+  exports = module.exports = __webpack_require__(19)();
+  // imports
+  
+  
+  // module
+  exports.push([module.id, ".ScenesList_scenesList_3Hf {\n  padding-left: 0;\n}\n", "", {"version":3,"sources":["/./src/components/ScenesList/ScenesList.scss"],"names":[],"mappings":"AAAA;EACE,gBAAgB;CACjB","file":"ScenesList.scss","sourcesContent":[".scenesList {\n  padding-left: 0;\n}\n"],"sourceRoot":"webpack://"}]);
+  
+  // exports
+  exports.locals = {
+  	"scenesList": "ScenesList_scenesList_3Hf"
+  };
+
+/***/ },
+/* 109 */
+/***/ function(module, exports, __webpack_require__) {
+
+  'use strict';
+  
+  Object.defineProperty(exports, '__esModule', {
+    value: true
+  });
+  
+  var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+  
+  var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+  
+  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  
+  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+  
+  function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+  
+  var _react = __webpack_require__(4);
+  
+  var _react2 = _interopRequireDefault(_react);
+  
+  var _SceneScss = __webpack_require__(110);
+  
+  var _SceneScss2 = _interopRequireDefault(_SceneScss);
+  
+  var _decoratorsWithStyles = __webpack_require__(24);
+  
+  var _decoratorsWithStyles2 = _interopRequireDefault(_decoratorsWithStyles);
+  
+  var Scene = (function (_Component) {
+    _inherits(Scene, _Component);
+  
+    _createClass(Scene, null, [{
+      key: 'propTypes',
+      value: {
+        id: _react.PropTypes.string.isRequired,
+        name: _react.PropTypes.string.isRequired,
+        appdata: _react.PropTypes.object.isRequired,
+        owner: _react.PropTypes.string.isRequired,
+        locked: _react.PropTypes.bool.isRequired,
+        recycle: _react.PropTypes.bool.isRequired,
+        lights: _react.PropTypes.array.isRequired,
+        version: _react.PropTypes.number.isRequired,
+        picture: _react.PropTypes.string,
+        lastupdated: _react.PropTypes.string
+      },
+      enumerable: true
+    }]);
+  
+    function Scene(props, context) {
+      _classCallCheck(this, _Scene);
+  
+      _get(Object.getPrototypeOf(_Scene.prototype), 'constructor', this).call(this, props, context);
+      this.state = {};
+    }
+  
+    _createClass(Scene, [{
+      key: 'render',
+      value: function render() {
+        var lightCount = this.props.lights.length;
+        var units = lightCount === 1 ? 'light' : 'lights';
+        return _react2['default'].createElement(
+          'li',
+          { className: _SceneScss2['default'].scene },
+          _react2['default'].createElement(
+            'h3',
+            { className: _SceneScss2['default'].name },
+            this.props.name,
+            _react2['default'].createElement(
+              'span',
+              { className: _SceneScss2['default'].lightCount },
+              lightCount,
+              ' ',
+              units
+            )
+          )
+        );
+      }
+    }]);
+  
+    var _Scene = Scene;
+    Scene = (0, _decoratorsWithStyles2['default'])(_SceneScss2['default'])(Scene) || Scene;
+    return Scene;
+  })(_react.Component);
+  
+  exports['default'] = Scene;
+  module.exports = exports['default'];
+
+/***/ },
+/* 110 */
+/***/ function(module, exports, __webpack_require__) {
+
+  
+      var content = __webpack_require__(111);
+      var insertCss = __webpack_require__(20);
+  
+      if (typeof content === 'string') {
+        content = [[module.id, content, '']];
+      }
+  
+      module.exports = content.locals || {};
+      module.exports._getCss = function() { return content.toString(); };
+      module.exports._insertCss = insertCss.bind(null, content);
+    
+      var removeCss = function() {};
+  
+      // Hot Module Replacement
+      // https://webpack.github.io/docs/hot-module-replacement
+      if (false) {
+        module.hot.accept("!!./../../../node_modules/css-loader/index.js?sourceMap&modules&localIdentName=[name]_[local]_[hash:base64:3]!./../../../node_modules/postcss-loader/index.js!./Scene.scss", function() {
+          var newContent = require("!!./../../../node_modules/css-loader/index.js?sourceMap&modules&localIdentName=[name]_[local]_[hash:base64:3]!./../../../node_modules/postcss-loader/index.js!./Scene.scss");
+          if (typeof newContent === 'string') {
+            newContent = [[module.id, content, '']];
+          }
+          removeCss = insertCss(newContent, { replace: true });
+        });
+        module.hot.dispose(function() { removeCss(); });
+      }
+    
+
+/***/ },
+/* 111 */
+/***/ function(module, exports, __webpack_require__) {
+
+  exports = module.exports = __webpack_require__(19)();
+  // imports
+  
+  
+  // module
+  exports.push([module.id, ".Scene_scene_1Ly {\n  list-style: none;\n}\n\n.Scene_scene_1Ly + .Scene_scene_1Ly {\n  margin-top: 15px;\n}\n\n.Scene_name_2wR {\n  margin: 0 0 5px;\n}\n\n.Scene_lightCount_3Fy {\n  font-weight: normal;\n  font-size: 14px\n}\n\n.Scene_lightCount_3Fy:before {\n  content: \"\\A0(\";\n}\n\n.Scene_lightCount_3Fy:after {\n  content: \")\";\n}\n", "", {"version":3,"sources":["/./src/components/Scene/Scene.scss"],"names":[],"mappings":"AAAA;EACE,iBAAiB;CAKlB;;AAHC;EACE,iBAAiB;CAClB;;AAGH;EACE,gBAAgB;CACjB;;AAED;EACE,oBAAoB;EACpB,eAAgB;CASjB;;AAPC;EACE,gBAAgB;CACjB;;AAED;EACE,aAAa;CACd","file":"Scene.scss","sourcesContent":[".scene {\n  list-style: none;\n\n  + .scene {\n    margin-top: 15px;\n  }\n}\n\n.name {\n  margin: 0 0 5px;\n}\n\n.lightCount {\n  font-weight: normal;\n  font-size: 14px;\n\n  &:before {\n    content: \"\\a0(\";\n  }\n\n  &:after {\n    content: \")\";\n  }\n}\n"],"sourceRoot":"webpack://"}]);
+  
+  // exports
+  exports.locals = {
+  	"scene": "Scene_scene_1Ly",
+  	"name": "Scene_name_2wR",
+  	"lightCount": "Scene_lightCount_3Fy"
+  };
 
 /***/ }
 /******/ ]);

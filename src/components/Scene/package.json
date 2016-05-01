@@ -1,0 +1,6 @@
+{
+  "name": "Scene",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./Scene.js"
+}

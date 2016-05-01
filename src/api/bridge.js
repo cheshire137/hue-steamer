@@ -33,6 +33,10 @@ class Bridge {
     return this.makeRequest('/schedules');
   }
 
+  static async getScenes() {
+    return this.makeRequest('/scenes');
+  }
+
   static async getGroup(groupID) {
     return this.makeRequest('/group/' + (groupID || '0'));
   }

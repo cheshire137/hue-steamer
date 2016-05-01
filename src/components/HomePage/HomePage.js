@@ -8,6 +8,7 @@ import Bridge from '../../api/bridge';
 import LightsList from '../LightsList/LightsList';
 import GroupsList from '../GroupsList/GroupsList';
 import SchedulesList from '../SchedulesList/SchedulesList';
+import ScenesList from '../ScenesList/ScenesList';
 import GroupForm from '../GroupForm/GroupForm';
 import LocalStorage from '../../stores/localStorage';
 import Daytime from '../../models/daytime';
@@ -42,6 +43,8 @@ class HomePage extends Component {
     this.setState({ bridgeConnectionID: bridge.connection.id }, () => {
       if (this.state.activeTab === 'schedules') {
         this.getSchedules();
+      } else if (this.state.activeTab === 'scenes') {
+        this.getScenes();
       }
     });
     Bridge.getAllLights(bridge.connection.id).
@@ -61,6 +64,10 @@ class HomePage extends Component {
 
   onSchedulesLoadError(response) {
     console.error('failed to load schedules', response);
+  }
+
+  onScenesLoadError(response) {
+    console.error('failed to load scenes', response);
   }
 
   onAllLightsLoaded(group) {
@@ -94,8 +101,12 @@ class HomePage extends Component {
   }
 
   onSchedulesLoaded(schedules) {
-    console.log(schedules);
     this.setState({ schedules });
+  }
+
+  onScenesLoaded(scenes) {
+    console.log(scenes);
+    this.setState({ scenes });
   }
 
   onGroupCreated(group) {
@@ -188,16 +199,6 @@ class HomePage extends Component {
     }
   }
 
-  updateLightInGroups(light) {
-    const groups = this.state.groups;
-    if (typeof groups !== 'object') {
-      return groups;
-    }
-    return groups.slice().map((group) => {
-      return this.updateLightInGroup(light, group);
-    });
-  }
-
   updateLightInGroup(light, oldGroup) {
     const group = {};
     const lights = oldGroup.lights.slice();
@@ -231,6 +232,28 @@ class HomePage extends Component {
       return 1;
     }
     return lightA.name.localeCompare(lightB.name);
+  }
+
+  getSchedules() {
+    Bridge.getSchedules().
+           then(this.onSchedulesLoaded.bind(this)).
+           catch(this.onSchedulesLoadError.bind(this));
+  }
+
+  getScenes() {
+    Bridge.getScenes().
+           then(this.onScenesLoaded.bind(this)).
+           catch(this.onScenesLoadError.bind(this));
+  }
+
+  updateLightInGroups(light) {
+    const groups = this.state.groups;
+    if (typeof groups !== 'object') {
+      return groups;
+    }
+    return groups.slice().map((group) => {
+      return this.updateLightInGroup(light, group);
+    });
   }
 
   hashValues(hash) {
@@ -271,16 +294,18 @@ class HomePage extends Component {
     }
   }
 
-  getSchedules() {
-    Bridge.getSchedules().
-           then(this.onSchedulesLoaded.bind(this)).
-           catch(this.onSchedulesLoadError.bind(this));
+  showScenesTab(event) {
+    this.showTab(event, 'scenes');
+    if (typeof this.state.scenes !== 'object') {
+      this.getScenes();
+    }
   }
 
   render() {
     const haveLights = typeof this.state.lightIDs === 'object';
     const haveGroups = typeof this.state.groups === 'object';
     const haveSchedules = typeof this.state.schedules === 'object';
+    const haveScenes = typeof this.state.scenes === 'object';
     return (
       <div className={Daytime.isNight() ? s.night : s.day}>
         <ul className={s.tabList}>
@@ -304,6 +329,11 @@ class HomePage extends Component {
           <li className={this.state.activeTab === 'schedules' ? s.active : s.inactive}>
             <a href="#" onClick={this.showSchedulesTab.bind(this)}>
               Schedules
+            </a>
+          </li>
+          <li className={this.state.activeTab === 'scenes' ? s.active : s.inactive}>
+            <a href="#" onClick={this.showScenesTab.bind(this)}>
+              Scenes
             </a>
           </li>
         </ul>
@@ -349,6 +379,15 @@ class HomePage extends Component {
             ) : (
               <p className={s.loading}>
                 Loading schedules...
+              </p>
+            )}
+          </div>
+          <div className={cx(s.scenesTab, s.tab, this.state.activeTab === 'scenes' ? s.active : s.inactive)}>
+            {haveScenes ? (
+              <ScenesList scenes={this.state.scenes} />
+            ) : (
+              <p className={s.loading}>
+                Loading scenes...
               </p>
             )}
           </div>

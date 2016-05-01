@@ -1,0 +1,24 @@
+.scene {
+  list-style: none;
+
+  + .scene {
+    margin-top: 15px;
+  }
+}
+
+.name {
+  margin: 0 0 5px;
+}
+
+.lightCount {
+  font-weight: normal;
+  font-size: 14px;
+
+  &:before {
+    content: "\a0(";
+  }
+
+  &:after {
+    content: ")";
+  }
+}

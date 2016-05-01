@@ -1,0 +1,6 @@
+{
+  "name": "ScenesList",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./ScenesList.js"
+}
