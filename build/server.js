@@ -4123,9 +4123,9 @@ module.exports =
   
   var _apiBridge2 = _interopRequireDefault(_apiBridge);
   
-  var _apiConverter = __webpack_require__(56);
+  var _modelsConverter = __webpack_require__(102);
   
-  var _apiConverter2 = _interopRequireDefault(_apiConverter);
+  var _modelsConverter2 = _interopRequireDefault(_modelsConverter);
   
   var _reactColor = __webpack_require__(59);
   
@@ -4203,14 +4203,14 @@ module.exports =
         if (lightState.on) {
           var xy = lightState.xy;
           if (typeof xy === 'object') {
-            return _apiConverter2['default'].cie1931ToHex(xy[0], xy[1], lightState.bri);
+            return _modelsConverter2['default'].cie1931ToHex(xy[0], xy[1], lightState.bri);
           }
         }
       }
     }, {
       key: 'changeColor',
       value: function changeColor(color) {
-        var xy = _apiConverter2['default'].hexToCIE1931(color);
+        var xy = _modelsConverter2['default'].hexToCIE1931(color);
         var x = xy[0];
         var y = xy[1];
         _apiBridge2['default'].setLightColor(this.props.id, x, y).then(this.onColorChanged.bind(this, x, y));
@@ -4373,398 +4373,9 @@ module.exports =
   };
 
 /***/ },
-/* 56 */
-/***/ function(module, exports, __webpack_require__) {
-
-  'use strict';
-  
-  Object.defineProperty(exports, '__esModule', {
-    value: true
-  });
-  
-  var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-  
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-  
-  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-  
-  var _colorHelper = __webpack_require__(57);
-  
-  var _colorHelper2 = _interopRequireDefault(_colorHelper);
-  
-  // Thanks to
-  // https://github.com/benknight/hue-python-rgb-converter/blob/master/rgb_cie.py
-  
-  var Converter = (function () {
-    function Converter() {
-      _classCallCheck(this, Converter);
-    }
-  
-    _createClass(Converter, null, [{
-      key: 'hexToCIE1931',
-  
-      // Converts hexadecimal colors represented as a String to approximate CIE 1931
-      // coordinates. May not produce accurate values.
-      value: function hexToCIE1931(h) {
-        var rgb = _colorHelper2['default'].hexToRgb(h);
-        return this.rgbToCIE1931(rgb[0], rgb[1], rgb[2]);
-      }
-  
-      // Converts red, green and blue integer values to approximate CIE 1931 x and y
-      // coordinates. Algorithm from:
-      // http://www.easyrgb.com/index.php?X=MATH&H=02#text2.
-      // May not produce accurate values.
-    }, {
-      key: 'rgbToCIE1931',
-      value: function rgbToCIE1931(red, green, blue) {
-        var point = _colorHelper2['default'].getXYPointFromRGB(red, green, blue);
-        return [point.x, point.y];
-      }
-  
-      // Returns the approximate CIE 1931 x, y coordinates represented by the
-      // supplied hexColor parameter, or of a random color if the parameter is not
-      // passed. Let people set a lamp's color to any random color.
-    }, {
-      key: 'getCIEColor',
-      value: function getCIEColor(hexColor) {
-        var xy = [];
-        if (typeof hexColor === 'undefined') {
-          var r = _colorHelper2['default'].randomRGBValue();
-          var g = _colorHelper2['default'].randomRGBValue();
-          var b = _colorHelper2['default'].randomRGBValue();
-          xy = this.rgbToCIE1931(r, g, b);
-        } else {
-          xy = this.hexToCIE1931(hexColor);
-        }
-        return xy;
-      }
-  
-      // Converts CIE 1931 x and y coordinates and brightness value from 0 to 1 to an
-      // RGB color.
-    }, {
-      key: 'cie1931ToRGB',
-      value: function cie1931ToRGB(x, y, optionalBri) {
-        var bri = undefined;
-        if (typeof optionalBri === 'undefined') {
-          bri = 1;
-        } else {
-          bri = optionalBri;
-        }
-        return _colorHelper2['default'].getRGBFromXYAndBrightness(x, y, bri);
-      }
-  
-      // Converts CIE 1931 x and y coordinates and brightness value from 0 to 1 to a
-      // CSS hex color.
-    }, {
-      key: 'cie1931ToHex',
-      value: function cie1931ToHex(x, y, bri) {
-        var rgb = this.cie1931ToRGB(x, y, bri);
-        return _colorHelper2['default'].rgbToHex(rgb[0], rgb[1], rgb[2]);
-      }
-    }]);
-  
-    return Converter;
-  })();
-  
-  exports['default'] = Converter;
-  module.exports = exports['default'];
-
-/***/ },
-/* 57 */
-/***/ function(module, exports, __webpack_require__) {
-
-  'use strict';
-  
-  Object.defineProperty(exports, '__esModule', {
-    value: true
-  });
-  
-  var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-  
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-  
-  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-  
-  var _xyPoint = __webpack_require__(58);
-  
-  var _xyPoint2 = _interopRequireDefault(_xyPoint);
-  
-  // Thanks to
-  // https://github.com/benknight/hue-python-rgb-converter/blob/master/rgb_cie.py
-  
-  var ColorHelper = (function () {
-    function ColorHelper() {
-      _classCallCheck(this, ColorHelper);
-    }
-  
-    _createClass(ColorHelper, null, [{
-      key: 'red',
-  
-      // See http://www.developers.meethue.com/documentation/color-conversions-rgb-xy
-      value: function red() {
-        return new _xyPoint2['default'](0.675, 0.322);
-      }
-  
-      // See http://www.developers.meethue.com/documentation/color-conversions-rgb-xy
-    }, {
-      key: 'lime',
-      value: function lime() {
-        return new _xyPoint2['default'](0.4091, 0.518);
-      }
-  
-      // See http://www.developers.meethue.com/documentation/color-conversions-rgb-xy
-    }, {
-      key: 'blue',
-      value: function blue() {
-        return new _xyPoint2['default'](0.167, 0.04);
-      }
-  
-      // Parses a valid hex color string and returns the Red RGB integer value.
-    }, {
-      key: 'hexToRed',
-      value: function hexToRed(hex) {
-        return parseInt(hex.slice(0, 2), 16);
-      }
-  
-      // Parses a valid hex color string and returns the Green RGB integer value.
-    }, {
-      key: 'hexToGreen',
-      value: function hexToGreen(hex) {
-        return parseInt(hex.slice(2, 4), 16);
-      }
-  
-      // Parses a valid hex color string and returns the Blue RGB integer value.
-    }, {
-      key: 'hexToBlue',
-      value: function hexToBlue(hex) {
-        return parseInt(hex.slice(4, 6), 16);
-      }
-  
-      // Converts a valid hex color string to an RGB array.
-    }, {
-      key: 'hexToRgb',
-      value: function hexToRgb(hex) {
-        return [this.hexToRed(hex), this.hexToGreen(hex), this.hexToBlue(hex)];
-      }
-  
-      // Converts RGB to hex.
-    }, {
-      key: 'rgbToHex',
-      value: function rgbToHex(r, g, b) {
-        return ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
-      }
-  
-      // Return a random Integer in the range of 0 to 255, representing an RGB color
-      // value.
-    }, {
-      key: 'randomRgbValue',
-      value: function randomRgbValue() {
-        return Math.floor(Math.random() * 256);
-      }
-  
-      // Returns the cross product of two XYPoints.
-    }, {
-      key: 'crossProduct',
-      value: function crossProduct(p1, p2) {
-        return p1.x * p2.y - p1.y * p2.x;
-      }
-  
-      // Check if the provided XYPoint can be recreated by a Hue lamp.
-    }, {
-      key: 'checkPointInLampsReach',
-      value: function checkPointInLampsReach(p) {
-        var lime = this.lime();
-        var red = this.red();
-        var blue = this.blue();
-        var v1 = new _xyPoint2['default'](lime.x - red.x, lime.y - red.y);
-        var v2 = new _xyPoint2['default'](blue.x - red.x, blue.y - red.y);
-        var q = new _xyPoint2['default'](p.x - red.x, p.y - red.y);
-        var s = this.crossProduct(q, v2) / this.crossProduct(v1, v2);
-        var t = this.crossProduct(v1, q) / this.crossProduct(v1, v2);
-        return s >= 0.0 && t >= 0.0 && s + t <= 1.0;
-      }
-  
-      // Find the closest point on a line. This point will be reproducible by a Hue
-      // lamp.
-    }, {
-      key: 'getClosestPointToLine',
-      value: function getClosestPointToLine(A, B, P) {
-        var AP = new _xyPoint2['default'](P.x - A.x, P.y - A.y);
-        var AB = new _xyPoint2['default'](B.x - A.x, B.y - A.y);
-        var ab2 = AB.x * AB.x + AB.y * AB.y;
-        var apAb = AP.x * AB.x + AP.y * AB.y;
-        var t = apAb / ab2;
-        if (t < 0.0) {
-          t = 0.0;
-        } else if (t > 1.0) {
-          t = 1.0;
-        }
-        return new _xyPoint2['default'](A.x + AB.x * t, A.y + AB.y * t);
-      }
-    }, {
-      key: 'getClosestPointToPoint',
-      value: function getClosestPointToPoint(xyPoint) {
-        var lime = this.lime();
-        var red = this.red();
-        var blue = this.blue();
-  
-        // Color is unreproducible, find the closest point on each line in the CIE
-        // 1931 'triangle'.
-        var pAB = this.getClosestPointToLine(red, lime, xyPoint);
-        var pAC = this.getClosestPointToLine(blue, red, xyPoint);
-        var pBC = this.getClosestPointToLine(lime, blue, xyPoint);
-  
-        // Get the distances per point and see which point is closer to our Point.
-        var dAB = this.getDistanceBetweenTwoPoints(xyPoint, pAB);
-        var dAC = this.getDistanceBetweenTwoPoints(xyPoint, pAC);
-        var dBC = this.getDistanceBetweenTwoPoints(xyPoint, pBC);
-  
-        var lowest = dAB;
-        var closestPoint = pAB;
-        if (dAC < lowest) {
-          lowest = dAC;
-          closestPoint = pAC;
-        }
-        if (dBC < lowest) {
-          lowest = dBC;
-          closestPoint = pBC;
-        }
-  
-        // Change the xy value to a value which is within the reach of the lamp.
-        return new _xyPoint2['default'](closestPoint.x, closestPoint.y);
-      }
-  
-      // Returns the distance between two XYPoints.
-    }, {
-      key: 'getDistanceBetweenTwoPoints',
-      value: function getDistanceBetweenTwoPoints(one, two) {
-        var dx = one.x - two.x;
-        var dy = one.y - two.y;
-        return Math.sqrt(dx * dx + dy * dy);
-      }
-  
-      // Returns an XYPoint object containing the closest available CIE 1931
-      // coordinates based on the RGB input values.
-    }, {
-      key: 'getXYPointFromRGB',
-      value: function getXYPointFromRGB(red, green, blue) {
-        var r = undefined;
-        var g = undefined;
-        var b = undefined;
-        if (red > 0.04045) {
-          r = Math.pow((red + 0.055) / (1.0 + 0.055), 2.4);
-        } else {
-          r = red / 12.92;
-        }
-        if (green > 0.04045) {
-          g = Math.pow((green + 0.055) / (1.0 + 0.055), 2.4);
-        } else {
-          g = green / 12.92;
-        }
-        if (blue > 0.04045) {
-          b = Math.pow((blue + 0.055) / (1.0 + 0.055), 2.4);
-        } else {
-          b = blue / 12.92;
-        }
-  
-        var X = r * 0.4360747 + g * 0.3850649 + b * 0.0930804;
-        var Y = r * 0.2225045 + g * 0.7168786 + b * 0.0406169;
-        var Z = r * 0.0139322 + g * 0.0971045 + b * 0.7141733;
-  
-        var cx = undefined;
-        var cy = undefined;
-        if (X + Y + Z === 0) {
-          cx = 0;
-          cy = 0;
-        } else {
-          cx = X / (X + Y + Z);
-          cy = Y / (X + Y + Z);
-        }
-  
-        // Check if the given XY value is within the color reach of our lamps.
-        var xyPoint = new _xyPoint2['default'](cx, cy);
-        var inReachOfLamps = this.checkPointInLampsReach(xyPoint);
-        if (!inReachOfLamps) {
-          xyPoint = this.getClosestPointToPoint(xyPoint);
-        }
-        return xyPoint;
-      }
-  
-      // Returns a rgb tuplet for given x, y values.  Not actually an inverse of
-      // getXYPointFromRGB.
-    }, {
-      key: 'getRGBFromXYAndBrightness',
-      value: function getRGBFromXYAndBrightness(x, y, optionalBri) {
-        var bri = undefined;
-        if (typeof optionalBri === 'undefined') {
-          bri = 1;
-        } else {
-          bri = optionalBri;
-        }
-        var xyPoint = new _xyPoint2['default'](x, y);
-        if (!this.checkPointInLampsReach(xyPoint)) {
-          xyPoint = this.getClosestPointToPoint(xyPoint);
-        }
-        var Y = bri;
-        var X = Y / xyPoint.y * xyPoint.x;
-        var Z = Y / xyPoint.y * (1 - xyPoint.x - xyPoint.y);
-        var r = X * 1.612 - Y * 0.203 - Z * 0.302;
-        var g = -X * 0.509 + Y * 1.412 + Z * 0.066;
-        var b = X * 0.026 - Y * 0.072 + Z * 0.962;
-        var reverseGammaCorrect = function reverseGammaCorrect(value) {
-          if (value <= 0.0031308) {
-            return 12.92 * value;
-          }
-          return (1.0 + 0.055) * Math.pow(value, 1.0 / 2.4) - 0.055;
-        };
-        r = reverseGammaCorrect(r);
-        g = reverseGammaCorrect(g);
-        b = reverseGammaCorrect(b);
-        r = Math.max(0, r);
-        g = Math.max(0, g);
-        b = Math.max(0, b);
-        var maxComponent = Math.max(r, g, b);
-        if (maxComponent > 1) {
-          r = r / maxComponent;
-          g = g / maxComponent;
-          b = b / maxComponent;
-        }
-        r = Math.round(r * 255);
-        g = Math.round(g * 255);
-        b = Math.round(b * 255);
-        return [r, g, b];
-      }
-    }]);
-  
-    return ColorHelper;
-  })();
-  
-  exports['default'] = ColorHelper;
-  module.exports = exports['default'];
-
-/***/ },
-/* 58 */
-/***/ function(module, exports) {
-
-  "use strict";
-  
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  
-  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-  
-  var XYPoint = function XYPoint(x, y) {
-    _classCallCheck(this, XYPoint);
-  
-    this.x = x;
-    this.y = y;
-  };
-  
-  exports["default"] = XYPoint;
-  module.exports = exports["default"];
-
-/***/ },
+/* 56 */,
+/* 57 */,
+/* 58 */,
 /* 59 */
 /***/ function(module, exports) {
 
@@ -5115,9 +4726,9 @@ module.exports =
   
   var _reactColor = __webpack_require__(59);
   
-  var _apiConverter = __webpack_require__(56);
+  var _modelsConverter = __webpack_require__(102);
   
-  var _apiConverter2 = _interopRequireDefault(_apiConverter);
+  var _modelsConverter2 = _interopRequireDefault(_modelsConverter);
   
   var Group = (function (_Component) {
     _inherits(Group, _Component);
@@ -5238,14 +4849,14 @@ module.exports =
         if (lightState.on) {
           var xy = lightState.xy;
           if (typeof xy === 'object') {
-            return _apiConverter2['default'].cie1931ToHex(xy[0], xy[1], lightState.bri);
+            return _modelsConverter2['default'].cie1931ToHex(xy[0], xy[1], lightState.bri);
           }
         }
       }
     }, {
       key: 'changeColor',
       value: function changeColor(color) {
-        var xy = _apiConverter2['default'].hexToCIE1931(color);
+        var xy = _modelsConverter2['default'].hexToCIE1931(color);
         var x = xy[0];
         var y = xy[1];
         _apiBridge2['default'].setGroupColor(this.props.id, x, y).then(this.onColorChanged.bind(this, x, y));
@@ -7990,6 +7601,398 @@ module.exports =
   
   exports['default'] = Bridge;
   module.exports = exports['default'];
+
+/***/ },
+/* 102 */
+/***/ function(module, exports, __webpack_require__) {
+
+  'use strict';
+  
+  Object.defineProperty(exports, '__esModule', {
+    value: true
+  });
+  
+  var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+  
+  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  
+  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+  
+  var _colorHelper = __webpack_require__(103);
+  
+  var _colorHelper2 = _interopRequireDefault(_colorHelper);
+  
+  // Thanks to
+  // https://github.com/benknight/hue-python-rgb-converter/blob/master/rgb_cie.py
+  
+  var Converter = (function () {
+    function Converter() {
+      _classCallCheck(this, Converter);
+    }
+  
+    _createClass(Converter, null, [{
+      key: 'hexToCIE1931',
+  
+      // Converts hexadecimal colors represented as a String to approximate CIE 1931
+      // coordinates. May not produce accurate values.
+      value: function hexToCIE1931(h) {
+        var rgb = _colorHelper2['default'].hexToRgb(h);
+        return this.rgbToCIE1931(rgb[0], rgb[1], rgb[2]);
+      }
+  
+      // Converts red, green and blue integer values to approximate CIE 1931 x and y
+      // coordinates. Algorithm from:
+      // http://www.easyrgb.com/index.php?X=MATH&H=02#text2.
+      // May not produce accurate values.
+    }, {
+      key: 'rgbToCIE1931',
+      value: function rgbToCIE1931(red, green, blue) {
+        var point = _colorHelper2['default'].getXYPointFromRGB(red, green, blue);
+        return [point.x, point.y];
+      }
+  
+      // Returns the approximate CIE 1931 x, y coordinates represented by the
+      // supplied hexColor parameter, or of a random color if the parameter is not
+      // passed. Let people set a lamp's color to any random color.
+    }, {
+      key: 'getCIEColor',
+      value: function getCIEColor(hexColor) {
+        var xy = [];
+        if (typeof hexColor === 'undefined') {
+          var r = _colorHelper2['default'].randomRGBValue();
+          var g = _colorHelper2['default'].randomRGBValue();
+          var b = _colorHelper2['default'].randomRGBValue();
+          xy = this.rgbToCIE1931(r, g, b);
+        } else {
+          xy = this.hexToCIE1931(hexColor);
+        }
+        return xy;
+      }
+  
+      // Converts CIE 1931 x and y coordinates and brightness value from 0 to 1 to an
+      // RGB color.
+    }, {
+      key: 'cie1931ToRGB',
+      value: function cie1931ToRGB(x, y, optionalBri) {
+        var bri = undefined;
+        if (typeof optionalBri === 'undefined') {
+          bri = 1;
+        } else {
+          bri = optionalBri;
+        }
+        return _colorHelper2['default'].getRGBFromXYAndBrightness(x, y, bri);
+      }
+  
+      // Converts CIE 1931 x and y coordinates and brightness value from 0 to 1 to a
+      // CSS hex color.
+    }, {
+      key: 'cie1931ToHex',
+      value: function cie1931ToHex(x, y, bri) {
+        var rgb = this.cie1931ToRGB(x, y, bri);
+        return _colorHelper2['default'].rgbToHex(rgb[0], rgb[1], rgb[2]);
+      }
+    }]);
+  
+    return Converter;
+  })();
+  
+  exports['default'] = Converter;
+  module.exports = exports['default'];
+
+/***/ },
+/* 103 */
+/***/ function(module, exports, __webpack_require__) {
+
+  'use strict';
+  
+  Object.defineProperty(exports, '__esModule', {
+    value: true
+  });
+  
+  var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+  
+  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  
+  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+  
+  var _xyPoint = __webpack_require__(104);
+  
+  var _xyPoint2 = _interopRequireDefault(_xyPoint);
+  
+  // Thanks to
+  // https://github.com/benknight/hue-python-rgb-converter/blob/master/rgb_cie.py
+  
+  var ColorHelper = (function () {
+    function ColorHelper() {
+      _classCallCheck(this, ColorHelper);
+    }
+  
+    _createClass(ColorHelper, null, [{
+      key: 'red',
+  
+      // See http://www.developers.meethue.com/documentation/color-conversions-rgb-xy
+      value: function red() {
+        return new _xyPoint2['default'](0.675, 0.322);
+      }
+  
+      // See http://www.developers.meethue.com/documentation/color-conversions-rgb-xy
+    }, {
+      key: 'lime',
+      value: function lime() {
+        return new _xyPoint2['default'](0.4091, 0.518);
+      }
+  
+      // See http://www.developers.meethue.com/documentation/color-conversions-rgb-xy
+    }, {
+      key: 'blue',
+      value: function blue() {
+        return new _xyPoint2['default'](0.167, 0.04);
+      }
+  
+      // Parses a valid hex color string and returns the Red RGB integer value.
+    }, {
+      key: 'hexToRed',
+      value: function hexToRed(hex) {
+        return parseInt(hex.slice(0, 2), 16);
+      }
+  
+      // Parses a valid hex color string and returns the Green RGB integer value.
+    }, {
+      key: 'hexToGreen',
+      value: function hexToGreen(hex) {
+        return parseInt(hex.slice(2, 4), 16);
+      }
+  
+      // Parses a valid hex color string and returns the Blue RGB integer value.
+    }, {
+      key: 'hexToBlue',
+      value: function hexToBlue(hex) {
+        return parseInt(hex.slice(4, 6), 16);
+      }
+  
+      // Converts a valid hex color string to an RGB array.
+    }, {
+      key: 'hexToRgb',
+      value: function hexToRgb(hex) {
+        return [this.hexToRed(hex), this.hexToGreen(hex), this.hexToBlue(hex)];
+      }
+  
+      // Converts RGB to hex.
+    }, {
+      key: 'rgbToHex',
+      value: function rgbToHex(r, g, b) {
+        return ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+      }
+  
+      // Return a random Integer in the range of 0 to 255, representing an RGB color
+      // value.
+    }, {
+      key: 'randomRgbValue',
+      value: function randomRgbValue() {
+        return Math.floor(Math.random() * 256);
+      }
+  
+      // Returns the cross product of two XYPoints.
+    }, {
+      key: 'crossProduct',
+      value: function crossProduct(p1, p2) {
+        return p1.x * p2.y - p1.y * p2.x;
+      }
+  
+      // Check if the provided XYPoint can be recreated by a Hue lamp.
+    }, {
+      key: 'checkPointInLampsReach',
+      value: function checkPointInLampsReach(p) {
+        var lime = this.lime();
+        var red = this.red();
+        var blue = this.blue();
+        var v1 = new _xyPoint2['default'](lime.x - red.x, lime.y - red.y);
+        var v2 = new _xyPoint2['default'](blue.x - red.x, blue.y - red.y);
+        var q = new _xyPoint2['default'](p.x - red.x, p.y - red.y);
+        var s = this.crossProduct(q, v2) / this.crossProduct(v1, v2);
+        var t = this.crossProduct(v1, q) / this.crossProduct(v1, v2);
+        return s >= 0.0 && t >= 0.0 && s + t <= 1.0;
+      }
+  
+      // Find the closest point on a line. This point will be reproducible by a Hue
+      // lamp.
+    }, {
+      key: 'getClosestPointToLine',
+      value: function getClosestPointToLine(A, B, P) {
+        var AP = new _xyPoint2['default'](P.x - A.x, P.y - A.y);
+        var AB = new _xyPoint2['default'](B.x - A.x, B.y - A.y);
+        var ab2 = AB.x * AB.x + AB.y * AB.y;
+        var apAb = AP.x * AB.x + AP.y * AB.y;
+        var t = apAb / ab2;
+        if (t < 0.0) {
+          t = 0.0;
+        } else if (t > 1.0) {
+          t = 1.0;
+        }
+        return new _xyPoint2['default'](A.x + AB.x * t, A.y + AB.y * t);
+      }
+    }, {
+      key: 'getClosestPointToPoint',
+      value: function getClosestPointToPoint(xyPoint) {
+        var lime = this.lime();
+        var red = this.red();
+        var blue = this.blue();
+  
+        // Color is unreproducible, find the closest point on each line in the CIE
+        // 1931 'triangle'.
+        var pAB = this.getClosestPointToLine(red, lime, xyPoint);
+        var pAC = this.getClosestPointToLine(blue, red, xyPoint);
+        var pBC = this.getClosestPointToLine(lime, blue, xyPoint);
+  
+        // Get the distances per point and see which point is closer to our Point.
+        var dAB = this.getDistanceBetweenTwoPoints(xyPoint, pAB);
+        var dAC = this.getDistanceBetweenTwoPoints(xyPoint, pAC);
+        var dBC = this.getDistanceBetweenTwoPoints(xyPoint, pBC);
+  
+        var lowest = dAB;
+        var closestPoint = pAB;
+        if (dAC < lowest) {
+          lowest = dAC;
+          closestPoint = pAC;
+        }
+        if (dBC < lowest) {
+          lowest = dBC;
+          closestPoint = pBC;
+        }
+  
+        // Change the xy value to a value which is within the reach of the lamp.
+        return new _xyPoint2['default'](closestPoint.x, closestPoint.y);
+      }
+  
+      // Returns the distance between two XYPoints.
+    }, {
+      key: 'getDistanceBetweenTwoPoints',
+      value: function getDistanceBetweenTwoPoints(one, two) {
+        var dx = one.x - two.x;
+        var dy = one.y - two.y;
+        return Math.sqrt(dx * dx + dy * dy);
+      }
+  
+      // Returns an XYPoint object containing the closest available CIE 1931
+      // coordinates based on the RGB input values.
+    }, {
+      key: 'getXYPointFromRGB',
+      value: function getXYPointFromRGB(red, green, blue) {
+        var r = undefined;
+        var g = undefined;
+        var b = undefined;
+        if (red > 0.04045) {
+          r = Math.pow((red + 0.055) / (1.0 + 0.055), 2.4);
+        } else {
+          r = red / 12.92;
+        }
+        if (green > 0.04045) {
+          g = Math.pow((green + 0.055) / (1.0 + 0.055), 2.4);
+        } else {
+          g = green / 12.92;
+        }
+        if (blue > 0.04045) {
+          b = Math.pow((blue + 0.055) / (1.0 + 0.055), 2.4);
+        } else {
+          b = blue / 12.92;
+        }
+  
+        var X = r * 0.4360747 + g * 0.3850649 + b * 0.0930804;
+        var Y = r * 0.2225045 + g * 0.7168786 + b * 0.0406169;
+        var Z = r * 0.0139322 + g * 0.0971045 + b * 0.7141733;
+  
+        var cx = undefined;
+        var cy = undefined;
+        if (X + Y + Z === 0) {
+          cx = 0;
+          cy = 0;
+        } else {
+          cx = X / (X + Y + Z);
+          cy = Y / (X + Y + Z);
+        }
+  
+        // Check if the given XY value is within the color reach of our lamps.
+        var xyPoint = new _xyPoint2['default'](cx, cy);
+        var inReachOfLamps = this.checkPointInLampsReach(xyPoint);
+        if (!inReachOfLamps) {
+          xyPoint = this.getClosestPointToPoint(xyPoint);
+        }
+        return xyPoint;
+      }
+  
+      // Returns a rgb tuplet for given x, y values.  Not actually an inverse of
+      // getXYPointFromRGB.
+    }, {
+      key: 'getRGBFromXYAndBrightness',
+      value: function getRGBFromXYAndBrightness(x, y, optionalBri) {
+        var bri = undefined;
+        if (typeof optionalBri === 'undefined') {
+          bri = 1;
+        } else {
+          bri = optionalBri;
+        }
+        var xyPoint = new _xyPoint2['default'](x, y);
+        if (!this.checkPointInLampsReach(xyPoint)) {
+          xyPoint = this.getClosestPointToPoint(xyPoint);
+        }
+        var Y = bri;
+        var X = Y / xyPoint.y * xyPoint.x;
+        var Z = Y / xyPoint.y * (1 - xyPoint.x - xyPoint.y);
+        var r = X * 1.612 - Y * 0.203 - Z * 0.302;
+        var g = -X * 0.509 + Y * 1.412 + Z * 0.066;
+        var b = X * 0.026 - Y * 0.072 + Z * 0.962;
+        var reverseGammaCorrect = function reverseGammaCorrect(value) {
+          if (value <= 0.0031308) {
+            return 12.92 * value;
+          }
+          return (1.0 + 0.055) * Math.pow(value, 1.0 / 2.4) - 0.055;
+        };
+        r = reverseGammaCorrect(r);
+        g = reverseGammaCorrect(g);
+        b = reverseGammaCorrect(b);
+        r = Math.max(0, r);
+        g = Math.max(0, g);
+        b = Math.max(0, b);
+        var maxComponent = Math.max(r, g, b);
+        if (maxComponent > 1) {
+          r = r / maxComponent;
+          g = g / maxComponent;
+          b = b / maxComponent;
+        }
+        r = Math.round(r * 255);
+        g = Math.round(g * 255);
+        b = Math.round(b * 255);
+        return [r, g, b];
+      }
+    }]);
+  
+    return ColorHelper;
+  })();
+  
+  exports['default'] = ColorHelper;
+  module.exports = exports['default'];
+
+/***/ },
+/* 104 */
+/***/ function(module, exports) {
+
+  "use strict";
+  
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  
+  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+  
+  var XYPoint = function XYPoint(x, y) {
+    _classCallCheck(this, XYPoint);
+  
+    this.x = x;
+    this.y = y;
+  };
+  
+  exports["default"] = XYPoint;
+  module.exports = exports["default"];
 
 /***/ }
 /******/ ]);

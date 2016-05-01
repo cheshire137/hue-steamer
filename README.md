@@ -8,7 +8,7 @@ This is a web application you run locally to manipulate your Philips Hue lights.
 
 If you just want a JavaScript library for converting hex and RGB color codes to
 the Philips Hue CIE 1931 color space, or vice versa, look at
-[converter.js](src/api/converter.js). See also its
+[converter.js](src/models/converter.js). See also its
 [Python implementation](https://github.com/benknight/hue-python-rgb-converter/blob/master/rgb_cie.py)
 or another
 [JavaScript implementation](https://github.com/bjohnso5/hue-hacking/blob/master/src/colors.js).

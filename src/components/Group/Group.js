@@ -6,7 +6,7 @@ import FontAwesome from 'react-fontawesome';
 import OnOffSwitch from '../OnOffSwitch/OnOffSwitch';
 import Bridge from '../../api/bridge';
 import { SliderPicker } from 'react-color';
-import Converter from '../../api/converter';
+import Converter from '../../models/converter';
 
 @withStyles(s)
 class Group extends Component {
