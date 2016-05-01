@@ -3379,7 +3379,6 @@ module.exports =
     }, {
       key: 'onScenesLoaded',
       value: function onScenesLoaded(scenes) {
-        console.log(scenes);
         scenes.sort(this.nameSort);
         this.setState({ scenes: scenes });
       }

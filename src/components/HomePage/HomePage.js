@@ -105,7 +105,6 @@ class HomePage extends Component {
   }
 
   onScenesLoaded(scenes) {
-    console.log(scenes);
     scenes.sort(this.nameSort);
     this.setState({ scenes });
   }
