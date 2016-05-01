@@ -449,6 +449,30 @@ module.exports =
     }, null, _this);
   });
   
+  server.get('/scene/:id', function callee$0$0(req, res) {
+    var api;
+    return regeneratorRuntime.async(function callee$0$0$(context$1$0) {
+      while (1) switch (context$1$0.prev = context$1$0.next) {
+        case 0:
+          context$1$0.next = 2;
+          return regeneratorRuntime.awrap(getHueApi(req.query.connectionID));
+  
+        case 2:
+          api = context$1$0.sent;
+  
+          api.scene(req.params.id).then(function (result) {
+            res.json(result);
+          }).fail(function (err) {
+            res.status(400).json(err);
+          }).done();
+  
+        case 4:
+        case 'end':
+          return context$1$0.stop();
+      }
+    }, null, _this);
+  });
+  
   server.get('/groups', function callee$0$0(req, res) {
     var api;
     return regeneratorRuntime.async(function callee$0$0$(context$1$0) {
@@ -7150,6 +7174,20 @@ module.exports =
         }, null, this);
       }
     }, {
+      key: 'getScene',
+      value: function getScene(sceneID) {
+        return regeneratorRuntime.async(function getScene$(context$2$0) {
+          while (1) switch (context$2$0.prev = context$2$0.next) {
+            case 0:
+              return context$2$0.abrupt('return', this.makeRequest('/scene/' + sceneID));
+  
+            case 1:
+            case 'end':
+              return context$2$0.stop();
+          }
+        }, null, this);
+      }
+    }, {
       key: 'getGroup',
       value: function getGroup(groupID) {
         return regeneratorRuntime.async(function getGroup$(context$2$0) {
@@ -7978,6 +8016,10 @@ module.exports =
   
   var _reactFontawesome2 = _interopRequireDefault(_reactFontawesome);
   
+  var _apiBridge = __webpack_require__(101);
+  
+  var _apiBridge2 = _interopRequireDefault(_apiBridge);
+  
   var Scene = (function (_Component) {
     _inherits(Scene, _Component);
   
@@ -8002,14 +8044,35 @@ module.exports =
       _classCallCheck(this, _Scene);
   
       _get(Object.getPrototypeOf(_Scene.prototype), 'constructor', this).call(this, props, context);
-      this.state = { open: false };
+      this.state = { open: false, picture: undefined, lightstates: undefined };
     }
   
     _createClass(Scene, [{
+      key: 'onSceneLoaded',
+      value: function onSceneLoaded(scene) {
+        this.setState({ picture: scene.picture, lightstates: scene.lightstates });
+      }
+    }, {
+      key: 'onSceneLoadError',
+      value: function onSceneLoadError(response) {
+        console.error('failed to get scene', response);
+      }
+    }, {
+      key: 'loadPicture',
+      value: function loadPicture() {
+        _apiBridge2['default'].getScene(this.props.id).then(this.onSceneLoaded.bind(this))['catch'](this.onSceneLoadError.bind(this));
+      }
+    }, {
       key: 'toggleSceneOpen',
       value: function toggleSceneOpen(event) {
+        var _this = this;
+  
         event.preventDefault();
-        this.setState({ open: !this.state.open });
+        this.setState({ open: !this.state.open }, function () {
+          if (_this.state.open && typeof _this.state.picture === 'undefined') {
+            _this.loadPicture();
+          }
+        });
         event.target.blur();
       }
     }, {

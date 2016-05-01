@@ -170,6 +170,15 @@ server.get('/scenes', async (req, res) => {
   }).done();
 });
 
+server.get('/scene/:id', async (req, res) => {
+  const api = await getHueApi(req.query.connectionID);
+  api.scene(req.params.id).then((result) => {
+    res.json(result);
+  }).fail((err) => {
+    res.status(400).json(err);
+  }).done();
+});
+
 server.get('/groups', async (req, res) => {
   const api = await getHueApi(req.query.connectionID);
   api.groups().then((result) => {

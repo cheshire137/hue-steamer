@@ -37,6 +37,10 @@ class Bridge {
     return this.makeRequest('/scenes');
   }
 
+  static async getScene(sceneID) {
+    return this.makeRequest('/scene/' + sceneID);
+  }
+
   static async getGroup(groupID) {
     return this.makeRequest('/group/' + (groupID || '0'));
   }

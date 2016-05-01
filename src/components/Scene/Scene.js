@@ -4,6 +4,7 @@ import cx from 'classnames';
 import withStyles from '../../decorators/withStyles';
 import Daytime from '../../models/daytime';
 import FontAwesome from 'react-fontawesome';
+import Bridge from '../../api/bridge';
 
 @withStyles(s)
 class Scene extends Component {
@@ -22,12 +23,30 @@ class Scene extends Component {
 
   constructor(props, context) {
     super(props, context);
-    this.state = { open: false };
+    this.state = { open: false, picture: undefined, lightstates: undefined };
+  }
+
+  onSceneLoaded(scene) {
+    this.setState({ picture: scene.picture, lightstates: scene.lightstates });
+  }
+
+  onSceneLoadError(response) {
+    console.error('failed to get scene', response);
+  }
+
+  loadPicture() {
+    Bridge.getScene(this.props.id).
+           then(this.onSceneLoaded.bind(this)).
+           catch(this.onSceneLoadError.bind(this));
   }
 
   toggleSceneOpen(event) {
     event.preventDefault();
-    this.setState({ open: !this.state.open });
+    this.setState({ open: !this.state.open }, () => {
+      if (this.state.open && typeof this.state.picture === 'undefined') {
+        this.loadPicture();
+      }
+    });
     event.target.blur();
   }
 
