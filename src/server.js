@@ -78,11 +78,6 @@ async function saveBridge(ip, user) {
 // -----------------------------------------------------------------------------
 server.use(express.static(path.join(__dirname, 'public')));
 
-//
-// Register API middleware
-// -----------------------------------------------------------------------------
-server.use('/api/content', require('./api/content'));
-
 server.all('*', (req, res, next) => {
   res.header('Access-Control-Allow-Origin',
              Config[process.env.NODE_ENV].clientUri);
