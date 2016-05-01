@@ -3604,9 +3604,10 @@ module.exports =
         var haveGroups = typeof this.state.groups === 'object';
         var haveSchedules = typeof this.state.schedules === 'object';
         var haveScenes = typeof this.state.scenes === 'object';
+        var themeClass = _modelsDaytime2['default'].isNight() ? _HomePageScss2['default'].night : _HomePageScss2['default'].day;
         return _react2['default'].createElement(
           'div',
-          { className: _modelsDaytime2['default'].isNight() ? _HomePageScss2['default'].night : _HomePageScss2['default'].day },
+          { className: themeClass },
           _react2['default'].createElement(
             'ul',
             { className: _HomePageScss2['default'].tabList },
@@ -3616,7 +3617,12 @@ module.exports =
               _react2['default'].createElement(
                 'a',
                 { href: '#', onClick: this.showLightsTab.bind(this) },
-                'Lights'
+                'Lights',
+                haveLights ? _react2['default'].createElement(
+                  'span',
+                  { className: (0, _classnames2['default'])(_HomePageScss2['default'].badge, themeClass) },
+                  this.state.lightIDs.length
+                ) : ''
               )
             ),
             _react2['default'].createElement(
@@ -3625,7 +3631,12 @@ module.exports =
               _react2['default'].createElement(
                 'a',
                 { href: '#', onClick: this.showGroupsTab.bind(this) },
-                'Groups'
+                'Groups',
+                haveGroups ? _react2['default'].createElement(
+                  'span',
+                  { className: (0, _classnames2['default'])(_HomePageScss2['default'].badge, themeClass) },
+                  this.state.groups.length
+                ) : ''
               )
             ),
             _react2['default'].createElement(
@@ -3649,7 +3660,12 @@ module.exports =
               _react2['default'].createElement(
                 'a',
                 { href: '#', onClick: this.showSchedulesTab.bind(this) },
-                'Schedules'
+                'Schedules',
+                haveSchedules ? _react2['default'].createElement(
+                  'span',
+                  { className: (0, _classnames2['default'])(_HomePageScss2['default'].badge, themeClass) },
+                  this.state.schedules.length
+                ) : ''
               )
             ),
             _react2['default'].createElement(
@@ -3658,7 +3674,12 @@ module.exports =
               _react2['default'].createElement(
                 'a',
                 { href: '#', onClick: this.showScenesTab.bind(this) },
-                'Scenes'
+                'Scenes',
+                haveScenes ? _react2['default'].createElement(
+                  'span',
+                  { className: (0, _classnames2['default'])(_HomePageScss2['default'].badge, themeClass) },
+                  this.state.scenes.length
+                ) : ''
               )
             )
           ),
@@ -3774,7 +3795,7 @@ module.exports =
   
   
   // module
-  exports.push([module.id, ".HomePage_loading_XqX {\n}\n\n.HomePage_tabList_uR3 {\n  list-style: none;\n  padding-left: 0;\n  border-bottom-width: 1px;\n  border-bottom-style: solid;\n}\n\n.HomePage_tabList_uR3 li {\n  display: inline-block;\n}\n\n.HomePage_tabList_uR3 li + li {\n  margin-left: 4px;\n}\n\n.HomePage_tabList_uR3 li a {\n  display: block;\n  padding: 0.3em 0.6em;\n  text-decoration: none;\n  border-style: solid;\n  border-width: 1px;\n  border-bottom-width: 0;\n  -webkit-border-top-left-radius: 4px;\n  -webkit-border-top-right-radius: 4px;\n  -moz-border-radius-topleft: 4px;\n  -moz-border-radius-topright: 4px;\n  border-top-left-radius: 4px;\n  border-top-right-radius: 4px;\n}\n\n.HomePage_tabList_uR3 li.HomePage_inactive_2yj a {\n  opacity: 0.75;\n}\n\n.HomePage_tabList_uR3 li.HomePage_active_lyV a {\n  margin-bottom: -1px;\n}\n\n.HomePage_night_1p9 .HomePage_tabList_uR3 {\n  border-color: #38231D;\n}\n\n.HomePage_night_1p9 .HomePage_tabList_uR3 li a {\n  border-color: #38231D;\n}\n\n.HomePage_night_1p9 .HomePage_tabList_uR3 li.HomePage_inactive_2yj a {\n  background-color: #231511;\n}\n\n.HomePage_night_1p9 .HomePage_tabList_uR3 li.HomePage_active_lyV {\n  border-bottom: 1px solid #101010;\n}\n\n.HomePage_day_2WC .HomePage_tabList_uR3 {\n  border-color: #ccc;\n}\n\n.HomePage_day_2WC .HomePage_tabList_uR3 li a {\n  border-color: #ccc;\n  color: #97918A\n}\n\n.HomePage_day_2WC .HomePage_tabList_uR3 li a:hover, .HomePage_day_2WC .HomePage_tabList_uR3 li a:focus {\n  color: #E16C51;\n}\n\n.HomePage_day_2WC .HomePage_tabList_uR3 li.HomePage_inactive_2yj a {\n  background-color: #f1f1f1;\n}\n\n.HomePage_day_2WC .HomePage_tabList_uR3 li.HomePage_active_lyV {\n  border-bottom: 1px solid #fff;\n}\n\n.HomePage_day_2WC .HomePage_tabList_uR3 li.HomePage_active_lyV a {\n  color: #E16C51;\n}\n\n.HomePage_tab_16Q {\n}\n\n.HomePage_tab_16Q.HomePage_inactive_2yj {\n  display: none;\n}\n", "", {"version":3,"sources":["/./src/components/HomePage/HomePage.scss"],"names":[],"mappings":"AAAA;CACC;;AAED;EACE,iBAAiB;EACjB,gBAAgB;EAChB,yBAAyB;EACzB,2BAA2B;CAoC5B;;AAlCC;EACE,sBAAsB;CAgCvB;;AA9BC;EACE,iBAAiB;CAClB;;AAED;EACE,eAAe;EACf,qBAAqB;EACrB,sBAAsB;EACtB,oBAAoB;EACpB,kBAAkB;EAClB,uBAAuB;EACvB,oCAAoC;EACpC,qCAAqC;EACrC,gCAAgC;EAChC,iCAAiC;EACjC,4BAA4B;EAC5B,6BAA6B;CAC9B;;AAGC;EACE,cAAc;CACf;;AAID;EACE,oBAAoB;CACrB;;AAML;EACE,sBAAsB;CAiBvB;;AAdG;EACE,sBAAsB;CACvB;;AAGC;EACE,0BAA0B;CAC3B;;AAGH;EACE,iCAAiC;CAClC;;AAML;EACE,mBAAmB;CA0BpB;;AAvBG;EACE,mBAAmB;EACnB,cAAe;CAKhB;;AAHC;EACE,eAAe;CAChB;;AAID;EACE,0BAA0B;CAC3B;;AAGH;EACE,8BAA8B;CAK/B;;AAHC;EACE,eAAe;CAChB;;AAMT;CAIC;;AAHC;EACE,cAAc;CACf","file":"HomePage.scss","sourcesContent":[".loading {\n}\n\n.tabList {\n  list-style: none;\n  padding-left: 0;\n  border-bottom-width: 1px;\n  border-bottom-style: solid;\n\n  li {\n    display: inline-block;\n\n    + li {\n      margin-left: 4px;\n    }\n\n    a {\n      display: block;\n      padding: 0.3em 0.6em;\n      text-decoration: none;\n      border-style: solid;\n      border-width: 1px;\n      border-bottom-width: 0;\n      -webkit-border-top-left-radius: 4px;\n      -webkit-border-top-right-radius: 4px;\n      -moz-border-radius-topleft: 4px;\n      -moz-border-radius-topright: 4px;\n      border-top-left-radius: 4px;\n      border-top-right-radius: 4px;\n    }\n\n    &.inactive {\n      a {\n        opacity: 0.75;\n      }\n    }\n\n    &.active {\n      a {\n        margin-bottom: -1px;\n      }\n    }\n  }\n}\n\n.night {\n  .tabList {\n    border-color: #38231D;\n\n    li {\n      a {\n        border-color: #38231D;\n      }\n\n      &.inactive {\n        a {\n          background-color: #231511;\n        }\n      }\n\n      &.active {\n        border-bottom: 1px solid #101010;\n      }\n    }\n  }\n}\n\n.day {\n  .tabList {\n    border-color: #ccc;\n\n    li {\n      a {\n        border-color: #ccc;\n        color: #97918A;\n\n        &:hover, &:focus {\n          color: #E16C51;\n        }\n      }\n\n      &.inactive {\n        a {\n          background-color: #f1f1f1;\n        }\n      }\n\n      &.active {\n        border-bottom: 1px solid #fff;\n\n        a {\n          color: #E16C51;\n        }\n      }\n    }\n  }\n}\n\n.tab {\n  &.inactive {\n    display: none;\n  }\n}\n"],"sourceRoot":"webpack://"}]);
+  exports.push([module.id, ".HomePage_loading_XqX {\n}\n\n.HomePage_tabList_uR3 {\n  list-style: none;\n  padding-left: 0;\n  border-bottom-width: 1px;\n  border-bottom-style: solid;\n}\n\n.HomePage_tabList_uR3 li {\n  display: inline-block;\n}\n\n.HomePage_tabList_uR3 li + li {\n  margin-left: 4px;\n}\n\n.HomePage_tabList_uR3 li a {\n  display: block;\n  padding: 0.3em 0.6em;\n  text-decoration: none;\n  border-style: solid;\n  border-width: 1px;\n  border-bottom-width: 0;\n  -webkit-border-top-left-radius: 4px;\n  -webkit-border-top-right-radius: 4px;\n  -moz-border-radius-topleft: 4px;\n  -moz-border-radius-topright: 4px;\n  border-top-left-radius: 4px;\n  border-top-right-radius: 4px;\n}\n\n.HomePage_tabList_uR3 li.HomePage_inactive_2yj a {\n  opacity: 0.75;\n}\n\n.HomePage_tabList_uR3 li.HomePage_active_lyV a {\n  margin-bottom: -1px;\n}\n\n.HomePage_night_1p9 .HomePage_tabList_uR3 {\n  border-color: #38231D;\n}\n\n.HomePage_night_1p9 .HomePage_tabList_uR3 li a {\n  border-color: #38231D;\n}\n\n.HomePage_night_1p9 .HomePage_tabList_uR3 li.HomePage_inactive_2yj a {\n  background-color: #231511;\n}\n\n.HomePage_night_1p9 .HomePage_tabList_uR3 li.HomePage_active_lyV {\n  border-bottom: 1px solid #101010;\n}\n\n.HomePage_day_2WC .HomePage_tabList_uR3 {\n  border-color: #ccc;\n}\n\n.HomePage_day_2WC .HomePage_tabList_uR3 li a {\n  border-color: #ccc;\n  color: #97918A\n}\n\n.HomePage_day_2WC .HomePage_tabList_uR3 li a:hover, .HomePage_day_2WC .HomePage_tabList_uR3 li a:focus {\n  color: #E16C51;\n}\n\n.HomePage_day_2WC .HomePage_tabList_uR3 li.HomePage_inactive_2yj a {\n  background-color: #f1f1f1;\n}\n\n.HomePage_day_2WC .HomePage_tabList_uR3 li.HomePage_active_lyV {\n  border-bottom: 1px solid #fff;\n}\n\n.HomePage_day_2WC .HomePage_tabList_uR3 li.HomePage_active_lyV a {\n  color: #E16C51;\n}\n\n.HomePage_tab_16Q {\n}\n\n.HomePage_tab_16Q.HomePage_inactive_2yj {\n  display: none;\n}\n\n.HomePage_badge_HDA {\n  display: inline-block;\n  padding: 2px 5px;\n  font-size: 11px;\n  font-weight: bold;\n  line-height: 1;\n  border-radius: 20px;\n  margin-left: 5px\n}\n\n.HomePage_badge_HDA.HomePage_day_2WC {\n  color: #666;\n  background-color: #eee;\n}\n\n.HomePage_badge_HDA.HomePage_night_1p9 {\n  color: #101010;\n  background-color: #E16C51;\n}\n", "", {"version":3,"sources":["/./src/components/HomePage/HomePage.scss"],"names":[],"mappings":"AAAA;CACC;;AAED;EACE,iBAAiB;EACjB,gBAAgB;EAChB,yBAAyB;EACzB,2BAA2B;CAoC5B;;AAlCC;EACE,sBAAsB;CAgCvB;;AA9BC;EACE,iBAAiB;CAClB;;AAED;EACE,eAAe;EACf,qBAAqB;EACrB,sBAAsB;EACtB,oBAAoB;EACpB,kBAAkB;EAClB,uBAAuB;EACvB,oCAAoC;EACpC,qCAAqC;EACrC,gCAAgC;EAChC,iCAAiC;EACjC,4BAA4B;EAC5B,6BAA6B;CAC9B;;AAGC;EACE,cAAc;CACf;;AAID;EACE,oBAAoB;CACrB;;AAML;EACE,sBAAsB;CAiBvB;;AAdG;EACE,sBAAsB;CACvB;;AAGC;EACE,0BAA0B;CAC3B;;AAGH;EACE,iCAAiC;CAClC;;AAML;EACE,mBAAmB;CA0BpB;;AAvBG;EACE,mBAAmB;EACnB,cAAe;CAKhB;;AAHC;EACE,eAAe;CAChB;;AAID;EACE,0BAA0B;CAC3B;;AAGH;EACE,8BAA8B;CAK/B;;AAHC;EACE,eAAe;CAChB;;AAMT;CAIC;;AAHC;EACE,cAAc;CACf;;AAGH;EACE,sBAAsB;EACtB,iBAAiB;EACjB,gBAAgB;EAChB,kBAAkB;EAClB,eAAe;EACf,oBAAoB;EACpB,gBAAiB;CAWlB;;AATC;EACE,YAAY;EACZ,uBAAuB;CACxB;;AAED;EACE,eAAe;EACf,0BAA0B;CAC3B","file":"HomePage.scss","sourcesContent":[".loading {\n}\n\n.tabList {\n  list-style: none;\n  padding-left: 0;\n  border-bottom-width: 1px;\n  border-bottom-style: solid;\n\n  li {\n    display: inline-block;\n\n    + li {\n      margin-left: 4px;\n    }\n\n    a {\n      display: block;\n      padding: 0.3em 0.6em;\n      text-decoration: none;\n      border-style: solid;\n      border-width: 1px;\n      border-bottom-width: 0;\n      -webkit-border-top-left-radius: 4px;\n      -webkit-border-top-right-radius: 4px;\n      -moz-border-radius-topleft: 4px;\n      -moz-border-radius-topright: 4px;\n      border-top-left-radius: 4px;\n      border-top-right-radius: 4px;\n    }\n\n    &.inactive {\n      a {\n        opacity: 0.75;\n      }\n    }\n\n    &.active {\n      a {\n        margin-bottom: -1px;\n      }\n    }\n  }\n}\n\n.night {\n  .tabList {\n    border-color: #38231D;\n\n    li {\n      a {\n        border-color: #38231D;\n      }\n\n      &.inactive {\n        a {\n          background-color: #231511;\n        }\n      }\n\n      &.active {\n        border-bottom: 1px solid #101010;\n      }\n    }\n  }\n}\n\n.day {\n  .tabList {\n    border-color: #ccc;\n\n    li {\n      a {\n        border-color: #ccc;\n        color: #97918A;\n\n        &:hover, &:focus {\n          color: #E16C51;\n        }\n      }\n\n      &.inactive {\n        a {\n          background-color: #f1f1f1;\n        }\n      }\n\n      &.active {\n        border-bottom: 1px solid #fff;\n\n        a {\n          color: #E16C51;\n        }\n      }\n    }\n  }\n}\n\n.tab {\n  &.inactive {\n    display: none;\n  }\n}\n\n.badge {\n  display: inline-block;\n  padding: 2px 5px;\n  font-size: 11px;\n  font-weight: bold;\n  line-height: 1;\n  border-radius: 20px;\n  margin-left: 5px;\n\n  &.day {\n    color: #666;\n    background-color: #eee;\n  }\n\n  &.night {\n    color: #101010;\n    background-color: #E16C51;;\n  }\n}\n"],"sourceRoot":"webpack://"}]);
   
   // exports
   exports.locals = {
@@ -3784,7 +3805,8 @@ module.exports =
   	"active": "HomePage_active_lyV",
   	"night": "HomePage_night_1p9",
   	"day": "HomePage_day_2WC",
-  	"tab": "HomePage_tab_16Q"
+  	"tab": "HomePage_tab_16Q",
+  	"badge": "HomePage_badge_HDA"
   };
 
 /***/ },

@@ -324,17 +324,28 @@ class HomePage extends Component {
     const haveGroups = typeof this.state.groups === 'object';
     const haveSchedules = typeof this.state.schedules === 'object';
     const haveScenes = typeof this.state.scenes === 'object';
+    const themeClass = Daytime.isNight() ? s.night : s.day;
     return (
-      <div className={Daytime.isNight() ? s.night : s.day}>
+      <div className={themeClass}>
         <ul className={s.tabList}>
           <li className={this.state.activeTab === 'lights' ? s.active : s.inactive}>
             <a href="#" onClick={this.showLightsTab.bind(this)}>
               Lights
+              {haveLights ? (
+                <span className={cx(s.badge, themeClass)}>
+                  {this.state.lightIDs.length}
+                </span>
+              ) : ''}
             </a>
           </li>
           <li className={this.state.activeTab === 'groups' ? s.active : s.inactive}>
             <a href="#" onClick={this.showGroupsTab.bind(this)}>
               Groups
+              {haveGroups ? (
+                <span className={cx(s.badge, themeClass)}>
+                  {this.state.groups.length}
+                </span>
+              ) : ''}
             </a>
           </li>
           <li className={this.state.activeTab === 'group-form' ? s.active : s.inactive}>
@@ -347,11 +358,21 @@ class HomePage extends Component {
           <li className={this.state.activeTab === 'schedules' ? s.active : s.inactive}>
             <a href="#" onClick={this.showSchedulesTab.bind(this)}>
               Schedules
+              {haveSchedules ? (
+                <span className={cx(s.badge, themeClass)}>
+                  {this.state.schedules.length}
+                </span>
+              ) : ''}
             </a>
           </li>
           <li className={this.state.activeTab === 'scenes' ? s.active : s.inactive}>
             <a href="#" onClick={this.showScenesTab.bind(this)}>
               Scenes
+              {haveScenes ? (
+                <span className={cx(s.badge, themeClass)}>
+                  {this.state.scenes.length}
+                </span>
+              ) : ''}
             </a>
           </li>
         </ul>

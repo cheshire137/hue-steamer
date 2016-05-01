@@ -101,3 +101,23 @@
     display: none;
   }
 }
+
+.badge {
+  display: inline-block;
+  padding: 2px 5px;
+  font-size: 11px;
+  font-weight: bold;
+  line-height: 1;
+  border-radius: 20px;
+  margin-left: 5px;
+
+  &.day {
+    color: #666;
+    background-color: #eee;
+  }
+
+  &.night {
+    color: #101010;
+    background-color: #E16C51;;
+  }
+}
