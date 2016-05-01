@@ -226,6 +226,15 @@ server.get('/group/:id', async (req, res) => {
   }).done();
 });
 
+server.delete('/group/:id', async (req, res) => {
+  const api = await getHueApi(req.query.connectionID);
+  api.deleteGroup(req.params.id).then((group) => {
+    res.json(group);
+  }).fail((err) => {
+    res.status(400).json(err);
+  }).done();
+});
+
 server.put('/group/:id', async (req, res) => {
   let name = req.query.name;
   if (typeof name !== 'string') {

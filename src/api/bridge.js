@@ -45,6 +45,11 @@ class Bridge {
     return this.makeRequest('/group/' + (groupID || '0'));
   }
 
+  static async deleteGroup(groupID) {
+    const opts = { method: 'DELETE' };
+    return this.makeRequest('/group/' + groupID, opts);
+  }
+
   static async createGroup(name, lightIDs) {
     const opts = { method: 'POST' };
     return this.makeRequest('/groups?name=' + encodeURIComponent(name) +

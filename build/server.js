@@ -583,6 +583,30 @@ module.exports =
     }, null, _this);
   });
   
+  server['delete']('/group/:id', function callee$0$0(req, res) {
+    var api;
+    return regeneratorRuntime.async(function callee$0$0$(context$1$0) {
+      while (1) switch (context$1$0.prev = context$1$0.next) {
+        case 0:
+          context$1$0.next = 2;
+          return regeneratorRuntime.awrap(getHueApi(req.query.connectionID));
+  
+        case 2:
+          api = context$1$0.sent;
+  
+          api.deleteGroup(req.params.id).then(function (group) {
+            res.json(group);
+          }).fail(function (err) {
+            res.status(400).json(err);
+          }).done();
+  
+        case 4:
+        case 'end':
+          return context$1$0.stop();
+      }
+    }, null, _this);
+  });
+  
   server.put('/group/:id', function callee$0$0(req, res) {
     var name, lightIDs, api;
     return regeneratorRuntime.async(function callee$0$0$(context$1$0) {
@@ -3357,12 +3381,9 @@ module.exports =
     }, {
       key: 'onGroupsLoaded',
       value: function onGroupsLoaded(rawGroups) {
-        var groups = [];
-        for (var i = 0; i < rawGroups.length; i++) {
-          if (rawGroups[i].id !== '0') {
-            groups.push(rawGroups[i]);
-          }
-        }
+        var groups = rawGroups.slice().filter(function (group) {
+          return typeof group === 'object' && group.id !== '0';
+        });
         groups.sort(this.nameSort);
         this.setState({ groups: groups });
       }
@@ -3431,6 +3452,14 @@ module.exports =
         }, function () {
           _this4.showGroupsTab();
         });
+      }
+    }, {
+      key: 'onGroupDeleted',
+      value: function onGroupDeleted(groupID) {
+        var newGroups = this.state.groups.slice().filter(function (group) {
+          return group.id !== groupID;
+        });
+        this.onGroupsLoaded(newGroups);
       }
     }, {
       key: 'onGroupCanceled',
@@ -3726,7 +3755,8 @@ module.exports =
               { className: (0, _classnames2['default'])(_HomePageScss2['default'].groupsTab, _HomePageScss2['default'].tab, this.state.activeTab === 'groups' ? _HomePageScss2['default'].active : _HomePageScss2['default'].inactive) },
               haveGroups ? _react2['default'].createElement(_GroupsListGroupsList2['default'], { groups: this.state.groups,
                 onLightLoaded: this.onLightLoaded.bind(this),
-                onEdit: this.onEditGroup.bind(this)
+                onEdit: this.onEditGroup.bind(this),
+                onGroupDeleted: this.onGroupDeleted.bind(this)
               }) : _react2['default'].createElement(
                 'p',
                 { className: _HomePageScss2['default'].loading },
@@ -4519,7 +4549,8 @@ module.exports =
       value: {
         groups: _react.PropTypes.array.isRequired,
         onLightLoaded: _react.PropTypes.func.isRequired,
-        onEdit: _react.PropTypes.func.isRequired
+        onEdit: _react.PropTypes.func.isRequired,
+        onGroupDeleted: _react.PropTypes.func.isRequired
       },
       enumerable: true
     }]);
@@ -4548,6 +4579,7 @@ module.exports =
             var key = 'group-' + group.id + '-loaded-' + loaded + '-action-' + action;
             return _react2['default'].createElement(_GroupGroup2['default'], _extends({ key: key }, group, {
               onLightLoaded: _this.props.onLightLoaded,
+              onDeleted: _this.props.onGroupDeleted,
               onEdit: _this.props.onEdit
             }));
           })
@@ -4683,7 +4715,8 @@ module.exports =
         lights: _react.PropTypes.array,
         onLightLoaded: _react.PropTypes.func.isRequired,
         onEdit: _react.PropTypes.func.isRequired,
-        'class': _react.PropTypes.string
+        'class': _react.PropTypes.string,
+        onDeleted: _react.PropTypes.func.isRequired
       },
       enumerable: true
     }]);
@@ -4731,6 +4764,18 @@ module.exports =
           }
           this.setState({ latestColor: latestColor, canSetColor: colors.length > 0 });
         }
+      }
+    }, {
+      key: 'onDeleted',
+      value: function onDeleted(success) {
+        if (success) {
+          this.props.onDeleted(this.props.id);
+        }
+      }
+    }, {
+      key: 'onDeleteError',
+      value: function onDeleteError(response) {
+        console.error('failed to delete group', this.props.id, response);
       }
     }, {
       key: 'onEdit',
@@ -4846,6 +4891,16 @@ module.exports =
         this.setState({ showColorPicker: !this.state.showColorPicker });
       }
     }, {
+      key: 'deleteGroup',
+      value: function deleteGroup(event) {
+        event.preventDefault();
+        event.target.blur();
+        if (!confirm('Are you sure you want to delete ' + this.props.name + '?')) {
+          return;
+        }
+        _apiBridge2['default'].deleteGroup(this.props.id).then(this.onDeleted.bind(this))['catch'](this.onDeleteError.bind(this));
+      }
+    }, {
       key: 'render',
       value: function render() {
         var groupStyle = {};
@@ -4862,7 +4917,7 @@ module.exports =
         if (this.areAllLightsOn()) {
           switchState = 2;
         }
-        var nightDayClass = _modelsDaytime2['default'].isNight() ? _GroupScss2['default'].night : _GroupScss2['default'].day;
+        var themeClass = _modelsDaytime2['default'].isNight() ? _GroupScss2['default'].night : _GroupScss2['default'].day;
         var colorPickerStyle = {
           display: this.state.showColorPicker ? 'block' : 'none'
         };
@@ -4872,7 +4927,7 @@ module.exports =
         }
         return _react2['default'].createElement(
           'li',
-          { className: (0, _classnames2['default'])(_GroupScss2['default'].group, nightDayClass) },
+          { className: (0, _classnames2['default'])(_GroupScss2['default'].group, themeClass) },
           _react2['default'].createElement(
             'header',
             { className: _GroupScss2['default'].groupHeader },
@@ -4895,13 +4950,13 @@ module.exports =
               _react2['default'].createElement(
                 'button',
                 { type: 'button', onClick: this.toggleColorPicker.bind(this),
-                  className: (0, _classnames2['default'])(_GroupScss2['default'].colorBlock, nightDayClass)
+                  className: (0, _classnames2['default'])(_GroupScss2['default'].colorBlock, themeClass)
                 },
                 'Set Color'
               ),
               _react2['default'].createElement(
                 'div',
-                { style: colorPickerStyle, className: (0, _classnames2['default'])(_GroupScss2['default'].colorPickerWrapper, nightDayClass) },
+                { style: colorPickerStyle, className: (0, _classnames2['default'])(_GroupScss2['default'].colorPickerWrapper, themeClass) },
                 _react2['default'].createElement(_reactColor.SliderPicker, { color: pickerColor,
                   onChangeComplete: this.onColorPickerChange.bind(this)
                 })
@@ -4931,17 +4986,33 @@ module.exports =
               'Edit'
             ),
             _react2['default'].createElement(
-              'div',
-              { className: _GroupScss2['default'].classContainer },
-              'Class:',
-              typeof this.props['class'] === 'string' ? _react2['default'].createElement(
-                'span',
-                { className: _GroupScss2['default']['class'] },
-                this.props['class']
-              ) : _react2['default'].createElement(
-                'span',
-                { className: _GroupScss2['default']['class'] },
-                '—'
+              'footer',
+              { className: _GroupScss2['default'].footer },
+              _react2['default'].createElement(
+                'div',
+                { className: _GroupScss2['default'].classContainer },
+                'Class:',
+                typeof this.props['class'] === 'string' ? _react2['default'].createElement(
+                  'span',
+                  { className: _GroupScss2['default']['class'] },
+                  this.props['class']
+                ) : _react2['default'].createElement(
+                  'span',
+                  { className: _GroupScss2['default']['class'] },
+                  '—'
+                )
+              ),
+              _react2['default'].createElement(
+                'div',
+                { className: _GroupScss2['default'].deleteButtonContainer },
+                _react2['default'].createElement(
+                  'button',
+                  { type: 'button', className: (0, _classnames2['default'])(_GroupScss2['default'].deleteButton, themeClass),
+                    onClick: this.deleteGroup.bind(this)
+                  },
+                  _react2['default'].createElement(_reactFontawesome2['default'], { name: 'trash-o', className: _GroupScss2['default'].deleteIcon }),
+                  'Delete'
+                )
               )
             )
           )
@@ -4998,7 +5069,7 @@ module.exports =
   
   
   // module
-  exports.push([module.id, ".Group_group_23_ {\n  width: 48%;\n  margin: 0 1% 10px;\n  display: inline-block;\n  border-width: 1px;\n  border-style: solid;\n  padding: 10px;\n  border-radius: 2px;\n  vertical-align: top\n}\n\n.Group_group_23_.Group_night_WFU {\n  border-color: #38231D\n}\n\n.Group_group_23_.Group_day_22J {\n  border-color: #ccc\n}\n\n.Group_groupHeader_g_v {\n  display: table;\n  width: 100%;\n}\n\n.Group_groupName_2Et {\n  margin-bottom: 0;\n  display: table-cell;\n  font-weight: normal;\n  font-size: 18px;\n}\n\n.Group_groupName_2Et a {\n  text-decoration: none;\n}\n\n.Group_colorBlockAndPicker_36H {\n  display: table-cell;\n  vertical-align: middle;\n}\n\n.Group_colorBlockAndPicker_36H {\n  width: 6.5em;\n  font-size: 12px;\n  position: relative;\n}\n\n.Group_colorBlockAndPicker_36H button.Group_colorBlock_1rp {\n  border-radius: 4px;\n  border: none;\n  width: 100%;\n  height: 24px;\n  line-height: 24px;\n  font-size: inherit;\n  padding: 0;\n  margin-left: 5px\n}\n\n.Group_colorBlockAndPicker_36H button.Group_colorBlock_1rp:focus {\n  outline: 0\n}\n\n.Group_colorBlockAndPicker_36H button.Group_colorBlock_1rp.Group_night_WFU {\n  background-color: #101010;\n  color: #97918A\n}\n\n.Group_colorBlockAndPicker_36H button.Group_colorBlock_1rp.Group_night_WFU:hover {\n  background-color: #231511;\n  color: #E5E4E1\n}\n\n.Group_colorBlockAndPicker_36H button.Group_colorBlock_1rp.Group_day_22J {\n  background-color: #fff;\n  color: #333\n}\n\n.Group_colorBlockAndPicker_36H .Group_colorPickerWrapper_3su {\n  z-index: 99;\n  position: absolute;\n  width: 400px;\n  border-width: 1px;\n  border-style: solid;\n  border-radius: 4px;\n  padding: 10px;\n  left: -175px;\n  -webkit-box-shadow: 0 0 5px 0 rgba(0,0,0,0.3);\n  box-shadow: 0 0 5px 0 rgba(0,0,0,0.3)\n}\n\n.Group_colorBlockAndPicker_36H .Group_colorPickerWrapper_3su.Group_night_WFU {\n  border-color: #38231D;\n  background-color: #101010\n}\n\n.Group_colorBlockAndPicker_36H .Group_colorPickerWrapper_3su.Group_day_22J {\n  border-color: #ccc;\n  background-color: #fff\n}\n\n.Group_openIndicator_2t7 {\n  margin-right: 5px;\n  font-size: 16px;\n}\n\n.Group_onOffSwitch_QKC {\n  float: right;\n}\n\n.Group_groupContents_3Z0 {\n  margin-left: 21px;\n  margin-right: 55px;\n  font-size: 13px;\n}\n\n.Group_groupLights_MkK {\n  list-style: none;\n  padding-left: 0;\n  margin-bottom: 10px;\n}\n\n.Group_groupLight_1rf {\n  white-space: nowrap;\n  display: inline-block\n}\n\n.Group_groupLight_1rf:after {\n  content: \",\\A0\"\n}\n\n.Group_groupLight_1rf:last-child {\n\n}\n\n.Group_groupLight_1rf:last-child:after {\n  content: \"\"\n}\n\n.Group_editLink_yeU {\n  text-decoration: none;\n  display: block;\n}\n\n.Group_editLink_yeU .Group_editIcon_2BR {\n  margin-right: 0.3em;\n}\n\n.Group_colorBlockAndPicker_36H {\n\n}\n\n.Group_colorBlock_1rp {\n\n}\n\n.Group_colorPickerWrapper_3su {\n\n}\n\n.Group_classContainer_3eH {\n  margin-top: 10px;\n}\n\n.Group_classContainer_3eH .Group_class_2kn {\n  padding-left: 0.3em;\n}\n", "", {"version":3,"sources":["/./src/components/Group/Group.scss"],"names":[],"mappings":"AAAA;EACE,WAAW;EACX,kBAAkB;EAClB,sBAAsB;EACtB,kBAAkB;EAClB,oBAAoB;EACpB,cAAc;EACd,mBAAmB;EACnB,mBAAoB;CASrB;;AAPC;EACE,qBAAsB;CACvB;;AAED;EACE,kBAAmB;CACpB;;AAGH;EACE,eAAe;EACf,YAAY;CACb;;AAED;EACE,iBAAiB;EACjB,oBAAoB;EACpB,oBAAoB;EACpB,gBAAgB;CAKjB;;AAHC;EACE,sBAAsB;CACvB;;AAGH;EACE,oBAAoB;EACpB,uBAAuB;CACxB;;AAED;EACE,aAAa;EACb,gBAAgB;EAChB,mBAAmB;CAsDpB;;AApDC;EACE,mBAAmB;EACnB,aAAa;EACb,YAAY;EACZ,aAAa;EACb,kBAAkB;EAClB,mBAAmB;EACnB,WAAW;EACX,gBAAiB;CAoBlB;;AAlBC;EACE,UAAW;CACZ;;AAED;EACE,0BAA0B;EAC1B,cAAe;CAMhB;;AAJC;EACE,0BAA0B;EAC1B,cAAe;CAChB;;AAGH;EACE,uBAAuB;EACvB,WAAY;CACb;;AAGH;EACE,YAAY;EACZ,mBAAmB;EACnB,aAAa;EACb,kBAAkB;EAClB,oBAAoB;EACpB,mBAAmB;EACnB,cAAc;EACd,aAAa;EACb,8CAA8C;EAC9C,qCAAsC;CAWvC;;AATC;EACE,sBAAsB;EACtB,yBAA0B;CAC3B;;AAED;EACE,mBAAmB;EACnB,sBAAuB;CACxB;;AAIL;EACE,kBAAkB;EAClB,gBAAgB;CACjB;;AAED;EACE,aAAa;CACd;;AAED;EACE,kBAAkB;EAClB,mBAAmB;EACnB,gBAAgB;CACjB;;AAED;EACE,iBAAiB;EACjB,gBAAgB;EAChB,oBAAoB;CACrB;;AAED;EACE,oBAAoB;EACpB,qBAAsB;CAWvB;;AATC;EACE,eAAgB;CACjB;;AAED;;CAIC;;AAHC;EACE,WAAY;CACb;;AAIL;EACE,sBAAsB;EACtB,eAAe;CAKhB;;AAHC;EACE,oBAAoB;CACrB;;AAGH;;CAEC;;AAED;;CAEC;;AAED;;CAEC;;AAED;EACE,iBAAiB;CAKlB;;AAHC;EACE,oBAAoB;CACrB","file":"Group.scss","sourcesContent":[".group {\n  width: 48%;\n  margin: 0 1% 10px;\n  display: inline-block;\n  border-width: 1px;\n  border-style: solid;\n  padding: 10px;\n  border-radius: 2px;\n  vertical-align: top;\n\n  &.night {\n    border-color: #38231D;\n  }\n\n  &.day {\n    border-color: #ccc;\n  }\n}\n\n.groupHeader {\n  display: table;\n  width: 100%;\n}\n\n.groupName {\n  margin-bottom: 0;\n  display: table-cell;\n  font-weight: normal;\n  font-size: 18px;\n\n  a {\n    text-decoration: none;\n  }\n}\n\n.colorBlockAndPicker {\n  display: table-cell;\n  vertical-align: middle;\n}\n\n.colorBlockAndPicker {\n  width: 6.5em;\n  font-size: 12px;\n  position: relative;\n\n  button.colorBlock {\n    border-radius: 4px;\n    border: none;\n    width: 100%;\n    height: 24px;\n    line-height: 24px;\n    font-size: inherit;\n    padding: 0;\n    margin-left: 5px;\n\n    &:focus {\n      outline: 0;\n    }\n\n    &.night {\n      background-color: #101010;\n      color: #97918A;\n\n      &:hover {\n        background-color: #231511;\n        color: #E5E4E1;\n      }\n    }\n\n    &.day {\n      background-color: #fff;\n      color: #333;\n    }\n  }\n\n  .colorPickerWrapper {\n    z-index: 99;\n    position: absolute;\n    width: 400px;\n    border-width: 1px;\n    border-style: solid;\n    border-radius: 4px;\n    padding: 10px;\n    left: -175px;\n    -webkit-box-shadow: 0 0 5px 0 rgba(0,0,0,0.3);\n    box-shadow: 0 0 5px 0 rgba(0,0,0,0.3);\n\n    &.night {\n      border-color: #38231D;\n      background-color: #101010;\n    }\n\n    &.day {\n      border-color: #ccc;\n      background-color: #fff;\n    }\n  }\n}\n\n.openIndicator {\n  margin-right: 5px;\n  font-size: 16px;\n}\n\n.onOffSwitch {\n  float: right;\n}\n\n.groupContents {\n  margin-left: 21px;\n  margin-right: 55px;\n  font-size: 13px;\n}\n\n.groupLights {\n  list-style: none;\n  padding-left: 0;\n  margin-bottom: 10px;\n}\n\n.groupLight {\n  white-space: nowrap;\n  display: inline-block;\n\n  &:after {\n    content: \",\\a0\";\n  }\n\n  &:last-child {\n    &:after {\n      content: \"\";\n    }\n  }\n}\n\n.editLink {\n  text-decoration: none;\n  display: block;\n\n  .editIcon {\n    margin-right: 0.3em;\n  }\n}\n\n.colorBlockAndPicker {\n\n}\n\n.colorBlock {\n\n}\n\n.colorPickerWrapper {\n\n}\n\n.classContainer {\n  margin-top: 10px;\n\n  .class {\n    padding-left: 0.3em;\n  }\n}\n"],"sourceRoot":"webpack://"}]);
+  exports.push([module.id, ".Group_group_23_ {\n  width: 48%;\n  margin: 0 1% 10px;\n  display: inline-block;\n  border-width: 1px;\n  border-style: solid;\n  padding: 10px;\n  border-radius: 2px;\n  vertical-align: top\n}\n\n.Group_group_23_.Group_night_WFU {\n  border-color: #38231D\n}\n\n.Group_group_23_.Group_day_22J {\n  border-color: #ccc\n}\n\n.Group_groupHeader_g_v {\n  display: table;\n  width: 100%;\n}\n\n.Group_groupName_2Et {\n  margin-bottom: 0;\n  display: table-cell;\n  font-weight: normal;\n  font-size: 18px;\n}\n\n.Group_groupName_2Et a {\n  text-decoration: none;\n}\n\n.Group_colorBlockAndPicker_36H {\n  display: table-cell;\n  vertical-align: middle;\n}\n\n.Group_colorBlockAndPicker_36H {\n  width: 6.5em;\n  font-size: 12px;\n  position: relative;\n}\n\n.Group_colorBlockAndPicker_36H button.Group_colorBlock_1rp {\n  border-radius: 4px;\n  border: none;\n  width: 100%;\n  height: 24px;\n  line-height: 24px;\n  font-size: inherit;\n  padding: 0;\n  margin-left: 5px\n}\n\n.Group_colorBlockAndPicker_36H button.Group_colorBlock_1rp:focus {\n  outline: 0\n}\n\n.Group_colorBlockAndPicker_36H button.Group_colorBlock_1rp.Group_night_WFU {\n  background-color: #101010;\n  color: #97918A\n}\n\n.Group_colorBlockAndPicker_36H button.Group_colorBlock_1rp.Group_night_WFU:hover {\n  background-color: #231511;\n  color: #E5E4E1\n}\n\n.Group_colorBlockAndPicker_36H button.Group_colorBlock_1rp.Group_day_22J {\n  background-color: #fff;\n  color: #333\n}\n\n.Group_colorBlockAndPicker_36H .Group_colorPickerWrapper_3su {\n  z-index: 99;\n  position: absolute;\n  width: 400px;\n  border-width: 1px;\n  border-style: solid;\n  border-radius: 4px;\n  padding: 10px;\n  left: -175px;\n  -webkit-box-shadow: 0 0 5px 0 rgba(0,0,0,0.3);\n  box-shadow: 0 0 5px 0 rgba(0,0,0,0.3)\n}\n\n.Group_colorBlockAndPicker_36H .Group_colorPickerWrapper_3su.Group_night_WFU {\n  border-color: #38231D;\n  background-color: #101010\n}\n\n.Group_colorBlockAndPicker_36H .Group_colorPickerWrapper_3su.Group_day_22J {\n  border-color: #ccc;\n  background-color: #fff\n}\n\n.Group_openIndicator_2t7 {\n  margin-right: 5px;\n  font-size: 16px;\n}\n\n.Group_onOffSwitch_QKC {\n  float: right;\n}\n\n.Group_groupContents_3Z0 {\n  margin-left: 21px;\n  font-size: 13px;\n  margin-top: 5px;\n}\n\n.Group_groupLights_MkK {\n  list-style: none;\n  padding-left: 0;\n  margin-bottom: 10px;\n}\n\n.Group_groupLight_1rf {\n  white-space: nowrap;\n  display: inline-block\n}\n\n.Group_groupLight_1rf:after {\n  content: \",\\A0\"\n}\n\n.Group_groupLight_1rf:last-child {\n\n}\n\n.Group_groupLight_1rf:last-child:after {\n  content: \"\"\n}\n\n.Group_editLink_yeU {\n  text-decoration: none;\n  display: block;\n}\n\n.Group_editLink_yeU .Group_editIcon_2BR {\n  margin-right: 0.3em;\n}\n\n.Group_colorBlockAndPicker_36H {\n\n}\n\n.Group_colorBlock_1rp {\n\n}\n\n.Group_colorPickerWrapper_3su {\n\n}\n\n.Group_footer_B4M {\n  display: table;\n  width: 100%;\n  margin-top: 10px;\n}\n\n.Group_classContainer_3eH, .Group_deleteButtonContainer_1b6 {\n  display: table-cell;\n  vertical-align: middle;\n  width: 50%;\n}\n\n.Group_classContainer_3eH .Group_class_2kn {\n  padding-left: 0.3em;\n}\n\n.Group_deleteButtonContainer_1b6 {\n  text-align: right;\n}\n\n.Group_deleteButton_vVc {\n  padding: 3px 6px;\n  font-size: 12px;\n  border-radius: 2px;\n}\n\n.Group_deleteButton_vVc .Group_deleteIcon_39J {\n  margin-right: 5px;\n}\n\n.Group_deleteButton_vVc.Group_day_22J .Group_deleteIcon_39J {\n  color: #c9302c\n}\n\n.Group_deleteButton_vVc.Group_night_WFU .Group_deleteIcon_39J {\n  color: #E16C51\n}\n", "", {"version":3,"sources":["/./src/components/Group/Group.scss"],"names":[],"mappings":"AAAA;EACE,WAAW;EACX,kBAAkB;EAClB,sBAAsB;EACtB,kBAAkB;EAClB,oBAAoB;EACpB,cAAc;EACd,mBAAmB;EACnB,mBAAoB;CASrB;;AAPC;EACE,qBAAsB;CACvB;;AAED;EACE,kBAAmB;CACpB;;AAGH;EACE,eAAe;EACf,YAAY;CACb;;AAED;EACE,iBAAiB;EACjB,oBAAoB;EACpB,oBAAoB;EACpB,gBAAgB;CAKjB;;AAHC;EACE,sBAAsB;CACvB;;AAGH;EACE,oBAAoB;EACpB,uBAAuB;CACxB;;AAED;EACE,aAAa;EACb,gBAAgB;EAChB,mBAAmB;CAsDpB;;AApDC;EACE,mBAAmB;EACnB,aAAa;EACb,YAAY;EACZ,aAAa;EACb,kBAAkB;EAClB,mBAAmB;EACnB,WAAW;EACX,gBAAiB;CAoBlB;;AAlBC;EACE,UAAW;CACZ;;AAED;EACE,0BAA0B;EAC1B,cAAe;CAMhB;;AAJC;EACE,0BAA0B;EAC1B,cAAe;CAChB;;AAGH;EACE,uBAAuB;EACvB,WAAY;CACb;;AAGH;EACE,YAAY;EACZ,mBAAmB;EACnB,aAAa;EACb,kBAAkB;EAClB,oBAAoB;EACpB,mBAAmB;EACnB,cAAc;EACd,aAAa;EACb,8CAA8C;EAC9C,qCAAsC;CAWvC;;AATC;EACE,sBAAsB;EACtB,yBAA0B;CAC3B;;AAED;EACE,mBAAmB;EACnB,sBAAuB;CACxB;;AAIL;EACE,kBAAkB;EAClB,gBAAgB;CACjB;;AAED;EACE,aAAa;CACd;;AAED;EACE,kBAAkB;EAClB,gBAAgB;EAChB,gBAAgB;CACjB;;AAED;EACE,iBAAiB;EACjB,gBAAgB;EAChB,oBAAoB;CACrB;;AAED;EACE,oBAAoB;EACpB,qBAAsB;CAWvB;;AATC;EACE,eAAgB;CACjB;;AAED;;CAIC;;AAHC;EACE,WAAY;CACb;;AAIL;EACE,sBAAsB;EACtB,eAAe;CAKhB;;AAHC;EACE,oBAAoB;CACrB;;AAGH;;CAEC;;AAED;;CAEC;;AAED;;CAEC;;AAED;EACE,eAAe;EACf,YAAY;EACZ,iBAAiB;CAClB;;AAED;EAEE,oBAAoB;EACpB,uBAAuB;EACvB,WAAW;CACZ;;AAGC;EACE,oBAAoB;CACrB;;AAGH;EACE,kBAAkB;CACnB;;AAED;EACE,iBAAiB;EACjB,gBAAgB;EAChB,mBAAmB;CAiBpB;;AAfC;EACE,kBAAkB;CACnB;;AAGC;EACE,cAAe;CAChB;;AAID;EACE,cAAe;CAChB","file":"Group.scss","sourcesContent":[".group {\n  width: 48%;\n  margin: 0 1% 10px;\n  display: inline-block;\n  border-width: 1px;\n  border-style: solid;\n  padding: 10px;\n  border-radius: 2px;\n  vertical-align: top;\n\n  &.night {\n    border-color: #38231D;\n  }\n\n  &.day {\n    border-color: #ccc;\n  }\n}\n\n.groupHeader {\n  display: table;\n  width: 100%;\n}\n\n.groupName {\n  margin-bottom: 0;\n  display: table-cell;\n  font-weight: normal;\n  font-size: 18px;\n\n  a {\n    text-decoration: none;\n  }\n}\n\n.colorBlockAndPicker {\n  display: table-cell;\n  vertical-align: middle;\n}\n\n.colorBlockAndPicker {\n  width: 6.5em;\n  font-size: 12px;\n  position: relative;\n\n  button.colorBlock {\n    border-radius: 4px;\n    border: none;\n    width: 100%;\n    height: 24px;\n    line-height: 24px;\n    font-size: inherit;\n    padding: 0;\n    margin-left: 5px;\n\n    &:focus {\n      outline: 0;\n    }\n\n    &.night {\n      background-color: #101010;\n      color: #97918A;\n\n      &:hover {\n        background-color: #231511;\n        color: #E5E4E1;\n      }\n    }\n\n    &.day {\n      background-color: #fff;\n      color: #333;\n    }\n  }\n\n  .colorPickerWrapper {\n    z-index: 99;\n    position: absolute;\n    width: 400px;\n    border-width: 1px;\n    border-style: solid;\n    border-radius: 4px;\n    padding: 10px;\n    left: -175px;\n    -webkit-box-shadow: 0 0 5px 0 rgba(0,0,0,0.3);\n    box-shadow: 0 0 5px 0 rgba(0,0,0,0.3);\n\n    &.night {\n      border-color: #38231D;\n      background-color: #101010;\n    }\n\n    &.day {\n      border-color: #ccc;\n      background-color: #fff;\n    }\n  }\n}\n\n.openIndicator {\n  margin-right: 5px;\n  font-size: 16px;\n}\n\n.onOffSwitch {\n  float: right;\n}\n\n.groupContents {\n  margin-left: 21px;\n  font-size: 13px;\n  margin-top: 5px;\n}\n\n.groupLights {\n  list-style: none;\n  padding-left: 0;\n  margin-bottom: 10px;\n}\n\n.groupLight {\n  white-space: nowrap;\n  display: inline-block;\n\n  &:after {\n    content: \",\\a0\";\n  }\n\n  &:last-child {\n    &:after {\n      content: \"\";\n    }\n  }\n}\n\n.editLink {\n  text-decoration: none;\n  display: block;\n\n  .editIcon {\n    margin-right: 0.3em;\n  }\n}\n\n.colorBlockAndPicker {\n\n}\n\n.colorBlock {\n\n}\n\n.colorPickerWrapper {\n\n}\n\n.footer {\n  display: table;\n  width: 100%;\n  margin-top: 10px;\n}\n\n.classContainer,\n.deleteButtonContainer {\n  display: table-cell;\n  vertical-align: middle;\n  width: 50%;\n}\n\n.classContainer {\n  .class {\n    padding-left: 0.3em;\n  }\n}\n\n.deleteButtonContainer {\n  text-align: right;\n}\n\n.deleteButton {\n  padding: 3px 6px;\n  font-size: 12px;\n  border-radius: 2px;\n\n  .deleteIcon {\n    margin-right: 5px;\n  }\n\n  &.day {\n    .deleteIcon {\n      color: #c9302c;\n    }\n  }\n\n  &.night {\n    .deleteIcon {\n      color: #E16C51;\n    }\n  }\n}\n"],"sourceRoot":"webpack://"}]);
   
   // exports
   exports.locals = {
@@ -5017,8 +5088,12 @@ module.exports =
   	"groupLight": "Group_groupLight_1rf",
   	"editLink": "Group_editLink_yeU",
   	"editIcon": "Group_editIcon_2BR",
+  	"footer": "Group_footer_B4M",
   	"classContainer": "Group_classContainer_3eH",
-  	"class": "Group_class_2kn"
+  	"deleteButtonContainer": "Group_deleteButtonContainer_1b6",
+  	"class": "Group_class_2kn",
+  	"deleteButton": "Group_deleteButton_vVc",
+  	"deleteIcon": "Group_deleteIcon_39J"
   };
 
 /***/ },
@@ -7212,6 +7287,22 @@ module.exports =
               return context$2$0.abrupt('return', this.makeRequest('/group/' + (groupID || '0')));
   
             case 1:
+            case 'end':
+              return context$2$0.stop();
+          }
+        }, null, this);
+      }
+    }, {
+      key: 'deleteGroup',
+      value: function deleteGroup(groupID) {
+        var opts;
+        return regeneratorRuntime.async(function deleteGroup$(context$2$0) {
+          while (1) switch (context$2$0.prev = context$2$0.next) {
+            case 0:
+              opts = { method: 'DELETE' };
+              return context$2$0.abrupt('return', this.makeRequest('/group/' + groupID, opts));
+  
+            case 2:
             case 'end':
               return context$2$0.stop();
           }

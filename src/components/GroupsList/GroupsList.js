@@ -9,6 +9,7 @@ class GroupsList extends Component {
     groups: PropTypes.array.isRequired,
     onLightLoaded: PropTypes.func.isRequired,
     onEdit: PropTypes.func.isRequired,
+    onGroupDeleted: PropTypes.func.isRequired,
   };
 
   constructor(props, context) {
@@ -31,6 +32,7 @@ class GroupsList extends Component {
           return (
             <Group key={key} {...group}
               onLightLoaded={this.props.onLightLoaded}
+              onDeleted={this.props.onGroupDeleted}
               onEdit={this.props.onEdit}
             />
           );

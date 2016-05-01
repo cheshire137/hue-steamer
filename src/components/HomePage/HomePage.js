@@ -86,12 +86,9 @@ class HomePage extends Component {
   }
 
   onGroupsLoaded(rawGroups) {
-    const groups = [];
-    for (let i = 0; i < rawGroups.length; i++) {
-      if (rawGroups[i].id !== '0') {
-        groups.push(rawGroups[i]);
-      }
-    }
+    const groups = rawGroups.slice().filter((group) => {
+      return typeof group === 'object' && group.id !== '0';
+    });
     groups.sort(this.nameSort);
     this.setState({ groups });
   }
@@ -150,6 +147,13 @@ class HomePage extends Component {
     }, () => {
       this.showGroupsTab();
     });
+  }
+
+  onGroupDeleted(groupID) {
+    const newGroups = this.state.groups.slice().filter((group) => {
+      return group.id !== groupID;
+    });
+    this.onGroupsLoaded(newGroups);
   }
 
   onGroupCanceled() {
@@ -393,6 +397,7 @@ class HomePage extends Component {
               <GroupsList groups={this.state.groups}
                 onLightLoaded={this.onLightLoaded.bind(this)}
                 onEdit={this.onEditGroup.bind(this)}
+                onGroupDeleted={this.onGroupDeleted.bind(this)}
               />
             ) : (
               <p className={s.loading}>

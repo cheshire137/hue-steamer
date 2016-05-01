@@ -19,6 +19,7 @@ class Group extends Component {
     onLightLoaded: PropTypes.func.isRequired,
     onEdit: PropTypes.func.isRequired,
     class: PropTypes.string,
+    onDeleted: PropTypes.func.isRequired,
   };
 
   constructor(props, context) {
@@ -61,6 +62,16 @@ class Group extends Component {
       }
       this.setState({ latestColor, canSetColor: colors.length > 0 });
     }
+  }
+
+  onDeleted(success) {
+    if (success) {
+      this.props.onDeleted(this.props.id);
+    }
+  }
+
+  onDeleteError(response) {
+    console.error('failed to delete group', this.props.id, response);
   }
 
   onEdit(event) {
@@ -161,6 +172,17 @@ class Group extends Component {
     this.setState({ showColorPicker: !this.state.showColorPicker });
   }
 
+  deleteGroup(event) {
+    event.preventDefault();
+    event.target.blur();
+    if (!confirm('Are you sure you want to delete ' + this.props.name + '?')) {
+      return;
+    }
+    Bridge.deleteGroup(this.props.id).
+           then(this.onDeleted.bind(this)).
+           catch(this.onDeleteError.bind(this));
+  }
+
   render() {
     const groupStyle = {};
     if (this.state.open) {
@@ -176,7 +198,7 @@ class Group extends Component {
     if (this.areAllLightsOn()) {
       switchState = 2;
     }
-    const nightDayClass = Daytime.isNight() ? s.night : s.day;
+    const themeClass = Daytime.isNight() ? s.night : s.day;
     const colorPickerStyle = {
       display: this.state.showColorPicker ? 'block' : 'none',
     };
@@ -185,7 +207,7 @@ class Group extends Component {
       pickerColor = '#' + this.state.latestColor;
     }
     return (
-      <li className={cx(s.group, nightDayClass)}>
+      <li className={cx(s.group, themeClass)}>
         <header className={s.groupHeader}>
           <h3 className={s.groupName}>
             <a href="#" onClick={this.toggleGroupOpen.bind(this)}>
@@ -203,11 +225,11 @@ class Group extends Component {
           {this.state.canSetColor ? (
             <div className={s.colorBlockAndPicker}>
               <button type="button" onClick={this.toggleColorPicker.bind(this)}
-                className={cx(s.colorBlock, nightDayClass)}
+                className={cx(s.colorBlock, themeClass)}
               >
                 Set Color
               </button>
-              <div style={colorPickerStyle} className={cx(s.colorPickerWrapper, nightDayClass)}>
+              <div style={colorPickerStyle} className={cx(s.colorPickerWrapper, themeClass)}>
                 <SliderPicker color={pickerColor}
                   onChangeComplete={this.onColorPickerChange.bind(this)}
                 />
@@ -231,14 +253,24 @@ class Group extends Component {
             <FontAwesome name="pencil" className={s.editIcon} />
             Edit
           </a>
-          <div className={s.classContainer}>
-            Class:
-            {typeof this.props.class === 'string' ? (
-              <span className={s.class}>{this.props.class}</span>
-            ) : (
-              <span className={s.class}>&mdash;</span>
-            )}
-          </div>
+          <footer className={s.footer}>
+            <div className={s.classContainer}>
+              Class:
+              {typeof this.props.class === 'string' ? (
+                <span className={s.class}>{this.props.class}</span>
+              ) : (
+                <span className={s.class}>&mdash;</span>
+              )}
+            </div>
+            <div className={s.deleteButtonContainer}>
+              <button type="button" className={cx(s.deleteButton, themeClass)}
+                onClick={this.deleteGroup.bind(this)}
+              >
+                <FontAwesome name="trash-o" className={s.deleteIcon} />
+                Delete
+              </button>
+            </div>
+          </footer>
         </div>
       </li>
     );

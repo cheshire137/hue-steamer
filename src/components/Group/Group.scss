@@ -108,8 +108,8 @@
 
 .groupContents {
   margin-left: 21px;
-  margin-right: 55px;
   font-size: 13px;
+  margin-top: 5px;
 }
 
 .groupLights {
@@ -154,10 +154,47 @@
 
 }
 
-.classContainer {
+.footer {
+  display: table;
+  width: 100%;
   margin-top: 10px;
+}
 
+.classContainer,
+.deleteButtonContainer {
+  display: table-cell;
+  vertical-align: middle;
+  width: 50%;
+}
+
+.classContainer {
   .class {
     padding-left: 0.3em;
+  }
+}
+
+.deleteButtonContainer {
+  text-align: right;
+}
+
+.deleteButton {
+  padding: 3px 6px;
+  font-size: 12px;
+  border-radius: 2px;
+
+  .deleteIcon {
+    margin-right: 5px;
+  }
+
+  &.day {
+    .deleteIcon {
+      color: #c9302c;
+    }
+  }
+
+  &.night {
+    .deleteIcon {
+      color: #E16C51;
+    }
   }
 }
