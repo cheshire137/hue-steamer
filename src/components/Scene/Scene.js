@@ -35,9 +35,9 @@ class Scene extends Component {
     const lightCount = this.props.lights.length;
     const units = lightCount === 1 ? 'light' : 'lights';
     const themeClass = Daytime.isNight() ? s.night : s.day;
-    const lightStyle = { display: 'none' };
+    const openStyle = { display: 'none' };
     if (this.state.open) {
-      lightStyle.display = 'block';
+      openStyle.display = 'block';
     }
     return (
       <li className={cx(s.scene, themeClass)}>
@@ -52,14 +52,19 @@ class Scene extends Component {
           </a>
           <span className={s.lightCount}>{lightCount} {units}</span>
         </h3>
-        <p className={s.lights} style={lightStyle}>
-          {this.props.lights.map((light) => {
-            if (typeof light === 'string') {
-              return light;
-            }
-            return light.name;
-          }).join(', ')}
-        </p>
+        <div style={openStyle}>
+          <p className={s.lights}>
+            {this.props.lights.map((light) => {
+              if (typeof light === 'string') {
+                return light;
+              }
+              return light.name;
+            }).join(', ')}
+          </p>
+          <div className={s.id}>
+            ID: {this.props.id}
+          </div>
+        </div>
       </li>
     );
   }

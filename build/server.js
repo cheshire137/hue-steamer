@@ -8018,9 +8018,9 @@ module.exports =
         var lightCount = this.props.lights.length;
         var units = lightCount === 1 ? 'light' : 'lights';
         var themeClass = _modelsDaytime2['default'].isNight() ? _SceneScss2['default'].night : _SceneScss2['default'].day;
-        var lightStyle = { display: 'none' };
+        var openStyle = { display: 'none' };
         if (this.state.open) {
-          lightStyle.display = 'block';
+          openStyle.display = 'block';
         }
         return _react2['default'].createElement(
           'li',
@@ -8045,14 +8045,24 @@ module.exports =
             )
           ),
           _react2['default'].createElement(
-            'p',
-            { className: _SceneScss2['default'].lights, style: lightStyle },
-            this.props.lights.map(function (light) {
-              if (typeof light === 'string') {
-                return light;
-              }
-              return light.name;
-            }).join(', ')
+            'div',
+            { style: openStyle },
+            _react2['default'].createElement(
+              'p',
+              { className: _SceneScss2['default'].lights },
+              this.props.lights.map(function (light) {
+                if (typeof light === 'string') {
+                  return light;
+                }
+                return light.name;
+              }).join(', ')
+            ),
+            _react2['default'].createElement(
+              'div',
+              { className: _SceneScss2['default'].id },
+              'ID: ',
+              this.props.id
+            )
           )
         );
       }
@@ -8107,7 +8117,7 @@ module.exports =
   
   
   // module
-  exports.push([module.id, ".Scene_scene_1Ly {\n  width: 48%;\n  margin: 0 1% 10px;\n  display: inline-block;\n  border-width: 1px;\n  border-style: solid;\n  padding: 10px;\n  border-radius: 2px;\n  vertical-align: top\n}\n\n.Scene_scene_1Ly.Scene_night_19h {\n  border-color: #38231D\n}\n\n.Scene_scene_1Ly.Scene_day_1Yn {\n  border-color: #ccc\n}\n\n.Scene_name_2wR {\n  margin: 0;\n  font-weight: normal;\n}\n\n.Scene_name_2wR a {\n  text-overflow: ellipsis;\n  overflow: hidden;\n  white-space: nowrap;\n  width: 79%;\n  text-decoration: none;\n  display: block;\n  float: left;\n}\n\n.Scene_name_2wR.Scene_day_1Yn {\n  color: #97918A\n}\n\n.Scene_name_2wR.Scene_night_19h {\n  color: #E16C51\n}\n\n.Scene_name_2wR:after {\n  content: \"\";\n  display: table;\n  clear: both\n}\n\n.Scene_openIndicator_etj {\n  margin-right: 5px;\n  font-size: 16px;\n}\n\n.Scene_lightCount_3Fy {\n  font-size: 14px;\n  float: right;\n  opacity: 0.8;\n}\n\n.Scene_lights_1Hk {\n  margin: 5px 0 0 0;\n}\n", "", {"version":3,"sources":["/./src/components/Scene/Scene.scss"],"names":[],"mappings":"AAAA;EACE,WAAW;EACX,kBAAkB;EAClB,sBAAsB;EACtB,kBAAkB;EAClB,oBAAoB;EACpB,cAAc;EACd,mBAAmB;EACnB,mBAAoB;CASrB;;AAPC;EACE,qBAAsB;CACvB;;AAED;EACE,kBAAmB;CACpB;;AAGH;EACE,UAAU;EACV,oBAAoB;CAyBrB;;AAvBC;EACE,wBAAwB;EACxB,iBAAiB;EACjB,oBAAoB;EACpB,WAAW;EACX,sBAAsB;EACtB,eAAe;EACf,YAAY;CACb;;AAED;EACE,cAAe;CAChB;;AAED;EACE,cAAe;CAChB;;AAED;EACE,YAAY;EACZ,eAAe;EACf,WAAY;CACb;;AAGH;EACE,kBAAkB;EAClB,gBAAgB;CACjB;;AAED;EACE,gBAAgB;EAChB,aAAa;EACb,aAAa;CACd;;AAED;EACE,kBAAkB;CACnB","file":"Scene.scss","sourcesContent":[".scene {\n  width: 48%;\n  margin: 0 1% 10px;\n  display: inline-block;\n  border-width: 1px;\n  border-style: solid;\n  padding: 10px;\n  border-radius: 2px;\n  vertical-align: top;\n\n  &.night {\n    border-color: #38231D;\n  }\n\n  &.day {\n    border-color: #ccc;\n  }\n}\n\n.name {\n  margin: 0;\n  font-weight: normal;\n\n  a {\n    text-overflow: ellipsis;\n    overflow: hidden;\n    white-space: nowrap;\n    width: 79%;\n    text-decoration: none;\n    display: block;\n    float: left;\n  }\n\n  &.day {\n    color: #97918A;\n  }\n\n  &.night {\n    color: #E16C51;\n  }\n\n  &:after {\n    content: \"\";\n    display: table;\n    clear: both;\n  }\n}\n\n.openIndicator {\n  margin-right: 5px;\n  font-size: 16px;\n}\n\n.lightCount {\n  font-size: 14px;\n  float: right;\n  opacity: 0.8;\n}\n\n.lights {\n  margin: 5px 0 0 0;\n}\n"],"sourceRoot":"webpack://"}]);
+  exports.push([module.id, ".Scene_scene_1Ly {\n  width: 48%;\n  margin: 0 1% 10px;\n  display: inline-block;\n  border-width: 1px;\n  border-style: solid;\n  padding: 10px;\n  border-radius: 2px;\n  vertical-align: top\n}\n\n.Scene_scene_1Ly.Scene_night_19h {\n  border-color: #38231D\n}\n\n.Scene_scene_1Ly.Scene_day_1Yn {\n  border-color: #ccc\n}\n\n.Scene_name_2wR {\n  margin: 0;\n  font-weight: normal;\n}\n\n.Scene_name_2wR a {\n  text-overflow: ellipsis;\n  overflow: hidden;\n  white-space: nowrap;\n  width: 79%;\n  text-decoration: none;\n  display: block;\n  float: left;\n}\n\n.Scene_name_2wR.Scene_day_1Yn {\n  color: #97918A\n}\n\n.Scene_name_2wR.Scene_night_19h {\n  color: #E16C51\n}\n\n.Scene_name_2wR:after {\n  content: \"\";\n  display: table;\n  clear: both\n}\n\n.Scene_openIndicator_etj {\n  margin-right: 5px;\n  font-size: 16px;\n}\n\n.Scene_lightCount_3Fy {\n  font-size: 14px;\n  float: right;\n  opacity: 0.8;\n}\n\n.Scene_lights_1Hk {\n  margin: 5px 0 0 0;\n}\n\n.Scene_id_WPz {\n  font-family: \"Andale Mono\", \"Courier New\", monospace;\n  margin-top: 5px;\n  font-size: 12px;\n}\n", "", {"version":3,"sources":["/./src/components/Scene/Scene.scss"],"names":[],"mappings":"AAAA;EACE,WAAW;EACX,kBAAkB;EAClB,sBAAsB;EACtB,kBAAkB;EAClB,oBAAoB;EACpB,cAAc;EACd,mBAAmB;EACnB,mBAAoB;CASrB;;AAPC;EACE,qBAAsB;CACvB;;AAED;EACE,kBAAmB;CACpB;;AAGH;EACE,UAAU;EACV,oBAAoB;CAyBrB;;AAvBC;EACE,wBAAwB;EACxB,iBAAiB;EACjB,oBAAoB;EACpB,WAAW;EACX,sBAAsB;EACtB,eAAe;EACf,YAAY;CACb;;AAED;EACE,cAAe;CAChB;;AAED;EACE,cAAe;CAChB;;AAED;EACE,YAAY;EACZ,eAAe;EACf,WAAY;CACb;;AAGH;EACE,kBAAkB;EAClB,gBAAgB;CACjB;;AAED;EACE,gBAAgB;EAChB,aAAa;EACb,aAAa;CACd;;AAED;EACE,kBAAkB;CACnB;;AAED;EACE,qDAAqD;EACrD,gBAAgB;EAChB,gBAAgB;CACjB","file":"Scene.scss","sourcesContent":[".scene {\n  width: 48%;\n  margin: 0 1% 10px;\n  display: inline-block;\n  border-width: 1px;\n  border-style: solid;\n  padding: 10px;\n  border-radius: 2px;\n  vertical-align: top;\n\n  &.night {\n    border-color: #38231D;\n  }\n\n  &.day {\n    border-color: #ccc;\n  }\n}\n\n.name {\n  margin: 0;\n  font-weight: normal;\n\n  a {\n    text-overflow: ellipsis;\n    overflow: hidden;\n    white-space: nowrap;\n    width: 79%;\n    text-decoration: none;\n    display: block;\n    float: left;\n  }\n\n  &.day {\n    color: #97918A;\n  }\n\n  &.night {\n    color: #E16C51;\n  }\n\n  &:after {\n    content: \"\";\n    display: table;\n    clear: both;\n  }\n}\n\n.openIndicator {\n  margin-right: 5px;\n  font-size: 16px;\n}\n\n.lightCount {\n  font-size: 14px;\n  float: right;\n  opacity: 0.8;\n}\n\n.lights {\n  margin: 5px 0 0 0;\n}\n\n.id {\n  font-family: \"Andale Mono\", \"Courier New\", monospace;\n  margin-top: 5px;\n  font-size: 12px;\n}\n"],"sourceRoot":"webpack://"}]);
   
   // exports
   exports.locals = {
@@ -8117,7 +8127,8 @@ module.exports =
   	"name": "Scene_name_2wR",
   	"openIndicator": "Scene_openIndicator_etj",
   	"lightCount": "Scene_lightCount_3Fy",
-  	"lights": "Scene_lights_1Hk"
+  	"lights": "Scene_lights_1Hk",
+  	"id": "Scene_id_WPz"
   };
 
 /***/ }
