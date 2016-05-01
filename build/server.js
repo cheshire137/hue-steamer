@@ -6623,6 +6623,14 @@ module.exports =
         if (this.state.sort === 'model') {
           return a.modelid.localeCompare(b.modelid);
         }
+        if (this.state.sort === 'state') {
+          var aIsOn = a.state.on;
+          var bIsOn = b.state.on;
+          if (aIsOn && bIsOn) {
+            return 0;
+          }
+          return aIsOn ? -1 : 1;
+        }
         var aName = a.name.toLowerCase();
         var bName = b.name.toLowerCase();
         return aName.localeCompare(bName);
@@ -6746,6 +6754,11 @@ module.exports =
               'option',
               { value: 'model' },
               'Model'
+            ),
+            _react2['default'].createElement(
+              'option',
+              { value: 'state' },
+              'State'
             )
           ),
           this.isFiltered() ? _react2['default'].createElement(

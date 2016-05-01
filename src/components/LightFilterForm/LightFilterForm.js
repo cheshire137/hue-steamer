@@ -130,6 +130,14 @@ class LightFilterForm extends Component {
     if (this.state.sort === 'model') {
       return a.modelid.localeCompare(b.modelid);
     }
+    if (this.state.sort === 'state') {
+      const aIsOn = a.state.on;
+      const bIsOn = b.state.on;
+      if (aIsOn && bIsOn) {
+        return 0;
+      }
+      return aIsOn ? -1 : 1;
+    }
     const aName = a.name.toLowerCase();
     const bName = b.name.toLowerCase();
     return aName.localeCompare(bName);
@@ -207,6 +215,7 @@ class LightFilterForm extends Component {
             Name
           </option>
           <option value="model">Model</option>
+          <option value="state">State</option>
         </select>
         {this.isFiltered() ? (
           <a href="#" className={s.clear} onClick={this.clearFilter.bind(this)}>
