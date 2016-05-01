@@ -4941,9 +4941,6 @@ module.exports =
                 this.props.name
               )
             ),
-            _react2['default'].createElement(_OnOffSwitchOnOffSwitch2['default'], { id: checkboxID, state: switchState,
-              onToggle: this.onLightsToggle.bind(this)
-            }),
             this.state.canSetColor ? _react2['default'].createElement(
               'div',
               { className: _GroupScss2['default'].colorBlockAndPicker },
@@ -4961,7 +4958,10 @@ module.exports =
                   onChangeComplete: this.onColorPickerChange.bind(this)
                 })
               )
-            ) : ''
+            ) : '',
+            _react2['default'].createElement(_OnOffSwitchOnOffSwitch2['default'], { id: checkboxID, state: switchState,
+              onToggle: this.onLightsToggle.bind(this)
+            })
           ),
           _react2['default'].createElement(
             'div',

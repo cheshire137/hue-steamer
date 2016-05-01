@@ -219,9 +219,6 @@ class Group extends Component {
               {this.props.name}
             </a>
           </h3>
-          <OnOffSwitch id={checkboxID} state={switchState}
-            onToggle={this.onLightsToggle.bind(this)}
-          />
           {this.state.canSetColor ? (
             <div className={s.colorBlockAndPicker}>
               <button type="button" onClick={this.toggleColorPicker.bind(this)}
@@ -236,6 +233,9 @@ class Group extends Component {
               </div>
             </div>
           ) : ''}
+          <OnOffSwitch id={checkboxID} state={switchState}
+            onToggle={this.onLightsToggle.bind(this)}
+          />
         </header>
         <div className={s.groupContents} style={groupStyle}>
           <ul className={s.groupLights}>
