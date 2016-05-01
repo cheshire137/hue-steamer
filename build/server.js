@@ -3339,9 +3339,7 @@ module.exports =
             groups.push(rawGroups[i]);
           }
         }
-        groups.sort(function (groupA, groupB) {
-          return groupA.name.localeCompare(groupB.name);
-        });
+        groups.sort(this.nameSort);
         this.setState({ groups: groups });
       }
     }, {
@@ -3358,6 +3356,7 @@ module.exports =
       key: 'onScenesLoaded',
       value: function onScenesLoaded(scenes) {
         console.log(scenes);
+        scenes.sort(this.nameSort);
         this.setState({ scenes: scenes });
       }
     }, {
@@ -3446,6 +3445,7 @@ module.exports =
         this.setState({
           lights: lightsHash,
           groups: this.updateLightInGroups(light),
+          scenes: this.updateLightInScenes(light),
           lightIDs: lights.map(function (l) {
             return l.id;
           })
@@ -3464,27 +3464,6 @@ module.exports =
         } else {
           this.setState({ newGroupLightIDs: undefined, newGroupName: undefined });
         }
-      }
-    }, {
-      key: 'updateLightInGroup',
-      value: function updateLightInGroup(light, oldGroup) {
-        var group = {};
-        var lights = oldGroup.lights.slice();
-        for (var i = 0; i < lights.length; i++) {
-          var lightID = lights[i];
-          if (lightID === light.id) {
-            lights[i] = light;
-            break;
-          }
-        }
-        lights.sort(this.lightCompare);
-        for (var key in oldGroup) {
-          if (oldGroup.hasOwnProperty(key)) {
-            group[key] = oldGroup[key];
-          }
-        }
-        group.lights = lights;
-        return group;
       }
     }, {
       key: 'lightCompare',
@@ -3513,6 +3492,34 @@ module.exports =
         _apiBridge2['default'].getScenes().then(this.onScenesLoaded.bind(this))['catch'](this.onScenesLoadError.bind(this));
       }
     }, {
+      key: 'updateLightInObject',
+      value: function updateLightInObject(light, oldObject) {
+        var newObject = {};
+        var lights = oldObject.lights.slice();
+        for (var i = 0; i < lights.length; i++) {
+          var lightID = lights[i];
+          if (lightID === light.id) {
+            lights[i] = light;
+            break;
+          }
+        }
+        lights.sort(this.lightCompare);
+        for (var key in oldObject) {
+          if (oldObject.hasOwnProperty(key)) {
+            newObject[key] = oldObject[key];
+          }
+        }
+        newObject.lights = lights;
+        return newObject;
+      }
+    }, {
+      key: 'nameSort',
+      value: function nameSort(a, b) {
+        var aName = a.name.toLowerCase();
+        var bName = b.name.toLowerCase();
+        return aName.localeCompare(bName);
+      }
+    }, {
       key: 'updateLightInGroups',
       value: function updateLightInGroups(light) {
         var _this6 = this;
@@ -3522,7 +3529,20 @@ module.exports =
           return groups;
         }
         return groups.slice().map(function (group) {
-          return _this6.updateLightInGroup(light, group);
+          return _this6.updateLightInObject(light, group);
+        });
+      }
+    }, {
+      key: 'updateLightInScenes',
+      value: function updateLightInScenes(light) {
+        var _this7 = this;
+  
+        var scenes = this.state.scenes;
+        if (typeof scenes !== 'object') {
+          return scenes;
+        }
+        return scenes.slice().map(function (scene) {
+          return _this7.updateLightInObject(light, scene);
         });
       }
     }, {
@@ -7819,21 +7839,17 @@ module.exports =
     }
   
     _createClass(ScenesList, [{
-      key: 'sceneSort',
-      value: function sceneSort(a, b) {
-        var aName = a.name.toLowerCase();
-        var bName = b.name.toLowerCase();
-        return aName.localeCompare(bName);
-      }
-    }, {
       key: 'render',
       value: function render() {
-        var orderedScenes = this.props.scenes.sort(this.sceneSort);
         return _react2['default'].createElement(
           'ul',
           { className: _ScenesListScss2['default'].scenesList },
-          orderedScenes.map(function (scene) {
-            var key = 'scene-' + scene.id;
+          this.props.scenes.map(function (scene) {
+            var loaded = true;
+            scene.lights.forEach(function (light) {
+              loaded = loaded && typeof light === 'object';
+            });
+            var key = 'scene-' + scene.id + '-loaded-' + loaded;
             return _react2['default'].createElement(_SceneScene2['default'], _extends({ key: key }, scene));
           })
         );
@@ -7974,6 +7990,16 @@ module.exports =
               ' ',
               units
             )
+          ),
+          _react2['default'].createElement(
+            'p',
+            { className: _SceneScss2['default'].lights },
+            this.props.lights.map(function (light) {
+              if (typeof light === 'string') {
+                return light;
+              }
+              return light.name;
+            }).join(', ')
           )
         );
       }
@@ -8028,13 +8054,14 @@ module.exports =
   
   
   // module
-  exports.push([module.id, ".Scene_scene_1Ly {\n  list-style: none;\n}\n\n.Scene_scene_1Ly + .Scene_scene_1Ly {\n  margin-top: 15px;\n}\n\n.Scene_name_2wR {\n  margin: 0 0 5px;\n}\n\n.Scene_lightCount_3Fy {\n  font-weight: normal;\n  font-size: 14px\n}\n\n.Scene_lightCount_3Fy:before {\n  content: \"\\A0(\";\n}\n\n.Scene_lightCount_3Fy:after {\n  content: \")\";\n}\n", "", {"version":3,"sources":["/./src/components/Scene/Scene.scss"],"names":[],"mappings":"AAAA;EACE,iBAAiB;CAKlB;;AAHC;EACE,iBAAiB;CAClB;;AAGH;EACE,gBAAgB;CACjB;;AAED;EACE,oBAAoB;EACpB,eAAgB;CASjB;;AAPC;EACE,gBAAgB;CACjB;;AAED;EACE,aAAa;CACd","file":"Scene.scss","sourcesContent":[".scene {\n  list-style: none;\n\n  + .scene {\n    margin-top: 15px;\n  }\n}\n\n.name {\n  margin: 0 0 5px;\n}\n\n.lightCount {\n  font-weight: normal;\n  font-size: 14px;\n\n  &:before {\n    content: \"\\a0(\";\n  }\n\n  &:after {\n    content: \")\";\n  }\n}\n"],"sourceRoot":"webpack://"}]);
+  exports.push([module.id, ".Scene_scene_1Ly {\n  list-style: none;\n}\n\n.Scene_scene_1Ly + .Scene_scene_1Ly {\n  margin-top: 15px;\n}\n\n.Scene_name_2wR {\n  margin: 0 0 5px;\n}\n\n.Scene_lightCount_3Fy {\n  font-weight: normal;\n  font-size: 14px\n}\n\n.Scene_lightCount_3Fy:before {\n  content: \"\\A0(\";\n}\n\n.Scene_lightCount_3Fy:after {\n  content: \")\";\n}\n\n.Scene_lights_1Hk {\n  margin: 0;\n}\n", "", {"version":3,"sources":["/./src/components/Scene/Scene.scss"],"names":[],"mappings":"AAAA;EACE,iBAAiB;CAKlB;;AAHC;EACE,iBAAiB;CAClB;;AAGH;EACE,gBAAgB;CACjB;;AAED;EACE,oBAAoB;EACpB,eAAgB;CASjB;;AAPC;EACE,gBAAgB;CACjB;;AAED;EACE,aAAa;CACd;;AAGH;EACE,UAAU;CACX","file":"Scene.scss","sourcesContent":[".scene {\n  list-style: none;\n\n  + .scene {\n    margin-top: 15px;\n  }\n}\n\n.name {\n  margin: 0 0 5px;\n}\n\n.lightCount {\n  font-weight: normal;\n  font-size: 14px;\n\n  &:before {\n    content: \"\\a0(\";\n  }\n\n  &:after {\n    content: \")\";\n  }\n}\n\n.lights {\n  margin: 0;\n}\n"],"sourceRoot":"webpack://"}]);
   
   // exports
   exports.locals = {
   	"scene": "Scene_scene_1Ly",
   	"name": "Scene_name_2wR",
-  	"lightCount": "Scene_lightCount_3Fy"
+  	"lightCount": "Scene_lightCount_3Fy",
+  	"lights": "Scene_lights_1Hk"
   };
 
 /***/ }

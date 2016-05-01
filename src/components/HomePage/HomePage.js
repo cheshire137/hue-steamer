@@ -92,7 +92,7 @@ class HomePage extends Component {
         groups.push(rawGroups[i]);
       }
     }
-    groups.sort((groupA, groupB) => groupA.name.localeCompare(groupB.name));
+    groups.sort(this.nameSort);
     this.setState({ groups });
   }
 
@@ -106,6 +106,7 @@ class HomePage extends Component {
 
   onScenesLoaded(scenes) {
     console.log(scenes);
+    scenes.sort(this.nameSort);
     this.setState({ scenes });
   }
 
@@ -183,6 +184,7 @@ class HomePage extends Component {
     this.setState({
       lights: lightsHash,
       groups: this.updateLightInGroups(light),
+      scenes: this.updateLightInScenes(light),
       lightIDs: lights.map((l) => l.id),
     });
   }
@@ -197,26 +199,6 @@ class HomePage extends Component {
     } else {
       this.setState({ newGroupLightIDs: undefined, newGroupName: undefined });
     }
-  }
-
-  updateLightInGroup(light, oldGroup) {
-    const group = {};
-    const lights = oldGroup.lights.slice();
-    for (let i = 0; i < lights.length; i++) {
-      const lightID = lights[i];
-      if (lightID === light.id) {
-        lights[i] = light;
-        break;
-      }
-    }
-    lights.sort(this.lightCompare);
-    for (const key in oldGroup) {
-      if (oldGroup.hasOwnProperty(key)) {
-        group[key] = oldGroup[key];
-      }
-    }
-    group.lights = lights;
-    return group;
   }
 
   lightCompare(lightA, lightB) {
@@ -246,13 +228,49 @@ class HomePage extends Component {
            catch(this.onScenesLoadError.bind(this));
   }
 
+  updateLightInObject(light, oldObject) {
+    const newObject = {};
+    const lights = oldObject.lights.slice();
+    for (let i = 0; i < lights.length; i++) {
+      const lightID = lights[i];
+      if (lightID === light.id) {
+        lights[i] = light;
+        break;
+      }
+    }
+    lights.sort(this.lightCompare);
+    for (const key in oldObject) {
+      if (oldObject.hasOwnProperty(key)) {
+        newObject[key] = oldObject[key];
+      }
+    }
+    newObject.lights = lights;
+    return newObject;
+  }
+
+  nameSort(a, b) {
+    const aName = a.name.toLowerCase();
+    const bName = b.name.toLowerCase();
+    return aName.localeCompare(bName);
+  }
+
   updateLightInGroups(light) {
     const groups = this.state.groups;
     if (typeof groups !== 'object') {
       return groups;
     }
     return groups.slice().map((group) => {
-      return this.updateLightInGroup(light, group);
+      return this.updateLightInObject(light, group);
+    });
+  }
+
+  updateLightInScenes(light) {
+    const scenes = this.state.scenes;
+    if (typeof scenes !== 'object') {
+      return scenes;
+    }
+    return scenes.slice().map((scene) => {
+      return this.updateLightInObject(light, scene);
     });
   }
 

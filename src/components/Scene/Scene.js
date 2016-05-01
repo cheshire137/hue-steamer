@@ -31,6 +31,14 @@ class Scene extends Component {
           {this.props.name}
           <span className={s.lightCount}>{lightCount} {units}</span>
         </h3>
+        <p className={s.lights}>
+          {this.props.lights.map((light) => {
+            if (typeof light === 'string') {
+              return light;
+            }
+            return light.name;
+          }).join(', ')}
+        </p>
       </li>
     );
   }

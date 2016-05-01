@@ -14,18 +14,15 @@ class ScenesList extends Component {
     this.state = {};
   }
 
-  sceneSort(a, b) {
-    const aName = a.name.toLowerCase();
-    const bName = b.name.toLowerCase();
-    return aName.localeCompare(bName);
-  }
-
   render() {
-    const orderedScenes = this.props.scenes.sort(this.sceneSort);
     return (
       <ul className={s.scenesList}>
-        {orderedScenes.map((scene) => {
-          const key = 'scene-' + scene.id;
+        {this.props.scenes.map((scene) => {
+          let loaded = true;
+          scene.lights.forEach((light) => {
+            loaded = loaded && typeof light === 'object';
+          });
+          const key = 'scene-' + scene.id + '-loaded-' + loaded;
           return (
             <Scene key={key} {...scene} />
           );
