@@ -1,6 +1,8 @@
 import React, { Component, PropTypes } from 'react';
 import s from './Schedule.scss';
+import cx from 'classnames';
 import withStyles from '../../decorators/withStyles';
+import Daytime from '../../models/daytime';
 
 @withStyles(s)
 class Schedule extends Component {
@@ -105,14 +107,15 @@ class Schedule extends Component {
   render() {
     const days = this.localtimeToDays();
     const time = this.localtimeToTime();
+    const themeClass = Daytime.isNight() ? s.night : s.day;
     return (
       <li className={s.schedule}>
         <h3 className={s.name}>{this.props.name}</h3>
         {this.summarizeDays(days)} at {time}
         {this.props.status === 'enabled' ? (
-          <span className={s.enabled}>Enabled</span>
+          <span className={cx(themeClass, s.enabled)}>Enabled</span>
         ) : (
-          <span className={s.disabled}>Disabled</span>
+          <span className={cx(themeClass, s.disabled)}>Disabled</span>
         )}
       </li>
     );
