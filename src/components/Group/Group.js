@@ -18,6 +18,7 @@ class Group extends Component {
     lights: PropTypes.array,
     onLightLoaded: PropTypes.func.isRequired,
     onEdit: PropTypes.func.isRequired,
+    class: PropTypes.string,
   };
 
   constructor(props, context) {
@@ -230,6 +231,14 @@ class Group extends Component {
             <FontAwesome name="pencil" className={s.editIcon} />
             Edit
           </a>
+          <div className={s.classContainer}>
+            Class:
+            {typeof this.props.class === 'string' ? (
+              <span className={s.class}>{this.props.class}</span>
+            ) : (
+              <span className={s.class}>&mdash;</span>
+            )}
+          </div>
         </div>
       </li>
     );

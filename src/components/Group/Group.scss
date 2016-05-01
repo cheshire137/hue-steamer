@@ -135,6 +135,7 @@
 
 .editLink {
   text-decoration: none;
+  display: block;
 
   .editIcon {
     margin-right: 0.3em;
@@ -151,4 +152,12 @@
 
 .colorPickerWrapper {
 
+}
+
+.classContainer {
+  margin-top: 10px;
+
+  .class {
+    padding-left: 0.3em;
+  }
 }
