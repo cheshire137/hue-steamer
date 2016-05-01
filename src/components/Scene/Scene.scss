@@ -1,26 +1,45 @@
 .scene {
-  list-style: none;
+  width: 48%;
+  margin: 0 1% 10px;
+  display: inline-block;
+  border-width: 1px;
+  border-style: solid;
+  padding: 10px;
+  border-radius: 2px;
+  vertical-align: top;
 
-  + .scene {
-    margin-top: 15px;
+  &.night {
+    border-color: #38231D;
+  }
+
+  &.day {
+    border-color: #ccc;
   }
 }
 
 .name {
   margin: 0 0 5px;
-}
-
-.lightCount {
   font-weight: normal;
-  font-size: 14px;
 
-  &:before {
-    content: "\a0(";
+  &.day {
+    color: #97918A;
+  }
+
+  &.night {
+    color: #E16C51;
   }
 
   &:after {
-    content: ")";
+    content: "";
+    display: table;
+    clear: both;
   }
+}
+
+.lightCount {
+  font-size: 14px;
+  float: right;
+  opacity: 0.8;
 }
 
 .lights {

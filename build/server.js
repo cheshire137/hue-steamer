@@ -7940,9 +7940,17 @@ module.exports =
   
   var _SceneScss2 = _interopRequireDefault(_SceneScss);
   
+  var _classnames = __webpack_require__(47);
+  
+  var _classnames2 = _interopRequireDefault(_classnames);
+  
   var _decoratorsWithStyles = __webpack_require__(24);
   
   var _decoratorsWithStyles2 = _interopRequireDefault(_decoratorsWithStyles);
+  
+  var _modelsDaytime = __webpack_require__(105);
+  
+  var _modelsDaytime2 = _interopRequireDefault(_modelsDaytime);
   
   var Scene = (function (_Component) {
     _inherits(Scene, _Component);
@@ -7976,13 +7984,16 @@ module.exports =
       value: function render() {
         var lightCount = this.props.lights.length;
         var units = lightCount === 1 ? 'light' : 'lights';
+        var themeClass = _modelsDaytime2['default'].isNight() ? _SceneScss2['default'].night : _SceneScss2['default'].day;
         return _react2['default'].createElement(
           'li',
-          { className: _SceneScss2['default'].scene },
+          { className: (0, _classnames2['default'])(_SceneScss2['default'].scene, themeClass) },
           _react2['default'].createElement(
             'h3',
-            { className: _SceneScss2['default'].name },
+            { className: (0, _classnames2['default'])(_SceneScss2['default'].name, themeClass) },
+            '“',
             this.props.name,
+            '”',
             _react2['default'].createElement(
               'span',
               { className: _SceneScss2['default'].lightCount },
@@ -8054,11 +8065,13 @@ module.exports =
   
   
   // module
-  exports.push([module.id, ".Scene_scene_1Ly {\n  list-style: none;\n}\n\n.Scene_scene_1Ly + .Scene_scene_1Ly {\n  margin-top: 15px;\n}\n\n.Scene_name_2wR {\n  margin: 0 0 5px;\n}\n\n.Scene_lightCount_3Fy {\n  font-weight: normal;\n  font-size: 14px\n}\n\n.Scene_lightCount_3Fy:before {\n  content: \"\\A0(\";\n}\n\n.Scene_lightCount_3Fy:after {\n  content: \")\";\n}\n\n.Scene_lights_1Hk {\n  margin: 0;\n}\n", "", {"version":3,"sources":["/./src/components/Scene/Scene.scss"],"names":[],"mappings":"AAAA;EACE,iBAAiB;CAKlB;;AAHC;EACE,iBAAiB;CAClB;;AAGH;EACE,gBAAgB;CACjB;;AAED;EACE,oBAAoB;EACpB,eAAgB;CASjB;;AAPC;EACE,gBAAgB;CACjB;;AAED;EACE,aAAa;CACd;;AAGH;EACE,UAAU;CACX","file":"Scene.scss","sourcesContent":[".scene {\n  list-style: none;\n\n  + .scene {\n    margin-top: 15px;\n  }\n}\n\n.name {\n  margin: 0 0 5px;\n}\n\n.lightCount {\n  font-weight: normal;\n  font-size: 14px;\n\n  &:before {\n    content: \"\\a0(\";\n  }\n\n  &:after {\n    content: \")\";\n  }\n}\n\n.lights {\n  margin: 0;\n}\n"],"sourceRoot":"webpack://"}]);
+  exports.push([module.id, ".Scene_scene_1Ly {\n  width: 48%;\n  margin: 0 1% 10px;\n  display: inline-block;\n  border-width: 1px;\n  border-style: solid;\n  padding: 10px;\n  border-radius: 2px;\n  vertical-align: top\n}\n\n.Scene_scene_1Ly.Scene_night_19h {\n  border-color: #38231D\n}\n\n.Scene_scene_1Ly.Scene_day_1Yn {\n  border-color: #ccc\n}\n\n.Scene_name_2wR {\n  margin: 0 0 5px;\n  font-weight: normal\n}\n\n.Scene_name_2wR.Scene_day_1Yn {\n  color: #97918A\n}\n\n.Scene_name_2wR.Scene_night_19h {\n  color: #E16C51\n}\n\n.Scene_name_2wR:after {\n  content: \"\";\n  display: table;\n  clear: both\n}\n\n.Scene_lightCount_3Fy {\n  font-size: 14px;\n  float: right;\n  opacity: 0.8;\n}\n\n.Scene_lights_1Hk {\n  margin: 0;\n}\n", "", {"version":3,"sources":["/./src/components/Scene/Scene.scss"],"names":[],"mappings":"AAAA;EACE,WAAW;EACX,kBAAkB;EAClB,sBAAsB;EACtB,kBAAkB;EAClB,oBAAoB;EACpB,cAAc;EACd,mBAAmB;EACnB,mBAAoB;CASrB;;AAPC;EACE,qBAAsB;CACvB;;AAED;EACE,kBAAmB;CACpB;;AAGH;EACE,gBAAgB;EAChB,mBAAoB;CAerB;;AAbC;EACE,cAAe;CAChB;;AAED;EACE,cAAe;CAChB;;AAED;EACE,YAAY;EACZ,eAAe;EACf,WAAY;CACb;;AAGH;EACE,gBAAgB;EAChB,aAAa;EACb,aAAa;CACd;;AAED;EACE,UAAU;CACX","file":"Scene.scss","sourcesContent":[".scene {\n  width: 48%;\n  margin: 0 1% 10px;\n  display: inline-block;\n  border-width: 1px;\n  border-style: solid;\n  padding: 10px;\n  border-radius: 2px;\n  vertical-align: top;\n\n  &.night {\n    border-color: #38231D;\n  }\n\n  &.day {\n    border-color: #ccc;\n  }\n}\n\n.name {\n  margin: 0 0 5px;\n  font-weight: normal;\n\n  &.day {\n    color: #97918A;\n  }\n\n  &.night {\n    color: #E16C51;\n  }\n\n  &:after {\n    content: \"\";\n    display: table;\n    clear: both;\n  }\n}\n\n.lightCount {\n  font-size: 14px;\n  float: right;\n  opacity: 0.8;\n}\n\n.lights {\n  margin: 0;\n}\n"],"sourceRoot":"webpack://"}]);
   
   // exports
   exports.locals = {
   	"scene": "Scene_scene_1Ly",
+  	"night": "Scene_night_19h",
+  	"day": "Scene_day_1Yn",
   	"name": "Scene_name_2wR",
   	"lightCount": "Scene_lightCount_3Fy",
   	"lights": "Scene_lights_1Hk"
