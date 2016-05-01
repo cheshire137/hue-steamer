@@ -6,6 +6,7 @@ import { SliderPicker } from 'react-color';
 import cx from 'classnames';
 import withStyles from '../../decorators/withStyles';
 import OnOffSwitch from '../OnOffSwitch/OnOffSwitch';
+import Daytime from '../../models/daytime';
 
 @withStyles(s)
 class Light extends Component {
@@ -74,11 +75,6 @@ class Light extends Component {
     this.setState({ showColorPicker: !this.state.showColorPicker });
   }
 
-  isNight() {
-    const curTime = new Date();
-    return curTime.getHours() >= 20;
-  }
-
   render() {
     const checkboxID = 'light-' + this.props.id + '-toggle';
     const colorStyle = {};
@@ -93,7 +89,7 @@ class Light extends Component {
         colorStyle.backgroundColor = '#' + color;
       }
     }
-    const nightDayClass = this.isNight() ? s.night : s.day;
+    const nightDayClass = Daytime.isNight() ? s.night : s.day;
     return (
       <div className={cx(s.light, nightDayClass)}>
         <header className={s.lightHeader}>

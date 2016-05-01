@@ -1930,15 +1930,6 @@ module.exports =
 /* 15 */
 /***/ function(module, exports, __webpack_require__) {
 
-  /**
-   * React Starter Kit (https://www.reactstarterkit.com/)
-   *
-   * Copyright © 2014-2016 Kriasoft, LLC. All rights reserved.
-   *
-   * This source code is licensed under the MIT license found in the
-   * LICENSE.txt file in the root directory of this source tree.
-   */
-  
   'use strict';
   
   Object.defineProperty(exports, '__esModule', {
@@ -1975,6 +1966,10 @@ module.exports =
   
   var _Footer2 = _interopRequireDefault(_Footer);
   
+  var _modelsDaytime = __webpack_require__(105);
+  
+  var _modelsDaytime2 = _interopRequireDefault(_modelsDaytime);
+  
   var App = (function (_Component) {
     _inherits(App, _Component);
   
@@ -2006,23 +2001,12 @@ module.exports =
         this.removeCss();
       }
     }, {
-      key: 'isNight',
-      value: function isNight() {
-        var curTime = new Date();
-        return curTime.getHours() >= 20;
-      }
-    }, {
       key: 'render',
       value: function render() {
-        var containerClass = undefined;
-        if (this.isNight()) {
-          containerClass = _AppScss2['default'].containerNight;
-        } else {
-          containerClass = _AppScss2['default'].containerDay;
-        }
+        var className = _modelsDaytime2['default'].isNight() ? _AppScss2['default'].containerNight : _AppScss2['default'].containerDay;
         return !this.props.error ? _react2['default'].createElement(
           'div',
-          { className: containerClass },
+          { className: className },
           _react2['default'].createElement(
             'div',
             { className: _AppScss2['default'].container },
@@ -3230,6 +3214,10 @@ module.exports =
   
   var _storesLocalStorage2 = _interopRequireDefault(_storesLocalStorage);
   
+  var _modelsDaytime = __webpack_require__(105);
+  
+  var _modelsDaytime2 = _interopRequireDefault(_modelsDaytime);
+  
   var title = 'Hue Steamer';
   
   var HomePage = (function (_Component) {
@@ -3537,12 +3525,6 @@ module.exports =
         _apiBridge2['default'].getSchedules().then(this.onSchedulesLoaded.bind(this))['catch'](this.onSchedulesLoadError.bind(this));
       }
     }, {
-      key: 'isNight',
-      value: function isNight() {
-        var curTime = new Date();
-        return curTime.getHours() >= 20;
-      }
-    }, {
       key: 'render',
       value: function render() {
         var haveLights = typeof this.state.lightIDs === 'object';
@@ -3550,7 +3532,7 @@ module.exports =
         var haveSchedules = typeof this.state.schedules === 'object';
         return _react2['default'].createElement(
           'div',
-          { className: this.isNight() ? _HomePageScss2['default'].night : _HomePageScss2['default'].day },
+          { className: _modelsDaytime2['default'].isNight() ? _HomePageScss2['default'].night : _HomePageScss2['default'].day },
           _react2['default'].createElement(
             'ul',
             { className: _HomePageScss2['default'].tabList },
@@ -3777,6 +3759,10 @@ module.exports =
   
   var _LightFilterFormLightFilterForm2 = _interopRequireDefault(_LightFilterFormLightFilterForm);
   
+  var _modelsDaytime = __webpack_require__(105);
+  
+  var _modelsDaytime2 = _interopRequireDefault(_modelsDaytime);
+  
   var LightsList = (function (_Component) {
     _inherits(LightsList, _Component);
   
@@ -3804,12 +3790,6 @@ module.exports =
         this.props.onFiltered(filterName, filteredIDs);
       }
     }, {
-      key: 'isNight',
-      value: function isNight() {
-        var curTime = new Date();
-        return curTime.getHours() >= 20;
-      }
-    }, {
       key: 'render',
       value: function render() {
         var _this = this;
@@ -3818,7 +3798,7 @@ module.exports =
         if (typeof this.state.filteredIDs === 'object') {
           filteredIDs = this.state.filteredIDs;
         }
-        var nightDayClass = this.isNight() ? _LightsListScss2['default'].night : _LightsListScss2['default'].day;
+        var nightDayClass = _modelsDaytime2['default'].isNight() ? _LightsListScss2['default'].night : _LightsListScss2['default'].day;
         return _react2['default'].createElement(
           'div',
           { className: _LightsListScss2['default'].lightListContainer },
@@ -3965,6 +3945,10 @@ module.exports =
   
   var _OnOffSwitchOnOffSwitch2 = _interopRequireDefault(_OnOffSwitchOnOffSwitch);
   
+  var _modelsDaytime = __webpack_require__(105);
+  
+  var _modelsDaytime2 = _interopRequireDefault(_modelsDaytime);
+  
   var Light = (function (_Component) {
     _inherits(Light, _Component);
   
@@ -4045,12 +4029,6 @@ module.exports =
         this.setState({ showColorPicker: !this.state.showColorPicker });
       }
     }, {
-      key: 'isNight',
-      value: function isNight() {
-        var curTime = new Date();
-        return curTime.getHours() >= 20;
-      }
-    }, {
       key: 'render',
       value: function render() {
         var checkboxID = 'light-' + this.props.id + '-toggle';
@@ -4066,7 +4044,7 @@ module.exports =
             colorStyle.backgroundColor = '#' + color;
           }
         }
-        var nightDayClass = this.isNight() ? _LightScss2['default'].night : _LightScss2['default'].day;
+        var nightDayClass = _modelsDaytime2['default'].isNight() ? _LightScss2['default'].night : _LightScss2['default'].day;
         return _react2['default'].createElement(
           'div',
           { className: (0, _classnames2['default'])(_LightScss2['default'].light, nightDayClass) },
@@ -4241,6 +4219,10 @@ module.exports =
   
   var _classnames2 = _interopRequireDefault(_classnames);
   
+  var _modelsDaytime = __webpack_require__(105);
+  
+  var _modelsDaytime2 = _interopRequireDefault(_modelsDaytime);
+  
   var OnOffSwitch = (function (_Component) {
     _inherits(OnOffSwitch, _Component);
   
@@ -4268,16 +4250,10 @@ module.exports =
         this.props.onToggle(!on);
       }
     }, {
-      key: 'isNight',
-      value: function isNight() {
-        var curTime = new Date();
-        return curTime.getHours() >= 20;
-      }
-    }, {
       key: 'render',
       value: function render() {
         var stateClass = this.props.state === 1 ? _OnOffSwitchScss2['default'].partial : _OnOffSwitchScss2['default'].full;
-        var nightDayClass = this.isNight() ? _OnOffSwitchScss2['default'].night : _OnOffSwitchScss2['default'].day;
+        var nightDayClass = _modelsDaytime2['default'].isNight() ? _OnOffSwitchScss2['default'].night : _OnOffSwitchScss2['default'].day;
         return _react2['default'].createElement(
           'div',
           { className: _OnOffSwitchScss2['default'].onoffswitch },
@@ -4554,6 +4530,10 @@ module.exports =
   
   var _modelsConverter2 = _interopRequireDefault(_modelsConverter);
   
+  var _modelsDaytime = __webpack_require__(105);
+  
+  var _modelsDaytime2 = _interopRequireDefault(_modelsDaytime);
+  
   var Group = (function (_Component) {
     _inherits(Group, _Component);
   
@@ -4686,12 +4666,6 @@ module.exports =
         _apiBridge2['default'].setGroupColor(this.props.id, x, y).then(this.onColorChanged.bind(this, x, y));
       }
     }, {
-      key: 'isNight',
-      value: function isNight() {
-        var curTime = new Date();
-        return curTime.getHours() >= 20;
-      }
-    }, {
       key: 'toggleGroupOpen',
       value: function toggleGroupOpen(event) {
         event.preventDefault();
@@ -4750,7 +4724,7 @@ module.exports =
         if (this.areAllLightsOn()) {
           switchState = 2;
         }
-        var nightDayClass = this.isNight() ? _GroupScss2['default'].night : _GroupScss2['default'].day;
+        var nightDayClass = _modelsDaytime2['default'].isNight() ? _GroupScss2['default'].night : _GroupScss2['default'].day;
         var colorPickerStyle = {
           display: this.state.showColorPicker ? 'block' : 'none'
         };
@@ -6390,12 +6364,6 @@ module.exports =
         return types.indexOf('string') > -1;
       }
     }, {
-      key: 'isNight',
-      value: function isNight() {
-        var curTime = new Date();
-        return curTime.getHours() >= 20;
-      }
-    }, {
       key: 'clearFilter',
       value: function clearFilter(event) {
         var _this6 = this;
@@ -7662,6 +7630,39 @@ module.exports =
   };
   
   exports["default"] = XYPoint;
+  module.exports = exports["default"];
+
+/***/ },
+/* 105 */
+/***/ function(module, exports) {
+
+  "use strict";
+  
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  
+  var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+  
+  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+  
+  var Daytime = (function () {
+    function Daytime() {
+      _classCallCheck(this, Daytime);
+    }
+  
+    _createClass(Daytime, null, [{
+      key: "isNight",
+      value: function isNight() {
+        var curTime = new Date();
+        return curTime.getHours() >= 20;
+      }
+    }]);
+  
+    return Daytime;
+  })();
+  
+  exports["default"] = Daytime;
   module.exports = exports["default"];
 
 /***/ }

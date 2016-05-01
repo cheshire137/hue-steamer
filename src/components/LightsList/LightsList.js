@@ -4,6 +4,7 @@ import Light from '../Light/Light';
 import withStyles from '../../decorators/withStyles';
 import cx from 'classnames';
 import LightFilterForm from '../LightFilterForm/LightFilterForm';
+import Daytime from '../../models/daytime';
 
 @withStyles(s)
 class LightsList extends Component {
@@ -23,17 +24,12 @@ class LightsList extends Component {
     this.props.onFiltered(filterName, filteredIDs);
   }
 
-  isNight() {
-    const curTime = new Date();
-    return curTime.getHours() >= 20;
-  }
-
   render() {
     let filteredIDs = this.props.ids;
     if (typeof this.state.filteredIDs === 'object') {
       filteredIDs = this.state.filteredIDs;
     }
-    const nightDayClass = this.isNight() ? s.night : s.day;
+    const nightDayClass = Daytime.isNight() ? s.night : s.day;
     return (
       <div className={s.lightListContainer}>
         <LightFilterForm ids={this.props.ids} lights={this.props.lights}

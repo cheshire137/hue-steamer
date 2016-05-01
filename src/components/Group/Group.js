@@ -7,6 +7,7 @@ import OnOffSwitch from '../OnOffSwitch/OnOffSwitch';
 import Bridge from '../../api/bridge';
 import { SliderPicker } from 'react-color';
 import Converter from '../../models/converter';
+import Daytime from '../../models/daytime';
 
 @withStyles(s)
 class Group extends Component {
@@ -121,11 +122,6 @@ class Group extends Component {
            then(this.onColorChanged.bind(this, x, y));
   }
 
-  isNight() {
-    const curTime = new Date();
-    return curTime.getHours() >= 20;
-  }
-
   toggleGroupOpen(event) {
     event.preventDefault();
     this.setState({ open: !this.state.open });
@@ -179,7 +175,7 @@ class Group extends Component {
     if (this.areAllLightsOn()) {
       switchState = 2;
     }
-    const nightDayClass = this.isNight() ? s.night : s.day;
+    const nightDayClass = Daytime.isNight() ? s.night : s.day;
     const colorPickerStyle = {
       display: this.state.showColorPicker ? 'block' : 'none',
     };

@@ -103,11 +103,6 @@ class LightFilterForm extends Component {
     return types.indexOf('string') > -1;
   }
 
-  isNight() {
-    const curTime = new Date();
-    return curTime.getHours() >= 20;
-  }
-
   clearFilter(event) {
     event.preventDefault();
     this.setState({

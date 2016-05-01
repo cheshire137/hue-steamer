@@ -10,6 +10,7 @@ import GroupsList from '../GroupsList/GroupsList';
 import SchedulesList from '../SchedulesList/SchedulesList';
 import GroupForm from '../GroupForm/GroupForm';
 import LocalStorage from '../../stores/localStorage';
+import Daytime from '../../models/daytime';
 
 const title = 'Hue Steamer';
 
@@ -276,17 +277,12 @@ class HomePage extends Component {
            catch(this.onSchedulesLoadError.bind(this));
   }
 
-  isNight() {
-    const curTime = new Date();
-    return curTime.getHours() >= 20;
-  }
-
   render() {
     const haveLights = typeof this.state.lightIDs === 'object';
     const haveGroups = typeof this.state.groups === 'object';
     const haveSchedules = typeof this.state.schedules === 'object';
     return (
-      <div className={this.isNight() ? s.night : s.day}>
+      <div className={Daytime.isNight() ? s.night : s.day}>
         <ul className={s.tabList}>
           <li className={this.state.activeTab === 'lights' ? s.active : s.inactive}>
             <a href="#" onClick={this.showLightsTab.bind(this)}>

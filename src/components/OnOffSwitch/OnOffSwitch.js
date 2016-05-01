@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import s from './OnOffSwitch.scss';
 import withStyles from '../../decorators/withStyles';
 import cx from 'classnames';
+import Daytime from '../../models/daytime';
 
 @withStyles(s)
 class OnOffSwitch extends Component {
@@ -21,14 +22,9 @@ class OnOffSwitch extends Component {
     this.props.onToggle(!on);
   }
 
-  isNight() {
-    const curTime = new Date();
-    return curTime.getHours() >= 20;
-  }
-
   render() {
     const stateClass = this.props.state === 1 ? s.partial : s.full;
-    const nightDayClass = this.isNight() ? s.night : s.day;
+    const nightDayClass = Daytime.isNight() ? s.night : s.day;
     return (
       <div className={s.onoffswitch}>
         <input type="checkbox" name="onoffswitch"
