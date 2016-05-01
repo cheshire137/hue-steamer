@@ -18,8 +18,18 @@
 }
 
 .name {
-  margin: 0 0 5px;
+  margin: 0;
   font-weight: normal;
+
+  a {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    width: 79%;
+    text-decoration: none;
+    display: block;
+    float: left;
+  }
 
   &.day {
     color: #97918A;
@@ -36,6 +46,11 @@
   }
 }
 
+.openIndicator {
+  margin-right: 5px;
+  font-size: 16px;
+}
+
 .lightCount {
   font-size: 14px;
   float: right;
@@ -43,5 +58,5 @@
 }
 
 .lights {
-  margin: 0;
+  margin: 5px 0 0 0;
 }

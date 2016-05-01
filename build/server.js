@@ -7952,6 +7952,10 @@ module.exports =
   
   var _modelsDaytime2 = _interopRequireDefault(_modelsDaytime);
   
+  var _reactFontawesome = __webpack_require__(69);
+  
+  var _reactFontawesome2 = _interopRequireDefault(_reactFontawesome);
+  
   var Scene = (function (_Component) {
     _inherits(Scene, _Component);
   
@@ -7976,24 +7980,40 @@ module.exports =
       _classCallCheck(this, _Scene);
   
       _get(Object.getPrototypeOf(_Scene.prototype), 'constructor', this).call(this, props, context);
-      this.state = {};
+      this.state = { open: false };
     }
   
     _createClass(Scene, [{
+      key: 'toggleSceneOpen',
+      value: function toggleSceneOpen(event) {
+        event.preventDefault();
+        this.setState({ open: !this.state.open });
+        event.target.blur();
+      }
+    }, {
       key: 'render',
       value: function render() {
         var lightCount = this.props.lights.length;
         var units = lightCount === 1 ? 'light' : 'lights';
         var themeClass = _modelsDaytime2['default'].isNight() ? _SceneScss2['default'].night : _SceneScss2['default'].day;
+        var lightStyle = { display: 'none' };
+        if (this.state.open) {
+          lightStyle.display = 'block';
+        }
         return _react2['default'].createElement(
           'li',
           { className: (0, _classnames2['default'])(_SceneScss2['default'].scene, themeClass) },
           _react2['default'].createElement(
             'h3',
             { className: (0, _classnames2['default'])(_SceneScss2['default'].name, themeClass) },
-            '“',
-            this.props.name,
-            '”',
+            _react2['default'].createElement(
+              'a',
+              { href: '#', onClick: this.toggleSceneOpen.bind(this) },
+              this.state.open ? _react2['default'].createElement(_reactFontawesome2['default'], { name: 'chevron-down', className: _SceneScss2['default'].openIndicator }) : _react2['default'].createElement(_reactFontawesome2['default'], { name: 'chevron-right', className: _SceneScss2['default'].openIndicator }),
+              '“',
+              this.props.name,
+              '”'
+            ),
             _react2['default'].createElement(
               'span',
               { className: _SceneScss2['default'].lightCount },
@@ -8004,7 +8024,7 @@ module.exports =
           ),
           _react2['default'].createElement(
             'p',
-            { className: _SceneScss2['default'].lights },
+            { className: _SceneScss2['default'].lights, style: lightStyle },
             this.props.lights.map(function (light) {
               if (typeof light === 'string') {
                 return light;
@@ -8065,7 +8085,7 @@ module.exports =
   
   
   // module
-  exports.push([module.id, ".Scene_scene_1Ly {\n  width: 48%;\n  margin: 0 1% 10px;\n  display: inline-block;\n  border-width: 1px;\n  border-style: solid;\n  padding: 10px;\n  border-radius: 2px;\n  vertical-align: top\n}\n\n.Scene_scene_1Ly.Scene_night_19h {\n  border-color: #38231D\n}\n\n.Scene_scene_1Ly.Scene_day_1Yn {\n  border-color: #ccc\n}\n\n.Scene_name_2wR {\n  margin: 0 0 5px;\n  font-weight: normal\n}\n\n.Scene_name_2wR.Scene_day_1Yn {\n  color: #97918A\n}\n\n.Scene_name_2wR.Scene_night_19h {\n  color: #E16C51\n}\n\n.Scene_name_2wR:after {\n  content: \"\";\n  display: table;\n  clear: both\n}\n\n.Scene_lightCount_3Fy {\n  font-size: 14px;\n  float: right;\n  opacity: 0.8;\n}\n\n.Scene_lights_1Hk {\n  margin: 0;\n}\n", "", {"version":3,"sources":["/./src/components/Scene/Scene.scss"],"names":[],"mappings":"AAAA;EACE,WAAW;EACX,kBAAkB;EAClB,sBAAsB;EACtB,kBAAkB;EAClB,oBAAoB;EACpB,cAAc;EACd,mBAAmB;EACnB,mBAAoB;CASrB;;AAPC;EACE,qBAAsB;CACvB;;AAED;EACE,kBAAmB;CACpB;;AAGH;EACE,gBAAgB;EAChB,mBAAoB;CAerB;;AAbC;EACE,cAAe;CAChB;;AAED;EACE,cAAe;CAChB;;AAED;EACE,YAAY;EACZ,eAAe;EACf,WAAY;CACb;;AAGH;EACE,gBAAgB;EAChB,aAAa;EACb,aAAa;CACd;;AAED;EACE,UAAU;CACX","file":"Scene.scss","sourcesContent":[".scene {\n  width: 48%;\n  margin: 0 1% 10px;\n  display: inline-block;\n  border-width: 1px;\n  border-style: solid;\n  padding: 10px;\n  border-radius: 2px;\n  vertical-align: top;\n\n  &.night {\n    border-color: #38231D;\n  }\n\n  &.day {\n    border-color: #ccc;\n  }\n}\n\n.name {\n  margin: 0 0 5px;\n  font-weight: normal;\n\n  &.day {\n    color: #97918A;\n  }\n\n  &.night {\n    color: #E16C51;\n  }\n\n  &:after {\n    content: \"\";\n    display: table;\n    clear: both;\n  }\n}\n\n.lightCount {\n  font-size: 14px;\n  float: right;\n  opacity: 0.8;\n}\n\n.lights {\n  margin: 0;\n}\n"],"sourceRoot":"webpack://"}]);
+  exports.push([module.id, ".Scene_scene_1Ly {\n  width: 48%;\n  margin: 0 1% 10px;\n  display: inline-block;\n  border-width: 1px;\n  border-style: solid;\n  padding: 10px;\n  border-radius: 2px;\n  vertical-align: top\n}\n\n.Scene_scene_1Ly.Scene_night_19h {\n  border-color: #38231D\n}\n\n.Scene_scene_1Ly.Scene_day_1Yn {\n  border-color: #ccc\n}\n\n.Scene_name_2wR {\n  margin: 0;\n  font-weight: normal;\n}\n\n.Scene_name_2wR a {\n  text-overflow: ellipsis;\n  overflow: hidden;\n  white-space: nowrap;\n  width: 79%;\n  text-decoration: none;\n  display: block;\n  float: left;\n}\n\n.Scene_name_2wR.Scene_day_1Yn {\n  color: #97918A\n}\n\n.Scene_name_2wR.Scene_night_19h {\n  color: #E16C51\n}\n\n.Scene_name_2wR:after {\n  content: \"\";\n  display: table;\n  clear: both\n}\n\n.Scene_openIndicator_etj {\n  margin-right: 5px;\n  font-size: 16px;\n}\n\n.Scene_lightCount_3Fy {\n  font-size: 14px;\n  float: right;\n  opacity: 0.8;\n}\n\n.Scene_lights_1Hk {\n  margin: 5px 0 0 0;\n}\n", "", {"version":3,"sources":["/./src/components/Scene/Scene.scss"],"names":[],"mappings":"AAAA;EACE,WAAW;EACX,kBAAkB;EAClB,sBAAsB;EACtB,kBAAkB;EAClB,oBAAoB;EACpB,cAAc;EACd,mBAAmB;EACnB,mBAAoB;CASrB;;AAPC;EACE,qBAAsB;CACvB;;AAED;EACE,kBAAmB;CACpB;;AAGH;EACE,UAAU;EACV,oBAAoB;CAyBrB;;AAvBC;EACE,wBAAwB;EACxB,iBAAiB;EACjB,oBAAoB;EACpB,WAAW;EACX,sBAAsB;EACtB,eAAe;EACf,YAAY;CACb;;AAED;EACE,cAAe;CAChB;;AAED;EACE,cAAe;CAChB;;AAED;EACE,YAAY;EACZ,eAAe;EACf,WAAY;CACb;;AAGH;EACE,kBAAkB;EAClB,gBAAgB;CACjB;;AAED;EACE,gBAAgB;EAChB,aAAa;EACb,aAAa;CACd;;AAED;EACE,kBAAkB;CACnB","file":"Scene.scss","sourcesContent":[".scene {\n  width: 48%;\n  margin: 0 1% 10px;\n  display: inline-block;\n  border-width: 1px;\n  border-style: solid;\n  padding: 10px;\n  border-radius: 2px;\n  vertical-align: top;\n\n  &.night {\n    border-color: #38231D;\n  }\n\n  &.day {\n    border-color: #ccc;\n  }\n}\n\n.name {\n  margin: 0;\n  font-weight: normal;\n\n  a {\n    text-overflow: ellipsis;\n    overflow: hidden;\n    white-space: nowrap;\n    width: 79%;\n    text-decoration: none;\n    display: block;\n    float: left;\n  }\n\n  &.day {\n    color: #97918A;\n  }\n\n  &.night {\n    color: #E16C51;\n  }\n\n  &:after {\n    content: \"\";\n    display: table;\n    clear: both;\n  }\n}\n\n.openIndicator {\n  margin-right: 5px;\n  font-size: 16px;\n}\n\n.lightCount {\n  font-size: 14px;\n  float: right;\n  opacity: 0.8;\n}\n\n.lights {\n  margin: 5px 0 0 0;\n}\n"],"sourceRoot":"webpack://"}]);
   
   // exports
   exports.locals = {
@@ -8073,6 +8093,7 @@ module.exports =
   	"night": "Scene_night_19h",
   	"day": "Scene_day_1Yn",
   	"name": "Scene_name_2wR",
+  	"openIndicator": "Scene_openIndicator_etj",
   	"lightCount": "Scene_lightCount_3Fy",
   	"lights": "Scene_lights_1Hk"
   };
