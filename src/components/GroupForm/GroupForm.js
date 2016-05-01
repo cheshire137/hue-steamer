@@ -3,7 +3,7 @@ import s from './GroupForm.scss';
 import cx from 'classnames';
 import withStyles from '../../decorators/withStyles';
 import LightCheckbox from '../LightCheckbox/LightCheckbox';
-import Bridge from '../../actions/bridge';
+import Bridge from '../../api/bridge';
 
 @withStyles(s)
 class GroupForm extends Component {

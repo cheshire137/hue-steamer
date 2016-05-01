@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import s from './Light.scss';
-import Bridge from '../../actions/bridge';
+import Bridge from '../../api/bridge';
 import Converter from '../../api/converter';
 import { SliderPicker } from 'react-color';
 import cx from 'classnames';

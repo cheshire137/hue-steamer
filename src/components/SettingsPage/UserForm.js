@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import s from './SettingsPage.scss';
-import Bridge from '../../actions/bridge';
+import Bridge from '../../api/bridge';
 
 class UserForm extends Component {
   static propTypes = {

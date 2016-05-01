@@ -4,7 +4,7 @@ import cx from 'classnames';
 import withStyles from '../../decorators/withStyles';
 import FontAwesome from 'react-fontawesome';
 import OnOffSwitch from '../OnOffSwitch/OnOffSwitch';
-import Bridge from '../../actions/bridge';
+import Bridge from '../../api/bridge';
 import { SliderPicker } from 'react-color';
 import Converter from '../../api/converter';
 

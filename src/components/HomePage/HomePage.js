@@ -4,7 +4,7 @@ import cx from 'classnames';
 import parsePath from 'history/lib/parsePath';
 import withStyles from '../../decorators/withStyles';
 import Location from '../../core/Location';
-import Bridge from '../../actions/bridge';
+import Bridge from '../../api/bridge';
 import LightsList from '../LightsList/LightsList';
 import GroupsList from '../GroupsList/GroupsList';
 import SchedulesList from '../SchedulesList/SchedulesList';

@@ -3382,9 +3382,9 @@ module.exports =
   
   var _coreLocation2 = _interopRequireDefault(_coreLocation);
   
-  var _actionsBridge = __webpack_require__(48);
+  var _apiBridge = __webpack_require__(101);
   
-  var _actionsBridge2 = _interopRequireDefault(_actionsBridge);
+  var _apiBridge2 = _interopRequireDefault(_apiBridge);
   
   var _LightsListLightsList = __webpack_require__(50);
   
@@ -3438,7 +3438,7 @@ module.exports =
     }, {
       key: 'componentDidMount',
       value: function componentDidMount() {
-        _actionsBridge2['default'].get().then(this.onBridgeLoaded.bind(this))['catch'](this.onBridgeLoadError.bind(this));
+        _apiBridge2['default'].get().then(this.onBridgeLoaded.bind(this))['catch'](this.onBridgeLoadError.bind(this));
       }
     }, {
       key: 'onBridgeLoaded',
@@ -3450,8 +3450,8 @@ module.exports =
             _this.getSchedules();
           }
         });
-        _actionsBridge2['default'].getAllLights(bridge.connection.id).then(this.onAllLightsLoaded.bind(this))['catch'](this.onAllLightsLoadError.bind(this));
-        _actionsBridge2['default'].getGroups().then(this.onGroupsLoaded.bind(this))['catch'](this.onGroupsLoadError.bind(this));
+        _apiBridge2['default'].getAllLights(bridge.connection.id).then(this.onAllLightsLoaded.bind(this))['catch'](this.onAllLightsLoadError.bind(this));
+        _apiBridge2['default'].getGroups().then(this.onGroupsLoaded.bind(this))['catch'](this.onGroupsLoadError.bind(this));
       }
     }, {
       key: 'onBridgeLoadError',
@@ -3471,7 +3471,7 @@ module.exports =
   
         this.setState({ lightIDs: group.lights }, function () {
           group.lights.forEach(function (id) {
-            _actionsBridge2['default'].getLight(id).then(function (light) {
+            _apiBridge2['default'].getLight(id).then(function (light) {
               light.id = id;
               _this2.onLightLoaded(light);
             })['catch'](_this2.onLightLoadError.bind(_this2, id));
@@ -3710,7 +3710,7 @@ module.exports =
     }, {
       key: 'getSchedules',
       value: function getSchedules() {
-        _actionsBridge2['default'].getSchedules().then(this.onSchedulesLoaded.bind(this))['catch'](this.onSchedulesLoadError.bind(this));
+        _apiBridge2['default'].getSchedules().then(this.onSchedulesLoaded.bind(this))['catch'](this.onSchedulesLoadError.bind(this));
       }
     }, {
       key: 'isNight',
@@ -3896,361 +3896,7 @@ module.exports =
   module.exports = require("classnames");
 
 /***/ },
-/* 48 */
-/***/ function(module, exports, __webpack_require__) {
-
-  'use strict';
-  
-  Object.defineProperty(exports, '__esModule', {
-    value: true
-  });
-  
-  var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-  
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-  
-  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-  
-  var _coreFetch = __webpack_require__(12);
-  
-  var _coreFetch2 = _interopRequireDefault(_coreFetch);
-  
-  var _configJson = __webpack_require__(49);
-  
-  var _configJson2 = _interopRequireDefault(_configJson);
-  
-  var Bridge = (function () {
-    function Bridge() {
-      _classCallCheck(this, Bridge);
-    }
-  
-    _createClass(Bridge, null, [{
-      key: 'get',
-      value: function get(id) {
-        return regeneratorRuntime.async(function get$(context$2$0) {
-          while (1) switch (context$2$0.prev = context$2$0.next) {
-            case 0:
-              if (!(typeof id === 'undefined')) {
-                context$2$0.next = 2;
-                break;
-              }
-  
-              return context$2$0.abrupt('return', this.makeRequest('/bridge'));
-  
-            case 2:
-              return context$2$0.abrupt('return', this.makeRequest('/bridges/' + id));
-  
-            case 3:
-            case 'end':
-              return context$2$0.stop();
-          }
-        }, null, this);
-      }
-    }, {
-      key: 'discover',
-      value: function discover() {
-        return regeneratorRuntime.async(function discover$(context$2$0) {
-          while (1) switch (context$2$0.prev = context$2$0.next) {
-            case 0:
-              return context$2$0.abrupt('return', this.makeRequest('/bridges/discover'));
-  
-            case 1:
-            case 'end':
-              return context$2$0.stop();
-          }
-        }, null, this);
-      }
-    }, {
-      key: 'save',
-      value: function save(ip, user) {
-        var opts;
-        return regeneratorRuntime.async(function save$(context$2$0) {
-          while (1) switch (context$2$0.prev = context$2$0.next) {
-            case 0:
-              opts = { method: 'POST' };
-              return context$2$0.abrupt('return', this.makeRequest('/bridges?ip=' + encodeURIComponent(ip) + '&user=' + encodeURIComponent(user), opts));
-  
-            case 2:
-            case 'end':
-              return context$2$0.stop();
-          }
-        }, null, this);
-      }
-    }, {
-      key: 'registerUser',
-      value: function registerUser(ip, user) {
-        var opts;
-        return regeneratorRuntime.async(function registerUser$(context$2$0) {
-          while (1) switch (context$2$0.prev = context$2$0.next) {
-            case 0:
-              opts = { method: 'POST' };
-              return context$2$0.abrupt('return', this.makeRequest('/users?ip=' + encodeURIComponent(ip) + '&user=' + encodeURIComponent(user), opts));
-  
-            case 2:
-            case 'end':
-              return context$2$0.stop();
-          }
-        }, null, this);
-      }
-    }, {
-      key: 'getGroups',
-      value: function getGroups() {
-        return regeneratorRuntime.async(function getGroups$(context$2$0) {
-          while (1) switch (context$2$0.prev = context$2$0.next) {
-            case 0:
-              return context$2$0.abrupt('return', this.makeRequest('/groups'));
-  
-            case 1:
-            case 'end':
-              return context$2$0.stop();
-          }
-        }, null, this);
-      }
-    }, {
-      key: 'getSchedules',
-      value: function getSchedules() {
-        return regeneratorRuntime.async(function getSchedules$(context$2$0) {
-          while (1) switch (context$2$0.prev = context$2$0.next) {
-            case 0:
-              return context$2$0.abrupt('return', this.makeRequest('/schedules'));
-  
-            case 1:
-            case 'end':
-              return context$2$0.stop();
-          }
-        }, null, this);
-      }
-    }, {
-      key: 'getGroup',
-      value: function getGroup(groupID) {
-        return regeneratorRuntime.async(function getGroup$(context$2$0) {
-          while (1) switch (context$2$0.prev = context$2$0.next) {
-            case 0:
-              return context$2$0.abrupt('return', this.makeRequest('/group/' + (groupID || '0')));
-  
-            case 1:
-            case 'end':
-              return context$2$0.stop();
-          }
-        }, null, this);
-      }
-    }, {
-      key: 'createGroup',
-      value: function createGroup(name, lightIDs) {
-        var opts;
-        return regeneratorRuntime.async(function createGroup$(context$2$0) {
-          while (1) switch (context$2$0.prev = context$2$0.next) {
-            case 0:
-              opts = { method: 'POST' };
-              return context$2$0.abrupt('return', this.makeRequest('/groups?name=' + encodeURIComponent(name) + '&ids=' + lightIDs.join(','), opts));
-  
-            case 2:
-            case 'end':
-              return context$2$0.stop();
-          }
-        }, null, this);
-      }
-    }, {
-      key: 'updateGroup',
-      value: function updateGroup(id, name, lightIDs) {
-        var opts;
-        return regeneratorRuntime.async(function updateGroup$(context$2$0) {
-          while (1) switch (context$2$0.prev = context$2$0.next) {
-            case 0:
-              opts = { method: 'PUT' };
-              return context$2$0.abrupt('return', this.makeRequest('/group/' + id + '?name=' + encodeURIComponent(name) + '&ids=' + lightIDs.join(','), opts));
-  
-            case 2:
-            case 'end':
-              return context$2$0.stop();
-          }
-        }, null, this);
-      }
-    }, {
-      key: 'getLight',
-      value: function getLight(lightID) {
-        return regeneratorRuntime.async(function getLight$(context$2$0) {
-          while (1) switch (context$2$0.prev = context$2$0.next) {
-            case 0:
-              return context$2$0.abrupt('return', this.makeRequest('/light/' + lightID));
-  
-            case 1:
-            case 'end':
-              return context$2$0.stop();
-          }
-        }, null, this);
-      }
-    }, {
-      key: 'getAllLights',
-      value: function getAllLights() {
-        return regeneratorRuntime.async(function getAllLights$(context$2$0) {
-          while (1) switch (context$2$0.prev = context$2$0.next) {
-            case 0:
-              return context$2$0.abrupt('return', this.getGroup('0'));
-  
-            case 1:
-            case 'end':
-              return context$2$0.stop();
-          }
-        }, null, this);
-      }
-    }, {
-      key: 'turnOnLight',
-      value: function turnOnLight(id) {
-        var opts;
-        return regeneratorRuntime.async(function turnOnLight$(context$2$0) {
-          while (1) switch (context$2$0.prev = context$2$0.next) {
-            case 0:
-              opts = { method: 'POST' };
-              return context$2$0.abrupt('return', this.makeRequest('/light/' + id + '/on', opts));
-  
-            case 2:
-            case 'end':
-              return context$2$0.stop();
-          }
-        }, null, this);
-      }
-    }, {
-      key: 'turnOffLight',
-      value: function turnOffLight(id) {
-        var opts;
-        return regeneratorRuntime.async(function turnOffLight$(context$2$0) {
-          while (1) switch (context$2$0.prev = context$2$0.next) {
-            case 0:
-              opts = { method: 'POST' };
-              return context$2$0.abrupt('return', this.makeRequest('/light/' + id + '/off', opts));
-  
-            case 2:
-            case 'end':
-              return context$2$0.stop();
-          }
-        }, null, this);
-      }
-    }, {
-      key: 'turnOnGroup',
-      value: function turnOnGroup(id) {
-        var opts;
-        return regeneratorRuntime.async(function turnOnGroup$(context$2$0) {
-          while (1) switch (context$2$0.prev = context$2$0.next) {
-            case 0:
-              opts = { method: 'POST' };
-              return context$2$0.abrupt('return', this.makeRequest('/group/' + id + '/on', opts));
-  
-            case 2:
-            case 'end':
-              return context$2$0.stop();
-          }
-        }, null, this);
-      }
-    }, {
-      key: 'turnOffGroup',
-      value: function turnOffGroup(id) {
-        var opts;
-        return regeneratorRuntime.async(function turnOffGroup$(context$2$0) {
-          while (1) switch (context$2$0.prev = context$2$0.next) {
-            case 0:
-              opts = { method: 'POST' };
-              return context$2$0.abrupt('return', this.makeRequest('/group/' + id + '/off', opts));
-  
-            case 2:
-            case 'end':
-              return context$2$0.stop();
-          }
-        }, null, this);
-      }
-    }, {
-      key: 'setLightColor',
-      value: function setLightColor(id, x, y) {
-        var opts;
-        return regeneratorRuntime.async(function setLightColor$(context$2$0) {
-          while (1) switch (context$2$0.prev = context$2$0.next) {
-            case 0:
-              opts = { method: 'POST' };
-              return context$2$0.abrupt('return', this.makeRequest('/light/' + id + '/color' + '?x=' + x + '&y=' + y, opts));
-  
-            case 2:
-            case 'end':
-              return context$2$0.stop();
-          }
-        }, null, this);
-      }
-    }, {
-      key: 'setGroupColor',
-      value: function setGroupColor(id, x, y) {
-        var opts;
-        return regeneratorRuntime.async(function setGroupColor$(context$2$0) {
-          while (1) switch (context$2$0.prev = context$2$0.next) {
-            case 0:
-              opts = { method: 'POST' };
-              return context$2$0.abrupt('return', this.makeRequest('/group/' + id + '/color' + '?x=' + x + '&y=' + y, opts));
-  
-            case 2:
-            case 'end':
-              return context$2$0.stop();
-          }
-        }, null, this);
-      }
-    }, {
-      key: 'makeRequest',
-      value: function makeRequest(path, optionalOptions) {
-        var options, url, response, json;
-        return regeneratorRuntime.async(function makeRequest$(context$2$0) {
-          while (1) switch (context$2$0.prev = context$2$0.next) {
-            case 0:
-              options = optionalOptions || {};
-              url = _configJson2['default'][("development")].serverUri + path;
-              context$2$0.next = 4;
-              return regeneratorRuntime.awrap((0, _coreFetch2['default'])(url, options));
-  
-            case 4:
-              response = context$2$0.sent;
-              context$2$0.next = 7;
-              return regeneratorRuntime.awrap(response.json());
-  
-            case 7:
-              json = context$2$0.sent;
-  
-              if (!response.ok) {
-                context$2$0.next = 10;
-                break;
-              }
-  
-              return context$2$0.abrupt('return', json);
-  
-            case 10:
-              if (!json.hasOwnProperty('error')) {
-                context$2$0.next = 16;
-                break;
-              }
-  
-              if (!(typeof json.error === 'string')) {
-                context$2$0.next = 15;
-                break;
-              }
-  
-              throw new Error(json.error);
-  
-            case 15:
-              throw new Error(JSON.stringify(json.error));
-  
-            case 16:
-              throw new Error(response.statusText);
-  
-            case 17:
-            case 'end':
-              return context$2$0.stop();
-          }
-        }, null, this);
-      }
-    }]);
-  
-    return Bridge;
-  })();
-  
-  exports['default'] = Bridge;
-  module.exports = exports['default'];
-
-/***/ },
+/* 48 */,
 /* 49 */
 /***/ function(module, exports) {
 
@@ -4473,9 +4119,9 @@ module.exports =
   
   var _LightScss2 = _interopRequireDefault(_LightScss);
   
-  var _actionsBridge = __webpack_require__(48);
+  var _apiBridge = __webpack_require__(101);
   
-  var _actionsBridge2 = _interopRequireDefault(_actionsBridge);
+  var _apiBridge2 = _interopRequireDefault(_apiBridge);
   
   var _apiConverter = __webpack_require__(56);
   
@@ -4518,9 +4164,9 @@ module.exports =
       key: 'onLightToggle',
       value: function onLightToggle(turnOn) {
         if (turnOn) {
-          _actionsBridge2['default'].turnOnLight(this.props.id).then(this.onLightToggleComplete.bind(this));
+          _apiBridge2['default'].turnOnLight(this.props.id).then(this.onLightToggleComplete.bind(this));
         } else {
-          _actionsBridge2['default'].turnOffLight(this.props.id).then(this.onLightToggleComplete.bind(this));
+          _apiBridge2['default'].turnOffLight(this.props.id).then(this.onLightToggleComplete.bind(this));
         }
       }
     }, {
@@ -4567,7 +4213,7 @@ module.exports =
         var xy = _apiConverter2['default'].hexToCIE1931(color);
         var x = xy[0];
         var y = xy[1];
-        _actionsBridge2['default'].setLightColor(this.props.id, x, y).then(this.onColorChanged.bind(this, x, y));
+        _apiBridge2['default'].setLightColor(this.props.id, x, y).then(this.onColorChanged.bind(this, x, y));
       }
     }, {
       key: 'toggleColorPicker',
@@ -5463,9 +5109,9 @@ module.exports =
   
   var _OnOffSwitchOnOffSwitch2 = _interopRequireDefault(_OnOffSwitchOnOffSwitch);
   
-  var _actionsBridge = __webpack_require__(48);
+  var _apiBridge = __webpack_require__(101);
   
-  var _actionsBridge2 = _interopRequireDefault(_actionsBridge);
+  var _apiBridge2 = _interopRequireDefault(_apiBridge);
   
   var _reactColor = __webpack_require__(59);
   
@@ -5511,9 +5157,9 @@ module.exports =
       key: 'onLightsToggle',
       value: function onLightsToggle(turnOn) {
         if (turnOn) {
-          _actionsBridge2['default'].turnOnGroup(this.props.id).then(this.onLightsToggleComplete.bind(this, true));
+          _apiBridge2['default'].turnOnGroup(this.props.id).then(this.onLightsToggleComplete.bind(this, true));
         } else {
-          _actionsBridge2['default'].turnOffGroup(this.props.id).then(this.onLightsToggleComplete.bind(this, false));
+          _apiBridge2['default'].turnOffGroup(this.props.id).then(this.onLightsToggleComplete.bind(this, false));
         }
       }
     }, {
@@ -5602,7 +5248,7 @@ module.exports =
         var xy = _apiConverter2['default'].hexToCIE1931(color);
         var x = xy[0];
         var y = xy[1];
-        _actionsBridge2['default'].setGroupColor(this.props.id, x, y).then(this.onColorChanged.bind(this, x, y));
+        _apiBridge2['default'].setGroupColor(this.props.id, x, y).then(this.onColorChanged.bind(this, x, y));
       }
     }, {
       key: 'isNight',
@@ -5860,9 +5506,9 @@ module.exports =
   
   var _LightCheckboxLightCheckbox2 = _interopRequireDefault(_LightCheckboxLightCheckbox);
   
-  var _actionsBridge = __webpack_require__(48);
+  var _apiBridge = __webpack_require__(101);
   
-  var _actionsBridge2 = _interopRequireDefault(_actionsBridge);
+  var _apiBridge2 = _interopRequireDefault(_apiBridge);
   
   var GroupForm = (function (_Component) {
     _inherits(GroupForm, _Component);
@@ -5965,9 +5611,9 @@ module.exports =
           lightIDs = this.state.checkedLightIDs;
         }
         if (typeof this.props.id === 'string') {
-          _actionsBridge2['default'].updateGroup(this.props.id, name, lightIDs).then(this.onGroupUpdated.bind(this, name, lightIDs))['catch'](this.onGroupSaveError.bind(this, name));
+          _apiBridge2['default'].updateGroup(this.props.id, name, lightIDs).then(this.onGroupUpdated.bind(this, name, lightIDs))['catch'](this.onGroupSaveError.bind(this, name));
         } else {
-          _actionsBridge2['default'].createGroup(name, lightIDs).then(this.onGroupSaved.bind(this, name, lightIDs))['catch'](this.onGroupSaveError.bind(this, name));
+          _apiBridge2['default'].createGroup(name, lightIDs).then(this.onGroupSaved.bind(this, name, lightIDs))['catch'](this.onGroupSaveError.bind(this, name));
         }
       }
     }, {
@@ -6415,9 +6061,9 @@ module.exports =
   
   var _decoratorsWithStyles2 = _interopRequireDefault(_decoratorsWithStyles);
   
-  var _actionsBridge = __webpack_require__(48);
+  var _apiBridge = __webpack_require__(101);
   
-  var _actionsBridge2 = _interopRequireDefault(_actionsBridge);
+  var _apiBridge2 = _interopRequireDefault(_apiBridge);
   
   var _BridgeDisplay = __webpack_require__(81);
   
@@ -6459,7 +6105,7 @@ module.exports =
     }, {
       key: 'componentDidMount',
       value: function componentDidMount() {
-        _actionsBridge2['default'].get().then(this.onBridgeLoaded.bind(this))['catch'](this.onBridgeLoadError.bind(this));
+        _apiBridge2['default'].get().then(this.onBridgeLoaded.bind(this))['catch'](this.onBridgeLoadError.bind(this));
       }
     }, {
       key: 'onAllLightsLoaded',
@@ -6496,7 +6142,7 @@ module.exports =
       value: function onBridgeSaved(bridgeAndConnection) {
         this.onBridgeLoaded(bridgeAndConnection);
         var connection = bridgeAndConnection.connection;
-        _actionsBridge2['default'].getAllLights(connection.id).then(this.onAllLightsLoaded.bind(this));
+        _apiBridge2['default'].getAllLights(connection.id).then(this.onAllLightsLoaded.bind(this));
       }
     }, {
       key: 'onBridgeSaveError',
@@ -6516,14 +6162,14 @@ module.exports =
     }, {
       key: 'discoverBridges',
       value: function discoverBridges() {
-        _actionsBridge2['default'].discover().then(this.onBridgesDiscovered.bind(this));
+        _apiBridge2['default'].discover().then(this.onBridgesDiscovered.bind(this));
       }
     }, {
       key: 'handleSubmit',
       value: function handleSubmit(e) {
         e.preventDefault();
         if (typeof this.state.ip === 'string' && typeof this.state.user === 'string') {
-          _actionsBridge2['default'].save(this.state.ip, this.state.user).then(this.onBridgeSaved.bind(this))['catch'](this.onBridgeSaveError.bind(this));
+          _apiBridge2['default'].save(this.state.ip, this.state.user).then(this.onBridgeSaved.bind(this))['catch'](this.onBridgeSaveError.bind(this));
         }
       }
     }, {
@@ -6894,9 +6540,9 @@ module.exports =
   
   var _SettingsPageScss2 = _interopRequireDefault(_SettingsPageScss);
   
-  var _actionsBridge = __webpack_require__(48);
+  var _apiBridge = __webpack_require__(101);
   
-  var _actionsBridge2 = _interopRequireDefault(_actionsBridge);
+  var _apiBridge2 = _interopRequireDefault(_apiBridge);
   
   var UserForm = (function (_Component) {
     _inherits(UserForm, _Component);
@@ -6949,13 +6595,13 @@ module.exports =
         if (typeof this.state.user !== 'string' || this.state.user.length < 1) {
           return;
         }
-        _actionsBridge2['default'].save(this.props.ip, this.state.user).then(this.onBridgeSaved.bind(this))['catch'](this.onBridgeSaveError.bind(this));
+        _apiBridge2['default'].save(this.props.ip, this.state.user).then(this.onBridgeSaved.bind(this))['catch'](this.onBridgeSaveError.bind(this));
       }
     }, {
       key: 'registerUser',
       value: function registerUser() {
         var user = 'hue-steamer';
-        _actionsBridge2['default'].registerUser(this.props.ip, user).then(this.onBridgeSaved.bind(this))['catch'](this.onRegisterUserError.bind(this));
+        _apiBridge2['default'].registerUser(this.props.ip, user).then(this.onBridgeSaved.bind(this))['catch'](this.onRegisterUserError.bind(this));
         this.setState({
           attemptedRegistration: true,
           registerUserError: false
@@ -7989,6 +7635,361 @@ module.exports =
   	"enabled": "Schedule_enabled_3aQ",
   	"disabled": "Schedule_disabled_2oR"
   };
+
+/***/ },
+/* 101 */
+/***/ function(module, exports, __webpack_require__) {
+
+  'use strict';
+  
+  Object.defineProperty(exports, '__esModule', {
+    value: true
+  });
+  
+  var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+  
+  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  
+  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+  
+  var _coreFetch = __webpack_require__(12);
+  
+  var _coreFetch2 = _interopRequireDefault(_coreFetch);
+  
+  var _configJson = __webpack_require__(49);
+  
+  var _configJson2 = _interopRequireDefault(_configJson);
+  
+  var Bridge = (function () {
+    function Bridge() {
+      _classCallCheck(this, Bridge);
+    }
+  
+    _createClass(Bridge, null, [{
+      key: 'get',
+      value: function get(id) {
+        return regeneratorRuntime.async(function get$(context$2$0) {
+          while (1) switch (context$2$0.prev = context$2$0.next) {
+            case 0:
+              if (!(typeof id === 'undefined')) {
+                context$2$0.next = 2;
+                break;
+              }
+  
+              return context$2$0.abrupt('return', this.makeRequest('/bridge'));
+  
+            case 2:
+              return context$2$0.abrupt('return', this.makeRequest('/bridges/' + id));
+  
+            case 3:
+            case 'end':
+              return context$2$0.stop();
+          }
+        }, null, this);
+      }
+    }, {
+      key: 'discover',
+      value: function discover() {
+        return regeneratorRuntime.async(function discover$(context$2$0) {
+          while (1) switch (context$2$0.prev = context$2$0.next) {
+            case 0:
+              return context$2$0.abrupt('return', this.makeRequest('/bridges/discover'));
+  
+            case 1:
+            case 'end':
+              return context$2$0.stop();
+          }
+        }, null, this);
+      }
+    }, {
+      key: 'save',
+      value: function save(ip, user) {
+        var opts;
+        return regeneratorRuntime.async(function save$(context$2$0) {
+          while (1) switch (context$2$0.prev = context$2$0.next) {
+            case 0:
+              opts = { method: 'POST' };
+              return context$2$0.abrupt('return', this.makeRequest('/bridges?ip=' + encodeURIComponent(ip) + '&user=' + encodeURIComponent(user), opts));
+  
+            case 2:
+            case 'end':
+              return context$2$0.stop();
+          }
+        }, null, this);
+      }
+    }, {
+      key: 'registerUser',
+      value: function registerUser(ip, user) {
+        var opts;
+        return regeneratorRuntime.async(function registerUser$(context$2$0) {
+          while (1) switch (context$2$0.prev = context$2$0.next) {
+            case 0:
+              opts = { method: 'POST' };
+              return context$2$0.abrupt('return', this.makeRequest('/users?ip=' + encodeURIComponent(ip) + '&user=' + encodeURIComponent(user), opts));
+  
+            case 2:
+            case 'end':
+              return context$2$0.stop();
+          }
+        }, null, this);
+      }
+    }, {
+      key: 'getGroups',
+      value: function getGroups() {
+        return regeneratorRuntime.async(function getGroups$(context$2$0) {
+          while (1) switch (context$2$0.prev = context$2$0.next) {
+            case 0:
+              return context$2$0.abrupt('return', this.makeRequest('/groups'));
+  
+            case 1:
+            case 'end':
+              return context$2$0.stop();
+          }
+        }, null, this);
+      }
+    }, {
+      key: 'getSchedules',
+      value: function getSchedules() {
+        return regeneratorRuntime.async(function getSchedules$(context$2$0) {
+          while (1) switch (context$2$0.prev = context$2$0.next) {
+            case 0:
+              return context$2$0.abrupt('return', this.makeRequest('/schedules'));
+  
+            case 1:
+            case 'end':
+              return context$2$0.stop();
+          }
+        }, null, this);
+      }
+    }, {
+      key: 'getGroup',
+      value: function getGroup(groupID) {
+        return regeneratorRuntime.async(function getGroup$(context$2$0) {
+          while (1) switch (context$2$0.prev = context$2$0.next) {
+            case 0:
+              return context$2$0.abrupt('return', this.makeRequest('/group/' + (groupID || '0')));
+  
+            case 1:
+            case 'end':
+              return context$2$0.stop();
+          }
+        }, null, this);
+      }
+    }, {
+      key: 'createGroup',
+      value: function createGroup(name, lightIDs) {
+        var opts;
+        return regeneratorRuntime.async(function createGroup$(context$2$0) {
+          while (1) switch (context$2$0.prev = context$2$0.next) {
+            case 0:
+              opts = { method: 'POST' };
+              return context$2$0.abrupt('return', this.makeRequest('/groups?name=' + encodeURIComponent(name) + '&ids=' + lightIDs.join(','), opts));
+  
+            case 2:
+            case 'end':
+              return context$2$0.stop();
+          }
+        }, null, this);
+      }
+    }, {
+      key: 'updateGroup',
+      value: function updateGroup(id, name, lightIDs) {
+        var opts;
+        return regeneratorRuntime.async(function updateGroup$(context$2$0) {
+          while (1) switch (context$2$0.prev = context$2$0.next) {
+            case 0:
+              opts = { method: 'PUT' };
+              return context$2$0.abrupt('return', this.makeRequest('/group/' + id + '?name=' + encodeURIComponent(name) + '&ids=' + lightIDs.join(','), opts));
+  
+            case 2:
+            case 'end':
+              return context$2$0.stop();
+          }
+        }, null, this);
+      }
+    }, {
+      key: 'getLight',
+      value: function getLight(lightID) {
+        return regeneratorRuntime.async(function getLight$(context$2$0) {
+          while (1) switch (context$2$0.prev = context$2$0.next) {
+            case 0:
+              return context$2$0.abrupt('return', this.makeRequest('/light/' + lightID));
+  
+            case 1:
+            case 'end':
+              return context$2$0.stop();
+          }
+        }, null, this);
+      }
+    }, {
+      key: 'getAllLights',
+      value: function getAllLights() {
+        return regeneratorRuntime.async(function getAllLights$(context$2$0) {
+          while (1) switch (context$2$0.prev = context$2$0.next) {
+            case 0:
+              return context$2$0.abrupt('return', this.getGroup('0'));
+  
+            case 1:
+            case 'end':
+              return context$2$0.stop();
+          }
+        }, null, this);
+      }
+    }, {
+      key: 'turnOnLight',
+      value: function turnOnLight(id) {
+        var opts;
+        return regeneratorRuntime.async(function turnOnLight$(context$2$0) {
+          while (1) switch (context$2$0.prev = context$2$0.next) {
+            case 0:
+              opts = { method: 'POST' };
+              return context$2$0.abrupt('return', this.makeRequest('/light/' + id + '/on', opts));
+  
+            case 2:
+            case 'end':
+              return context$2$0.stop();
+          }
+        }, null, this);
+      }
+    }, {
+      key: 'turnOffLight',
+      value: function turnOffLight(id) {
+        var opts;
+        return regeneratorRuntime.async(function turnOffLight$(context$2$0) {
+          while (1) switch (context$2$0.prev = context$2$0.next) {
+            case 0:
+              opts = { method: 'POST' };
+              return context$2$0.abrupt('return', this.makeRequest('/light/' + id + '/off', opts));
+  
+            case 2:
+            case 'end':
+              return context$2$0.stop();
+          }
+        }, null, this);
+      }
+    }, {
+      key: 'turnOnGroup',
+      value: function turnOnGroup(id) {
+        var opts;
+        return regeneratorRuntime.async(function turnOnGroup$(context$2$0) {
+          while (1) switch (context$2$0.prev = context$2$0.next) {
+            case 0:
+              opts = { method: 'POST' };
+              return context$2$0.abrupt('return', this.makeRequest('/group/' + id + '/on', opts));
+  
+            case 2:
+            case 'end':
+              return context$2$0.stop();
+          }
+        }, null, this);
+      }
+    }, {
+      key: 'turnOffGroup',
+      value: function turnOffGroup(id) {
+        var opts;
+        return regeneratorRuntime.async(function turnOffGroup$(context$2$0) {
+          while (1) switch (context$2$0.prev = context$2$0.next) {
+            case 0:
+              opts = { method: 'POST' };
+              return context$2$0.abrupt('return', this.makeRequest('/group/' + id + '/off', opts));
+  
+            case 2:
+            case 'end':
+              return context$2$0.stop();
+          }
+        }, null, this);
+      }
+    }, {
+      key: 'setLightColor',
+      value: function setLightColor(id, x, y) {
+        var opts;
+        return regeneratorRuntime.async(function setLightColor$(context$2$0) {
+          while (1) switch (context$2$0.prev = context$2$0.next) {
+            case 0:
+              opts = { method: 'POST' };
+              return context$2$0.abrupt('return', this.makeRequest('/light/' + id + '/color' + '?x=' + x + '&y=' + y, opts));
+  
+            case 2:
+            case 'end':
+              return context$2$0.stop();
+          }
+        }, null, this);
+      }
+    }, {
+      key: 'setGroupColor',
+      value: function setGroupColor(id, x, y) {
+        var opts;
+        return regeneratorRuntime.async(function setGroupColor$(context$2$0) {
+          while (1) switch (context$2$0.prev = context$2$0.next) {
+            case 0:
+              opts = { method: 'POST' };
+              return context$2$0.abrupt('return', this.makeRequest('/group/' + id + '/color' + '?x=' + x + '&y=' + y, opts));
+  
+            case 2:
+            case 'end':
+              return context$2$0.stop();
+          }
+        }, null, this);
+      }
+    }, {
+      key: 'makeRequest',
+      value: function makeRequest(path, optionalOptions) {
+        var options, url, response, json;
+        return regeneratorRuntime.async(function makeRequest$(context$2$0) {
+          while (1) switch (context$2$0.prev = context$2$0.next) {
+            case 0:
+              options = optionalOptions || {};
+              url = _configJson2['default'][("development")].serverUri + path;
+              context$2$0.next = 4;
+              return regeneratorRuntime.awrap((0, _coreFetch2['default'])(url, options));
+  
+            case 4:
+              response = context$2$0.sent;
+              context$2$0.next = 7;
+              return regeneratorRuntime.awrap(response.json());
+  
+            case 7:
+              json = context$2$0.sent;
+  
+              if (!response.ok) {
+                context$2$0.next = 10;
+                break;
+              }
+  
+              return context$2$0.abrupt('return', json);
+  
+            case 10:
+              if (!json.hasOwnProperty('error')) {
+                context$2$0.next = 16;
+                break;
+              }
+  
+              if (!(typeof json.error === 'string')) {
+                context$2$0.next = 15;
+                break;
+              }
+  
+              throw new Error(json.error);
+  
+            case 15:
+              throw new Error(JSON.stringify(json.error));
+  
+            case 16:
+              throw new Error(response.statusText);
+  
+            case 17:
+            case 'end':
+              return context$2$0.stop();
+          }
+        }, null, this);
+      }
+    }]);
+  
+    return Bridge;
+  })();
+  
+  exports['default'] = Bridge;
+  module.exports = exports['default'];
 
 /***/ }
 /******/ ]);

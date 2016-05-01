@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import s from './SettingsPage.scss';
 import withStyles from '../../decorators/withStyles';
-import Bridge from '../../actions/bridge';
+import Bridge from '../../api/bridge';
 import BridgeDisplay from './BridgeDisplay';
 import UserForm from './UserForm';
 
