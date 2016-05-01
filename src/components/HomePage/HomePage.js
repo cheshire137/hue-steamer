@@ -204,6 +204,18 @@ class HomePage extends Component {
     }
   }
 
+  getSchedules() {
+    Bridge.getSchedules().
+           then(this.onSchedulesLoaded.bind(this)).
+           catch(this.onSchedulesLoadError.bind(this));
+  }
+
+  getScenes() {
+    Bridge.getScenes().
+           then(this.onScenesLoaded.bind(this)).
+           catch(this.onScenesLoadError.bind(this));
+  }
+
   lightCompare(lightA, lightB) {
     const isLightALoaded = typeof lightA === 'object';
     const isLightBLoaded = typeof lightB === 'object';
@@ -217,18 +229,6 @@ class HomePage extends Component {
       return 1;
     }
     return lightA.name.localeCompare(lightB.name);
-  }
-
-  getSchedules() {
-    Bridge.getSchedules().
-           then(this.onSchedulesLoaded.bind(this)).
-           catch(this.onSchedulesLoadError.bind(this));
-  }
-
-  getScenes() {
-    Bridge.getScenes().
-           then(this.onScenesLoaded.bind(this)).
-           catch(this.onScenesLoadError.bind(this));
   }
 
   updateLightInObject(light, oldObject) {

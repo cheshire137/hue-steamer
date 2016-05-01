@@ -3518,6 +3518,16 @@ module.exports =
         }
       }
     }, {
+      key: 'getSchedules',
+      value: function getSchedules() {
+        _apiBridge2['default'].getSchedules().then(this.onSchedulesLoaded.bind(this))['catch'](this.onSchedulesLoadError.bind(this));
+      }
+    }, {
+      key: 'getScenes',
+      value: function getScenes() {
+        _apiBridge2['default'].getScenes().then(this.onScenesLoaded.bind(this))['catch'](this.onScenesLoadError.bind(this));
+      }
+    }, {
       key: 'lightCompare',
       value: function lightCompare(lightA, lightB) {
         var isLightALoaded = typeof lightA === 'object';
@@ -3532,16 +3542,6 @@ module.exports =
           return 1;
         }
         return lightA.name.localeCompare(lightB.name);
-      }
-    }, {
-      key: 'getSchedules',
-      value: function getSchedules() {
-        _apiBridge2['default'].getSchedules().then(this.onSchedulesLoaded.bind(this))['catch'](this.onSchedulesLoadError.bind(this));
-      }
-    }, {
-      key: 'getScenes',
-      value: function getScenes() {
-        _apiBridge2['default'].getScenes().then(this.onScenesLoaded.bind(this))['catch'](this.onScenesLoadError.bind(this));
       }
     }, {
       key: 'updateLightInObject',
@@ -6488,7 +6488,8 @@ module.exports =
       this.state = {
         filter: undefined,
         lightState: undefined,
-        model: undefined
+        model: undefined,
+        sort: undefined
       };
     }
   
@@ -6532,39 +6533,61 @@ module.exports =
         });
       }
     }, {
-      key: 'getFilteredLightIDs',
-      value: function getFilteredLightIDs() {
+      key: 'onSortChange',
+      value: function onSortChange(event) {
         var _this4 = this;
   
-        var filteredIDs = this.props.ids;
+        var sort = event.target.value;
+        if (sort === 'name') {
+          sort = undefined;
+        }
+        this.setState({ sort: sort }, function () {
+          _this4.handleSubmit();
+        });
+      }
+    }, {
+      key: 'getFilteredLightIDs',
+      value: function getFilteredLightIDs() {
+        var _this5 = this;
+  
+        var sortedLights = [];
+        for (var id in this.props.lights) {
+          if (this.props.lights.hasOwnProperty(id)) {
+            sortedLights.push(this.props.lights[id]);
+          }
+        }
+        sortedLights.sort(this.lightSorter.bind(this));
+        var filteredIDs = sortedLights.map(function (l) {
+          return l.id;
+        });
         if (typeof this.state.filter !== 'undefined') {
           filteredIDs = filteredIDs.filter(function (id) {
-            var light = _this4.props.lights[id];
+            var light = _this5.props.lights[id];
             if (typeof light !== 'object') {
               return true;
             }
-            return light.name.toLowerCase().indexOf(_this4.state.filter) > -1;
+            return light.name.toLowerCase().indexOf(_this5.state.filter) > -1;
           });
         }
         if (typeof this.state.lightState !== 'undefined') {
           filteredIDs = filteredIDs.filter(function (id) {
-            var light = _this4.props.lights[id];
+            var light = _this5.props.lights[id];
             if (typeof light !== 'object') {
               return true;
             }
-            if (light.state.on && _this4.state.lightState === 'on') {
+            if (light.state.on && _this5.state.lightState === 'on') {
               return true;
             }
-            return !light.state.on && _this4.state.lightState === 'off';
+            return !light.state.on && _this5.state.lightState === 'off';
           });
         }
         if (typeof this.state.model !== 'undefined') {
           filteredIDs = filteredIDs.filter(function (id) {
-            var light = _this4.props.lights[id];
+            var light = _this5.props.lights[id];
             if (typeof light !== 'object') {
               return true;
             }
-            return light.modelid === _this4.state.model;
+            return light.modelid === _this5.state.model;
           });
         }
         return filteredIDs;
@@ -6572,16 +6595,37 @@ module.exports =
     }, {
       key: 'getModels',
       value: function getModels() {
-        var _this5 = this;
+        var _this6 = this;
   
         var models = this.props.ids.map(function (id) {
-          var light = _this5.props.lights[id];
+          var light = _this6.props.lights[id];
           if (typeof light !== 'object') {
             return undefined;
           }
           return light.modelid;
         });
         return [].concat(_toConsumableArray(new Set(models)));
+      }
+    }, {
+      key: 'lightSorter',
+      value: function lightSorter(a, b) {
+        var aIsLoaded = typeof a === 'object';
+        var bIsLoaded = typeof b === 'object';
+        if (!aIsLoaded && !bIsLoaded) {
+          return 0;
+        }
+        if (!aIsLoaded) {
+          return -1;
+        }
+        if (!bIsLoaded) {
+          return 1;
+        }
+        if (this.state.sort === 'model') {
+          return a.modelid.localeCompare(b.modelid);
+        }
+        var aName = a.name.toLowerCase();
+        var bName = b.name.toLowerCase();
+        return aName.localeCompare(bName);
       }
     }, {
       key: 'isFiltered',
@@ -6595,7 +6639,7 @@ module.exports =
     }, {
       key: 'clearFilter',
       value: function clearFilter(event) {
-        var _this6 = this;
+        var _this7 = this;
   
         event.preventDefault();
         this.setState({
@@ -6603,7 +6647,7 @@ module.exports =
           model: undefined,
           lightState: undefined
         }, function () {
-          _this6.handleSubmit();
+          _this7.handleSubmit();
         });
       }
     }, {
@@ -6614,7 +6658,7 @@ module.exports =
         }
         var props = [this.state.filter, this.state.lightState, this.state.model];
         var filters = props.map(function (prop) {
-          if (typeof prop === 'string') {
+          if (typeof prop === 'string' && prop.length > 0) {
             return prop;
           }
         });
@@ -6683,6 +6727,27 @@ module.exports =
               );
             })
           ),
+          _react2['default'].createElement(
+            'label',
+            { className: _LightFilterFormScss2['default'].label },
+            'Sort:'
+          ),
+          _react2['default'].createElement(
+            'select',
+            { className: _LightFilterFormScss2['default'].sort,
+              onChange: this.onSortChange.bind(this)
+            },
+            _react2['default'].createElement(
+              'option',
+              { value: 'name', selected: typeof this.state.sort === 'undefined' },
+              'Name'
+            ),
+            _react2['default'].createElement(
+              'option',
+              { value: 'model' },
+              'Model'
+            )
+          ),
           this.isFiltered() ? _react2['default'].createElement(
             'a',
             { href: '#', className: _LightFilterFormScss2['default'].clear, onClick: this.clearFilter.bind(this) },
@@ -6741,13 +6806,14 @@ module.exports =
   
   
   // module
-  exports.push([module.id, "input[type=\"search\"].LightFilterForm_lightFilter_2eF, select.LightFilterForm_stateFilter_3sK, select.LightFilterForm_modelFilter_2R5, .LightFilterForm_label_1bv {\n  display: inline-block;\n}\n\ninput[type=\"search\"].LightFilterForm_lightFilter_2eF {\n  width: 12em;\n}\n\nselect.LightFilterForm_stateFilter_3sK {\n  width: 5em;\n}\n\nselect.LightFilterForm_modelFilter_2R5 {\n  width: 10em;\n}\n\n.LightFilterForm_label_1bv {\n  margin: 0 5px 0 30px;\n}\n\n.LightFilterForm_clear_T4R {\n  text-decoration: none;\n  padding-left: 10px;\n  font-size: 13px;\n}\n", "", {"version":3,"sources":["/./src/components/LightFilterForm/LightFilterForm.scss"],"names":[],"mappings":"AAAA;EAIE,sBAAsB;CACvB;;AAED;EACE,YAAY;CACb;;AAED;EACE,WAAW;CACZ;;AAED;EACE,YAAY;CACb;;AAED;EACE,qBAAqB;CACtB;;AAED;EACE,sBAAsB;EACtB,mBAAmB;EACnB,gBAAgB;CACjB","file":"LightFilterForm.scss","sourcesContent":["input[type=\"search\"].lightFilter,\nselect.stateFilter,\nselect.modelFilter,\n.label {\n  display: inline-block;\n}\n\ninput[type=\"search\"].lightFilter {\n  width: 12em;\n}\n\nselect.stateFilter {\n  width: 5em;\n}\n\nselect.modelFilter {\n  width: 10em;\n}\n\n.label {\n  margin: 0 5px 0 30px;\n}\n\n.clear {\n  text-decoration: none;\n  padding-left: 10px;\n  font-size: 13px;\n}\n"],"sourceRoot":"webpack://"}]);
+  exports.push([module.id, "input[type=\"search\"].LightFilterForm_lightFilter_2eF, select.LightFilterForm_stateFilter_3sK, select.LightFilterForm_modelFilter_2R5, select.LightFilterForm_sort_Ae6, .LightFilterForm_label_1bv {\n  display: inline-block;\n}\n\ninput[type=\"search\"].LightFilterForm_lightFilter_2eF {\n  width: 10em;\n}\n\nselect.LightFilterForm_stateFilter_3sK {\n  width: 5em;\n}\n\nselect.LightFilterForm_modelFilter_2R5 {\n  width: 7em;\n}\n\nselect.LightFilterForm_sort_Ae6 {\n  width: 5.5em;\n}\n\n.LightFilterForm_label_1bv {\n  margin: 0 5px 0 20px;\n}\n\n.LightFilterForm_clear_T4R {\n  text-decoration: none;\n  padding-left: 10px;\n  font-size: 13px;\n}\n", "", {"version":3,"sources":["/./src/components/LightFilterForm/LightFilterForm.scss"],"names":[],"mappings":"AAAA;EAKE,sBAAsB;CACvB;;AAED;EACE,YAAY;CACb;;AAED;EACE,WAAW;CACZ;;AAED;EACE,WAAW;CACZ;;AAED;EACE,aAAa;CACd;;AAED;EACE,qBAAqB;CACtB;;AAED;EACE,sBAAsB;EACtB,mBAAmB;EACnB,gBAAgB;CACjB","file":"LightFilterForm.scss","sourcesContent":["input[type=\"search\"].lightFilter,\nselect.stateFilter,\nselect.modelFilter,\nselect.sort,\n.label {\n  display: inline-block;\n}\n\ninput[type=\"search\"].lightFilter {\n  width: 10em;\n}\n\nselect.stateFilter {\n  width: 5em;\n}\n\nselect.modelFilter {\n  width: 7em;\n}\n\nselect.sort {\n  width: 5.5em;\n}\n\n.label {\n  margin: 0 5px 0 20px;\n}\n\n.clear {\n  text-decoration: none;\n  padding-left: 10px;\n  font-size: 13px;\n}\n"],"sourceRoot":"webpack://"}]);
   
   // exports
   exports.locals = {
   	"lightFilter": "LightFilterForm_lightFilter_2eF",
   	"stateFilter": "LightFilterForm_stateFilter_3sK",
   	"modelFilter": "LightFilterForm_modelFilter_2R5",
+  	"sort": "LightFilterForm_sort_Ae6",
   	"label": "LightFilterForm_label_1bv",
   	"clear": "LightFilterForm_clear_T4R"
   };

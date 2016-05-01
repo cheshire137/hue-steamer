@@ -18,6 +18,7 @@ class LightFilterForm extends Component {
       filter: undefined,
       lightState: undefined,
       model: undefined,
+      sort: undefined,
     };
   }
 
@@ -51,8 +52,25 @@ class LightFilterForm extends Component {
     });
   }
 
+  onSortChange(event) {
+    let sort = event.target.value;
+    if (sort === 'name') {
+      sort = undefined;
+    }
+    this.setState({ sort }, () => {
+      this.handleSubmit();
+    });
+  }
+
   getFilteredLightIDs() {
-    let filteredIDs = this.props.ids;
+    const sortedLights = [];
+    for (const id in this.props.lights) {
+      if (this.props.lights.hasOwnProperty(id)) {
+        sortedLights.push(this.props.lights[id]);
+      }
+    }
+    sortedLights.sort(this.lightSorter.bind(this));
+    let filteredIDs = sortedLights.map((l) => l.id);
     if (typeof this.state.filter !== 'undefined') {
       filteredIDs = filteredIDs.filter((id) => {
         const light = this.props.lights[id];
@@ -97,6 +115,26 @@ class LightFilterForm extends Component {
     return [...new Set(models)];
   }
 
+  lightSorter(a, b) {
+    const aIsLoaded = typeof a === 'object';
+    const bIsLoaded = typeof b === 'object';
+    if (!aIsLoaded && !bIsLoaded) {
+      return 0;
+    }
+    if (!aIsLoaded) {
+      return -1;
+    }
+    if (!bIsLoaded) {
+      return 1;
+    }
+    if (this.state.sort === 'model') {
+      return a.modelid.localeCompare(b.modelid);
+    }
+    const aName = a.name.toLowerCase();
+    const bName = b.name.toLowerCase();
+    return aName.localeCompare(bName);
+  }
+
   isFiltered() {
     const props = [this.state.filter, this.state.lightState, this.state.model];
     const types = props.map((prop) => typeof prop);
@@ -120,7 +158,7 @@ class LightFilterForm extends Component {
     }
     const props = [this.state.filter, this.state.lightState, this.state.model];
     const filters = props.map((prop) => {
-      if (typeof prop === 'string') {
+      if (typeof prop === 'string' && prop.length > 0) {
         return prop;
       }
     });
@@ -160,6 +198,15 @@ class LightFilterForm extends Component {
               <option value={model} key={model}>{model}</option>
             );
           })}
+        </select>
+        <label className={s.label}>Sort:</label>
+        <select className={s.sort}
+          onChange={this.onSortChange.bind(this)}
+        >
+          <option value="name" selected={typeof this.state.sort === 'undefined'}>
+            Name
+          </option>
+          <option value="model">Model</option>
         </select>
         {this.isFiltered() ? (
           <a href="#" className={s.clear} onClick={this.clearFilter.bind(this)}>

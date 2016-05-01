@@ -1,12 +1,13 @@
 input[type="search"].lightFilter,
 select.stateFilter,
 select.modelFilter,
+select.sort,
 .label {
   display: inline-block;
 }
 
 input[type="search"].lightFilter {
-  width: 12em;
+  width: 10em;
 }
 
 select.stateFilter {
@@ -14,11 +15,15 @@ select.stateFilter {
 }
 
 select.modelFilter {
-  width: 10em;
+  width: 7em;
+}
+
+select.sort {
+  width: 5.5em;
 }
 
 .label {
-  margin: 0 5px 0 30px;
+  margin: 0 5px 0 20px;
 }
 
 .clear {
