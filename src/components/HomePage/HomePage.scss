@@ -1,6 +1,24 @@
 .loading {
 }
 
+.error {
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 2px;
+
+  &.night {
+    background-color: #E16C51;
+  }
+
+  &.day {
+    background-color: #c9302c;
+  }
+}
+
+.tabs {
+
+}
+
 .tabList {
   list-style: none;
   padding-left: 0;

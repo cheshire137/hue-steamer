@@ -3245,12 +3245,22 @@ module.exports =
   
   var _modelsDaytime2 = _interopRequireDefault(_modelsDaytime);
   
+  var _reactTimeout = __webpack_require__(100);
+  
+  var _reactTimeout2 = _interopRequireDefault(_reactTimeout);
+  
   var title = 'Hue Steamer';
   
   var HomePage = (function (_Component) {
     _inherits(HomePage, _Component);
   
     _createClass(HomePage, null, [{
+      key: 'propTypes',
+      value: {
+        setTimeout: _react.PropTypes.func
+      },
+      enumerable: true
+    }, {
       key: 'contextTypes',
       value: {
         onSetTitle: _react.PropTypes.func.isRequired
@@ -3265,7 +3275,8 @@ module.exports =
       this.state = {
         lights: {},
         activeTab: _storesLocalStorage2['default'].get('activeTab') || 'lights',
-        lightIDs: []
+        lightIDs: [],
+        error: undefined
       };
     }
   
@@ -3296,38 +3307,52 @@ module.exports =
       }
     }, {
       key: 'onBridgeLoadError',
-      value: function onBridgeLoadError(response) {
-        console.error('failed to load bridge', response);
+      value: function onBridgeLoadError(error) {
+        console.error('failed to load bridge', error.message);
         _coreLocation2['default'].push(_extends({}, (0, _historyLibParsePath2['default'])('/settings')));
       }
     }, {
       key: 'onSchedulesLoadError',
-      value: function onSchedulesLoadError(response) {
-        console.error('failed to load schedules', response);
+      value: function onSchedulesLoadError(error) {
+        console.error('failed to load schedules', error.message);
+        this.onError(error.message);
       }
     }, {
       key: 'onScenesLoadError',
-      value: function onScenesLoadError(response) {
-        console.error('failed to load scenes', response);
+      value: function onScenesLoadError(error) {
+        console.error('failed to load scenes', error.message);
+        this.onError(error.message);
+      }
+    }, {
+      key: 'onError',
+      value: function onError(error) {
+        var _this2 = this;
+  
+        this.setState({ error: error }, function () {
+          _this2.props.setTimeout(function () {
+            _this2.setState({ error: undefined });
+          }, 5000);
+        });
       }
     }, {
       key: 'onAllLightsLoaded',
       value: function onAllLightsLoaded(group) {
-        var _this2 = this;
+        var _this3 = this;
   
         this.setState({ lightIDs: group.lights }, function () {
           group.lights.forEach(function (id) {
             _apiBridge2['default'].getLight(id).then(function (light) {
               light.id = id;
-              _this2.onLightLoaded(light);
-            })['catch'](_this2.onLightLoadError.bind(_this2, id));
+              _this3.onLightLoaded(light);
+            })['catch'](_this3.onLightLoadError.bind(_this3, id));
           });
         });
       }
     }, {
       key: 'onAllLightsLoadError',
-      value: function onAllLightsLoadError(response) {
-        console.error('failed to load group of all lights', response);
+      value: function onAllLightsLoadError(error) {
+        console.error('failed to load group of all lights', error.message);
+        this.onError(error.message);
       }
     }, {
       key: 'onGroupsLoaded',
@@ -3340,8 +3365,9 @@ module.exports =
       }
     }, {
       key: 'onGroupsLoadError',
-      value: function onGroupsLoadError(response) {
-        console.error('failed to load groups', response);
+      value: function onGroupsLoadError(error) {
+        console.error('failed to load groups', error.message);
+        this.onError(error.message);
       }
     }, {
       key: 'onSchedulesLoaded',
@@ -3363,7 +3389,7 @@ module.exports =
     }, {
       key: 'onEditGroup',
       value: function onEditGroup(id, name, lights) {
-        var _this3 = this;
+        var _this4 = this;
   
         this.setState({
           editGroupName: name,
@@ -3372,13 +3398,13 @@ module.exports =
             return typeof l === 'string' ? l : l.id;
           })
         }, function () {
-          _this3.showGroupFormTab();
+          _this4.showGroupFormTab();
         });
       }
     }, {
       key: 'onGroupUpdated',
       value: function onGroupUpdated(group) {
-        var _this4 = this;
+        var _this5 = this;
   
         var newGroups = this.state.groups.slice();
         for (var i = 0; i < newGroups.length; i++) {
@@ -3401,7 +3427,7 @@ module.exports =
           editGroupID: undefined,
           editGroupLightIDs: undefined
         }, function () {
-          _this4.showGroupsTab();
+          _this5.showGroupsTab();
         });
       }
     }, {
@@ -3415,7 +3441,7 @@ module.exports =
     }, {
       key: 'onGroupCanceled',
       value: function onGroupCanceled() {
-        var _this5 = this;
+        var _this6 = this;
   
         var wasEditing = typeof this.state.editGroupID !== 'undefined';
         this.setState({
@@ -3426,9 +3452,9 @@ module.exports =
           newGroupLightIDs: undefined
         }, function () {
           if (wasEditing) {
-            _this5.showGroupsTab();
+            _this6.showGroupsTab();
           } else {
-            _this5.showLightsTab();
+            _this6.showLightsTab();
           }
         });
       }
@@ -3525,27 +3551,27 @@ module.exports =
     }, {
       key: 'updateLightInGroups',
       value: function updateLightInGroups(light) {
-        var _this6 = this;
+        var _this7 = this;
   
         var groups = this.state.groups;
         if (typeof groups !== 'object') {
           return groups;
         }
         return groups.slice().map(function (group) {
-          return _this6.updateLightInObject(light, group);
+          return _this7.updateLightInObject(light, group);
         });
       }
     }, {
       key: 'updateLightInScenes',
       value: function updateLightInScenes(light) {
-        var _this7 = this;
+        var _this8 = this;
   
         var scenes = this.state.scenes;
         if (typeof scenes !== 'object') {
           return scenes;
         }
         return scenes.slice().map(function (scene) {
-          return _this7.updateLightInObject(light, scene);
+          return _this8.updateLightInObject(light, scene);
         });
       }
     }, {
@@ -3686,6 +3712,11 @@ module.exports =
               )
             )
           ),
+          typeof this.state.error === 'string' ? _react2['default'].createElement(
+            'p',
+            { className: (0, _classnames2['default'])(_HomePageScss2['default'].error, themeClass) },
+            this.state.error
+          ) : '',
           _react2['default'].createElement(
             'div',
             { className: _HomePageScss2['default'].tabs },
@@ -3707,7 +3738,8 @@ module.exports =
               haveGroups ? _react2['default'].createElement(_GroupsListGroupsList2['default'], { groups: this.state.groups,
                 onLightLoaded: this.onLightLoaded.bind(this),
                 onEdit: this.onEditGroup.bind(this),
-                onGroupDeleted: this.onGroupDeleted.bind(this)
+                onGroupDeleted: this.onGroupDeleted.bind(this),
+                onError: this.onError.bind(this)
               }) : _react2['default'].createElement(
                 'p',
                 { className: _HomePageScss2['default'].loading },
@@ -3755,7 +3787,7 @@ module.exports =
     return HomePage;
   })(_react.Component);
   
-  exports['default'] = HomePage;
+  exports['default'] = (0, _reactTimeout2['default'])(HomePage);
   module.exports = exports['default'];
 
 /***/ },
@@ -3799,16 +3831,18 @@ module.exports =
   
   
   // module
-  exports.push([module.id, ".HomePage_loading_XqX {\n}\n\n.HomePage_tabList_uR3 {\n  list-style: none;\n  padding-left: 0;\n  border-bottom-width: 1px;\n  border-bottom-style: solid;\n}\n\n.HomePage_tabList_uR3 li {\n  display: inline-block;\n}\n\n.HomePage_tabList_uR3 li + li {\n  margin-left: 4px;\n}\n\n.HomePage_tabList_uR3 li a {\n  display: block;\n  padding: 0.3em 0.6em;\n  text-decoration: none;\n  border-style: solid;\n  border-width: 1px;\n  border-bottom-width: 0;\n  -webkit-border-top-left-radius: 4px;\n  -webkit-border-top-right-radius: 4px;\n  -moz-border-radius-topleft: 4px;\n  -moz-border-radius-topright: 4px;\n  border-top-left-radius: 4px;\n  border-top-right-radius: 4px;\n}\n\n.HomePage_tabList_uR3 li.HomePage_inactive_2yj a {\n  opacity: 0.75;\n}\n\n.HomePage_tabList_uR3 li.HomePage_active_lyV a {\n  margin-bottom: -1px;\n}\n\n.HomePage_night_1p9 .HomePage_tabList_uR3 {\n  border-color: #38231D;\n}\n\n.HomePage_night_1p9 .HomePage_tabList_uR3 li a {\n  border-color: #38231D;\n}\n\n.HomePage_night_1p9 .HomePage_tabList_uR3 li.HomePage_inactive_2yj a {\n  background-color: #231511;\n}\n\n.HomePage_night_1p9 .HomePage_tabList_uR3 li.HomePage_active_lyV {\n  border-bottom: 1px solid #101010;\n}\n\n.HomePage_day_2WC .HomePage_tabList_uR3 {\n  border-color: #ccc;\n}\n\n.HomePage_day_2WC .HomePage_tabList_uR3 li a {\n  border-color: #ccc;\n  color: #97918A\n}\n\n.HomePage_day_2WC .HomePage_tabList_uR3 li a:hover, .HomePage_day_2WC .HomePage_tabList_uR3 li a:focus {\n  color: #E16C51;\n}\n\n.HomePage_day_2WC .HomePage_tabList_uR3 li.HomePage_inactive_2yj a {\n  background-color: #f1f1f1;\n}\n\n.HomePage_day_2WC .HomePage_tabList_uR3 li.HomePage_active_lyV {\n  border-bottom: 1px solid #fff;\n}\n\n.HomePage_day_2WC .HomePage_tabList_uR3 li.HomePage_active_lyV a {\n  color: #E16C51;\n}\n\n.HomePage_tab_16Q {\n}\n\n.HomePage_tab_16Q.HomePage_inactive_2yj {\n  display: none;\n}\n\n.HomePage_badge_HDA {\n  display: inline-block;\n  padding: 2px 5px;\n  font-size: 11px;\n  font-weight: bold;\n  line-height: 1;\n  border-radius: 20px;\n  margin-left: 5px\n}\n\n.HomePage_badge_HDA.HomePage_day_2WC {\n  color: #666;\n  background-color: #eee;\n}\n\n.HomePage_badge_HDA.HomePage_night_1p9 {\n  color: #101010;\n  background-color: #E16C51;\n}\n", "", {"version":3,"sources":["/./src/components/HomePage/HomePage.scss"],"names":[],"mappings":"AAAA;CACC;;AAED;EACE,iBAAiB;EACjB,gBAAgB;EAChB,yBAAyB;EACzB,2BAA2B;CAoC5B;;AAlCC;EACE,sBAAsB;CAgCvB;;AA9BC;EACE,iBAAiB;CAClB;;AAED;EACE,eAAe;EACf,qBAAqB;EACrB,sBAAsB;EACtB,oBAAoB;EACpB,kBAAkB;EAClB,uBAAuB;EACvB,oCAAoC;EACpC,qCAAqC;EACrC,gCAAgC;EAChC,iCAAiC;EACjC,4BAA4B;EAC5B,6BAA6B;CAC9B;;AAGC;EACE,cAAc;CACf;;AAID;EACE,oBAAoB;CACrB;;AAML;EACE,sBAAsB;CAiBvB;;AAdG;EACE,sBAAsB;CACvB;;AAGC;EACE,0BAA0B;CAC3B;;AAGH;EACE,iCAAiC;CAClC;;AAML;EACE,mBAAmB;CA0BpB;;AAvBG;EACE,mBAAmB;EACnB,cAAe;CAKhB;;AAHC;EACE,eAAe;CAChB;;AAID;EACE,0BAA0B;CAC3B;;AAGH;EACE,8BAA8B;CAK/B;;AAHC;EACE,eAAe;CAChB;;AAMT;CAIC;;AAHC;EACE,cAAc;CACf;;AAGH;EACE,sBAAsB;EACtB,iBAAiB;EACjB,gBAAgB;EAChB,kBAAkB;EAClB,eAAe;EACf,oBAAoB;EACpB,gBAAiB;CAWlB;;AATC;EACE,YAAY;EACZ,uBAAuB;CACxB;;AAED;EACE,eAAe;EACf,0BAA0B;CAC3B","file":"HomePage.scss","sourcesContent":[".loading {\n}\n\n.tabList {\n  list-style: none;\n  padding-left: 0;\n  border-bottom-width: 1px;\n  border-bottom-style: solid;\n\n  li {\n    display: inline-block;\n\n    + li {\n      margin-left: 4px;\n    }\n\n    a {\n      display: block;\n      padding: 0.3em 0.6em;\n      text-decoration: none;\n      border-style: solid;\n      border-width: 1px;\n      border-bottom-width: 0;\n      -webkit-border-top-left-radius: 4px;\n      -webkit-border-top-right-radius: 4px;\n      -moz-border-radius-topleft: 4px;\n      -moz-border-radius-topright: 4px;\n      border-top-left-radius: 4px;\n      border-top-right-radius: 4px;\n    }\n\n    &.inactive {\n      a {\n        opacity: 0.75;\n      }\n    }\n\n    &.active {\n      a {\n        margin-bottom: -1px;\n      }\n    }\n  }\n}\n\n.night {\n  .tabList {\n    border-color: #38231D;\n\n    li {\n      a {\n        border-color: #38231D;\n      }\n\n      &.inactive {\n        a {\n          background-color: #231511;\n        }\n      }\n\n      &.active {\n        border-bottom: 1px solid #101010;\n      }\n    }\n  }\n}\n\n.day {\n  .tabList {\n    border-color: #ccc;\n\n    li {\n      a {\n        border-color: #ccc;\n        color: #97918A;\n\n        &:hover, &:focus {\n          color: #E16C51;\n        }\n      }\n\n      &.inactive {\n        a {\n          background-color: #f1f1f1;\n        }\n      }\n\n      &.active {\n        border-bottom: 1px solid #fff;\n\n        a {\n          color: #E16C51;\n        }\n      }\n    }\n  }\n}\n\n.tab {\n  &.inactive {\n    display: none;\n  }\n}\n\n.badge {\n  display: inline-block;\n  padding: 2px 5px;\n  font-size: 11px;\n  font-weight: bold;\n  line-height: 1;\n  border-radius: 20px;\n  margin-left: 5px;\n\n  &.day {\n    color: #666;\n    background-color: #eee;\n  }\n\n  &.night {\n    color: #101010;\n    background-color: #E16C51;;\n  }\n}\n"],"sourceRoot":"webpack://"}]);
+  exports.push([module.id, ".HomePage_loading_XqX {\n}\n\n.HomePage_error_gfE {\n  color: #fff;\n  padding: 5px 10px;\n  border-radius: 2px\n}\n\n.HomePage_error_gfE.HomePage_night_1p9 {\n  background-color: #E16C51\n}\n\n.HomePage_error_gfE.HomePage_day_2WC {\n  background-color: #c9302c\n}\n\n.HomePage_tabs_1-z {\n\n}\n\n.HomePage_tabList_uR3 {\n  list-style: none;\n  padding-left: 0;\n  border-bottom-width: 1px;\n  border-bottom-style: solid;\n}\n\n.HomePage_tabList_uR3 li {\n  display: inline-block;\n}\n\n.HomePage_tabList_uR3 li + li {\n  margin-left: 4px;\n}\n\n.HomePage_tabList_uR3 li a {\n  display: block;\n  padding: 0.3em 0.6em;\n  text-decoration: none;\n  border-style: solid;\n  border-width: 1px;\n  border-bottom-width: 0;\n  -webkit-border-top-left-radius: 4px;\n  -webkit-border-top-right-radius: 4px;\n  -moz-border-radius-topleft: 4px;\n  -moz-border-radius-topright: 4px;\n  border-top-left-radius: 4px;\n  border-top-right-radius: 4px;\n}\n\n.HomePage_tabList_uR3 li.HomePage_inactive_2yj a {\n  opacity: 0.75\n}\n\n.HomePage_tabList_uR3 li.HomePage_active_lyV a {\n  margin-bottom: -1px\n}\n\n.HomePage_night_1p9 .HomePage_tabList_uR3 {\n  border-color: #38231D;\n}\n\n.HomePage_night_1p9 .HomePage_tabList_uR3 li a {\n  border-color: #38231D;\n}\n\n.HomePage_night_1p9 .HomePage_tabList_uR3 li.HomePage_inactive_2yj a {\n  background-color: #231511\n}\n\n.HomePage_night_1p9 .HomePage_tabList_uR3 li.HomePage_active_lyV {\n  border-bottom: 1px solid #101010\n}\n\n.HomePage_day_2WC .HomePage_tabList_uR3 {\n  border-color: #ccc;\n}\n\n.HomePage_day_2WC .HomePage_tabList_uR3 li a {\n  border-color: #ccc;\n  color: #97918A\n}\n\n.HomePage_day_2WC .HomePage_tabList_uR3 li a:hover, .HomePage_day_2WC .HomePage_tabList_uR3 li a:focus {\n  color: #E16C51\n}\n\n.HomePage_day_2WC .HomePage_tabList_uR3 li.HomePage_inactive_2yj a {\n  background-color: #f1f1f1\n}\n\n.HomePage_day_2WC .HomePage_tabList_uR3 li.HomePage_active_lyV {\n  border-bottom: 1px solid #fff;\n}\n\n.HomePage_day_2WC .HomePage_tabList_uR3 li.HomePage_active_lyV a {\n  color: #E16C51\n}\n\n.HomePage_tab_16Q {\n}\n\n.HomePage_tab_16Q.HomePage_inactive_2yj {\n  display: none\n}\n\n.HomePage_badge_HDA {\n  display: inline-block;\n  padding: 2px 5px;\n  font-size: 11px;\n  font-weight: bold;\n  line-height: 1;\n  border-radius: 20px;\n  margin-left: 5px\n}\n\n.HomePage_badge_HDA.HomePage_day_2WC {\n  color: #666;\n  background-color: #eee\n}\n\n.HomePage_badge_HDA.HomePage_night_1p9 {\n  color: #101010;\n  background-color: #E16C51\n}\n", "", {"version":3,"sources":["/./src/components/HomePage/HomePage.scss"],"names":[],"mappings":"AAAA;CACC;;AAED;EACE,YAAY;EACZ,kBAAkB;EAClB,kBAAmB;CASpB;;AAPC;EACE,yBAA0B;CAC3B;;AAED;EACE,yBAA0B;CAC3B;;AAGH;;CAEC;;AAED;EACE,iBAAiB;EACjB,gBAAgB;EAChB,yBAAyB;EACzB,2BAA2B;CAoC5B;;AAlCC;EACE,sBAAsB;CAgCvB;;AA9BC;EACE,iBAAiB;CAClB;;AAED;EACE,eAAe;EACf,qBAAqB;EACrB,sBAAsB;EACtB,oBAAoB;EACpB,kBAAkB;EAClB,uBAAuB;EACvB,oCAAoC;EACpC,qCAAqC;EACrC,gCAAgC;EAChC,iCAAiC;EACjC,4BAA4B;EAC5B,6BAA6B;CAC9B;;AAGC;EACE,aAAc;CACf;;AAID;EACE,mBAAoB;CACrB;;AAML;EACE,sBAAsB;CAiBvB;;AAdG;EACE,sBAAsB;CACvB;;AAGC;EACE,yBAA0B;CAC3B;;AAGH;EACE,gCAAiC;CAClC;;AAML;EACE,mBAAmB;CA0BpB;;AAvBG;EACE,mBAAmB;EACnB,cAAe;CAKhB;;AAHC;EACE,cAAe;CAChB;;AAID;EACE,yBAA0B;CAC3B;;AAGH;EACE,8BAA8B;CAK/B;;AAHC;EACE,cAAe;CAChB;;AAMT;CAIC;;AAHC;EACE,aAAc;CACf;;AAGH;EACE,sBAAsB;EACtB,iBAAiB;EACjB,gBAAgB;EAChB,kBAAkB;EAClB,eAAe;EACf,oBAAoB;EACpB,gBAAiB;CAWlB;;AATC;EACE,YAAY;EACZ,sBAAuB;CACxB;;AAED;EACE,eAAe;EACf,yBAA0B;CAC3B","file":"HomePage.scss","sourcesContent":[".loading {\n}\n\n.error {\n  color: #fff;\n  padding: 5px 10px;\n  border-radius: 2px;\n\n  &.night {\n    background-color: #E16C51;\n  }\n\n  &.day {\n    background-color: #c9302c;\n  }\n}\n\n.tabs {\n\n}\n\n.tabList {\n  list-style: none;\n  padding-left: 0;\n  border-bottom-width: 1px;\n  border-bottom-style: solid;\n\n  li {\n    display: inline-block;\n\n    + li {\n      margin-left: 4px;\n    }\n\n    a {\n      display: block;\n      padding: 0.3em 0.6em;\n      text-decoration: none;\n      border-style: solid;\n      border-width: 1px;\n      border-bottom-width: 0;\n      -webkit-border-top-left-radius: 4px;\n      -webkit-border-top-right-radius: 4px;\n      -moz-border-radius-topleft: 4px;\n      -moz-border-radius-topright: 4px;\n      border-top-left-radius: 4px;\n      border-top-right-radius: 4px;\n    }\n\n    &.inactive {\n      a {\n        opacity: 0.75;\n      }\n    }\n\n    &.active {\n      a {\n        margin-bottom: -1px;\n      }\n    }\n  }\n}\n\n.night {\n  .tabList {\n    border-color: #38231D;\n\n    li {\n      a {\n        border-color: #38231D;\n      }\n\n      &.inactive {\n        a {\n          background-color: #231511;\n        }\n      }\n\n      &.active {\n        border-bottom: 1px solid #101010;\n      }\n    }\n  }\n}\n\n.day {\n  .tabList {\n    border-color: #ccc;\n\n    li {\n      a {\n        border-color: #ccc;\n        color: #97918A;\n\n        &:hover, &:focus {\n          color: #E16C51;\n        }\n      }\n\n      &.inactive {\n        a {\n          background-color: #f1f1f1;\n        }\n      }\n\n      &.active {\n        border-bottom: 1px solid #fff;\n\n        a {\n          color: #E16C51;\n        }\n      }\n    }\n  }\n}\n\n.tab {\n  &.inactive {\n    display: none;\n  }\n}\n\n.badge {\n  display: inline-block;\n  padding: 2px 5px;\n  font-size: 11px;\n  font-weight: bold;\n  line-height: 1;\n  border-radius: 20px;\n  margin-left: 5px;\n\n  &.day {\n    color: #666;\n    background-color: #eee;\n  }\n\n  &.night {\n    color: #101010;\n    background-color: #E16C51;;\n  }\n}\n"],"sourceRoot":"webpack://"}]);
   
   // exports
   exports.locals = {
   	"loading": "HomePage_loading_XqX",
+  	"error": "HomePage_error_gfE",
+  	"night": "HomePage_night_1p9",
+  	"day": "HomePage_day_2WC",
+  	"tabs": "HomePage_tabs_1-z",
   	"tabList": "HomePage_tabList_uR3",
   	"inactive": "HomePage_inactive_2yj",
   	"active": "HomePage_active_lyV",
-  	"night": "HomePage_night_1p9",
-  	"day": "HomePage_day_2WC",
   	"tab": "HomePage_tab_16Q",
   	"badge": "HomePage_badge_HDA"
   };
@@ -5783,7 +5817,8 @@ module.exports =
         groups: _react.PropTypes.array.isRequired,
         onLightLoaded: _react.PropTypes.func.isRequired,
         onEdit: _react.PropTypes.func.isRequired,
-        onGroupDeleted: _react.PropTypes.func.isRequired
+        onGroupDeleted: _react.PropTypes.func.isRequired,
+        onError: _react.PropTypes.func.isRequired
       },
       enumerable: true
     }]);
@@ -5813,7 +5848,8 @@ module.exports =
             return _react2['default'].createElement(_GroupGroup2['default'], _extends({ key: key }, group, {
               onLightLoaded: _this.props.onLightLoaded,
               onDeleted: _this.props.onGroupDeleted,
-              onEdit: _this.props.onEdit
+              onEdit: _this.props.onEdit,
+              onError: _this.props.onError
             }));
           })
         );
@@ -5949,7 +5985,8 @@ module.exports =
         onLightLoaded: _react.PropTypes.func.isRequired,
         onEdit: _react.PropTypes.func.isRequired,
         'class': _react.PropTypes.string,
-        onDeleted: _react.PropTypes.func.isRequired
+        onDeleted: _react.PropTypes.func.isRequired,
+        onError: _react.PropTypes.func.isRequired
       },
       enumerable: true
     }]);
@@ -6007,8 +6044,9 @@ module.exports =
       }
     }, {
       key: 'onDeleteError',
-      value: function onDeleteError(response) {
-        console.error('failed to delete group', this.props.id, response);
+      value: function onDeleteError(error) {
+        console.error('failed to delete group', this.props.id, error.message);
+        this.props.onError(error.message);
       }
     }, {
       key: 'onEdit',
@@ -6047,11 +6085,7 @@ module.exports =
       key: 'onColorError',
       value: function onColorError(error) {
         console.error('failed to change group color', error.message);
-      }
-    }, {
-      key: 'onLightLoadError',
-      value: function onLightLoadError(response) {
-        console.error('failed to load light ' + this.props.id, response);
+        this.props.onError(error.message);
       }
     }, {
       key: 'getColorsFromLights',
@@ -8383,6 +8417,12 @@ module.exports =
 /***/ function(module, exports) {
 
   module.exports = require("node-hue-api");
+
+/***/ },
+/* 100 */
+/***/ function(module, exports) {
+
+  module.exports = require("react-timeout");
 
 /***/ }
 /******/ ]);

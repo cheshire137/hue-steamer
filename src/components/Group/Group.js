@@ -20,6 +20,7 @@ class Group extends Component {
     onEdit: PropTypes.func.isRequired,
     class: PropTypes.string,
     onDeleted: PropTypes.func.isRequired,
+    onError: PropTypes.func.isRequired,
   };
 
   constructor(props, context) {
@@ -70,8 +71,9 @@ class Group extends Component {
     }
   }
 
-  onDeleteError(response) {
-    console.error('failed to delete group', this.props.id, response);
+  onDeleteError(error) {
+    console.error('failed to delete group', this.props.id, error.message);
+    this.props.onError(error.message);
   }
 
   onEdit(event) {
@@ -105,10 +107,7 @@ class Group extends Component {
 
   onColorError(error) {
     console.error('failed to change group color', error.message);
-  }
-
-  onLightLoadError(response) {
-    console.error('failed to load light ' + this.props.id, response);
+    this.props.onError(error.message);
   }
 
   getColorsFromLights(lights) {

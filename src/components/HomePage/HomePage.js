@@ -12,11 +12,16 @@ import ScenesList from '../ScenesList/ScenesList';
 import GroupForm from '../GroupForm/GroupForm';
 import LocalStorage from '../../stores/localStorage';
 import Daytime from '../../models/daytime';
+import reactTimeout from 'react-timeout';
 
 const title = 'Hue Steamer';
 
 @withStyles(s)
 class HomePage extends Component {
+  static propTypes = {
+    setTimeout: PropTypes.func,
+  };
+
   static contextTypes = {
     onSetTitle: PropTypes.func.isRequired,
   };
@@ -27,6 +32,7 @@ class HomePage extends Component {
       lights: {},
       activeTab: LocalStorage.get('activeTab') || 'lights',
       lightIDs: [],
+      error: undefined,
     };
   }
 
@@ -55,19 +61,29 @@ class HomePage extends Component {
            catch(this.onGroupsLoadError.bind(this));
   }
 
-  onBridgeLoadError(response) {
-    console.error('failed to load bridge', response);
+  onBridgeLoadError(error) {
+    console.error('failed to load bridge', error.message);
     Location.push({
       ...(parsePath('/settings')),
     });
   }
 
-  onSchedulesLoadError(response) {
-    console.error('failed to load schedules', response);
+  onSchedulesLoadError(error) {
+    console.error('failed to load schedules', error.message);
+    this.onError(error.message);
   }
 
-  onScenesLoadError(response) {
-    console.error('failed to load scenes', response);
+  onScenesLoadError(error) {
+    console.error('failed to load scenes', error.message);
+    this.onError(error.message);
+  }
+
+  onError(error) {
+    this.setState({ error }, () => {
+      this.props.setTimeout(() => {
+        this.setState({ error: undefined });
+      }, 5000);
+    });
   }
 
   onAllLightsLoaded(group) {
@@ -81,8 +97,9 @@ class HomePage extends Component {
     });
   }
 
-  onAllLightsLoadError(response) {
-    console.error('failed to load group of all lights', response);
+  onAllLightsLoadError(error) {
+    console.error('failed to load group of all lights', error.message);
+    this.onError(error.message);
   }
 
   onGroupsLoaded(rawGroups) {
@@ -93,8 +110,9 @@ class HomePage extends Component {
     this.setState({ groups });
   }
 
-  onGroupsLoadError(response) {
-    console.error('failed to load groups', response);
+  onGroupsLoadError(error) {
+    console.error('failed to load groups', error.message);
+    this.onError(error.message);
   }
 
   onSchedulesLoaded(schedules) {
@@ -379,6 +397,11 @@ class HomePage extends Component {
             </a>
           </li>
         </ul>
+        {typeof this.state.error === 'string' ? (
+          <p className={cx(s.error, themeClass)}>
+            {this.state.error}
+          </p>
+        ) : ''}
         <div className={s.tabs}>
           <div className={cx(s.lightsTab, s.tab, this.state.activeTab === 'lights' ? s.active : s.inactive)}>
             {haveLights ? (
@@ -398,6 +421,7 @@ class HomePage extends Component {
                 onLightLoaded={this.onLightLoaded.bind(this)}
                 onEdit={this.onEditGroup.bind(this)}
                 onGroupDeleted={this.onGroupDeleted.bind(this)}
+                onError={this.onError.bind(this)}
               />
             ) : (
               <p className={s.loading}>
@@ -440,4 +464,4 @@ class HomePage extends Component {
   }
 }
 
-export default HomePage;
+export default reactTimeout(HomePage);
