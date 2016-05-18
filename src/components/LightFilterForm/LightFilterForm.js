@@ -202,8 +202,9 @@ class LightFilterForm extends Component {
             Any
           </option>
           {models.map((model) => {
+            const key = this.props.ids.join(',') + '-' + model;
             return (
-              <option value={model} key={model}>{model}</option>
+              <option value={model} key={key}>{model}</option>
             );
           })}
         </select>

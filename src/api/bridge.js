@@ -118,6 +118,9 @@ class Bridge {
         throw new Error(JSON.stringify(json.error));
       }
     }
+    if (typeof json.message === 'string') {
+      throw new Error(json.message);
+    }
     throw new Error(response.statusText);
   }
 }

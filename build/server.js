@@ -4202,9 +4202,17 @@ module.exports =
               throw new Error(JSON.stringify(json.error));
   
             case 16:
+              if (!(typeof json.message === 'string')) {
+                context$2$0.next = 18;
+                break;
+              }
+  
+              throw new Error(json.message);
+  
+            case 18:
               throw new Error(response.statusText);
   
-            case 17:
+            case 19:
             case 'end':
               return context$2$0.stop();
           }
@@ -5570,6 +5578,8 @@ module.exports =
     }, {
       key: 'render',
       value: function render() {
+        var _this8 = this;
+  
         var models = this.getModels();
         return _react2['default'].createElement(
           'form',
@@ -5622,9 +5632,10 @@ module.exports =
               'Any'
             ),
             models.map(function (model) {
+              var key = _this8.props.ids.join(',') + '-' + model;
               return _react2['default'].createElement(
                 'option',
-                { value: model, key: model },
+                { value: model, key: key },
                 model
               );
             })
@@ -6033,6 +6044,11 @@ module.exports =
         }
       }
     }, {
+      key: 'onColorError',
+      value: function onColorError(error) {
+        console.error('failed to change group color', error.message);
+      }
+    }, {
       key: 'onLightLoadError',
       value: function onLightLoadError(response) {
         console.error('failed to load light ' + this.props.id, response);
@@ -6068,7 +6084,7 @@ module.exports =
         var xy = _modelsConverter2['default'].hexToCIE1931(color);
         var x = xy[0];
         var y = xy[1];
-        _apiBridge2['default'].setGroupColor(this.props.id, x, y).then(this.onColorChanged.bind(this, x, y));
+        _apiBridge2['default'].setGroupColor(this.props.id, x, y).then(this.onColorChanged.bind(this, x, y))['catch'](this.onColorError.bind(this));
       }
     }, {
       key: 'toggleGroupOpen',

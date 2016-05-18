@@ -103,6 +103,10 @@ class Group extends Component {
     }
   }
 
+  onColorError(error) {
+    console.error('failed to change group color', error.message);
+  }
+
   onLightLoadError(response) {
     console.error('failed to load light ' + this.props.id, response);
   }
@@ -131,7 +135,8 @@ class Group extends Component {
     const x = xy[0];
     const y = xy[1];
     Bridge.setGroupColor(this.props.id, x, y).
-           then(this.onColorChanged.bind(this, x, y));
+           then(this.onColorChanged.bind(this, x, y)).
+           catch(this.onColorError.bind(this));
   }
 
   toggleGroupOpen(event) {
