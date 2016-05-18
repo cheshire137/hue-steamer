@@ -26,6 +26,9 @@ class Schedule extends Component {
   localtimeToDays() {
     const parts = this.props.localtime.split('/');
     const days = [];
+    if (parts.length < 1) {
+      return days;
+    }
     const listOfDays = parts[0].slice(1); // number up to 127
     const sunday = 1;
     const monday = 64;
@@ -60,6 +63,9 @@ class Schedule extends Component {
 
   localtimeToTime() {
     const parts = this.props.localtime.split('/');
+    if (parts.length < 2) {
+      return '';
+    }
     const fullTime = parts[1].slice(1); // 24hr timestamp like 20:00:00
     const timeParts = fullTime.split(':').map((t) => parseInt(t, 10));
     const hour = timeParts[0];

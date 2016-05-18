@@ -6571,6 +6571,9 @@ module.exports =
       value: function localtimeToDays() {
         var parts = this.props.localtime.split('/');
         var days = [];
+        if (parts.length < 1) {
+          return days;
+        }
         var listOfDays = parts[0].slice(1); // number up to 127
         var sunday = 1;
         var monday = 64;
@@ -6606,6 +6609,9 @@ module.exports =
       key: 'localtimeToTime',
       value: function localtimeToTime() {
         var parts = this.props.localtime.split('/');
+        if (parts.length < 2) {
+          return '';
+        }
         var fullTime = parts[1].slice(1); // 24hr timestamp like 20:00:00
         var timeParts = fullTime.split(':').map(function (t) {
           return parseInt(t, 10);
