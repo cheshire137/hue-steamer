@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "babel-core": "5.8.34",
+    "bluebird": "^3.4.0",
     "classnames": "2.2.1",
     "eventemitter3": "1.1.1",
     "express": "4.13.3",
@@ -34,6 +35,7 @@
     "react-timeout": "^1.0.0",
     "source-map-support": "0.4.0",
     "sqlite": "0.0.4",
+    "sqlite3": "^3.1.4",
     "whatwg-fetch": "0.10.1"
   },
   "devDependencies": {
@@ -94,6 +96,6 @@
     "build": "babel-node tools/run build",
     "deploy": "babel-node tools/run deploy",
     "start": "node server.js"
-    "postinstall": "NODE_ENV=development node setup.js"
+    "postinstall": "env NODE_ENV=development node setup.js"
   }
 }
